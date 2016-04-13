@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+    <script src="./vendors/speak.js/speakClient.js" charset="utf-8"></script>
   </head>
   <body>
     <h1>Hello World!</h1>
@@ -11,8 +12,10 @@
     and Electron <script>document.write(process.versions.electron)</script>.
 
     <p>
-      <button id="speak">Speak</button>
+      <button id="speak">Native speak</button>
+      <button id="speak-js">JS speak</button>
     </p>
+    <div id="audio"></div>
     <script src="speak.js" charset="utf-8"></script>
   </body>
 </html>
