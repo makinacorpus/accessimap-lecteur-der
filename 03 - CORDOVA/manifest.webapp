@@ -1,0 +1,18 @@
+{
+  "name": "Accessimap test",
+  "description": "Expérimentations avec Cordova pour Acccessimap",
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "Alexandra JANIN"
+  },
+  "default_locale": "en",
+  "chrome": { "navigation": true },
+  "permissions": {
+      "audio-capture" : {
+          "description" : "Audio capture"
+      },
+      "speech-recognition" : {
+          "description" : "Speech recognition"
+      }
+  }
+}
