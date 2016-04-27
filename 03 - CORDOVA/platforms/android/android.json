@@ -123,9 +123,6 @@
         "cordova-plugin-media": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
         },
-        "cordova-plugin-browsersync": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
-        },
         "org.apache.cordova.speech.speechrecognition": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
         },

@@ -1,73 +1,85 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-        console.log(MobileAccessibility);
-        MobileAccessibility.isTalkBackRunning(
-        function (bool) {
-            console.log('Talkback status: ' + bool);
-            if (bool) {
-                /* Use setTimeout to account for latency in initialization of ChromeVox */
-                setTimeout(function() {
-                    if (MobileAccessibility.isChromeVoxActive()) {
-                        console.log('ChromeVox is active.');
-                    } else {
-                        console.log('ChromeVox is not active.');
+// make sure your the code gets executed only after `deviceready`.
+document.addEventListener('deviceready', function () {
 
-                        /* Notify the user of a potential problem */
-                        // MobileAccessibility.speak('The ChromeVox screen reader has failed to initialize. You may wish to close and restart this app.');
-                    }
-                }, 5000);
-            }
+    // Load DER SVG
+    // -------------------------------------
+    // get a reference to an element
+    var der = document.getElementById('der');
+    var eventText = document.getElementById('event');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', './der/carte_avec_source.svg',false);
+    // Following line is just to be on the safe side;
+    // not needed if your server delivers SVG with correct MIME type
+    xhr.overrideMimeType('image/svg+xml');
+    xhr.send('');
+    der.appendChild(xhr.responseXML.documentElement);
+
+
+    // Get JSON instructions
+    xhr.open('GET', './der/interactions.json',false);
+    xhr.send('');
+    var POIS = JSON.parse(xhr.response).pois;
+
+
+    function initTouchEventsListeners(poi, hammer) {
+
+
+        var singleTap = new Hammer.Tap({ event: 'tap' });
+        var doubleTap = new Hammer.Tap({event: 'double_tap', taps: 2 });
+        var tripleTap = new Hammer.Tap({event: 'triple_tap', taps: 3 });
+
+        hammer.add([tripleTap, doubleTap, singleTap]);
+        tripleTap.recognizeWith([doubleTap, singleTap]);
+        doubleTap.recognizeWith(singleTap);
+
+        doubleTap.requireFailure(tripleTap);
+        singleTap.requireFailure([tripleTap, doubleTap]);
+
+        hammer.on('swipe triple_tap double_tap tap', function(e) {
+            showEvent(e);
+            speechPOIActions(poi, e.type);
         });
-
-
-    },
-
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
     }
 
-};
+    function speechPOIActions(poi, type) {
+        var poiEl = document.getElementById(poi.id);
+        poiEl.style.fill = 'red';
 
-app.initialize();
+        for (var i = 1; i < poi.actions.length; i++) {
+            if (type === poi.actions[i].gesture) {
+                nativeSpeak(poi.actions[i].value).then(function() {
+                    poiEl.style.fill = 'white';
+                });
+            }
+        }
+    }
+
+    function showEvent(event) {
+        var textToSpeech = event.type;
+        eventText.innerHTML = textToSpeech;
+    }
+
+    POIS.map(function(poi, key) {
+        var poiEl = document.getElementById(poi.id);
+        if (poiEl !== null) {
+            var hammer = new Hammer.Manager(poiEl, {});
+            initTouchEventsListeners(poi, hammer);
+        }
+    });
+
+    function nativeSpeak(text) {
+
+
+        return new Promise(function(resolve) {
+            window.TTS
+            .speak({
+                text: text,
+                locale: 'fr-FR',
+                rate: 1
+            }, function() {
+                resolve();
+            });
+        });
+    }
+});

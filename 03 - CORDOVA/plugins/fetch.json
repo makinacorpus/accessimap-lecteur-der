@@ -66,14 +66,6 @@
         "is_top_level": false,
         "variables": {}
     },
-    "cordova-plugin-browsersync": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-browsersync"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "org.apache.cordova.speech.speechrecognition": {
         "source": {
             "type": "git",
@@ -87,6 +79,14 @@
         "source": {
             "type": "registry",
             "id": "cordova-plugin-tts"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-livereload": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-livereload"
         },
         "is_top_level": true,
         "variables": {}

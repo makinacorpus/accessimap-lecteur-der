@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/home/lellex/Projets/accessimap/test-a11y-plugin/platforms/android/CordovaLib/assets"/></dataSet><dataSet config="debug"><source path="/home/lellex/Projets/accessimap/test-a11y-plugin/platforms/android/CordovaLib/src/debug/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/home/lellex/Projets/accessimap/accessimap-lecteur-der/03 - CORDOVA/platforms/android/CordovaLib/assets"/></dataSet><dataSet config="debug"><source path="/home/lellex/Projets/accessimap/accessimap-lecteur-der/03 - CORDOVA/platforms/android/CordovaLib/src/debug/assets"/></dataSet></merger>
