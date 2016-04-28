@@ -1,0 +1,57 @@
+{
+    "pois": [
+        {
+            "id": "title",
+            "actions": [
+                {
+                    "gesture": "double_tap",
+                    "filter":"f0",
+                    "value":"Titre par défaut",
+                    "protocol":"tts"
+                }
+            ]
+        },
+        {
+            "id": "poi-2",
+            "actions": [
+                {
+                    "gesture": "double_tap",
+                    "filter": "f1"
+                },
+                {
+                    "gesture": "tap",
+                    "filter": "f2",
+                    "value": "Gros point",
+                    "protocol": "tts"
+                },
+                {
+                    "gesture": "double_tap",
+                    "filter": "f2",
+                    "value": "Fondé en 2007, Le Sarkophage est un bimestriel d'analyse politique se revendiquant de la gauche antiproductiviste.",
+                    "protocol": "tts"
+                }
+            ]
+        },
+        {
+            "id": "poi-3",
+            "actions": [
+                {
+                    "gesture": "double_tap",
+                    "filter": "f1"
+                },
+                {
+                    "gesture": "tap",
+                    "filter": "f2",
+                    "value": "Carré",
+                    "protocol": "tts"
+                },
+                {
+                    "gesture": "double_tap",
+                    "filter": "f3",
+                    "value": "Le Monotype national est un dériveur conçu spécialement pour les épreuves de voile en solitaire des Jeux olympiques de Paris de 1924, disputées sur le plan d'eau du Cercle de la voile de Paris, à Meulan, sur la Seine.",
+                    "protocol": "tts"
+                }
+            ]
+        }
+    ]
+}

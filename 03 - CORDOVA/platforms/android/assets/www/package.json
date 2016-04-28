@@ -1,0 +1,8 @@
+{
+  "name": "cordova-acessimap-proto",
+  "version": "1.0.0",
+  "author": "Alexandra JANIN",
+  "dependencies": {
+    "hammerjs": "^2.0.8"
+  }
+}

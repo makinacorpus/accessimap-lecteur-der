@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rim="http://www.blackberry.com/ns/widgets"
+    id="cordova-plugin-livereload"
+    version="1.0.0-dev">
+    <name>cordova-plugin-livereload</name>
+    <description>Plugin to enable livereload and gestures synchronization across devices for Cordova</description>
+    <license>MIT</license>
+    <keywords>cordova, livereload, live-reload, live reload, ios, android, browsersync, browser-sync, devicesync, device-sync</keywords>
+    <repo>https://github.com/omefire/cordova-plugin-livereload.git</repo>
+
+    <hook type="before_plugin_install" src="deprecatePluginHook.js" />
+    <hook type="after_plugin_add" src="lib/dependenciesInstall.js" />
+    <hook type="after_prepare" src="lib/postPrepareHook.js" />
+    <hook type="after_run" src="lib/postEmulateRunHook.js" />
+    <hook type="after_emulate" src="lib/postEmulateRunHook.js" />
+</plugin>
