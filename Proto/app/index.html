@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div class="app">
+            <h1>Application hybride</h1>
+            <p id="logo"></p>
+        </div>
+
+        <!-- @if APP_BUILDER='cordova' -->
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="build-cordova.js"></script>
+        <!-- @endif -->
+
+        <!-- @if APP_BUILDER='electron' -->
+        <script type="text/javascript" src="build-electron.js"></script>
+        <!-- @endif -->
+    </body>
+</html>
