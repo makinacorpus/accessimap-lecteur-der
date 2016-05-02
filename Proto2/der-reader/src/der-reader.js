@@ -1,5 +1,6 @@
 var Utils = require('./utils.js');
 var TouchEvents = require('./touch-events.js');
+var DerForm = require('./der-form.js');
 
 var DerReader = {
     /* Options :
@@ -9,10 +10,16 @@ var DerReader = {
     */
     init: function(options) {
         options = options || {};
-        this.container = options.container !== undefined ? options.container : document.createElement('div');
+        this.form = new DerForm();
+        this.container = options.container !== undefined ? options.container : this.createContainer();
         this.der = {};
     },
 
+    createContainer: function() {
+        var container = document.createElement('div');
+        document.body.appendChild(container);
+        return container;
+    },
 
     /* Options :
     {
@@ -25,7 +32,6 @@ var DerReader = {
         this.der.jsonFile = options.jsonFile;
 
         this._loadDerFile(this.der);
-        document.body.appendChild(this.container);
     },
 
     _loadDerFile: function(der) {
@@ -42,9 +48,8 @@ var DerReader = {
         var promiseJson = new Promise(function(resolve, reject) {
             Utils.load(der.jsonFile)
             .then(function(response) {
-                var pois = JSON.parse(response).pois;
-                der.pois = pois;
-                resolve(pois);
+                der.pois = JSON.parse(response).pois;
+                resolve(der.pois);
             }, function() {
                 reject();
             });
