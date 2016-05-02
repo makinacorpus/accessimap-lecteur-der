@@ -3,6 +3,8 @@ var TouchEvents = require('./touch-events.js');
 
 function Der(options) {
     this.options = Object.assign({}, DerReader.defaults, options || {});
+    this.svgFile = options.svgFile;
+    this.jsonFile = options.jsonFile;
     this.pois = {};
     this.element = document.createElement('div');
 
@@ -12,7 +14,7 @@ function Der(options) {
 
 function loadData(der) {
     var promiseSvg = new Promise(function(resolve, reject) {
-        Utils.load('./../der/carte_avec_source.svg')
+        Utils.load(der.svgFile)
         .then(function(response) {
             der.element.innerHTML = response;
             resolve();
@@ -22,7 +24,7 @@ function loadData(der) {
     });
 
     var promiseJson = new Promise(function(resolve, reject) {
-        Utils.load('./../der/interactions.json')
+        Utils.load(der.jsonFile)
         .then(function(response) {
             var pois = JSON.parse(response).pois;
             der.pois = pois;
