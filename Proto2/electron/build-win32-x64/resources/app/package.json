@@ -1,0 +1,15 @@
+{
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "electron.js",
+  "scripts": {
+    "start": "electron electron.js",
+    "build": "electron-packager . build --platform=win32 --arch=x64 --overwrite"
+  },
+  "author": "Alexandra JANIN",
+  "license": "MIT",
+  "devDependencies": {
+    "electron-prebuilt": "^0.37.8"
+  }
+}

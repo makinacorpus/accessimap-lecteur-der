@@ -23,5 +23,4 @@ gulp build
 
 ```
 gulp watch // To launch server
-
 ```

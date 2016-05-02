@@ -7,10 +7,7 @@ var gulp = require('gulp'),
     babel = require('babelify'),
     rename = require('gulp-rename'),
     es = require('event-stream'),
-    htmlreplace = require('gulp-html-replace'),
     preprocess = require('gulp-preprocess');
-
-
 
 var files = [
     './app/app-electron.js',
@@ -32,6 +29,7 @@ function compile(watch) {
 
         const bundle = () => {
             return b.bundle()
+            .on('error', function(err) { console.error(err); this.emit('end'); })
             .pipe(source(entry))
             .pipe(buffer())
             .pipe(rename({

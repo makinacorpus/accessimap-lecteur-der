@@ -1,0 +1,9 @@
+{
+  "name": "@lellex/der-reader",
+  "version": "1.0.0",
+  "main": "derReader.electron.js",
+  "author": "Alexandra JANIN",
+  "license": "MIT",
+  "devDependencies": {},
+  "description": ""
+}

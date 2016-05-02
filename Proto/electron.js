@@ -11,5 +11,5 @@ app.on('ready', function() {
         width: 800
     });
 
-    mainWindow.loadURL('file://' + __dirname + '/www/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/www/index.electron.html');
 });
