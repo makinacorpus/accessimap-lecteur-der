@@ -10,7 +10,7 @@ var DerReader = {
     */
     init: function(options) {
         options = options || {};
-        this.form = new DerForm();
+        DerForm.init();
         this.container = options.container !== undefined ? options.container : this.createContainer();
         this.der = {};
     },

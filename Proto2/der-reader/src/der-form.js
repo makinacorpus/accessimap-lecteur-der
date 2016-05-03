@@ -1,36 +1,43 @@
-var DerForm = function() {
+var DerForm = {
+    init: function() {
+        this.container = DerForm._createForm();
+        this.fileInput = DerForm._createInputFile();
+        this.submitButton = DerForm._createInputSubmit();
+    },
 
-    this._createForm = function() {
+    _createForm: function() {
         var el = document.createElement('form');
         document.body.appendChild(el);
         el.addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log('ok');
+            var file = DerForm.fileInput.files[0];
+            if (file !== undefined) {
+                loadNewDer(file);
+            } else {
+                alert('Aucun fichier seléctionné');
+            }
         });
         return el;
-    };
+    },
 
-    this._createInputFile = function() {
+    _createInputFile: function() {
         var el = document.createElement('input');
         el.setAttribute('type', 'file');
         this.container.appendChild(el);
         return el;
-    };
+    },
 
-    this._createInputSubmit = function() {
+    _createInputSubmit: function() {
         var el = document.createElement('input');
         el.setAttribute('type', 'submit');
         el.setAttribute('value', 'Envoyer');
         this.container.appendChild(el);
         return el;
-    };
-
-    this.container = this._createForm();
-    this.file = this._createInputFile();
-    this.submit = this._createInputSubmit();
-
-
-    return this;
+    }
 };
+
+function loadNewDer(file) {
+    console.log(file);
+}
 
 module.exports = DerForm;
