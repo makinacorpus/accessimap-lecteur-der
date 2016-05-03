@@ -9,6 +9,7 @@
   "author": "Alexandra JANIN",
   "license": "MIT",
   "dependencies": {
-    "der-reader": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/der-reader"
+    "der-reader": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/der-reader",
+    "tts-cordova": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/tts-cordova"
   }
 }

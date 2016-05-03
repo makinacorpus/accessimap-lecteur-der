@@ -33,10 +33,15 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+
         DerReader.init({
-            svgFile: './der/carte_avec_source.svg',
-            jsonFile: './der/interactions.json'
+            der: {
+                svgFile: './der/carte_avec_source.svg',
+                jsonFile: './der/interactions.json'
+            },
+            tts: cordovaTTS
         });
+
     }
 };
 

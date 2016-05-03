@@ -54,50 +54,69 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Utils = __webpack_require__(1);
-	var TouchEvents = __webpack_require__(2);
-	var DerForm = __webpack_require__(4);
+	var DerFile = __webpack_require__(1);
+	var DerForm = __webpack_require__(3);
+	var TouchEvents = __webpack_require__(4);
 
 	var DerReader = {
-	    /* Options :
-	    {
-	        container: DOM element
-	        svgFile: path to SVG file
-	        jsonFile: path to JSON file
-	    }
-	    */
+	    /**
+		 * Initialise DER Reader
+		 * @param {Object} options
+	     * {
+	     *     container: {HTMLElement}
+	     *     der: {Object} required
+	     *     tts: {Function} required
+	     * }
+		 */
 	    init: function(options) {
 	        options = options || {};
+	        this.container = options.container || createContainer('container');
+	        this.der = options.der;
+	        this.tts = options.tts;
+
 	        DerForm.init();
-	        this.container = options.container !== undefined ? options.container : this._createContainer();
-	        this.der = {
-	            svgFile: options.svgFile,
-	            jsonFile: options.jsonFile
-	        };
+	        DerFile.loadDerFile(this.der, this.container, function() {
+	            DerReader.der.pois.map(function(poi) {
+	                var poiEl = document.getElementById(poi.id);
+	                if (poiEl !== null) {
+	                    TouchEvents.init(poiEl, poi.actions, DerReader.tts);
+	                }
+	            });
+	        });
 
-	        this._loadDerFile(this.der);
 	        return this;
-	    },
+	    }
+	};
 
-	    _createContainer: function() {
-	        var container = document.createElement('div');
-	        document.body.appendChild(container);
-	        return container;
-	    },
+	function createContainer(id) {
+	    var container = document.createElement('div');
+	    container.setAttribute('id', id);
+	    document.body.appendChild(container);
+	    return container;
+	}
+
+	module.exports = DerReader;
 
 
-	    _loadDerFile: function(der) {
-	        var promiseSvg = new Promise(function(resolve, reject) {
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Utils = __webpack_require__(2);
+
+	var DerFile = {
+	    loadDerFile: function(der, container, callback) {
+	        var loadSvg = new Promise(function(resolve, reject) {
 	            Utils.load(der.svgFile)
 	            .then(function(response) {
-	                DerReader.container.innerHTML = response;
+	                container.innerHTML = response;
 	                resolve();
 	            }, function() {
 	                reject();
 	            });
 	        });
 
-	        var promiseJson = new Promise(function(resolve, reject) {
+	        var loadJson = new Promise(function(resolve, reject) {
 	            Utils.load(der.jsonFile)
 	            .then(function(response) {
 	                der.pois = JSON.parse(response).pois;
@@ -107,22 +126,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        });
 
-	        Promise.all([promiseSvg, promiseJson]).then(function() {
-	            der.pois.map(function(poi, key) {
-	                var poiEl = document.getElementById(poi.id);
-	                if (poiEl !== null) {
-	                    TouchEvents.init(poiEl, poi);
-	                }
-	            });
+	        Promise.all([loadSvg, loadJson]).then(function() {
+	            if (callback) {
+	                callback();
+	            }
 	        });
 	    }
 	};
 
-	module.exports = DerReader;
+	module.exports = DerFile;
 
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports) {
 
 	var Utils = {
@@ -146,72 +162,110 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/* 3 */
+/***/ function(module, exports) {
 
-	var Hammer = __webpack_require__(3);
+	var DerForm = {
+	    init: function() {
+	        this.container = DerForm._createForm();
+	        this.fileInput = DerForm._createInputFile();
+	        this.submitButton = DerForm._createInputSubmit();
+	    },
 
-	var TouchEvents = {
-	    init: function(element, data) {
-	        var hammer = new Hammer.Manager(element, {});
-	        initTouchEventsListeners(hammer);
-
-	        hammer.on('swipe triple_tap double_tap tap', function(e) {
-	            speechPOIActions(element, data, e.type);
+	    _createForm: function() {
+	        var el = document.createElement('form');
+	        document.body.appendChild(el);
+	        el.addEventListener('submit', function(e) {
+	            e.preventDefault();
+	            var file = DerForm.fileInput.files[0];
+	            if (file !== undefined) {
+	                loadNewDer(file);
+	            } else {
+	                alert('Aucun fichier seléctionné');
+	            }
 	        });
+	        return el;
+	    },
+
+	    _createInputFile: function() {
+	        var el = document.createElement('input');
+	        el.setAttribute('type', 'file');
+	        this.container.appendChild(el);
+	        return el;
+	    },
+
+	    _createInputSubmit: function() {
+	        var el = document.createElement('input');
+	        el.setAttribute('type', 'submit');
+	        el.setAttribute('value', 'Envoyer');
+	        this.container.appendChild(el);
+	        return el;
 	    }
 	};
 
-	function initTouchEventsListeners(hammer) {
-	    var singleTap = new Hammer.Tap({ event: 'tap' });
-	    var doubleTap = new Hammer.Tap({event: 'double_tap', taps: 2 });
-	    var tripleTap = new Hammer.Tap({event: 'triple_tap', taps: 3 });
-
-	    hammer.add([tripleTap, doubleTap, singleTap]);
-	    tripleTap.recognizeWith([doubleTap, singleTap]);
-	    doubleTap.recognizeWith(singleTap);
-
-	    doubleTap.requireFailure(tripleTap);
-	    singleTap.requireFailure([tripleTap, doubleTap]);
+	function loadNewDer(file) {
+	    console.log(file);
 	}
 
-	function speechPOIActions(element, data, type) {
-	    element.style.fill = 'red';
+	module.exports = DerForm;
 
-	    for (var i = 1; i < data.actions.length; i++) {
-	        if (type === data.actions[i].gesture) {
-	            console.log(data.actions[i].value);
-	            nativeSpeak(data.actions[i].value).then(function() {
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Hammer = __webpack_require__(5);
+
+	var TouchEvents = {
+
+	    /**
+		 * add event listener to DER elements
+		 * @param {HTMLElement} element
+		 * @param {Object} actions
+		 * @param {Function} tts
+		 */
+	    init: function(element, actions, tts) {
+	        var hammer = new Hammer.Manager(element, {});
+	        this._addTouchEventsListeners(hammer);
+
+	        hammer.on('swipe triple_tap double_tap tap', function(e) {
+	            element.style.fill = 'red';
+	            var textToSpeech = TouchEvents._getGestureValue(actions, e.type);
+	            tts(textToSpeech).then(function() {
 	                element.style.fill = 'white';
 	            });
+	        });
+	    },
+
+	    _addTouchEventsListeners: function(hammer) {
+	        var singleTap = new Hammer.Tap({ event: 'tap' });
+	        var doubleTap = new Hammer.Tap({event: 'double_tap', taps: 2 });
+	        var tripleTap = new Hammer.Tap({event: 'triple_tap', taps: 3 });
+
+	        hammer.add([tripleTap, doubleTap, singleTap]);
+	        tripleTap.recognizeWith([doubleTap, singleTap]);
+	        doubleTap.recognizeWith(singleTap);
+
+	        doubleTap.requireFailure(tripleTap);
+	        singleTap.requireFailure([tripleTap, doubleTap]);
+	    },
+
+
+	    _getGestureValue: function(actions, type) {
+	        for (var i = 1; i < actions.length; i++) {
+	            if (type === actions[i].gesture) {
+	                return actions[i].value;
+	            }
 	        }
+	        return;
 	    }
-	}
-
-	function nativeSpeak(text) {
-	    var msg = new SpeechSynthesisUtterance();
-	    var voices = speechSynthesis.getVoices();
-	    msg.voice = voices[0]; // Note: some voices don't support altering params
-	    // msg.voiceURI = 'native';
-	    msg.volume = 1; // 0 to 1
-	    msg.rate = 1; // 0.1 to 10
-	    msg.pitch = 1; //0 to 2
-	    msg.text = text;
-	    msg.lang = 'fr';
-	    speechSynthesis.speak(msg);
-
-	    return new Promise(function(resolve) {
-	        msg.onend = function() {
-	            resolve();
-	        };
-	    });
-	}
+	};
 
 	module.exports = TouchEvents;
 
 
 /***/ },
-/* 3 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! Hammer.JS - v2.0.7 - 2016-04-22
@@ -2857,55 +2911,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	})(window, document, 'Hammer');
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	var DerForm = {
-	    init: function() {
-	        this.container = DerForm._createForm();
-	        this.fileInput = DerForm._createInputFile();
-	        this.submitButton = DerForm._createInputSubmit();
-	    },
-
-	    _createForm: function() {
-	        var el = document.createElement('form');
-	        document.body.appendChild(el);
-	        el.addEventListener('submit', function(e) {
-	            e.preventDefault();
-	            var file = DerForm.fileInput.files[0];
-	            if (file !== undefined) {
-	                loadNewDer(file);
-	            } else {
-	                alert('Aucun fichier seléctionné');
-	            }
-	        });
-	        return el;
-	    },
-
-	    _createInputFile: function() {
-	        var el = document.createElement('input');
-	        el.setAttribute('type', 'file');
-	        this.container.appendChild(el);
-	        return el;
-	    },
-
-	    _createInputSubmit: function() {
-	        var el = document.createElement('input');
-	        el.setAttribute('type', 'submit');
-	        el.setAttribute('value', 'Envoyer');
-	        this.container.appendChild(el);
-	        return el;
-	    }
-	};
-
-	function loadNewDer(file) {
-	    console.log(file);
-	}
-
-	module.exports = DerForm;
 
 
 /***/ }
