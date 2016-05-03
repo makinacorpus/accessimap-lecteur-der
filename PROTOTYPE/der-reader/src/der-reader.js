@@ -1,6 +1,6 @@
-var Utils = require('./utils.js');
-var TouchEvents = require('./touch-events.js');
-var DerForm = require('./der-form.js');
+var Utils = require('./der.utils.js');
+var TouchEvents = require('./der.events.js');
+var DerForm = require('./der.form.js');
 
 var DerReader = {
     /* Options :

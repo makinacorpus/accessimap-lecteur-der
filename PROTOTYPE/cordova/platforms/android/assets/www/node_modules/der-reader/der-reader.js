@@ -76,7 +76,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 
 	        this._loadDerFile(this.der);
-
 	        return this;
 	    },
 

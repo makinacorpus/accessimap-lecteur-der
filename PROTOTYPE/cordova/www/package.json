@@ -9,6 +9,6 @@
   "author": "Alexandra JANIN",
   "license": "MIT",
   "dependencies": {
-    "der-reader": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/Proto2/der-reader"
+    "der-reader": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/der-reader"
   }
 }
