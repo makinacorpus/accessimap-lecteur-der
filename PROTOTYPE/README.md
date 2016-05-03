@@ -68,7 +68,7 @@ DerReader.init({
 
 ## Comment lancer et compiler les prototypes ?
 
-### ELECTRON
+### Electron
 
 Lancer l'app (développement)
 
