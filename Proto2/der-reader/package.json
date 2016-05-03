@@ -1,11 +1,11 @@
 {
-  "name": "@lellex/der-reader",
+  "name": "der-reader",
   "version": "1.0.0",
-  "main": "src/derReader.js",
+  "main": "src/der-reader.js",
   "author": "Alexandra JANIN",
   "license": "MIT",
-  "devDependencies": {
+  "description": "",
+  "dependencies": {
     "hammerjs": "^2.0.8"
-  },
-  "description": ""
+  }
 }
