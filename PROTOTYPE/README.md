@@ -54,5 +54,6 @@ npm run build
 ```
 cd cordova/www
 npm install
+cordova prepare
 cordova run android
 ```
