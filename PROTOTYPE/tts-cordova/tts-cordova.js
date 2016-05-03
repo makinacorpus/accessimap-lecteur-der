@@ -10,4 +10,3 @@ function cordovaTTS(text) {
         });
     });
 }
-module.exports = cordovaTTS;

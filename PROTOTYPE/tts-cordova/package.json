@@ -4,11 +4,5 @@
     "main": "tts-cordova.js",
     "author": "Alexandra JANIN",
     "license": "MIT",
-    "description": "",
-    "devDependencies": {
-        "webpack": "^1.13.0"
-    },
-    "scripts": {
-        "build": "webpack tts-cordova.js tts-cordova.bundle.js --output-library cordovaTTS --output-library-target umd"
-    }
+    "description": ""
 }

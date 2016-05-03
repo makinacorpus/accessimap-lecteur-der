@@ -4,11 +4,5 @@
     "main": "tts-webspeechapi.js",
     "author": "Alexandra JANIN",
     "license": "MIT",
-    "description": "",
-    "devDependencies": {
-        "webpack": "^1.13.0"
-    },
-    "scripts": {
-        "build": "webpack tts-webspeechapi.js tts-webspeechapi.bundle.js --output-library webspeechapi --output-library-target umd"
-    }
+    "description": ""
 }
