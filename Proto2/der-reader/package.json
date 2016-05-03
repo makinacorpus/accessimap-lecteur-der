@@ -1,11 +1,17 @@
 {
-  "name": "der-reader",
-  "version": "1.0.0",
-  "main": "src/der-reader.js",
-  "author": "Alexandra JANIN",
-  "license": "MIT",
-  "description": "",
-  "dependencies": {
-    "hammerjs": "^2.0.8"
-  }
+    "name": "der-reader",
+    "version": "1.0.0",
+    "main": "der-reader.js",
+    "author": "Alexandra JANIN",
+    "license": "MIT",
+    "description": "",
+    "dependencies": {
+        "hammerjs": "^2.0.8"
+    },
+    "devDependencies": {
+        "webpack": "^1.13.0"
+    },
+    "scripts": {
+        "build": "webpack src/der-reader.js der-reader.js --output-library DerReader --output-library-target umd"
+    }
 }

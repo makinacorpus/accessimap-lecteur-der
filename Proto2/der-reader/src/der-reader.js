@@ -6,33 +6,29 @@ var DerReader = {
     /* Options :
     {
         container: DOM element
+        svgFile: path to SVG file
+        jsonFile: path to JSON file
     }
     */
     init: function(options) {
         options = options || {};
         DerForm.init();
-        this.container = options.container !== undefined ? options.container : this.createContainer();
-        this.der = {};
+        this.container = options.container !== undefined ? options.container : this._createContainer();
+        this.der = {
+            svgFile: options.svgFile,
+            jsonFile: options.jsonFile
+        };
+
+        this._loadDerFile(this.der);
+        return this;
     },
 
-    createContainer: function() {
+    _createContainer: function() {
         var container = document.createElement('div');
         document.body.appendChild(container);
         return container;
     },
 
-    /* Options :
-    {
-        svgFile: path to SVG file
-        jsonFile: path to JSON file
-    }
-    */
-    openFile: function(options) {
-        this.der.svgFile = options.svgFile;
-        this.der.jsonFile = options.jsonFile;
-
-        this._loadDerFile(this.der);
-    },
 
     _loadDerFile: function(der) {
         var promiseSvg = new Promise(function(resolve, reject) {
@@ -65,7 +61,5 @@ var DerReader = {
         });
     }
 };
-
-DerReader.init();
 
 module.exports = DerReader;

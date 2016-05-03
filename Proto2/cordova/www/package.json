@@ -1,0 +1,14 @@
+{
+  "name": "cordova",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexandra JANIN",
+  "license": "MIT",
+  "dependencies": {
+    "der-reader": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/Proto2/der-reader"
+  }
+}
