@@ -1,3 +1,5 @@
+require('./css/styles.css');
+
 var DerFile = require('./der.file.js');
 var DerForm = require('./der.form.js');
 var TouchEvents = require('./der.events.js');

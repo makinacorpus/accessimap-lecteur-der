@@ -35,6 +35,15 @@ DerReader.init({
 
 ```
 
+Pour modifier der-reader
+
+```
+npm install
+npm run start  # Webpack with --watch option
+npm run build  # Build project
+```
+
+
 ### Services tts
 
 Selon les plateformes, cordova a besoin du plugin [cordova-tts](https://github.com/vilic/cordova-plugin-tts) alors que electron sait gérer l'[API HTML Web Speech](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API).

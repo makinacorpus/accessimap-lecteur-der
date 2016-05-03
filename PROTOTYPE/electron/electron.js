@@ -12,13 +12,16 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1280, height: 800});
+  mainWindow = new BrowserWindow({
+    //   width: 1280, height: 800,
+      fullscreen: true
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   app.commandLine.appendSwitch('enable-speech-dispatcher');
 
   // Emitted when the window is closed.
