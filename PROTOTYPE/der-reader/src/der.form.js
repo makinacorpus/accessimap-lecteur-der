@@ -1,3 +1,5 @@
+var JSZip = require('jszip');
+
 var DerForm = {
     init: function() {
         this.container = DerForm._createForm();
@@ -36,8 +38,14 @@ var DerForm = {
     }
 };
 
+
 function loadNewDer(file) {
-    console.log(file);
+    var new_zip = new JSZip();
+    // more files !
+    new_zip.loadAsync(file)
+    .then(function(zip) {
+        console.log(zip);
+    });
 }
 
 module.exports = DerForm;
