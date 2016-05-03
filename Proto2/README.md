@@ -16,13 +16,13 @@ Lancer l'app (développement)
 
 ```
 cd electron
+npm install
 npm run start
 ```
 
 Builder l'application (pour Windows x64, cf. script npm pour d'autres paramètres/os)
 
 ```
-cd electron
 npm run build
 ```
 
