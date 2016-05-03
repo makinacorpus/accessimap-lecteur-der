@@ -1,9 +1,11 @@
 {
   "name": "@lellex/der-reader",
   "version": "1.0.0",
-  "main": "derReader.electron.js",
+  "main": "src/derReader.js",
   "author": "Alexandra JANIN",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "hammerjs": "^2.0.8"
+  },
   "description": ""
 }
