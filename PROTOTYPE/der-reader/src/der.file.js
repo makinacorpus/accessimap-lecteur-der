@@ -3,7 +3,10 @@ var TouchEvents = require('./der.events.js');
 
 var DerFile = {
     getSVG: function(file) {
-        if (file.type === 'path') {
+        if (file === undefined) {
+            return;
+        }
+        else if (file.type === 'path') {
             return new Promise(function(resolve, reject) {
                 Utils.load(file.src)
                 .then(function(response) {
@@ -20,7 +23,7 @@ var DerFile = {
         if (file === undefined) {
             return;
         }
-        if (file.type === 'path') {
+        else if (file.type === 'path') {
             return new Promise(function(resolve, reject) {
                 Utils.load(file.src)
                 .then(function(response) {
@@ -35,7 +38,12 @@ var DerFile = {
 
     loadDerFile: function(der, container, tts) {
         Promise.all([this.getSVG(der.svg), this.getJSON(der.json)]).then(function(values) {
-            container.innerHTML = values[0];
+            if (values[0] !== undefined) {
+                container.innerHTML = values[0];
+            } else {
+                console.log('Aucun SVG trouvé');
+            }
+
             if (values[1] !== undefined) {
                 der.pois = values[1];
                 der.pois.map(function(poi) {

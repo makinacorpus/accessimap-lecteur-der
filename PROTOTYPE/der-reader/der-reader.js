@@ -73,22 +73,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * }
 		 */
 	    init: function(options) {
-	        this.setOptions(options);
+	        this._setOptions(options);
 	        this.container = options.container || createContainer('container');
+	        this.messageContainer = createMessageContainer(this.container);
 	        DerForm.init(this);
 	        DerFile.loadDerFile(this.der, this.container, this.tts);
+	        console.log(this);
 	        return this;
 	    },
 
-	    setOptions(options) {
+	    changeDer: function(options) {
+	        this._setOptions(options);
+	        DerFile.loadDerFile(this.der, this.container, this.tts);
+	    },
+
+	    showMessage: function(message) {
+	        this.messageContainer.innerHTML = message;
+	    },
+
+	    _setOptions(options) {
 	        options = options || {};
 	        this.der = options.der;
 	        this.tts = options.tts;
-	    },
-
-	    changeDer: function(options) {
-	        this.setOptions(options);
-	        DerFile.loadDerFile(this.der, this.container, this.tts);
 	    }
 	};
 
@@ -97,6 +103,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    container.setAttribute('id', id);
 	    document.body.appendChild(container);
 	    return container;
+	}
+
+	function createMessageContainer(container) {
+	    var messageContainer = document.createElement('div');
+	    messageContainer.setAttribute('id', 'message');
+	    container.parentNode.insertBefore(messageContainer, container);
+	    return messageContainer;
 	}
 
 	module.exports = DerReader;
@@ -459,7 +472,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerFile = {
 	    getSVG: function(file) {
-	        if (file.type === 'path') {
+	        if (file === undefined) {
+	            return;
+	        }
+	        else if (file.type === 'path') {
 	            return new Promise(function(resolve, reject) {
 	                Utils.load(file.src)
 	                .then(function(response) {
@@ -476,7 +492,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (file === undefined) {
 	            return;
 	        }
-	        if (file.type === 'path') {
+	        else if (file.type === 'path') {
 	            return new Promise(function(resolve, reject) {
 	                Utils.load(file.src)
 	                .then(function(response) {
@@ -491,7 +507,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    loadDerFile: function(der, container, tts) {
 	        Promise.all([this.getSVG(der.svg), this.getJSON(der.json)]).then(function(values) {
-	            container.innerHTML = values[0];
+	            if (values[0] !== undefined) {
+	                container.innerHTML = values[0];
+	            } else {
+	                console.log('Aucun SVG trouvé');
+	            }
+
 	            if (values[1] !== undefined) {
 	                der.pois = values[1];
 	                der.pois.map(function(poi) {
@@ -3259,7 +3280,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (file !== undefined) {
 	                DerForm._loadNewDer(file, reader);
 	            } else {
-	                alert('Aucun fichier seléctionné');
+	                reader.showMessage('Aucun fichier seléctionné');
 	            }
 	        });
 	        return el;
@@ -3280,25 +3301,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return el;
 	    },
 
-	    _loadNewDer: function(zip, reader) {
+	    _loadNewDer: function(file, reader) {
+	        if (file.type.split('.').pop() !== 'application/zip') {
+	            reader.showMessage('Fichier non valide, le fichier envoyé doit être au format ZIP');
+	        }
 	        var new_zip = new JSZip();
-	        new_zip.loadAsync(zip)
+	        new_zip.loadAsync(file)
 	        .then(function(zip) {
-	            for (var file in zip.files) {
-	                var ext = file.split('.').pop();
-	                if (ext === 'svg') {
-	                    zip.files[file].async("string")
-	                    .then(function(data) {
-	                        reader.changeDer({
-	                            der: {
-	                                svg: {src: data}
-	                            }
-	                        });
-	                    });
-	                    return;
-	                }
-	            }
+	            DerForm._extractFiles(zip.files, reader);
 	        });
+	    },
+
+	    _extractFiles: function(files, reader) {
+	        for (var file in files) {
+	            var ext = file.split('.').pop();
+	            if (ext === 'svg') {
+	                files[file].async('string')
+	                .then(function(data) {
+	                    reader.changeDer({
+	                        der: {
+	                            svg: {src: data}
+	                        }
+	                    });
+	                    reader.showMessage('');
+	                });
+	                return;
+	            }
+	        }
+	        reader.showMessage('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
 	    }
 	};
 

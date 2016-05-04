@@ -16,7 +16,7 @@ var DerForm = {
             if (file !== undefined) {
                 DerForm._loadNewDer(file, reader);
             } else {
-                alert('Aucun fichier seléctionné');
+                reader.showMessage('Aucun fichier seléctionné');
             }
         });
         return el;
@@ -37,25 +37,34 @@ var DerForm = {
         return el;
     },
 
-    _loadNewDer: function(zip, reader) {
+    _loadNewDer: function(file, reader) {
+        if (file.type.split('.').pop() !== 'application/zip') {
+            reader.showMessage('Fichier non valide, le fichier envoyé doit être au format ZIP');
+        }
         var new_zip = new JSZip();
-        new_zip.loadAsync(zip)
+        new_zip.loadAsync(file)
         .then(function(zip) {
-            for (var file in zip.files) {
-                var ext = file.split('.').pop();
-                if (ext === 'svg') {
-                    zip.files[file].async("string")
-                    .then(function(data) {
-                        reader.changeDer({
-                            der: {
-                                svg: {src: data}
-                            }
-                        });
-                    });
-                    return;
-                }
-            }
+            DerForm._extractFiles(zip.files, reader);
         });
+    },
+
+    _extractFiles: function(files, reader) {
+        for (var file in files) {
+            var ext = file.split('.').pop();
+            if (ext === 'svg') {
+                files[file].async('string')
+                .then(function(data) {
+                    reader.changeDer({
+                        der: {
+                            svg: {src: data}
+                        }
+                    });
+                    reader.showMessage('');
+                });
+                return;
+            }
+        }
+        reader.showMessage('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
     }
 };
 

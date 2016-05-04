@@ -17,22 +17,28 @@ var DerReader = {
      * }
 	 */
     init: function(options) {
-        this.setOptions(options);
+        this._setOptions(options);
         this.container = options.container || createContainer('container');
+        this.messageContainer = createMessageContainer(this.container);
         DerForm.init(this);
         DerFile.loadDerFile(this.der, this.container, this.tts);
+        console.log(this);
         return this;
     },
 
-    setOptions(options) {
+    changeDer: function(options) {
+        this._setOptions(options);
+        DerFile.loadDerFile(this.der, this.container, this.tts);
+    },
+
+    showMessage: function(message) {
+        this.messageContainer.innerHTML = message;
+    },
+
+    _setOptions(options) {
         options = options || {};
         this.der = options.der;
         this.tts = options.tts;
-    },
-
-    changeDer: function(options) {
-        this.setOptions(options);
-        DerFile.loadDerFile(this.der, this.container, this.tts);
     }
 };
 
@@ -41,6 +47,13 @@ function createContainer(id) {
     container.setAttribute('id', id);
     document.body.appendChild(container);
     return container;
+}
+
+function createMessageContainer(container) {
+    var messageContainer = document.createElement('div');
+    messageContainer.setAttribute('id', 'message');
+    container.parentNode.insertBefore(messageContainer, container);
+    return messageContainer;
 }
 
 module.exports = DerReader;
