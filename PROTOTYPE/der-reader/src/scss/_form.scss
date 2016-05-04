@@ -7,8 +7,9 @@
     z-index: -1;
 
     & + label {
-        color: $black;
+        color: $blue-dark;
         background-color: $white;
+        border: 1px solid $blue-dark;
         padding: 0;
         span {
             width: 100%;
@@ -21,8 +22,8 @@
         }
         strong {
             height: 100%;
-            color: #f1e5e6;
-            background-color: $black;
+            color: $white;
+            background-color: $blue-dark;
             display: block;
         }
     }
@@ -37,7 +38,6 @@
     text-align: center;
     font-weight: 700;
     display: block;
-    border: 1px solid $black;
     cursor: pointer;
     border-radius: $base-border-radius;
 }
@@ -47,8 +47,9 @@
     margin-top: 10px;
     padding: 0.625rem 1.25rem;
     height: 100%;
-    color: $white;
-    background-color: $black;
+    color: $blue-dark;
+    background-color: $blue-light;
+    border: 1px solid $blue-light;
     width: 100%;
     min-height: 2em;
     text-overflow: ellipsis;
@@ -60,9 +61,8 @@
 
 .inputfile:focus + label,
 .inputfile.has-focus + label,
-.inputfile + label:hover,
-.inputsubmit:hover {
-    border-color: $grey;
+.inputfile + label:hover {
+    border-color: $blue;
 }
 
 .inputfile + label span,
@@ -73,7 +73,12 @@
 
 .inputfile:focus + label strong,
 .inputfile.has-focus + label strong,
-.inputfile + label:hover strong,
+.inputfile + label:hover strong {
+    background-color: $blue;
+}
+
 .inputsubmit:hover {
-    background-color: $grey;
+    border-color: $blue;
+    background-color: $blue;
+    color: $white;
 }
