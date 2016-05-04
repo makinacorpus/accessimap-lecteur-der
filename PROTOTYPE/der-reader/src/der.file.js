@@ -1,4 +1,5 @@
 var Utils = require('./der.utils.js');
+var TouchEvents = require('./der.events.js');
 
 var DerFile = {
     getSVG: function(file) {
@@ -17,7 +18,7 @@ var DerFile = {
 
     getJSON: function(file) {
         if (file === undefined) {
-            return null;
+            return;
         }
         if (file.type === 'path') {
             return new Promise(function(resolve, reject) {
@@ -32,12 +33,19 @@ var DerFile = {
         return file.src
     },
 
-    loadDerFile: function(der, container, callback) {
+    loadDerFile: function(der, container, tts) {
         Promise.all([this.getSVG(der.svg), this.getJSON(der.json)]).then(function(values) {
             container.innerHTML = values[0];
-            der.pois = values[1];
-            if (callback) {
-                callback();
+            if (values[1] !== undefined) {
+                der.pois = values[1];
+                der.pois.map(function(poi) {
+                    var poiEl = document.getElementById(poi.id);
+                    if (poiEl !== null) {
+                        TouchEvents.init(poiEl, poi.actions, tts);
+                    }
+                });
+            } else {
+                console.log('Aucun JSON trouvé');
             }
         });
     }

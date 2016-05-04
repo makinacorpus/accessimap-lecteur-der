@@ -50,9 +50,9 @@ var DerForm = {
                             der: {
                                 svg: {src: data}
                             }
-                        })
-                        console.log(res);
+                        });
                     });
+                    return;
                 }
             }
         });
