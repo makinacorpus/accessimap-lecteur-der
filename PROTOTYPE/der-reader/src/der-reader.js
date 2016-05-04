@@ -10,17 +10,17 @@ var DerReader = {
 	 * @param {Object} options
      * {
      *     container: {HTMLElement}
-     *     der: {Object} required
+     *     der: {
+     *         svg: {src: {string}, type: 'path' or 'src' (default src)},
+     *         json: {src: {string}, type: 'path' or 'src' (default src)},
+     *     } required
      *     tts: {Function} required
      * }
 	 */
     init: function(options) {
-        options = options || {};
+        this.setOptions(options);
         this.container = options.container || createContainer('container');
-        this.der = options.der;
-        this.tts = options.tts;
-
-        DerForm.init();
+        DerForm.init(this);
         DerFile.loadDerFile(this.der, this.container, function() {
             DerReader.der.pois.map(function(poi) {
                 var poiEl = document.getElementById(poi.id);
@@ -31,6 +31,26 @@ var DerReader = {
         });
 
         return this;
+    },
+
+    setOptions(options) {
+        options = options || {};
+        this.der = options.der;
+        this.tts = options.tts;
+    },
+
+    changeDer: function(options) {
+        this.setOptions(options);
+        DerFile.loadDerFile(this.der, this.container, function() {
+            if (typeof DerReader.der.pois === Object) {
+                DerReader.der.pois.map(function(poi) {
+                    var poiEl = document.getElementById(poi.id);
+                    if (poiEl !== null) {
+                        TouchEvents.init(poiEl, poi.actions, DerReader.tts);
+                    }
+                });
+            }
+        });
     }
 };
 

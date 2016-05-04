@@ -10,8 +10,8 @@ var DerReader = require('../der-reader/der-reader.js');
 
 DerReader.init({
     der: {
-        svgFile: './der/carte_avec_source.svg',
-        jsonFile: './der/interactions.json'
+        svg: {src: './der/carte_avec_source.svg', type: 'path'},
+        json: {src: './der/interactions.json', type: 'path'}
     },
     tts: webspeechapi
 });

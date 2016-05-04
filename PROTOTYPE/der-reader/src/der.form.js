@@ -1,20 +1,20 @@
 var JSZip = require('jszip');
 
 var DerForm = {
-    init: function() {
-        this.container = DerForm._createForm();
+    init: function(reader) {
+        this.container = DerForm._createForm(reader);
         this.fileInput = DerForm._createInputFile();
         this.submitButton = DerForm._createInputSubmit();
     },
 
-    _createForm: function() {
+    _createForm: function(reader) {
         var el = document.createElement('form');
         document.body.appendChild(el);
         el.addEventListener('submit', function(e) {
             e.preventDefault();
             var file = DerForm.fileInput.files[0];
             if (file !== undefined) {
-                loadNewDer(file);
+                DerForm._loadNewDer(file, reader);
             } else {
                 alert('Aucun fichier seléctionné');
             }
@@ -35,17 +35,30 @@ var DerForm = {
         el.setAttribute('value', 'Envoyer');
         this.container.appendChild(el);
         return el;
+    },
+
+    _loadNewDer: function(zip, reader) {
+        var new_zip = new JSZip();
+        new_zip.loadAsync(zip)
+        .then(function(zip) {
+            for (var file in zip.files) {
+                var ext = file.split('.').pop();
+                if (ext === 'svg') {
+                    zip.files[file].async("string")
+                    .then(function(data) {
+                        reader.changeDer({
+                            der: {
+                                svg: {src: data}
+                            }
+                        })
+                        console.log(res);
+                    });
+                }
+            }
+        });
     }
 };
 
 
-function loadNewDer(file) {
-    var new_zip = new JSZip();
-    // more files !
-    new_zip.loadAsync(file)
-    .then(function(zip) {
-        console.log(zip);
-    });
-}
 
 module.exports = DerForm;

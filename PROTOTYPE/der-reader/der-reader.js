@@ -66,17 +66,17 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * @param {Object} options
 	     * {
 	     *     container: {HTMLElement}
-	     *     der: {Object} required
+	     *     der: {
+	     *         svg: {src: {string}, type: 'path' or 'src' (default src)},
+	     *         json: {src: {string}, type: 'path' or 'src' (default src)},
+	     *     } required
 	     *     tts: {Function} required
 	     * }
 		 */
 	    init: function(options) {
-	        options = options || {};
+	        this.setOptions(options);
 	        this.container = options.container || createContainer('container');
-	        this.der = options.der;
-	        this.tts = options.tts;
-
-	        DerForm.init();
+	        DerForm.init(this);
 	        DerFile.loadDerFile(this.der, this.container, function() {
 	            DerReader.der.pois.map(function(poi) {
 	                var poiEl = document.getElementById(poi.id);
@@ -87,6 +87,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 
 	        return this;
+	    },
+
+	    setOptions(options) {
+	        options = options || {};
+	        this.der = options.der;
+	        this.tts = options.tts;
+	    },
+
+	    changeDer: function(options) {
+	        this.setOptions(options);
+	        DerFile.loadDerFile(this.der, this.container, function() {
+	            if (typeof DerReader.der.pois === Object) {
+	                DerReader.der.pois.map(function(poi) {
+	                    var poiEl = document.getElementById(poi.id);
+	                    if (poiEl !== null) {
+	                        TouchEvents.init(poiEl, poi.actions, DerReader.tts);
+	                    }
+	                });
+	            }
+	        });
 	    }
 	};
 
@@ -455,28 +475,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Utils = __webpack_require__(6);
 
 	var DerFile = {
+	    getSVG: function(file) {
+	        if (file.type === 'path') {
+	            return new Promise(function(resolve, reject) {
+	                Utils.load(file.src)
+	                .then(function(response) {
+	                    resolve(response);
+	                }, function() {
+	                    reject();
+	                });
+	            });
+	        }
+	        return file.src;
+	    },
+
+	    getJSON: function(file) {
+	        if (file === undefined) {
+	            return null;
+	        }
+	        if (file.type === 'path') {
+	            return new Promise(function(resolve, reject) {
+	                Utils.load(file.src)
+	                .then(function(response) {
+	                    resolve(JSON.parse(response).pois);
+	                }, function() {
+	                    reject();
+	                });
+	            });
+	        }
+	        return file.src
+	    },
+
 	    loadDerFile: function(der, container, callback) {
-	        var loadSvg = new Promise(function(resolve, reject) {
-	            Utils.load(der.svgFile)
-	            .then(function(response) {
-	                container.innerHTML = response;
-	                resolve();
-	            }, function() {
-	                reject();
-	            });
-	        });
-
-	        var loadJson = new Promise(function(resolve, reject) {
-	            Utils.load(der.jsonFile)
-	            .then(function(response) {
-	                der.pois = JSON.parse(response).pois;
-	                resolve(der.pois);
-	            }, function() {
-	                reject();
-	            });
-	        });
-
-	        Promise.all([loadSvg, loadJson]).then(function() {
+	        Promise.all([this.getSVG(der.svg), this.getJSON(der.json)]).then(function(values) {
+	            container.innerHTML = values[0];
+	            der.pois = values[1];
 	            if (callback) {
 	                callback();
 	            }
@@ -518,20 +551,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	var JSZip = __webpack_require__(8);
 
 	var DerForm = {
-	    init: function() {
-	        this.container = DerForm._createForm();
+	    init: function(reader) {
+	        this.container = DerForm._createForm(reader);
 	        this.fileInput = DerForm._createInputFile();
 	        this.submitButton = DerForm._createInputSubmit();
 	    },
 
-	    _createForm: function() {
+	    _createForm: function(reader) {
 	        var el = document.createElement('form');
 	        document.body.appendChild(el);
 	        el.addEventListener('submit', function(e) {
 	            e.preventDefault();
 	            var file = DerForm.fileInput.files[0];
 	            if (file !== undefined) {
-	                loadNewDer(file);
+	                DerForm._loadNewDer(file, reader);
 	            } else {
 	                alert('Aucun fichier seléctionné');
 	            }
@@ -552,18 +585,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	        el.setAttribute('value', 'Envoyer');
 	        this.container.appendChild(el);
 	        return el;
+	    },
+
+	    _loadNewDer: function(zip, reader) {
+	        var new_zip = new JSZip();
+	        new_zip.loadAsync(zip)
+	        .then(function(zip) {
+	            for (var file in zip.files) {
+	                var ext = file.split('.').pop();
+	                if (ext === 'svg') {
+	                    zip.files[file].async("string")
+	                    .then(function(data) {
+	                        reader.changeDer({
+	                            der: {
+	                                svg: {src: data}
+	                            }
+	                        })
+	                        console.log(res);
+	                    });
+	                }
+	            }
+	        });
 	    }
 	};
 
 
-	function loadNewDer(file) {
-	    var new_zip = new JSZip();
-	    // more files !
-	    new_zip.loadAsync(file)
-	    .then(function(zip) {
-	        console.log(zip);
-	    });
-	}
 
 	module.exports = DerForm;
 
@@ -9377,7 +9423,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
