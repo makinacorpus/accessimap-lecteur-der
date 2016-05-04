@@ -12,6 +12,13 @@ var Utils = {
                 }
             };
         });
+    },
+    message: function(message, type, container) {
+        if (type !== undefined) {
+            container.innerHTML = '<span class="' + type + '">' + message + '</span>';
+        } else {
+            container.innerHTML = message;
+        }
     }
 };
 

@@ -1,7 +1,8 @@
-require('./css/styles.css');
+require('!style!css!sass!./scss/styles.scss');
 
 var DerFile = require('./der.file.js');
 var DerForm = require('./der.form.js');
+var Utils = require('./der.utils.js');
 
 var DerReader = {
     /**
@@ -31,8 +32,8 @@ var DerReader = {
         DerFile.loadDerFile(this.der, this.container, this.tts);
     },
 
-    showMessage: function(message) {
-        this.messageContainer.innerHTML = message;
+    message: function(message, type) {
+        Utils.message(message, type, this.messageContainer);
     },
 
     _setOptions(options) {

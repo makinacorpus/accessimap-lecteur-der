@@ -16,7 +16,7 @@ var DerForm = {
             if (file !== undefined) {
                 DerForm._loadNewDer(file, reader);
             } else {
-                reader.showMessage('Aucun fichier seléctionné');
+                reader.showMessage('Aucun fichier seléctionné', 'error');
             }
         });
         return el;
@@ -39,7 +39,7 @@ var DerForm = {
 
     _loadNewDer: function(file, reader) {
         if (file.type.split('.').pop() !== 'application/zip') {
-            reader.showMessage('Fichier non valide, le fichier envoyé doit être au format ZIP');
+            reader.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
         }
         var new_zip = new JSZip();
         new_zip.loadAsync(file)
@@ -59,12 +59,12 @@ var DerForm = {
                             svg: {src: data}
                         }
                     });
-                    reader.showMessage('');
+                    reader.message('');
                 });
                 return;
             }
         }
-        reader.showMessage('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
+        reader.message('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP', 'error');
     }
 };
 

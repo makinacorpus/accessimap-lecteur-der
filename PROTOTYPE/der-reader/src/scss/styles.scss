@@ -1,0 +1,29 @@
+// Colors
+$black: #011627;
+$white: #FDFFFC;
+$green: #2EC4B6;
+$red: #E71D36;
+$orange: #FF9F1C;
+
+body {
+    background-color: $white;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+svg {
+    width: 100%;
+    height: auto;
+}
+
+#message {
+    color: white;
+    span {
+        display: block;
+        padding: 10px;
+        &.error {
+            background-color: $red;
+        }
+    }
+}

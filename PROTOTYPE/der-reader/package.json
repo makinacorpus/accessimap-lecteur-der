@@ -16,6 +16,6 @@
   },
   "scripts": {
     "start": "ARGS=--watch npm run build",
-    "build": "webpack $ARGS src/der-reader.js der-reader.js --output-library DerReader --output-library-target umd --module-bind 'css=style!css'"
+    "build": "webpack $ARGS src/der-reader.js der-reader.js --output-library DerReader --output-library-target umd --module-bind"
   }
 }
