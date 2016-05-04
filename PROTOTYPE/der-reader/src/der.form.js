@@ -95,23 +95,41 @@ var DerForm = {
         });
     },
 
+    _readFile: function(file) {
+        return new Promise(function(resolve) {
+            file.async('string')
+            .then(function(data) {
+                resolve(data);
+            });
+        });
+    },
+
     _extractFiles: function(files, reader) {
+        var newDer = {};
+
+        var svg, xml;
+
         for (var file in files) {
             var ext = file.split('.').pop();
             if (ext === 'svg') {
-                files[file].async('string')
-                .then(function(data) {
-                    reader.changeDer({
-                        der: {
-                            svg: {src: data}
-                        }
-                    });
-                    reader.message('');
-                });
-                return;
+                svg = files[file];
+            }
+            if (ext === 'xml') {
+                xml = files[file];
             }
         }
-        reader.message('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP', 'error');
+
+        Promise.all([this._readFile(svg), this._readFile(xml)]).then(function(values) {
+            Object.assign(newDer, {svg: {src: values[0]}});
+
+            // TODO read xml file
+            reader.message('');
+            reader.changeDer({
+                der: newDer
+            });
+        }, function() {
+            reader.message('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP', 'error');
+        });
     }
 };
 
