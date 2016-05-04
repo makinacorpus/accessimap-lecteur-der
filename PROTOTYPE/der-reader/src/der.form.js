@@ -1,38 +1,85 @@
 var JSZip = require('jszip');
+var Utils = require('./der.utils.js');
 
 var DerForm = {
     init: function(reader) {
-        this.container = DerForm._createForm(reader);
+        this.reader = reader;
+        this.container = DerForm._createForm();
         this.fileInput = DerForm._createInputFile();
         this.submitButton = DerForm._createInputSubmit();
+
+        this._addFormListener();
+        this._addInputListener();
     },
 
-    _createForm: function(reader) {
-        var el = document.createElement('form');
-        document.body.appendChild(el);
-        el.addEventListener('submit', function(e) {
+    _addFormListener: function() {
+        console.log(this);
+        this.container.addEventListener('submit', function(e) {
             e.preventDefault();
             var file = DerForm.fileInput.files[0];
             if (file !== undefined) {
-                DerForm._loadNewDer(file, reader);
+                DerForm._loadNewDer(file, DerForm.reader);
             } else {
-                reader.showMessage('Aucun fichier seléctionné', 'error');
+                DerForm.reader.message('Aucun fichier seléctionné', 'error');
             }
         });
-        return el;
+    },
+
+    _addInputListener: function() {
+        var label	 = this.fileInput.nextElementSibling,
+            labelVal = label.innerHTML;
+
+        this.fileInput.addEventListener( 'change', function( e ) {
+            var fileName = '';
+            if( this.files && this.files.length > 1 ) {
+                fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+            } else {
+                fileName = e.target.value.split( '\\' ).pop();
+            }
+
+            if (fileName) {
+                label.querySelector( 'span' ).innerHTML = fileName;
+            } else {
+                label.innerHTML = labelVal;
+            }
+        });
+    },
+
+    _createForm: function() {
+        var aside = document.createElement('aside');
+        aside.setAttribute('class', 'menu');
+        var form = document.createElement('form');
+        aside.appendChild(form);
+        this.reader.container.appendChild(aside);
+        return form;
     },
 
     _createInputFile: function() {
-        var el = document.createElement('input');
-        el.setAttribute('type', 'file');
-        this.container.appendChild(el);
-        return el;
+        var input = document.createElement('input');
+        Utils.setAttributes(input, {
+            'type': 'file',
+            'id': 'file',
+            'class': 'inputfile'
+        });
+        var label = document.createElement('label');
+        label.setAttribute('for', 'file');
+        var span = document.createElement('span');
+        var strong = document.createElement('strong');
+        strong.innerHTML = 'Choisir un fichier';
+        label.appendChild(span);
+        label.appendChild(strong);
+        this.container.appendChild(input);
+        this.container.appendChild(label);
+        return input;
     },
 
     _createInputSubmit: function() {
         var el = document.createElement('input');
-        el.setAttribute('type', 'submit');
-        el.setAttribute('value', 'Envoyer');
+        Utils.setAttributes(el, {
+            'type': 'submit',
+            'class': 'inputsubmit',
+            'value': 'Envoyer'
+        });
         this.container.appendChild(el);
         return el;
     },

@@ -1,15 +1,25 @@
-// Colors
-$black: #011627;
-$white: #FDFFFC;
-$green: #2EC4B6;
-$red: #E71D36;
-$orange: #FF9F1C;
+@import 'variables';
+@import 'form';
+
+// General
+
+*, *:after, *:before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
 
 body {
-    background-color: $white;
+    background-color: white;
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
+    overflow: hidden;
+
 }
 
 svg {
@@ -26,4 +36,21 @@ svg {
             background-color: $red;
         }
     }
+}
+
+// Layout
+
+.container {
+    display: flex;
+    height: 100%;
+}
+
+.der-container {
+    flex: 1;
+}
+
+.menu {
+    width: 320px;
+    background: $grey-light;
+    padding: 1.25rem;
 }

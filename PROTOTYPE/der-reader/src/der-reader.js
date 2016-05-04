@@ -20,16 +20,18 @@ var DerReader = {
     init: function(options) {
         this._setOptions(options);
         this.container = options.container || createContainer('container');
+        this.derContainer = createDerContainer(this.container);
         this.messageContainer = createMessageContainer(this.container);
+
         DerForm.init(this);
-        DerFile.loadDerFile(this.der, this.container, this.tts);
+        DerFile.loadDerFile(this.der, this.derContainer, this.tts);
         console.log(this);
         return this;
     },
 
     changeDer: function(options) {
         this._setOptions(options);
-        DerFile.loadDerFile(this.der, this.container, this.tts);
+        DerFile.loadDerFile(this.der, this.derContainer, this.tts);
     },
 
     message: function(message, type) {
@@ -43,11 +45,18 @@ var DerReader = {
     }
 };
 
-function createContainer(id) {
+function createContainer(className) {
     var container = document.createElement('div');
-    container.setAttribute('id', id);
+    container.setAttribute('class', className);
     document.body.appendChild(container);
     return container;
+}
+
+function createDerContainer(container) {
+    var derContainer = document.createElement('div');
+    derContainer.setAttribute('class', 'der-container');
+    container.appendChild(derContainer);
+    return derContainer;
 }
 
 function createMessageContainer(container) {

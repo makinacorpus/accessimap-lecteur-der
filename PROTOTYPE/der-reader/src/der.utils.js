@@ -13,6 +13,13 @@ var Utils = {
             };
         });
     },
+    
+    setAttributes: function(el, attrs) {
+        for(var key in attrs) {
+            el.setAttribute(key, attrs[key]);
+        }
+    },
+
     message: function(message, type, container) {
         if (type !== undefined) {
             container.innerHTML = '<span class="' + type + '">' + message + '</span>';
