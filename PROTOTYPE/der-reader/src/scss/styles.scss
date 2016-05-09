@@ -29,8 +29,13 @@ svg {
 
 #message {
     color: white;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
     span {
+        text-align: center;
         display: block;
+        font-weight: bold;
         padding: 10px;
         &.error {
             background-color: $red;
@@ -51,6 +56,6 @@ svg {
 
 .menu {
     width: 320px;
-    background: $green-light;
-    padding: 1.25rem;
+    background: $black;
+    padding: 60px 1.25rem;
 }

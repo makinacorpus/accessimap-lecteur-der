@@ -62,6 +62,10 @@ var DerFile = {
     _extractFiles: function(files, callback) {
         this.filesByExt = Utils.orderFilesByExt(files);
 
+        if (DerFile.filesByExt.svg.length > 1) {
+            console.log(DerFile.filesByExt.svg);
+        }
+
         var getJson = new Promise(function(resolve, reject) {
             DerFile.filesByExt.xml[0].async('string')
             .then(function(data) {

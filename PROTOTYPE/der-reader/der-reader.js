@@ -159,7 +159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #1D3557;\n    background-color: #fff;\n    border: 1px solid #1D3557;\n    padding: 0; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #1D3557;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #1D3557;\n  background-color: #A8DADC;\n  border: 1px solid #A8DADC;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile:focus + label,\n.inputfile.has-focus + label,\n.inputfile + label:hover {\n  border-color: #457B9D; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #457B9D; }\n\n.inputsubmit:hover {\n  border-color: #457B9D;\n  background-color: #457B9D;\n  color: #fff; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n#message {\n  color: white; }\n  #message span {\n    display: block;\n    padding: 10px; }\n    #message span.error {\n      background-color: #EF233C; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  width: 320px;\n  background: #F1FAEE;\n  padding: 1.25rem; }\n", ""]);
+	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n#message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  #message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    #message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
 
 	// exports
 
@@ -539,6 +539,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    _extractFiles: function(files, callback) {
 	        this.filesByExt = Utils.orderFilesByExt(files);
+
+	        if (DerFile.filesByExt.svg.length > 1) {
+	            console.log(DerFile.filesByExt.svg);
+	        }
 
 	        var getJson = new Promise(function(resolve, reject) {
 	            DerFile.filesByExt.xml[0].async('string')
@@ -9409,7 +9413,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -22754,9 +22758,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 
 	            if (fileName) {
-	                label.querySelector( 'span' ).innerHTML = fileName;
+	                label.querySelector('span').innerHTML = fileName;
+	                label.className = 'fill';
 	            } else {
 	                label.innerHTML = labelVal;
+	                label.className = '';
 	            }
 	        });
 	    },
@@ -22780,10 +22786,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var label = document.createElement('label');
 	        label.setAttribute('for', 'file');
 	        var span = document.createElement('span');
-	        var strong = document.createElement('strong');
-	        strong.innerHTML = 'Choisir un fichier';
+	        // var strong = document.createElement('strong');
+	        // strong.innerHTML = 'Choisir un fichier';
+	        span.innerHTML = 'Choisir un fichier';
 	        label.appendChild(span);
-	        label.appendChild(strong);
+	        // label.appendChild(strong);
 	        this.container.appendChild(input);
 	        this.container.appendChild(label);
 	        return input;

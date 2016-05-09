@@ -38,9 +38,11 @@ var DerForm = {
             }
 
             if (fileName) {
-                label.querySelector( 'span' ).innerHTML = fileName;
+                label.querySelector('span').innerHTML = fileName;
+                label.className = 'fill';
             } else {
                 label.innerHTML = labelVal;
+                label.className = '';
             }
         });
     },
@@ -64,10 +66,11 @@ var DerForm = {
         var label = document.createElement('label');
         label.setAttribute('for', 'file');
         var span = document.createElement('span');
-        var strong = document.createElement('strong');
-        strong.innerHTML = 'Choisir un fichier';
+        // var strong = document.createElement('strong');
+        // strong.innerHTML = 'Choisir un fichier';
+        span.innerHTML = 'Choisir un fichier';
         label.appendChild(span);
-        label.appendChild(strong);
+        // label.appendChild(strong);
         this.container.appendChild(input);
         this.container.appendChild(label);
         return input;
