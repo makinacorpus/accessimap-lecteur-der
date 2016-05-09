@@ -14,20 +14,23 @@ var TouchEvents = {
         this._addTouchEventsListeners(hammer);
 
         hammer.on('swipe triple_tap double_tap tap', function(e) {
-            TouchEvents._onEventStarted(element);
-
             var action = TouchEvents._getGestureAction(actions, e.type);
 
-            if (action.protocol === 'mp3') {
-                readAudioFile(action.value).then(function() {
-                    TouchEvents._onEventEnded(element);
-                });
-            }
+            if (action !== undefined) {
+                
+                TouchEvents._onEventStarted(element);
 
-            if (action.protocol === 'tts') {
-                tts(action.value).then(function() {
-                    TouchEvents._onEventEnded(element);
-                });
+                if (action.protocol === 'mp3') {
+                    readAudioFile(action.value).then(function() {
+                        TouchEvents._onEventEnded(element);
+                    });
+                }
+
+                if (action.protocol === 'tts') {
+                    tts(action.value).then(function() {
+                        TouchEvents._onEventEnded(element);
+                    });
+                }
             }
         });
     },
@@ -60,7 +63,7 @@ var TouchEvents = {
             return actions;
         } else {
             for (var i = 0; i < actions.length; i++) {
-                if (type === actions[i].gesture) {
+                if (type === actions[i].gesture && actions[i].protocol !== undefined) {
                     return actions[i];
                 }
             }

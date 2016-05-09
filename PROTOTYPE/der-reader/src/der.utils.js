@@ -49,7 +49,7 @@ var Utils = {
         });
     },
 
-    parseXml(xmlStr) {
+    parseXml: function(xmlStr) {
         if (typeof window.DOMParser != 'undefined') {
             return ( new window.DOMParser() ).parseFromString(xmlStr, 'text/xml');
         } else {
@@ -58,7 +58,7 @@ var Utils = {
     },
 
     // Changes XML to JSON
-    XML2jsobj(node) {
+    XML2jsobj: function(node) {
 
         var	data = {};
 
@@ -95,6 +95,37 @@ var Utils = {
             }
         }
         return data;
+    },
+
+    orderFilesByExt: function(files) {
+        var filesByExt = {
+            xml: [],
+            svg: [],
+            audioFiles: {} // ZipObjects of audio files
+        };
+
+        for (var file in files) {
+            var ext = file.split('.').pop();
+
+            if(files[file].dir === true) {
+                filesByExt.dirName = files[file].name;
+            }
+
+            if (ext === 'xml') {
+                filesByExt.xml.push(files[file]);
+            }
+
+            if (ext === 'svg') {
+                filesByExt.svg.push(files[file]);
+            }
+
+            if (ext === 'mp3') {
+                name = filesByExt.dirName ? files[file].name.replace(filesByExt.dirName, '') : files[file].name;
+                filesByExt.audioFiles[name] = files[file];
+            }
+        }
+
+        return filesByExt;
     }
 };
 

@@ -25,7 +25,7 @@ var DerFile = {
     openDerFile: function(file, message) {
         Options.message = message || Options.message;
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve) {
             if (file.type.split('.').pop() !== 'application/zip') {
                 Options.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error', 'error');
             }
@@ -37,7 +37,6 @@ var DerFile = {
                         Options.message('');
                         resolve(der);
                     } else {
-                        console.log('ici');
                         Options.message(error, 'error');
                     }
                 });
@@ -47,7 +46,7 @@ var DerFile = {
 
     readAudioFile(name) {
         return new Promise(function(resolve, reject) {
-            DerFile.audioFiles[name].async('base64')
+            DerFile.filesByExt.audioFiles[name].async('base64')
             .then(function(base64string) {
                 var sound = new Audio('data:audio/wav;base64,' + base64string);
                 sound.play();
@@ -61,45 +60,27 @@ var DerFile = {
     },
 
     _extractFiles: function(files, callback) {
-        var getJson, getSvg;
-        this.audioFiles = {}; // ZipObjects of audio files
+        this.filesByExt = Utils.orderFilesByExt(files);
 
-        for (var file in files) {
-            var ext = file.split('.').pop();
+        var getJson = new Promise(function(resolve, reject) {
+            DerFile.filesByExt.xml[0].async('string')
+            .then(function(data) {
+                var node = Utils.parseXml(data);
+                var json = Utils.XML2jsobj(node.documentElement);
+                resolve(json);
+            }, function(error) {
+                reject(error);
+            });
+        });
 
-            if(files[file].dir === true) {
-                this.dir = files[file].name;
-            }
-
-            if (ext === 'xml') {
-                getJson = new Promise(function(resolve, reject) {
-                    files[file].async('string')
-                    .then(function(data) {
-                        var node = Utils.parseXml(data);
-                        var json = Utils.XML2jsobj(node.documentElement);
-                        resolve(json);
-                    }, function(error) {
-                        reject(error);
-                    });
-                });
-            }
-
-            if (ext === 'svg') {
-                getSvg = new Promise(function(resolve, reject) {
-                    files[file].async('string')
-                    .then(function(data) {
-                        resolve({svg: data});
-                    }, function(error) {
-                        reject(error);
-                    });
-                });
-            }
-
-            if (ext === 'mp3') {
-                name = files[file].name.replace(this.dir, '');
-                this.audioFiles[name] = files[file];
-            }
-        }
+        var getSvg = new Promise(function(resolve, reject) {
+            DerFile.filesByExt.svg[0].async('string')
+            .then(function(data) {
+                resolve({svg: data});
+            }, function(error) {
+                reject(error);
+            });
+        });
 
         Promise.all([getJson, getSvg]).then(function(values) {
             var der = {};
@@ -115,11 +96,11 @@ var DerFile = {
     },
 
     loadDer(der, container, tts) {
-        this.tts = tts || this.tts;
-        this.container = container || this.container;
+        Options.tts = tts || Options.tts;
+        Options.container = container || Options.container;
 
         if (der.svg !== undefined) {
-            this.container.innerHTML = der.svg;
+            Options.container.innerHTML = der.svg;
         } else {
             Options.message('Aucun SVG trouvé', 'error');
         }
@@ -129,7 +110,7 @@ var DerFile = {
                 var id = poi.id.split('-').pop();
                 var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
                 if (poiEl !== undefined) {
-                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, this.tts);
+                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, Options.tts);
                 }
             });
         } else {

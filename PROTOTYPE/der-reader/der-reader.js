@@ -503,7 +503,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    openDerFile: function(file, message) {
 	        Options.message = message || Options.message;
 
-	        return new Promise(function(resolve, reject) {
+	        return new Promise(function(resolve) {
 	            if (file.type.split('.').pop() !== 'application/zip') {
 	                Options.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error', 'error');
 	            }
@@ -515,7 +515,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        Options.message('');
 	                        resolve(der);
 	                    } else {
-	                        console.log('ici');
 	                        Options.message(error, 'error');
 	                    }
 	                });
@@ -525,7 +524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    readAudioFile(name) {
 	        return new Promise(function(resolve, reject) {
-	            DerFile.audioFiles[name].async('base64')
+	            DerFile.filesByExt.audioFiles[name].async('base64')
 	            .then(function(base64string) {
 	                var sound = new Audio('data:audio/wav;base64,' + base64string);
 	                sound.play();
@@ -539,45 +538,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    _extractFiles: function(files, callback) {
-	        var getJson, getSvg;
-	        this.audioFiles = {}; // ZipObjects of audio files
+	        this.filesByExt = Utils.orderFilesByExt(files);
 
-	        for (var file in files) {
-	            var ext = file.split('.').pop();
+	        var getJson = new Promise(function(resolve, reject) {
+	            DerFile.filesByExt.xml[0].async('string')
+	            .then(function(data) {
+	                var node = Utils.parseXml(data);
+	                var json = Utils.XML2jsobj(node.documentElement);
+	                resolve(json);
+	            }, function(error) {
+	                reject(error);
+	            });
+	        });
 
-	            if(files[file].dir === true) {
-	                this.dir = files[file].name;
-	            }
-
-	            if (ext === 'xml') {
-	                getJson = new Promise(function(resolve, reject) {
-	                    files[file].async('string')
-	                    .then(function(data) {
-	                        var node = Utils.parseXml(data);
-	                        var json = Utils.XML2jsobj(node.documentElement);
-	                        resolve(json);
-	                    }, function(error) {
-	                        reject(error);
-	                    });
-	                });
-	            }
-
-	            if (ext === 'svg') {
-	                getSvg = new Promise(function(resolve, reject) {
-	                    files[file].async('string')
-	                    .then(function(data) {
-	                        resolve({svg: data});
-	                    }, function(error) {
-	                        reject(error);
-	                    });
-	                });
-	            }
-
-	            if (ext === 'mp3') {
-	                name = files[file].name.replace(this.dir, '');
-	                this.audioFiles[name] = files[file];
-	            }
-	        }
+	        var getSvg = new Promise(function(resolve, reject) {
+	            DerFile.filesByExt.svg[0].async('string')
+	            .then(function(data) {
+	                resolve({svg: data});
+	            }, function(error) {
+	                reject(error);
+	            });
+	        });
 
 	        Promise.all([getJson, getSvg]).then(function(values) {
 	            var der = {};
@@ -593,11 +574,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    loadDer(der, container, tts) {
-	        this.tts = tts || this.tts;
-	        this.container = container || this.container;
+	        Options.tts = tts || Options.tts;
+	        Options.container = container || Options.container;
 
 	        if (der.svg !== undefined) {
-	            this.container.innerHTML = der.svg;
+	            Options.container.innerHTML = der.svg;
 	        } else {
 	            Options.message('Aucun SVG trouvé', 'error');
 	        }
@@ -607,7 +588,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var id = poi.id.split('-').pop();
 	                var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
 	                if (poiEl !== undefined) {
-	                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, this.tts);
+	                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, Options.tts);
 	                }
 	            });
 	        } else {
@@ -19916,7 +19897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    },
 
-	    parseXml(xmlStr) {
+	    parseXml: function(xmlStr) {
 	        if (typeof window.DOMParser != 'undefined') {
 	            return ( new window.DOMParser() ).parseFromString(xmlStr, 'text/xml');
 	        } else {
@@ -19925,7 +19906,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    // Changes XML to JSON
-	    XML2jsobj(node) {
+	    XML2jsobj: function(node) {
 
 	        var	data = {};
 
@@ -19962,6 +19943,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	        return data;
+	    },
+
+	    orderFilesByExt: function(files) {
+	        var filesByExt = {
+	            xml: [],
+	            svg: [],
+	            audioFiles: {} // ZipObjects of audio files
+	        };
+
+	        for (var file in files) {
+	            var ext = file.split('.').pop();
+
+	            if(files[file].dir === true) {
+	                filesByExt.dirName = files[file].name;
+	            }
+
+	            if (ext === 'xml') {
+	                filesByExt.xml.push(files[file]);
+	            }
+
+	            if (ext === 'svg') {
+	                filesByExt.svg.push(files[file]);
+	            }
+
+	            if (ext === 'mp3') {
+	                name = filesByExt.dirName ? files[file].name.replace(filesByExt.dirName, '') : files[file].name;
+	                filesByExt.audioFiles[name] = files[file];
+	            }
+	        }
+
+	        return filesByExt;
 	    }
 	};
 
@@ -19988,20 +20000,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._addTouchEventsListeners(hammer);
 
 	        hammer.on('swipe triple_tap double_tap tap', function(e) {
-	            TouchEvents._onEventStarted(element);
-
 	            var action = TouchEvents._getGestureAction(actions, e.type);
 
-	            if (action.protocol === 'mp3') {
-	                readAudioFile(action.value).then(function() {
-	                    TouchEvents._onEventEnded(element);
-	                });
-	            }
+	            if (action !== undefined) {
+	                
+	                TouchEvents._onEventStarted(element);
 
-	            if (action.protocol === 'tts') {
-	                tts(action.value).then(function() {
-	                    TouchEvents._onEventEnded(element);
-	                });
+	                if (action.protocol === 'mp3') {
+	                    readAudioFile(action.value).then(function() {
+	                        TouchEvents._onEventEnded(element);
+	                    });
+	                }
+
+	                if (action.protocol === 'tts') {
+	                    tts(action.value).then(function() {
+	                        TouchEvents._onEventEnded(element);
+	                    });
+	                }
 	            }
 	        });
 	    },
@@ -20034,7 +20049,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return actions;
 	        } else {
 	            for (var i = 0; i < actions.length; i++) {
-	                if (type === actions[i].gesture) {
+	                if (type === actions[i].gesture && actions[i].protocol !== undefined) {
 	                    return actions[i];
 	                }
 	            }
