@@ -1,25 +1,26 @@
-var JSZip = require('jszip');
 var Utils = require('./der.utils.js');
+var DerFile = require('./der.file.js');
 
 var DerForm = {
-    init: function(reader) {
-        this.reader = reader;
-        this.container = DerForm._createForm();
+    init: function(container, message) {
+        this.container = DerForm._createForm(container);
         this.fileInput = DerForm._createInputFile();
         this.submitButton = DerForm._createInputSubmit();
 
-        this._addFormListener();
+        this._addFormListener(message);
         this._addInputListener();
     },
 
-    _addFormListener: function() {
+    _addFormListener: function(message) {
         this.container.addEventListener('submit', function(e) {
             e.preventDefault();
             var file = DerForm.fileInput.files[0];
             if (file !== undefined) {
-                DerForm._loadNewDer(file, DerForm.reader);
+                DerFile.openDerFile(file).then(function(der) {
+                    DerFile.loadDer(der);
+                });
             } else {
-                DerForm.reader.message('Aucun fichier seléctionné', 'error');
+                message('Aucun fichier seléctionné', 'error');
             }
         });
     },
@@ -44,12 +45,12 @@ var DerForm = {
         });
     },
 
-    _createForm: function() {
+    _createForm: function(container) {
         var aside = document.createElement('aside');
         aside.setAttribute('class', 'menu');
         var form = document.createElement('form');
         aside.appendChild(form);
-        this.reader.container.appendChild(aside);
+        container.appendChild(aside);
         return form;
     },
 
@@ -81,20 +82,7 @@ var DerForm = {
         });
         this.container.appendChild(el);
         return el;
-    },
-
-    _loadNewDer: function(file, reader) {
-        if (file.type.split('.').pop() !== 'application/zip') {
-            reader.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
-        }
-        var new_zip = new JSZip();
-        new_zip.loadAsync(file)
-        .then(function(zip) {
-            DerForm._extractFiles(zip.files, reader);
-        });
-    },
-
-    
+    }
 };
 
 

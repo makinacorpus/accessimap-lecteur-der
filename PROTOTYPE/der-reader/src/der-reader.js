@@ -23,26 +23,18 @@ var DerReader = {
         this.derContainer = createDerContainer(this.container);
         this.messageContainer = createMessageContainer(this.container);
 
-        DerForm.init(this);
+        DerForm.init(this.container, this.message);
 
         Utils.getFileObject(this.derFile, function (file) {
-            DerFile.openDerFile(file).then(function(der) {
-                DerReader.message('');
-                DerFile.loadDer(der, DerReader.container, DerReader.tts);
-            }, function(error) {
-                DerReader.message(error);
+            DerFile.openDerFile(file, DerReader.message).then(function(der) {
+                DerFile.loadDer(der, DerReader.derContainer, DerReader.tts);
             });
         });
         return this;
     },
 
-    changeDer: function(options) {
-        this._setOptions(options);
-        DerFile.loadDer(this);
-    },
-
     message: function(message, type) {
-        Utils.message(message, type, this.messageContainer);
+        Utils.message(message, type, DerReader.messageContainer);
     },
 
     _setOptions(options) {

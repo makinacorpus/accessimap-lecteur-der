@@ -6,6 +6,7 @@ var TouchEvents = {
 	 * add event listener to DER elements
 	 * @param {HTMLElement} element
 	 * @param {Object} actions
+	 * @param {readAudioFile} tts
 	 * @param {Function} tts
 	 */
     init: function(element, actions, readAudioFile, tts) {
@@ -33,7 +34,6 @@ var TouchEvents = {
 
     _onEventStarted: function(element) {
         this.initialColor = element.style.fill;
-        console.log(this.initialColor);
         element.style.fill = 'red';
     },
 
@@ -58,10 +58,11 @@ var TouchEvents = {
     _getGestureAction: function(actions, type) {
         if (actions.length === undefined) {
             return actions;
-        }
-        for (var i = 1; i < actions.length; i++) {
-            if (type === actions[i].gesture) {
-                return actions[i];
+        } else {
+            for (var i = 0; i < actions.length; i++) {
+                if (type === actions[i].gesture) {
+                    return actions[i];
+                }
             }
         }
         return;

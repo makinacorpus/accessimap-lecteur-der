@@ -2,6 +2,8 @@ var JSZip = require('jszip');
 var Utils = require('./der.utils.js');
 var TouchEvents = require('./der.events.js');
 
+var Options = {};
+
 var DerFile = {
     getFile: function(file) {
         if (file === undefined) {
@@ -20,19 +22,23 @@ var DerFile = {
         return file.src;
     },
 
-    openDerFile: function(file) {
+    openDerFile: function(file, message) {
+        Options.message = message || Options.message;
+
         return new Promise(function(resolve, reject) {
             if (file.type.split('.').pop() !== 'application/zip') {
-                reject('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
+                Options.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error', 'error');
             }
             var new_zip = new JSZip();
             new_zip.loadAsync(file)
             .then(function(zip) {
                 DerFile._extractFiles(zip.files, function(error, der) {
                     if (error === null) {
+                        Options.message('');
                         resolve(der);
                     } else {
-                        reject(error);
+                        console.log('ici');
+                        Options.message(error, 'error');
                     }
                 });
             });
@@ -47,11 +53,11 @@ var DerFile = {
                 sound.play();
                 sound.onended = function() {
                     resolve();
-                }
+                };
             }, function() {
                 reject();
             });
-        })
+        });
     },
 
     _extractFiles: function(files, callback) {
@@ -103,16 +109,19 @@ var DerFile = {
             }
         }, function() {
             if (callback) {
-                callback('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP', 'error');
+                callback('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
             }
         });
     },
 
     loadDer(der, container, tts) {
+        this.tts = tts || this.tts;
+        this.container = container || this.container;
+
         if (der.svg !== undefined) {
-            container.innerHTML = der.svg;
+            this.container.innerHTML = der.svg;
         } else {
-            message('Aucun SVG trouvé');
+            Options.message('Aucun SVG trouvé', 'error');
         }
 
         if (der.pois.poi !== undefined) {
@@ -120,12 +129,12 @@ var DerFile = {
                 var id = poi.id.split('-').pop();
                 var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
                 if (poiEl !== undefined) {
-                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, tts);
+                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, this.tts);
                 }
             });
         } else {
-            message('Aucun JSON trouvé');
-        };
+            Options.message('Aucun JSON trouvé', 'error');
+        }
     }
 };
 
