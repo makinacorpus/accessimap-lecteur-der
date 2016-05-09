@@ -9,9 +9,6 @@ var DerReader = require('../der-reader/der-reader.js');
 // var DerReader = require('der-reader');
 
 DerReader.init({
-    der: {
-        svg: {src: './der/carte_avec_source.svg', type: 'path'},
-        json: {src: './der/interactions.json', type: 'path'}
-    },
+    derFile: './der/Londres.zip',
     tts: webspeechapi
 });

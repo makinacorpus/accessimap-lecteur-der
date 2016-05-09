@@ -24,14 +24,21 @@ var DerReader = {
         this.messageContainer = createMessageContainer(this.container);
 
         DerForm.init(this);
-        DerFile.loadDerFile(this.der, this.derContainer, this.tts);
-        console.log(this);
+
+        Utils.getFileObject(this.derFile, function (file) {
+            DerFile.openDerFile(file).then(function(der) {
+                DerReader.message('');
+                DerFile.loadDer(der, DerReader.container, DerReader.tts);
+            }, function(error) {
+                DerReader.message(error);
+            });
+        });
         return this;
     },
 
     changeDer: function(options) {
         this._setOptions(options);
-        DerFile.loadDerFile(this.der, this.derContainer, this.tts);
+        DerFile.loadDer(this);
     },
 
     message: function(message, type) {
@@ -40,7 +47,7 @@ var DerReader = {
 
     _setOptions(options) {
         options = options || {};
-        this.der = options.der;
+        this.derFile = options.derFile;
         this.tts = options.tts;
     }
 };

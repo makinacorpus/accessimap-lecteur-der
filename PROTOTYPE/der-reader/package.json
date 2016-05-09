@@ -7,8 +7,7 @@
   "description": "",
   "dependencies": {
     "hammerjs": "^2.0.8",
-    "jszip": "^3.0.0",
-    "xml2json": "^0.9.1"
+    "jszip": "^3.0.0"
   },
   "devDependencies": {
     "css-loader": "^0.23.1",

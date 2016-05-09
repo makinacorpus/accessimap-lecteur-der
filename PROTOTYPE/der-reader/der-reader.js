@@ -80,14 +80,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.messageContainer = createMessageContainer(this.container);
 
 	        DerForm.init(this);
-	        DerFile.loadDerFile(this.der, this.derContainer, this.tts);
-	        console.log(this);
+
+	        Utils.getFileObject(this.derFile, function (file) {
+	            DerFile.openDerFile(file).then(function(der) {
+	                DerReader.message('');
+	                DerFile.loadDer(der, DerReader.container, DerReader.tts);
+	            }, function(error) {
+	                DerReader.message(error);
+	            });
+	        });
 	        return this;
 	    },
 
 	    changeDer: function(options) {
 	        this._setOptions(options);
-	        DerFile.loadDerFile(this.der, this.derContainer, this.tts);
+	        DerFile.loadDer(this);
 	    },
 
 	    message: function(message, type) {
@@ -96,7 +103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    _setOptions(options) {
 	        options = options || {};
-	        this.der = options.der;
+	        this.derFile = options.derFile;
 	        this.tts = options.tts;
 	    }
 	};
@@ -477,11 +484,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var JSZip = __webpack_require__(10);
 	var Utils = __webpack_require__(6);
 	var TouchEvents = __webpack_require__(7);
 
 	var DerFile = {
-	    getSVG: function(file) {
+	    getFile: function(file) {
 	        if (file === undefined) {
 	            return;
 	        }
@@ -498,43 +506,112 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return file.src;
 	    },
 
-	    getJSON: function(file) {
-	        if (file === undefined) {
-	            return;
-	        }
-	        else if (file.type === 'path') {
-	            return new Promise(function(resolve, reject) {
-	                Utils.load(file.src)
-	                .then(function(response) {
-	                    resolve(JSON.parse(response).pois);
-	                }, function() {
-	                    reject();
-	                });
-	            });
-	        }
-	        return file.src
-	    },
-
-	    loadDerFile: function(der, container, tts) {
-	        Promise.all([this.getSVG(der.svg), this.getJSON(der.json)]).then(function(values) {
-	            if (values[0] !== undefined) {
-	                container.innerHTML = values[0];
-	            } else {
-	                console.log('Aucun SVG trouvé');
+	    openDerFile: function(file) {
+	        return new Promise(function(resolve, reject) {
+	            if (file.type.split('.').pop() !== 'application/zip') {
+	                reject('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
 	            }
-
-	            if (values[1] !== undefined) {
-	                der.pois = values[1];
-	                der.pois.map(function(poi) {
-	                    var poiEl = document.getElementById(poi.id);
-	                    if (poiEl !== null) {
-	                        TouchEvents.init(poiEl, poi.actions, tts);
+	            var new_zip = new JSZip();
+	            new_zip.loadAsync(file)
+	            .then(function(zip) {
+	                DerFile._extractFiles(zip.files, function(error, der) {
+	                    if (error === null) {
+	                        resolve(der);
+	                    } else {
+	                        reject(error);
 	                    }
 	                });
-	            } else {
-	                console.log('Aucun JSON trouvé');
+	            });
+	        });
+	    },
+
+	    readAudioFile(name) {
+	        return new Promise(function(resolve, reject) {
+	            DerFile.audioFiles[name].async('base64')
+	            .then(function(base64string) {
+	                var sound = new Audio('data:audio/wav;base64,' + base64string);
+	                sound.play();
+	                sound.onended = function() {
+	                    resolve();
+	                }
+	            }, function() {
+	                reject();
+	            });
+	        })
+	    },
+
+	    _extractFiles: function(files, callback) {
+	        var getJson, getSvg;
+	        this.audioFiles = {}; // ZipObjects of audio files
+
+	        for (var file in files) {
+	            var ext = file.split('.').pop();
+
+	            if(files[file].dir === true) {
+	                this.dir = files[file].name;
+	            }
+
+	            if (ext === 'xml') {
+	                getJson = new Promise(function(resolve, reject) {
+	                    files[file].async('string')
+	                    .then(function(data) {
+	                        var node = Utils.parseXml(data);
+	                        var json = Utils.XML2jsobj(node.documentElement);
+	                        resolve(json);
+	                    }, function(error) {
+	                        reject(error);
+	                    });
+	                });
+	            }
+
+	            if (ext === 'svg') {
+	                getSvg = new Promise(function(resolve, reject) {
+	                    files[file].async('string')
+	                    .then(function(data) {
+	                        resolve({svg: data});
+	                    }, function(error) {
+	                        reject(error);
+	                    });
+	                });
+	            }
+
+	            if (ext === 'mp3') {
+	                name = files[file].name.replace(this.dir, '');
+	                this.audioFiles[name] = files[file];
+	            }
+	        }
+
+	        Promise.all([getJson, getSvg]).then(function(values) {
+	            var der = {};
+	            Object.assign(der, values[0], values[1]);
+	            if (callback) {
+	                callback(null, der);
+	            }
+	        }, function() {
+	            if (callback) {
+	                callback('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP', 'error');
 	            }
 	        });
+	    },
+
+	    loadDer(der, container, tts) {
+	        if (der.svg !== undefined) {
+	            container.innerHTML = der.svg;
+	        } else {
+	            message('Aucun SVG trouvé');
+	        }
+
+	        if (der.pois.poi !== undefined) {
+	            der.pois.poi.map(function(poi) {
+	                var id = poi.id.split('-').pop();
+	                var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
+	                if (poiEl !== undefined) {
+	                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, tts);
+	                }
+	            });
+	        } else {
+	            message('Aucun JSON trouvé');
+	        };
 	    }
 	};
 
@@ -560,7 +637,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 	        });
 	    },
-	    
+
 	    setAttributes: function(el, attrs) {
 	        for(var key in attrs) {
 	            el.setAttribute(key, attrs[key]);
@@ -573,6 +650,75 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else {
 	            container.innerHTML = message;
 	        }
+	    },
+
+	    getFileObject: function(filePathOrUrl, cb) {
+	        var getFileBlob = function (url, cb) {
+	            var xhr = new XMLHttpRequest();
+	            xhr.open('GET', url);
+	            xhr.responseType = 'blob';
+	            xhr.addEventListener('load', function() {
+	                cb(xhr.response);
+	            });
+	            xhr.send();
+	        };
+
+	        var blobToFile = function (blob, name) {
+	            blob.lastModifiedDate = new Date();
+	            blob.name = name;
+	            return blob;
+	        };
+	        getFileBlob(filePathOrUrl, function (blob) {
+	            cb(blobToFile(blob, 'test.jpg'));
+	        });
+	    },
+
+	    parseXml(xmlStr) {
+	        if (typeof window.DOMParser != 'undefined') {
+	            return ( new window.DOMParser() ).parseFromString(xmlStr, 'text/xml');
+	        } else {
+	            throw new Error('No XML parser found');
+	        }
+	    },
+
+	    // Changes XML to JSON
+	    XML2jsobj(node) {
+
+	        var	data = {};
+
+	        // append a value
+	        function Add(name, value) {
+	            if (data[name]) {
+	                if (data[name].constructor != Array) {
+	                    data[name] = [data[name]];
+	                }
+	                data[name][data[name].length] = value;
+	            }
+	            else {
+	                data[name] = value;
+	            }
+	        }
+
+	        // element attributes
+	        var c, cn;
+	        for (c = 0; cn = node.attributes[c]; c++) {
+	            Add(cn.name, cn.value);
+	        }
+
+	        // child elements
+	        for (c = 0; cn = node.childNodes[c]; c++) {
+	            if (cn.nodeType == 1) {
+	                if (cn.childNodes.length == 1 && cn.firstChild.nodeType == 3) {
+	                    // text value
+	                    Add(cn.nodeName, cn.firstChild.nodeValue);
+	                }
+	                else {
+	                    // sub-object
+	                    Add(cn.nodeName, Utils.XML2jsobj(cn));
+	                }
+	            }
+	        }
+	        return data;
 	    }
 	};
 
@@ -593,17 +739,37 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * @param {Object} actions
 		 * @param {Function} tts
 		 */
-	    init: function(element, actions, tts) {
+	    init: function(element, actions, readAudioFile, tts) {
 	        var hammer = new Hammer.Manager(element, {});
 	        this._addTouchEventsListeners(hammer);
 
 	        hammer.on('swipe triple_tap double_tap tap', function(e) {
-	            element.style.fill = 'red';
-	            var textToSpeech = TouchEvents._getGestureValue(actions, e.type);
-	            tts(textToSpeech).then(function() {
-	                element.style.fill = 'white';
-	            });
+	            TouchEvents._onEventStarted(element);
+
+	            var action = TouchEvents._getGestureAction(actions, e.type);
+
+	            if (action.protocol === 'mp3') {
+	                readAudioFile(action.value).then(function() {
+	                    TouchEvents._onEventEnded(element);
+	                });
+	            }
+
+	            if (action.protocol === 'tts') {
+	                tts(action.value).then(function() {
+	                    TouchEvents._onEventEnded(element);
+	                });
+	            }
 	        });
+	    },
+
+	    _onEventStarted: function(element) {
+	        this.initialColor = element.style.fill;
+	        console.log(this.initialColor);
+	        element.style.fill = 'red';
+	    },
+
+	    _onEventEnded: function(element) {
+	        element.style.fill = this.initialColor;
 	    },
 
 	    _addTouchEventsListeners: function(hammer) {
@@ -620,10 +786,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 
-	    _getGestureValue: function(actions, type) {
+	    _getGestureAction: function(actions, type) {
+	        if (actions.length === undefined) {
+	            return actions;
+	        }
 	        for (var i = 1; i < actions.length; i++) {
 	            if (type === actions[i].gesture) {
-	                return actions[i].value;
+	                return actions[i];
 	            }
 	        }
 	        return;
@@ -3301,7 +3470,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    _addFormListener: function() {
-	        console.log(this);
 	        this.container.addEventListener('submit', function(e) {
 	            e.preventDefault();
 	            var file = DerForm.fileInput.files[0];
@@ -3383,42 +3551,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    },
 
-	    _readFile: function(file) {
-	        return new Promise(function(resolve) {
-	            file.async('string')
-	            .then(function(data) {
-	                resolve(data);
-	            });
-	        });
-	    },
-
-	    _extractFiles: function(files, reader) {
-	        var newDer = {};
-
-	        var svg, xml;
-
-	        for (var file in files) {
-	            var ext = file.split('.').pop();
-	            if (ext === 'svg') {
-	                svg = files[file];
-	            }
-	            if (ext === 'xml') {
-	                xml = files[file];
-	            }
-	        }
-
-	        Promise.all([this._readFile(svg), this._readFile(xml)]).then(function(values) {
-	            Object.assign(newDer, {svg: {src: values[0]}});
-
-	            // TODO read xml file
-	            reader.message('');
-	            reader.changeDer({
-	                der: newDer
-	            });
-	        }, function() {
-	            reader.message('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP', 'error');
-	        });
-	    }
+	    
 	};
 
 

@@ -8,17 +8,37 @@ var TouchEvents = {
 	 * @param {Object} actions
 	 * @param {Function} tts
 	 */
-    init: function(element, actions, tts) {
+    init: function(element, actions, readAudioFile, tts) {
         var hammer = new Hammer.Manager(element, {});
         this._addTouchEventsListeners(hammer);
 
         hammer.on('swipe triple_tap double_tap tap', function(e) {
-            element.style.fill = 'red';
-            var textToSpeech = TouchEvents._getGestureValue(actions, e.type);
-            tts(textToSpeech).then(function() {
-                element.style.fill = 'white';
-            });
+            TouchEvents._onEventStarted(element);
+
+            var action = TouchEvents._getGestureAction(actions, e.type);
+
+            if (action.protocol === 'mp3') {
+                readAudioFile(action.value).then(function() {
+                    TouchEvents._onEventEnded(element);
+                });
+            }
+
+            if (action.protocol === 'tts') {
+                tts(action.value).then(function() {
+                    TouchEvents._onEventEnded(element);
+                });
+            }
         });
+    },
+
+    _onEventStarted: function(element) {
+        this.initialColor = element.style.fill;
+        console.log(this.initialColor);
+        element.style.fill = 'red';
+    },
+
+    _onEventEnded: function(element) {
+        element.style.fill = this.initialColor;
     },
 
     _addTouchEventsListeners: function(hammer) {
@@ -35,10 +55,13 @@ var TouchEvents = {
     },
 
 
-    _getGestureValue: function(actions, type) {
+    _getGestureAction: function(actions, type) {
+        if (actions.length === undefined) {
+            return actions;
+        }
         for (var i = 1; i < actions.length; i++) {
             if (type === actions[i].gesture) {
-                return actions[i].value;
+                return actions[i];
             }
         }
         return;
