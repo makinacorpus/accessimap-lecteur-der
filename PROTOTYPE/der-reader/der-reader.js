@@ -54,8 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(1);
-
+	var DerLayout = __webpack_require__(101);
 	var DerFile = __webpack_require__(5);
 	var DerForm = __webpack_require__(99);
 	var Utils = __webpack_require__(96);
@@ -75,11 +74,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		 */
 	    init: function(options) {
 	        this._setOptions(options);
-	        this.container = options.container || createContainer('container');
-	        this.derContainer = createDerContainer(this.container);
-	        this.messageContainer = createMessageContainer(this.container);
+	        this.container = options.container || DerLayout.createContainer('container');
+	        this.derContainer = DerLayout.createDerContainer(this.container);
+	        this.messageContainer = DerLayout.createMessageContainer(this.container);
+	        this.formContainer = DerLayout.createForm(this.container);
 
-	        DerForm.init(this.container, this.message);
+	        DerForm.init(this.formContainer, this.message);
 
 	        Utils.getFileObject(this.derFile, function (file) {
 	            DerFile.openDerFile(file, DerReader.message).then(function(der) {
@@ -99,27 +99,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.tts = options.tts;
 	    }
 	};
-
-	function createContainer(className) {
-	    var container = document.createElement('div');
-	    container.setAttribute('class', className);
-	    document.body.appendChild(container);
-	    return container;
-	}
-
-	function createDerContainer(container) {
-	    var derContainer = document.createElement('div');
-	    derContainer.setAttribute('class', 'der-container');
-	    container.appendChild(derContainer);
-	    return derContainer;
-	}
-
-	function createMessageContainer(container) {
-	    var messageContainer = document.createElement('div');
-	    messageContainer.setAttribute('id', 'message');
-	    container.parentNode.insertBefore(messageContainer, container);
-	    return messageContainer;
-	}
 
 	module.exports = DerReader;
 
@@ -479,6 +458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var JSZip = __webpack_require__(6);
 	var Utils = __webpack_require__(96);
 	var TouchEvents = __webpack_require__(97);
+	var FilesList = __webpack_require__(100);
 
 	var Options = {};
 
@@ -541,7 +521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.filesByExt = Utils.orderFilesByExt(files);
 
 	        if (DerFile.filesByExt.svg.length > 1) {
-	            console.log(DerFile.filesByExt.svg);
+	            FilesList.init(DerFile.filesByExt.svg);
 	        }
 
 	        var getJson = new Promise(function(resolve, reject) {
@@ -22723,7 +22703,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerForm = {
 	    init: function(container, message) {
-	        this.container = DerForm._createForm(container);
+	        this.container = container;
 	        this.fileInput = DerForm._createInputFile();
 	        this.submitButton = DerForm._createInputSubmit();
 
@@ -22767,15 +22747,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    },
 
-	    _createForm: function(container) {
-	        var aside = document.createElement('aside');
-	        aside.setAttribute('class', 'menu');
-	        var form = document.createElement('form');
-	        aside.appendChild(form);
-	        container.appendChild(aside);
-	        return form;
-	    },
-
 	    _createInputFile: function() {
 	        var input = document.createElement('input');
 	        Utils.setAttributes(input, {
@@ -22811,6 +22782,63 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	module.exports = DerForm;
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports) {
+
+	var Options = {};
+
+	var DerFilesList = {
+	    init: function(files) {
+	        console.log(files);
+	    }
+	};
+
+	module.exports = DerFilesList;
+
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+
+	var DerLayout = {
+	    createContainer: function(className) {
+	        var container = document.createElement('div');
+	        container.setAttribute('class', className);
+	        document.body.appendChild(container);
+	        return container;
+	    },
+
+	    createDerContainer: function(container) {
+	        var derContainer = document.createElement('div');
+	        derContainer.setAttribute('class', 'der-container');
+	        container.appendChild(derContainer);
+	        return derContainer;
+	    },
+
+	    createMessageContainer: function(container) {
+	        var messageContainer = document.createElement('div');
+	        messageContainer.setAttribute('id', 'message');
+	        container.parentNode.insertBefore(messageContainer, container);
+	        return messageContainer;
+	    },
+
+	    createForm: function(container) {
+	        var aside = document.createElement('aside');
+	        aside.setAttribute('class', 'menu');
+	        var form = document.createElement('form');
+	        aside.appendChild(form);
+	        container.appendChild(aside);
+	        return form;
+	    }
+	};
+
+
+	module.exports = DerLayout;
 
 
 /***/ }

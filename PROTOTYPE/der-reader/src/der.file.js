@@ -1,6 +1,7 @@
 var JSZip = require('jszip');
 var Utils = require('./der.utils.js');
 var TouchEvents = require('./der.events.js');
+var FilesList = require('./der.filesList.js');
 
 var Options = {};
 
@@ -63,7 +64,7 @@ var DerFile = {
         this.filesByExt = Utils.orderFilesByExt(files);
 
         if (DerFile.filesByExt.svg.length > 1) {
-            console.log(DerFile.filesByExt.svg);
+            FilesList.init(DerFile.filesByExt.svg);
         }
 
         var getJson = new Promise(function(resolve, reject) {

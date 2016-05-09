@@ -3,7 +3,7 @@ var DerFile = require('./der.file.js');
 
 var DerForm = {
     init: function(container, message) {
-        this.container = DerForm._createForm(container);
+        this.container = container;
         this.fileInput = DerForm._createInputFile();
         this.submitButton = DerForm._createInputSubmit();
 
@@ -45,15 +45,6 @@ var DerForm = {
                 label.className = '';
             }
         });
-    },
-
-    _createForm: function(container) {
-        var aside = document.createElement('aside');
-        aside.setAttribute('class', 'menu');
-        var form = document.createElement('form');
-        aside.appendChild(form);
-        container.appendChild(aside);
-        return form;
     },
 
     _createInputFile: function() {

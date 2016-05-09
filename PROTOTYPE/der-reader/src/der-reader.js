@@ -1,5 +1,4 @@
-require('!style!css!sass!./scss/styles.scss');
-
+var DerLayout = require('./der.layout.js');
 var DerFile = require('./der.file.js');
 var DerForm = require('./der.form.js');
 var Utils = require('./der.utils.js');
@@ -19,11 +18,12 @@ var DerReader = {
 	 */
     init: function(options) {
         this._setOptions(options);
-        this.container = options.container || createContainer('container');
-        this.derContainer = createDerContainer(this.container);
-        this.messageContainer = createMessageContainer(this.container);
+        this.container = options.container || DerLayout.createContainer('container');
+        this.derContainer = DerLayout.createDerContainer(this.container);
+        this.messageContainer = DerLayout.createMessageContainer(this.container);
+        this.formContainer = DerLayout.createForm(this.container);
 
-        DerForm.init(this.container, this.message);
+        DerForm.init(this.formContainer, this.message);
 
         Utils.getFileObject(this.derFile, function (file) {
             DerFile.openDerFile(file, DerReader.message).then(function(der) {
@@ -43,26 +43,5 @@ var DerReader = {
         this.tts = options.tts;
     }
 };
-
-function createContainer(className) {
-    var container = document.createElement('div');
-    container.setAttribute('class', className);
-    document.body.appendChild(container);
-    return container;
-}
-
-function createDerContainer(container) {
-    var derContainer = document.createElement('div');
-    derContainer.setAttribute('class', 'der-container');
-    container.appendChild(derContainer);
-    return derContainer;
-}
-
-function createMessageContainer(container) {
-    var messageContainer = document.createElement('div');
-    messageContainer.setAttribute('id', 'message');
-    container.parentNode.insertBefore(messageContainer, container);
-    return messageContainer;
-}
 
 module.exports = DerReader;
