@@ -2,8 +2,8 @@ var Utils = require('./der.utils.js');
 var DerFile = require('./der.file.js');
 
 var DerForm = {
-    init: function(container, message) {
-        this.container = container;
+    init: function(formElement, message) {
+        this.formElement = formElement;
         this.fileInput = DerForm._createInputFile();
         this.submitButton = DerForm._createInputSubmit();
 
@@ -12,7 +12,7 @@ var DerForm = {
     },
 
     _addFormListener: function(message) {
-        this.container.addEventListener('submit', function(e) {
+        this.formElement.addEventListener('submit', function(e) {
             e.preventDefault();
             var file = DerForm.fileInput.files[0];
             if (file !== undefined) {
@@ -62,8 +62,8 @@ var DerForm = {
         span.innerHTML = 'Choisir un fichier';
         label.appendChild(span);
         // label.appendChild(strong);
-        this.container.appendChild(input);
-        this.container.appendChild(label);
+        this.formElement.appendChild(input);
+        this.formElement.appendChild(label);
         return input;
     },
 
@@ -74,7 +74,7 @@ var DerForm = {
             'class': 'inputsubmit',
             'value': 'Envoyer'
         });
-        this.container.appendChild(el);
+        this.formElement.appendChild(el);
         return el;
     }
 };

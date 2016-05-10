@@ -1,34 +1,50 @@
 require('!style!css!sass!./scss/styles.scss');
 
 var DerLayout = {
+    getLayout: function(container) {
+        return {
+            container: container || this.createContainer('container'),
+            derContainer: this.createDerContainer(),
+            messageContainer: this.createMessageContainer(),
+            formContainer: this.createForm(),
+            listContainer: this.createFilesList()
+        };
+    },
+
     createContainer: function(className) {
-        var container = document.createElement('div');
-        container.setAttribute('class', className);
-        document.body.appendChild(container);
-        return container;
+        this.container = document.createElement('div');
+        this.container.setAttribute('class', className);
+        document.body.appendChild(this.container);
+        return this.container;
     },
 
-    createDerContainer: function(container) {
-        var derContainer = document.createElement('div');
-        derContainer.setAttribute('class', 'der-container');
-        container.appendChild(derContainer);
-        return derContainer;
+    createDerContainer: function() {
+        this.derContainer = document.createElement('div');
+        this.derContainer.setAttribute('class', 'der-container');
+        this.container.appendChild(this.derContainer);
+        return this.derContainer;
     },
 
-    createMessageContainer: function(container) {
-        var messageContainer = document.createElement('div');
-        messageContainer.setAttribute('id', 'message');
-        container.parentNode.insertBefore(messageContainer, container);
-        return messageContainer;
+    createMessageContainer: function() {
+        this.messageContainer = document.createElement('div');
+        this.messageContainer.setAttribute('id', 'message');
+        this.container.parentNode.insertBefore(this.messageContainer, this.container);
+        return this.messageContainer;
     },
 
-    createForm: function(container) {
-        var aside = document.createElement('aside');
-        aside.setAttribute('class', 'menu');
+    createForm: function() {
+        this.aside = document.createElement('aside');
+        this.aside.setAttribute('class', 'menu');
         var form = document.createElement('form');
-        aside.appendChild(form);
-        container.appendChild(aside);
+        this.aside.appendChild(form);
+        this.container.appendChild(this.aside);
         return form;
+    },
+
+    createFilesList: function() {
+        var list = document.createElement('ul');
+        this.aside.appendChild(list);
+        return list;
     }
 };
 
