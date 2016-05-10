@@ -16,6 +16,7 @@ var DerFile = {
     openDerFile: function(file, message, listContainer) {
         Options.message = message || Options.message;
         Options.listContainer = listContainer || Options.listContainer;
+        Options.selectedSVG = 0;
 
         return new Promise(function(resolve) {
             if (file.type.split('.').pop() !== 'application/zip') {
@@ -67,11 +68,19 @@ var DerFile = {
         this.filesByExt = Utils.orderFilesByExt(files);
 
         if (DerFile.filesByExt.svg.length > 1) {
-            FilesList.init(DerFile.filesByExt.svg, listContainer);
+            FilesList.init({
+                files: DerFile.filesByExt.svg,
+                container: listContainer,
+                actions: DerFile.changeSvg,
+                selectedDocument: Options.selectedSVG
+            });
         }
+        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[Options.selectedSVG], callback);
+    },
 
+    readFiles: function(xml, svg, callback) {
         var getJson = new Promise(function(resolve, reject) {
-            DerFile.filesByExt.xml[0].async('string')
+            xml.async('string')
             .then(function(data) {
                 var node = Utils.parseXml(data);
                 var json = Utils.XML2jsobj(node.documentElement);
@@ -82,7 +91,7 @@ var DerFile = {
         });
 
         var getSvg = new Promise(function(resolve, reject) {
-            DerFile.filesByExt.svg[0].async('string')
+            svg.async('string')
             .then(function(data) {
                 resolve({svg: data});
             }, function(error) {
@@ -100,6 +109,14 @@ var DerFile = {
             if (callback) {
                 callback('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
             }
+        });
+    },
+
+    changeSvg: function(index) {
+        Options.selectedSVG = index;
+        FilesList.changeFile(index);
+        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[index], function(error, der) {
+            DerFile.loadDer(der);
         });
     },
 

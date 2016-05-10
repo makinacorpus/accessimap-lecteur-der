@@ -512,6 +512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    openDerFile: function(file, message, listContainer) {
 	        Options.message = message || Options.message;
 	        Options.listContainer = listContainer || Options.listContainer;
+	        Options.selectedSVG = 0;
 
 	        return new Promise(function(resolve) {
 	            if (file.type.split('.').pop() !== 'application/zip') {
@@ -563,11 +564,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.filesByExt = Utils.orderFilesByExt(files);
 
 	        if (DerFile.filesByExt.svg.length > 1) {
-	            FilesList.init(DerFile.filesByExt.svg, listContainer);
+	            FilesList.init({
+	                files: DerFile.filesByExt.svg,
+	                container: listContainer,
+	                actions: DerFile.changeSvg,
+	                selectedDocument: Options.selectedSVG
+	            });
 	        }
+	        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[Options.selectedSVG], callback);
+	    },
 
+	    readFiles: function(xml, svg, callback) {
 	        var getJson = new Promise(function(resolve, reject) {
-	            DerFile.filesByExt.xml[0].async('string')
+	            xml.async('string')
 	            .then(function(data) {
 	                var node = Utils.parseXml(data);
 	                var json = Utils.XML2jsobj(node.documentElement);
@@ -578,7 +587,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 
 	        var getSvg = new Promise(function(resolve, reject) {
-	            DerFile.filesByExt.svg[0].async('string')
+	            svg.async('string')
 	            .then(function(data) {
 	                resolve({svg: data});
 	            }, function(error) {
@@ -596,6 +605,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (callback) {
 	                callback('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
 	            }
+	        });
+	    },
+
+	    changeSvg: function(index) {
+	        Options.selectedSVG = index;
+	        FilesList.changeFile(index);
+	        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[index], function(error, der) {
+	            DerFile.loadDer(der);
 	        });
 	    },
 
@@ -22748,14 +22765,46 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	var DerFilesList = {
-	    init: function(files, container) {
-	        this.listContainer = this._createList(container);
-	        this.selectedElement = 0;
 
-	        for (var file in files) {
-	            var isSelected = (parseInt(file) === this.selectedElement);
-	            this._createListElement(files[file], isSelected);
+	    /**
+		 * Show list of SVG files
+		 * @param {Object} options
+	     * {
+	     *     files: {Object}
+	     *     container: {HTMLElement} required
+	     *     actions: {Function} required
+	     *     selectedDocument: {Number} required
+	     * }
+		 */
+	    init: function(options) {
+	        this.listContainer = this.listContainer || this._createList(options.container);
+	        this.selectedDocument = options.selectedDocument;
+
+	        for (var i = 0; i < options.files.length; i++) {
+	            if (i === 0) {
+	                this._resetFilesList();
+	            }
+
+	            var element = this._createListElement(options.files[i], i);
+	            this._setEventsListener(element, i, options.actions);
 	        }
+	    },
+
+	    changeFile: function(index) {
+	        this.selectedDocument = index;
+	        var links = document.querySelectorAll('.files-list a');
+
+	        for (var i = 0; i < links.length; i++) {
+	            if (i === this.selectedDocument) {
+	                links[i].className = 'selected';
+	            } else {
+	                links[i].className = '';
+	            }
+	        }
+	    },
+
+	    _resetFilesList: function() {
+	        this.listContainer.innerHTML = '';
 	    },
 
 	    _createList: function(container) {
@@ -22767,7 +22816,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return ul;
 	    },
 
-	    _createListElement: function(element, isSelected) {
+	    _createListElement: function(element, index) {
+	        var isSelected = (index === this.selectedDocument);
 	        var li = document.createElement('li');
 	        var a = document.createElement('a');
 	        if (isSelected) {
@@ -22776,6 +22826,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        a.innerHTML = element.name.replace('.svg', '');
 	        li.appendChild(a);
 	        this.listContainer.appendChild(li);
+	        return a;
+	    },
+
+	    _setEventsListener: function(element, index, changeSvg) {
+	        element.addEventListener('click', function(e) {
+	            changeSvg(index);
+	        });
 	    }
 	};
 
