@@ -60,7 +60,17 @@ var TouchEvents = {
                     sounds = false;
                 });
             }
-            return;
+        });
+
+        hammer.on('panup pandown', function(e) {
+            if (!sounds) {
+                sounds = true;
+                var distance = getDistanceNumber(e.center.y, verticalRange.min, verticalRange.max);
+
+                DerSounds.play(distance, 'y', zone.height, function() {
+                    sounds = false;
+                });
+            }
         });
     },
 

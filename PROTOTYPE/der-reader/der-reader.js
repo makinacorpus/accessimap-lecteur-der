@@ -56,8 +56,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerLayout = __webpack_require__(1);
 	var DerFile = __webpack_require__(6);
-	var DerForm = __webpack_require__(101);
-	var DerMode = __webpack_require__(102);
+	var DerForm = __webpack_require__(102);
+	var DerMode = __webpack_require__(103);
 	var Utils = __webpack_require__(97);
 
 	var DerReader = {
@@ -512,7 +512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var JSZip = __webpack_require__(7);
 	var Utils = __webpack_require__(97);
 	var TouchEvents = __webpack_require__(98);
-	var FilesList = __webpack_require__(100);
+	var FilesList = __webpack_require__(101);
 
 
 	var DerFile = {
@@ -20064,7 +20064,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Hammer = __webpack_require__(99);
-	var DerSounds = __webpack_require__(103);
+	var DerSounds = __webpack_require__(100);
 
 	var TouchEvents = {
 
@@ -20125,7 +20125,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    sounds = false;
 	                });
 	            }
-	            return;
+	        });
+
+	        hammer.on('panup pandown', function(e) {
+	            if (!sounds) {
+	                sounds = true;
+	                var distance = getDistanceNumber(e.center.y, verticalRange.min, verticalRange.max);
+
+	                DerSounds.play(distance, 'y', zone.height, function() {
+	                    sounds = false;
+	                });
+	            }
 	        });
 	    },
 
@@ -22822,222 +22832,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 100 */
 /***/ function(module, exports) {
 
-	var DerFilesList = {
-
-	    /**
-		 * Show list of SVG files
-		 * @param {Object} options
-	     * {
-	     *     files: {Object}
-	     *     container: {HTMLElement} required
-	     *     actions: {Function} required
-	     *     selectedDocument: {Number} required
-	     * }
-		 */
-	    init: function(options) {
-	        this.listContainer = this.listContainer || this._createList(options.container);
-	        this.selectedDocument = options.selectedDocument;
-
-	        for (var i = 0; i < options.files.length; i++) {
-	            if (i === 0) {
-	                this._resetFilesList();
-	            }
-
-	            var element = this._createListElement(options.files[i], i);
-	            this._setEventsListener(element, i, options.actions);
-	        }
-	    },
-
-	    changeFile: function(index) {
-	        this.selectedDocument = index;
-	        var links = document.querySelectorAll('.files-list a');
-
-	        for (var i = 0; i < links.length; i++) {
-	            if (i === this.selectedDocument) {
-	                links[i].className = 'selected';
-	            } else {
-	                links[i].className = '';
-	            }
-	        }
-	    },
-
-	    _resetFilesList: function() {
-	        this.listContainer.innerHTML = '';
-	    },
-
-	    _createList: function(container) {
-	        var title = document.createElement('h2');
-	        var ul = document.createElement('ul');
-	        title.innerHTML = 'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?';
-	        container.appendChild(title);
-	        container.appendChild(ul);
-	        return ul;
-	    },
-
-	    _createListElement: function(element, index) {
-	        var isSelected = (index === this.selectedDocument);
-	        var li = document.createElement('li');
-	        var a = document.createElement('a');
-	        if (isSelected) {
-	            a.className = 'selected';
-	        }
-	        a.innerHTML = element.name.replace('.svg', '');
-	        li.appendChild(a);
-	        this.listContainer.appendChild(li);
-	        return a;
-	    },
-
-	    _setEventsListener: function(element, index, changeSvg) {
-	        element.addEventListener('click', function(e) {
-	            changeSvg(index);
-	        });
-	    }
-	};
-
-	module.exports = DerFilesList;
-
-
-/***/ },
-/* 101 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Utils = __webpack_require__(97);
-	var DerFile = __webpack_require__(6);
-
-	var DerForm = {
-	    init: function(formElement, message) {
-	        this.formElement = formElement;
-	        this.fileInput = DerForm._createInputFile();
-	        this.submitButton = DerForm._createInputSubmit();
-
-	        this._addFormListener(message);
-	        this._addInputListener();
-	    },
-
-	    _addFormListener: function(message) {
-	        this.formElement.addEventListener('submit', function(e) {
-	            e.preventDefault();
-	            var file = DerForm.fileInput.files[0];
-	            if (file !== undefined) {
-	                DerFile.openDerFile(file);
-	            } else {
-	                message('Aucun fichier seléctionné', 'error');
-	            }
-	        });
-	    },
-
-	    _addInputListener: function() {
-	        var label	 = this.fileInput.nextElementSibling,
-	            labelVal = label.innerHTML;
-
-	        this.fileInput.addEventListener( 'change', function( e ) {
-	            var fileName = '';
-	            if( this.files && this.files.length > 1 ) {
-	                fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-	            } else {
-	                fileName = e.target.value.split( '\\' ).pop();
-	            }
-
-	            if (fileName) {
-	                label.querySelector('span').innerHTML = fileName;
-	                label.className = 'fill';
-	            } else {
-	                label.innerHTML = labelVal;
-	                label.className = '';
-	            }
-	        });
-	    },
-
-	    _createInputFile: function() {
-	        var input = document.createElement('input');
-	        Utils.setAttributes(input, {
-	            'type': 'file',
-	            'id': 'file',
-	            'class': 'inputfile'
-	        });
-	        var label = document.createElement('label');
-	        label.setAttribute('for', 'file');
-	        var span = document.createElement('span');
-	        // var strong = document.createElement('strong');
-	        // strong.innerHTML = 'Choisir un fichier';
-	        span.innerHTML = 'Choisir un fichier';
-	        label.appendChild(span);
-	        // label.appendChild(strong);
-	        this.formElement.appendChild(input);
-	        this.formElement.appendChild(label);
-	        return input;
-	    },
-
-	    _createInputSubmit: function() {
-	        var el = document.createElement('input');
-	        Utils.setAttributes(el, {
-	            'type': 'submit',
-	            'class': 'inputsubmit',
-	            'value': 'Envoyer'
-	        });
-	        this.formElement.appendChild(el);
-	        return el;
-	    }
-	};
-
-
-
-	module.exports = DerForm;
-
-
-/***/ },
-/* 102 */
-/***/ function(module, exports) {
-
-	var DerMode = {
-	    init: function(container, mode, actions) {
-	        this._setDomElements(container, mode);
-	        var defaultMode = document.getElementById(mode);
-	        defaultMode.checked = true;
-	    },
-
-	    _setDomElements: function(container) {
-	        var mode_explore = document.createElement('input');
-	        mode_explore.setAttribute('type', 'radio');
-	        mode_explore.setAttribute('name', 'mode');
-	        mode_explore.setAttribute('id', 'explore');
-
-	        var mode_explore_label = document.createElement('label');
-	        mode_explore_label.setAttribute('for', 'explore');
-	        mode_explore_label.innerHTML = 'Exploration';
-
-	        var mode_search = document.createElement('input');
-	        mode_search.setAttribute('type', 'radio');
-	        mode_search.setAttribute('name', 'mode');
-	        mode_search.setAttribute('id', 'search');
-
-	        var mode_search_label= document.createElement('label');
-	        mode_search_label.setAttribute('for', 'search');
-	        mode_search_label.innerHTML = 'Recherche';
-
-	        container.appendChild(mode_explore);
-	        container.appendChild(mode_explore_label);
-	        container.appendChild(mode_search);
-	        container.appendChild(mode_search_label);
-	    }
-	};
-
-
-
-	module.exports = DerMode;
-
-
-/***/ },
-/* 103 */
-/***/ function(module, exports) {
-
 	window.AudioContext = window.AudioContext || window.webkitAudioContext;
 	var ctx = new AudioContext(), currentOsc;
 
 	var DerSounds = {
 	    play: function(distance, direction, size, callback) {
 	        var o = ctx.createOscillator();
-	        o.type = direction === 'x' ? 'sine' : 'square';
+	        o.type = direction === 'x' ? 'sine' : 'triangle';
 	        o.frequency.value = this._getNote(distance, size);
 	        o.start(0);
 	        o.connect(ctx.destination);
@@ -23048,7 +22849,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (callback) {
 	                callback();
 	            }
-	        }, 200);
+	        }, 100);
 	        return;
 	    },
 
@@ -23057,11 +22858,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    _getNote: function(distance, size) {
-	        var note = Math.round(distance / (size/2) * notes.length);
-	        note = notes.slice(-Math.abs(note)-1, -Math.abs(note));
+	        var index = Math.round(distance / (size/2) * notes.length);
+	        var note = notes.slice(-Math.abs(index)-1, -Math.abs(index));
 	        return note;
 	    }
-
 	};
 
 	module.exports = DerSounds;
@@ -23205,6 +23005,215 @@ return /******/ (function(modules) { // webpackBootstrap
 	    3951.07,
 	    4186.01
 	];
+
+
+/***/ },
+/* 101 */
+/***/ function(module, exports) {
+
+	var DerFilesList = {
+
+	    /**
+		 * Show list of SVG files
+		 * @param {Object} options
+	     * {
+	     *     files: {Object}
+	     *     container: {HTMLElement} required
+	     *     actions: {Function} required
+	     *     selectedDocument: {Number} required
+	     * }
+		 */
+	    init: function(options) {
+	        this.listContainer = this.listContainer || this._createList(options.container);
+	        this.selectedDocument = options.selectedDocument;
+
+	        for (var i = 0; i < options.files.length; i++) {
+	            if (i === 0) {
+	                this._resetFilesList();
+	            }
+
+	            var element = this._createListElement(options.files[i], i);
+	            this._setEventsListener(element, i, options.actions);
+	        }
+	    },
+
+	    changeFile: function(index) {
+	        this.selectedDocument = index;
+	        var links = document.querySelectorAll('.files-list a');
+
+	        for (var i = 0; i < links.length; i++) {
+	            if (i === this.selectedDocument) {
+	                links[i].className = 'selected';
+	            } else {
+	                links[i].className = '';
+	            }
+	        }
+	    },
+
+	    _resetFilesList: function() {
+	        this.listContainer.innerHTML = '';
+	    },
+
+	    _createList: function(container) {
+	        var title = document.createElement('h2');
+	        var ul = document.createElement('ul');
+	        title.innerHTML = 'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?';
+	        container.appendChild(title);
+	        container.appendChild(ul);
+	        return ul;
+	    },
+
+	    _createListElement: function(element, index) {
+	        var isSelected = (index === this.selectedDocument);
+	        var li = document.createElement('li');
+	        var a = document.createElement('a');
+	        if (isSelected) {
+	            a.className = 'selected';
+	        }
+	        a.innerHTML = element.name.replace('.svg', '');
+	        li.appendChild(a);
+	        this.listContainer.appendChild(li);
+	        return a;
+	    },
+
+	    _setEventsListener: function(element, index, changeSvg) {
+	        element.addEventListener('click', function(e) {
+	            changeSvg(index);
+	        });
+	    }
+	};
+
+	module.exports = DerFilesList;
+
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Utils = __webpack_require__(97);
+	var DerFile = __webpack_require__(6);
+
+	var DerForm = {
+	    init: function(formElement, message) {
+	        this.formElement = formElement;
+	        this.fileInput = DerForm._createInputFile();
+	        this.submitButton = DerForm._createInputSubmit();
+
+	        this._addFormListener(message);
+	        this._addInputListener();
+	    },
+
+	    _addFormListener: function(message) {
+	        this.formElement.addEventListener('submit', function(e) {
+	            e.preventDefault();
+	            var file = DerForm.fileInput.files[0];
+	            if (file !== undefined) {
+	                DerFile.openDerFile(file);
+	            } else {
+	                message('Aucun fichier seléctionné', 'error');
+	            }
+	        });
+	    },
+
+	    _addInputListener: function() {
+	        var label	 = this.fileInput.nextElementSibling,
+	            labelVal = label.innerHTML;
+
+	        this.fileInput.addEventListener( 'change', function( e ) {
+	            var fileName = '';
+	            if( this.files && this.files.length > 1 ) {
+	                fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+	            } else {
+	                fileName = e.target.value.split( '\\' ).pop();
+	            }
+
+	            if (fileName) {
+	                label.querySelector('span').innerHTML = fileName;
+	                label.className = 'fill';
+	            } else {
+	                label.innerHTML = labelVal;
+	                label.className = '';
+	            }
+	        });
+	    },
+
+	    _createInputFile: function() {
+	        var input = document.createElement('input');
+	        Utils.setAttributes(input, {
+	            'type': 'file',
+	            'id': 'file',
+	            'class': 'inputfile'
+	        });
+	        var label = document.createElement('label');
+	        label.setAttribute('for', 'file');
+	        var span = document.createElement('span');
+	        // var strong = document.createElement('strong');
+	        // strong.innerHTML = 'Choisir un fichier';
+	        span.innerHTML = 'Choisir un fichier';
+	        label.appendChild(span);
+	        // label.appendChild(strong);
+	        this.formElement.appendChild(input);
+	        this.formElement.appendChild(label);
+	        return input;
+	    },
+
+	    _createInputSubmit: function() {
+	        var el = document.createElement('input');
+	        Utils.setAttributes(el, {
+	            'type': 'submit',
+	            'class': 'inputsubmit',
+	            'value': 'Envoyer'
+	        });
+	        this.formElement.appendChild(el);
+	        return el;
+	    }
+	};
+
+
+
+	module.exports = DerForm;
+
+
+/***/ },
+/* 103 */
+/***/ function(module, exports) {
+
+	var DerMode = {
+	    init: function(container, mode, actions) {
+	        this._setDomElements(container, mode);
+	        var defaultMode = document.getElementById(mode);
+	        defaultMode.checked = true;
+	    },
+
+	    _setDomElements: function(container) {
+	        var mode_explore = document.createElement('input');
+	        mode_explore.setAttribute('type', 'radio');
+	        mode_explore.setAttribute('name', 'mode');
+	        mode_explore.setAttribute('id', 'explore');
+
+	        var mode_explore_label = document.createElement('label');
+	        mode_explore_label.setAttribute('for', 'explore');
+	        mode_explore_label.innerHTML = 'Exploration';
+
+	        var mode_search = document.createElement('input');
+	        mode_search.setAttribute('type', 'radio');
+	        mode_search.setAttribute('name', 'mode');
+	        mode_search.setAttribute('id', 'search');
+
+	        var mode_search_label= document.createElement('label');
+	        mode_search_label.setAttribute('for', 'search');
+	        mode_search_label.innerHTML = 'Recherche';
+
+	        container.appendChild(mode_explore);
+	        container.appendChild(mode_explore_label);
+	        container.appendChild(mode_search);
+	        container.appendChild(mode_search_label);
+	    }
+	};
+
+
+
+	module.exports = DerMode;
 
 
 /***/ }

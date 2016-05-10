@@ -4,7 +4,7 @@ var ctx = new AudioContext(), currentOsc;
 var DerSounds = {
     play: function(distance, direction, size, callback) {
         var o = ctx.createOscillator();
-        o.type = direction === 'x' ? 'sine' : 'square';
+        o.type = direction === 'x' ? 'sine' : 'triangle';
         o.frequency.value = this._getNote(distance, size);
         o.start(0);
         o.connect(ctx.destination);
@@ -15,7 +15,7 @@ var DerSounds = {
             if (callback) {
                 callback();
             }
-        }, 200);
+        }, 100);
         return;
     },
 
@@ -24,11 +24,10 @@ var DerSounds = {
     },
 
     _getNote: function(distance, size) {
-        var note = Math.round(distance / (size/2) * notes.length);
-        note = notes.slice(-Math.abs(note)-1, -Math.abs(note));
+        var index = Math.round(distance / (size/2) * notes.length);
+        var note = notes.slice(-Math.abs(index)-1, -Math.abs(index));
         return note;
     }
-
 };
 
 module.exports = DerSounds;
