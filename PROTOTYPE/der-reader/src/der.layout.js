@@ -1,51 +1,38 @@
 require('!style!css!sass!./scss/styles.scss');
 
 var DerLayout = {
+
+    init(container) {
+        this.container = container || this._createElement('div', document.body, 'container');
+        this.messageContainer   = this._createElement('div', this.container, 'message');
+        this.derContainer       = this._createElement('div', this.container, 'der-container');
+        this.aside              = this._createElement('aside', this.container, 'menu');
+        this.formContainer      = this._createElement('form', this.aside);
+        this.listContainer      = this._createElement('ul', this.aside, 'files-list');
+    },
+
     getLayout: function(container) {
+        this.init(container);
+
         return {
-            container: container || this.createContainer('container'),
-            derContainer: this.createDerContainer(),
-            messageContainer: this.createMessageContainer(),
-            formContainer: this.createForm(),
-            listContainer: this.createFilesList()
+            container: this.container,
+            messageContainer: this.messageContainer,
+            derContainer: this.derContainer,
+            formContainer: this.formContainer,
+            listContainer: this.listContainer
         };
     },
 
-    createContainer: function(className) {
-        this.container = document.createElement('div');
-        this.container.setAttribute('class', className);
-        document.body.appendChild(this.container);
-        return this.container;
-    },
+    _createElement: function(type, container, className) {
+        var element = document.createElement(type);
 
-    createDerContainer: function() {
-        this.derContainer = document.createElement('div');
-        this.derContainer.setAttribute('class', 'der-container');
-        this.container.appendChild(this.derContainer);
-        return this.derContainer;
-    },
-
-    createMessageContainer: function() {
-        this.messageContainer = document.createElement('div');
-        this.messageContainer.setAttribute('id', 'message');
-        this.container.parentNode.insertBefore(this.messageContainer, this.container);
-        return this.messageContainer;
-    },
-
-    createForm: function() {
-        this.aside = document.createElement('aside');
-        this.aside.setAttribute('class', 'menu');
-        var form = document.createElement('form');
-        this.aside.appendChild(form);
-        this.container.appendChild(this.aside);
-        return form;
-    },
-
-    createFilesList: function() {
-        var list = document.createElement('ul');
-        this.aside.appendChild(list);
-        return list;
+        if (className !== undefined) {
+            element.setAttribute('class', className);
+        }
+        container.appendChild(element);
+        return element;
     }
+    
 };
 
 

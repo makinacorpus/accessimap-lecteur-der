@@ -1,0 +1,99 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/home/lellex/node_modules/.bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'der-reader' ]
+2 info using npm@3.8.6
+3 info using node@v5.1.0
+4 verbose config Skipping project config: /home/lellex/.npmrc. (matches userconfig)
+5 silly loadCurrentTree Starting
+6 silly install loadCurrentTree
+7 silly install readLocalPackageData
+8 silly fetchPackageMetaData der-reader
+9 silly fetchNamedPackageData der-reader
+10 silly mapToRegistry name der-reader
+11 silly mapToRegistry using default registry
+12 silly mapToRegistry registry https://registry.npmjs.org/
+13 silly mapToRegistry data Result {
+13 silly mapToRegistry   raw: 'der-reader',
+13 silly mapToRegistry   scope: null,
+13 silly mapToRegistry   name: 'der-reader',
+13 silly mapToRegistry   rawSpec: '',
+13 silly mapToRegistry   spec: 'latest',
+13 silly mapToRegistry   type: 'tag' }
+14 silly mapToRegistry uri https://registry.npmjs.org/der-reader
+15 verbose request uri https://registry.npmjs.org/der-reader
+16 verbose request no auth needed
+17 info attempt registry request try #1 at 10:51:16
+18 verbose request using bearer token for auth
+19 verbose request id c4e051fc4469c33a
+20 http request GET https://registry.npmjs.org/der-reader
+21 http 404 https://registry.npmjs.org/der-reader
+22 verbose headers { 'content-type': 'application/json',
+22 verbose headers   'cache-control': 'max-age=0',
+22 verbose headers   'content-length': '2',
+22 verbose headers   'accept-ranges': 'bytes',
+22 verbose headers   date: 'Tue, 10 May 2016 08:51:17 GMT',
+22 verbose headers   via: '1.1 varnish',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'x-served-by': 'cache-fra1235-FRA',
+22 verbose headers   'x-cache': 'MISS',
+22 verbose headers   'x-cache-hits': '0',
+22 verbose headers   'x-timer': 'S1462870276.825708,VS0,VE759',
+22 verbose headers   vary: 'Accept-Encoding' }
+23 silly get cb [ 404,
+23 silly get   { 'content-type': 'application/json',
+23 silly get     'cache-control': 'max-age=0',
+23 silly get     'content-length': '2',
+23 silly get     'accept-ranges': 'bytes',
+23 silly get     date: 'Tue, 10 May 2016 08:51:17 GMT',
+23 silly get     via: '1.1 varnish',
+23 silly get     connection: 'keep-alive',
+23 silly get     'x-served-by': 'cache-fra1235-FRA',
+23 silly get     'x-cache': 'MISS',
+23 silly get     'x-cache-hits': '0',
+23 silly get     'x-timer': 'S1462870276.825708,VS0,VE759',
+23 silly get     vary: 'Accept-Encoding' } ]
+24 silly fetchPackageMetaData Error: Registry returned 404 for GET on https://registry.npmjs.org/der-reader
+24 silly fetchPackageMetaData     at makeError (/home/lellex/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+24 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/home/lellex/node_modules/npm/node_modules/npm-registry-client/lib/request.js:242:14)
+24 silly fetchPackageMetaData     at Request._callback (/home/lellex/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+24 silly fetchPackageMetaData     at Request.self.callback (/home/lellex/node_modules/npm/node_modules/request/request.js:199:22)
+24 silly fetchPackageMetaData     at emitTwo (events.js:87:13)
+24 silly fetchPackageMetaData     at Request.emit (events.js:172:7)
+24 silly fetchPackageMetaData     at Request.<anonymous> (/home/lellex/node_modules/npm/node_modules/request/request.js:1036:10)
+24 silly fetchPackageMetaData     at emitOne (events.js:82:20)
+24 silly fetchPackageMetaData     at Request.emit (events.js:169:7)
+24 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/home/lellex/node_modules/npm/node_modules/request/request.js:963:12)
+24 silly fetchPackageMetaData  error for der-reader { [Error: Registry returned 404 for GET on https://registry.npmjs.org/der-reader] pkgid: 'der-reader', statusCode: 404, code: 'E404' }
+25 silly rollbackFailedOptional Starting
+26 silly rollbackFailedOptional Finishing
+27 silly runTopLevelLifecycles Starting
+28 silly runTopLevelLifecycles Finishing
+29 silly install printInstalled
+30 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/der-reader
+30 verbose stack     at makeError (/home/lellex/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+30 verbose stack     at CachingRegistryClient.<anonymous> (/home/lellex/node_modules/npm/node_modules/npm-registry-client/lib/request.js:242:14)
+30 verbose stack     at Request._callback (/home/lellex/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+30 verbose stack     at Request.self.callback (/home/lellex/node_modules/npm/node_modules/request/request.js:199:22)
+30 verbose stack     at emitTwo (events.js:87:13)
+30 verbose stack     at Request.emit (events.js:172:7)
+30 verbose stack     at Request.<anonymous> (/home/lellex/node_modules/npm/node_modules/request/request.js:1036:10)
+30 verbose stack     at emitOne (events.js:82:20)
+30 verbose stack     at Request.emit (events.js:169:7)
+30 verbose stack     at IncomingMessage.<anonymous> (/home/lellex/node_modules/npm/node_modules/request/request.js:963:12)
+31 verbose statusCode 404
+32 verbose pkgid der-reader
+33 verbose cwd /home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/cordova
+34 error Linux 4.2.0-35-generic
+35 error argv "/usr/local/bin/node" "/home/lellex/node_modules/.bin/npm" "install" "der-reader"
+36 error node v5.1.0
+37 error npm  v3.8.6
+38 error code E404
+39 error 404 Registry returned 404 for GET on https://registry.npmjs.org/der-reader
+40 error 404
+41 error 404 'der-reader' is not in the npm registry.
+42 error 404 You should bug the author to publish it (or use the name yourself!)
+43 error 404 Note that you can also install from a
+44 error 404 tarball, folder, http url, or git url.
+45 verbose exit [ 1, true ]

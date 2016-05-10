@@ -104,51 +104,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(2);
 
 	var DerLayout = {
+
+	    init(container) {
+	        this.container = container || this._createElement('div', document.body, 'container');
+	        this.messageContainer   = this._createElement('div', this.container, 'message');
+	        this.derContainer       = this._createElement('div', this.container, 'der-container');
+	        this.aside              = this._createElement('aside', this.container, 'menu');
+	        this.formContainer      = this._createElement('form', this.aside);
+	        this.listContainer      = this._createElement('ul', this.aside, 'files-list');
+	    },
+
 	    getLayout: function(container) {
+	        this.init(container);
+
 	        return {
-	            container: container || this.createContainer('container'),
-	            derContainer: this.createDerContainer(),
-	            messageContainer: this.createMessageContainer(),
-	            formContainer: this.createForm(),
-	            listContainer: this.createFilesList()
+	            container: this.container,
+	            messageContainer: this.messageContainer,
+	            derContainer: this.derContainer,
+	            formContainer: this.formContainer,
+	            listContainer: this.listContainer
 	        };
 	    },
 
-	    createContainer: function(className) {
-	        this.container = document.createElement('div');
-	        this.container.setAttribute('class', className);
-	        document.body.appendChild(this.container);
-	        return this.container;
-	    },
+	    _createElement: function(type, container, className) {
+	        var element = document.createElement(type);
 
-	    createDerContainer: function() {
-	        this.derContainer = document.createElement('div');
-	        this.derContainer.setAttribute('class', 'der-container');
-	        this.container.appendChild(this.derContainer);
-	        return this.derContainer;
-	    },
-
-	    createMessageContainer: function() {
-	        this.messageContainer = document.createElement('div');
-	        this.messageContainer.setAttribute('id', 'message');
-	        this.container.parentNode.insertBefore(this.messageContainer, this.container);
-	        return this.messageContainer;
-	    },
-
-	    createForm: function() {
-	        this.aside = document.createElement('aside');
-	        this.aside.setAttribute('class', 'menu');
-	        var form = document.createElement('form');
-	        this.aside.appendChild(form);
-	        this.container.appendChild(this.aside);
-	        return form;
-	    },
-
-	    createFilesList: function() {
-	        var list = document.createElement('ul');
-	        this.aside.appendChild(list);
-	        return list;
+	        if (className !== undefined) {
+	            element.setAttribute('class', className);
+	        }
+	        container.appendChild(element);
+	        return element;
 	    }
+	    
 	};
 
 
@@ -190,7 +177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n#message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  #message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    #message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
+	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
 
 	// exports
 
