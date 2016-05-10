@@ -8,7 +8,7 @@ var DerLayout = {
         this.derContainer       = this._createElement('div', this.container, 'der-container');
         this.aside              = this._createElement('aside', this.container, 'menu');
         this.formContainer      = this._createElement('form', this.aside);
-        this.listContainer      = this._createElement('ul', this.aside, 'files-list');
+        this.listContainer      = this._createElement('div', this.aside, 'files-list');
     },
 
     getLayout: function(container) {
@@ -32,7 +32,7 @@ var DerLayout = {
         container.appendChild(element);
         return element;
     }
-    
+
 };
 
 

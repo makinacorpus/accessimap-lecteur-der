@@ -6,25 +6,16 @@ var FilesList = require('./der.filesList.js');
 var Options = {};
 
 var DerFile = {
-    getFile: function(file) {
-        if (file === undefined) {
-            return;
-        }
-        else if (file.type === 'path') {
-            return new Promise(function(resolve, reject) {
-                Utils.load(file.src)
-                .then(function(response) {
-                    resolve(response);
-                }, function() {
-                    reject();
-                });
-            });
-        }
-        return file.src;
-    },
 
-    openDerFile: function(file, message) {
+    /**
+	 * Open ZIP and get DER files
+	 * @param file: {FileObject} required
+     * @param message: {Function} required
+     * @param listContainer: {HTMLElement} required
+	 */
+    openDerFile: function(file, message, listContainer) {
         Options.message = message || Options.message;
+        Options.listContainer = listContainer || Options.listContainer;
 
         return new Promise(function(resolve) {
             if (file.type.split('.').pop() !== 'application/zip') {
@@ -33,7 +24,7 @@ var DerFile = {
             var new_zip = new JSZip();
             new_zip.loadAsync(file)
             .then(function(zip) {
-                DerFile._extractFiles(zip.files, function(error, der) {
+                DerFile._extractFiles(zip.files, Options.listContainer, function(error, der) {
                     if (error === null) {
                         Options.message('');
                         resolve(der);
@@ -45,6 +36,11 @@ var DerFile = {
         });
     },
 
+
+    /**
+	 * Read MP3 contained in ZIP file
+	 * @param name: {string} required
+	 */
     readAudioFile(name) {
         return new Promise(function(resolve, reject) {
             DerFile.filesByExt.audioFiles[name].async('base64')
@@ -60,11 +56,18 @@ var DerFile = {
         });
     },
 
-    _extractFiles: function(files, callback) {
+
+    /**
+	 * Extract files contained in ZIP file
+	 * @param files: {Object} required
+	 * @param listContainer: {HTMLElement} required
+	 * @param callback: {Function}
+	 */
+    _extractFiles: function(files, listContainer, callback) {
         this.filesByExt = Utils.orderFilesByExt(files);
 
         if (DerFile.filesByExt.svg.length > 1) {
-            FilesList.init(DerFile.filesByExt.svg);
+            FilesList.init(DerFile.filesByExt.svg, listContainer);
         }
 
         var getJson = new Promise(function(resolve, reject) {
@@ -100,6 +103,13 @@ var DerFile = {
         });
     },
 
+
+    /**
+	 * Once all files are ready, load DER on DOM
+	 * @param der: {Object} required
+	 * @param container: {HTMLElement} required
+	 * @param tts: {Function}
+	 */
     loadDer(der, container, tts) {
         Options.tts = tts || Options.tts;
         Options.container = container || Options.container;

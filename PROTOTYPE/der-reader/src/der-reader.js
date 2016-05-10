@@ -20,7 +20,7 @@ var DerReader = {
         DerForm.init(DerReader.layout.formContainer, this.message);
 
         Utils.getFileObject(this.derFile, function (file) {
-            DerFile.openDerFile(file, DerReader.message).then(function(der) {
+            DerFile.openDerFile(file, DerReader.message, DerReader.layout.listContainer).then(function(der) {
                 DerFile.loadDer(der, DerReader.layout.derContainer, DerReader.tts);
             });
         });
