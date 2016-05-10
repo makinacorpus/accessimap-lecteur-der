@@ -3,36 +3,40 @@ var Utils = require('./der.utils.js');
 var TouchEvents = require('./der.events.js');
 var FilesList = require('./der.filesList.js');
 
-var Options = {};
 
 var DerFile = {
 
     /**
 	 * Open ZIP and get DER files
-	 * @param file: {FileObject} required
-     * @param message: {Function} required
-     * @param listContainer: {HTMLElement} required
+     * @param {Object} options
+     * {
+     *     message: {Function} required
+     *     layout: {Object} required
+     *     tts: {Function} required
+     *     mode: {string} required
+     * }
 	 */
-    openDerFile: function(file, message, listContainer) {
-        Options.message = message || Options.message;
-        Options.listContainer = listContainer || Options.listContainer;
-        Options.selectedSVG = 0;
+    init: function(options) {
+        for (var option in options) {
+            this[option] = options[option] || this[option];
+        }
+        this.selectedSVG = 0;
+    },
 
-        return new Promise(function(resolve) {
-            if (file.type.split('.').pop() !== 'application/zip') {
-                Options.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error', 'error');
-            }
-            var new_zip = new JSZip();
-            new_zip.loadAsync(file)
-            .then(function(zip) {
-                DerFile._extractFiles(zip.files, Options.listContainer, function(error, der) {
-                    if (error === null) {
-                        Options.message('');
-                        resolve(der);
-                    } else {
-                        Options.message(error, 'error');
-                    }
-                });
+    openDerFile: function(file) {
+        if (file.type.split('.').pop() !== 'application/zip') {
+            DerFile.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error', 'error');
+        }
+        var new_zip = new JSZip();
+        new_zip.loadAsync(file)
+        .then(function(zip) {
+            DerFile._extractFiles(zip.files, DerFile.layout.listContainer, function(error, der) {
+                if (error === null) {
+                    DerFile.message('');
+                    DerFile.loadDer(der);
+                } else {
+                    DerFile.message(error, 'error');
+                }
             });
         });
     },
@@ -72,10 +76,10 @@ var DerFile = {
                 files: DerFile.filesByExt.svg,
                 container: listContainer,
                 actions: DerFile.changeSvg,
-                selectedDocument: Options.selectedSVG
+                selectedDocument: DerFile.selectedSVG
             });
         }
-        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[Options.selectedSVG], callback);
+        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[DerFile.selectedSVG], callback);
     },
 
     readFiles: function(xml, svg, callback) {
@@ -113,7 +117,7 @@ var DerFile = {
     },
 
     changeSvg: function(index) {
-        Options.selectedSVG = index;
+        DerFile.selectedSVG = index;
         FilesList.changeFile(index);
         DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[index], function(error, der) {
             DerFile.loadDer(der);
@@ -127,27 +131,37 @@ var DerFile = {
 	 * @param container: {HTMLElement} required
 	 * @param tts: {Function}
 	 */
-    loadDer(der, container, tts) {
-        Options.tts = tts || Options.tts;
-        Options.container = container || Options.container;
-
+    loadDer: function(der) {
         if (der.svg !== undefined) {
-            Options.container.innerHTML = der.svg;
+            var svg = document.createElement('div');
+
+            DerFile.layout.derContainer.innerHTML = der.svg;
         } else {
-            Options.message('Aucun SVG trouvé', 'error');
+            DerFile.message('Aucun SVG trouvé', 'error');
         }
 
         if (der.pois.poi !== undefined) {
-            der.pois.poi.map(function(poi) {
+            if (DerFile.mode === 'explore') {
+                this.attachPoiActions(der.pois.poi);
+            } else {
+                var poi = der.pois.poi[1]
                 var id = poi.id.split('-').pop();
-                var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
-                if (poiEl !== undefined) {
-                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, Options.tts);
-                }
-            });
+                var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
+                TouchEvents.setSearchEvents(elementToFind, DerFile.layout.derContainer, DerFile.tts);
+            }
         } else {
-            Options.message('Aucun JSON trouvé', 'error');
+            DerFile.message('Aucun JSON trouvé', 'error');
         }
+    },
+
+    attachPoiActions: function(pois) {
+        pois.map(function(poi) {
+            var id = poi.id.split('-').pop();
+            var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
+            if (poiEl !== undefined) {
+                TouchEvents.setExploreEvents(poiEl, poi.actions.action, DerFile.readAudioFile, DerFile.tts);
+            }
+        });
     }
 };
 

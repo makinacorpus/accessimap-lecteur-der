@@ -44,7 +44,7 @@ var DerFilesList = {
     _createList: function(container) {
         var title = document.createElement('h2');
         var ul = document.createElement('ul');
-        title.innerHTML = 'Votre document contient plusieurs cartes. Quelle carte voulez-vous afficher ?';
+        title.innerHTML = 'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?';
         container.appendChild(title);
         container.appendChild(ul);
         return ul;

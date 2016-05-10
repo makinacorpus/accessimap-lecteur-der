@@ -1,4 +1,5 @@
 var Hammer = require('hammerjs');
+var DerSounds = require('./der.sounds');
 
 var TouchEvents = {
 
@@ -9,7 +10,7 @@ var TouchEvents = {
 	 * @param {readAudioFile} tts
 	 * @param {Function} tts
 	 */
-    init: function(element, actions, readAudioFile, tts) {
+    setExploreEvents: function(element, actions, readAudioFile, tts) {
         var hammer = new Hammer.Manager(element, {});
         this._addTouchEventsListeners(hammer);
 
@@ -17,7 +18,7 @@ var TouchEvents = {
             var action = TouchEvents._getGestureAction(actions, e.type);
 
             if (action !== undefined) {
-                
+
                 TouchEvents._onEventStarted(element);
 
                 if (action.protocol === 'mp3') {
@@ -32,6 +33,34 @@ var TouchEvents = {
                     });
                 }
             }
+        });
+    },
+
+    setSearchEvents: function(element, container) {
+        var boundingBox = element.getBoundingClientRect(),
+            horizontalRange = {min: boundingBox.left, max: boundingBox.right},
+            verticalRange = {min: boundingBox.top, max: boundingBox.bottom};
+
+        var zone = {width: container.clientWidth, height: container.clientWidth};
+        var hammer = new Hammer.Manager(container, {});
+        var pan = new Hammer.Pan({ event: 'pan'});
+        hammer.add(pan);
+
+        function getDistanceNumber(number, min, max) {
+            return Math.abs(Math.min(Math.round(number - min), Math.round(max - number)));
+        }
+
+        var sounds = false;
+        hammer.on('panleft panright', function(e) {
+            if (!sounds) {
+                sounds = true;
+                var distance = getDistanceNumber(e.center.x, horizontalRange.min, horizontalRange.max);
+
+                DerSounds.play(distance, 'x', zone.width, function() {
+                    sounds = false;
+                });
+            }
+            return;
         });
     },
 

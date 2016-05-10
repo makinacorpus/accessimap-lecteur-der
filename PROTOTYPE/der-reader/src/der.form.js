@@ -16,9 +16,7 @@ var DerForm = {
             e.preventDefault();
             var file = DerForm.fileInput.files[0];
             if (file !== undefined) {
-                DerFile.openDerFile(file).then(function(der) {
-                    DerFile.loadDer(der);
-                });
+                DerFile.openDerFile(file);
             } else {
                 message('Aucun fichier seléctionné', 'error');
             }

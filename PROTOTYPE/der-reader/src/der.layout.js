@@ -9,6 +9,7 @@ var DerLayout = {
         this.aside              = this._createElement('aside', this.container, 'menu');
         this.formContainer      = this._createElement('form', this.aside);
         this.listContainer      = this._createElement('div', this.aside, 'files-list');
+        this.switchModeContainer= this._createElement('div', this.aside, 'switch-mode');
     },
 
     getLayout: function(container) {
@@ -19,7 +20,8 @@ var DerLayout = {
             messageContainer: this.messageContainer,
             derContainer: this.derContainer,
             formContainer: this.formContainer,
-            listContainer: this.listContainer
+            listContainer: this.listContainer,
+            switchModeContainer: this.switchModeContainer
         };
     },
 

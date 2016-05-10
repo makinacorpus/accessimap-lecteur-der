@@ -57,6 +57,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DerLayout = __webpack_require__(1);
 	var DerFile = __webpack_require__(6);
 	var DerForm = __webpack_require__(101);
+	var DerMode = __webpack_require__(102);
 	var Utils = __webpack_require__(97);
 
 	var DerReader = {
@@ -64,22 +65,29 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * Initialise DER Reader
 		 * @param {Object} options
 	     * {
-	     *     container: {HTMLElement}
 	     *     derFile: {string (zip file)} required
 	     *     tts: {Function} required
+	     *     defaultMode: {string}
+	     *     container: {HTMLElement}
 	     * }
 		 */
 	    init: function(options) {
 	        this._setOptions(options);
 	        this.layout = DerLayout.getLayout(options.container);
 
-	        DerForm.init(DerReader.layout.formContainer, this.message);
+	        DerForm.init(this.layout.formContainer, this.message);
+	        DerMode.init(this.layout.switchModeContainer, this.mode, this.changeMode);
 
 	        Utils.getFileObject(this.derFile, function (file) {
-	            DerFile.openDerFile(file, DerReader.message, DerReader.layout.listContainer).then(function(der) {
-	                DerFile.loadDer(der, DerReader.layout.derContainer, DerReader.tts);
+	            DerFile.init({
+	                message: DerReader.message,
+	                layout: DerReader.layout,
+	                tts: DerReader.tts,
+	                mode: DerReader.mode
 	            });
+	            DerFile.openDerFile(file);
 	        });
+
 	        return this;
 	    },
 
@@ -87,10 +95,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        Utils.message(message, type, DerReader.layout.messageContainer);
 	    },
 
+	    changeMode: function(mode) {
+	        this.mode = mode;
+	    },
+
 	    _setOptions(options) {
 	        options = options || {};
 	        this.derFile = options.derFile;
 	        this.tts = options.tts;
+	        this.mode = options.defaultMode || 'explore';
 	    }
 	};
 
@@ -112,6 +125,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.aside              = this._createElement('aside', this.container, 'menu');
 	        this.formContainer      = this._createElement('form', this.aside);
 	        this.listContainer      = this._createElement('div', this.aside, 'files-list');
+	        this.switchModeContainer= this._createElement('div', this.aside, 'switch-mode');
 	    },
 
 	    getLayout: function(container) {
@@ -122,7 +136,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            messageContainer: this.messageContainer,
 	            derContainer: this.derContainer,
 	            formContainer: this.formContainer,
-	            listContainer: this.listContainer
+	            listContainer: this.listContainer,
+	            switchModeContainer: this.switchModeContainer
 	        };
 	    },
 
@@ -177,7 +192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n.files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
+	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n.files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n\n.switch-mode label {\n  color: #fff; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
 
 	// exports
 
@@ -499,36 +514,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TouchEvents = __webpack_require__(98);
 	var FilesList = __webpack_require__(100);
 
-	var Options = {};
 
 	var DerFile = {
 
 	    /**
 		 * Open ZIP and get DER files
-		 * @param file: {FileObject} required
-	     * @param message: {Function} required
-	     * @param listContainer: {HTMLElement} required
+	     * @param {Object} options
+	     * {
+	     *     message: {Function} required
+	     *     layout: {Object} required
+	     *     tts: {Function} required
+	     *     mode: {string} required
+	     * }
 		 */
-	    openDerFile: function(file, message, listContainer) {
-	        Options.message = message || Options.message;
-	        Options.listContainer = listContainer || Options.listContainer;
-	        Options.selectedSVG = 0;
+	    init: function(options) {
+	        for (var option in options) {
+	            this[option] = options[option] || this[option];
+	        }
+	        this.selectedSVG = 0;
+	    },
 
-	        return new Promise(function(resolve) {
-	            if (file.type.split('.').pop() !== 'application/zip') {
-	                Options.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error', 'error');
-	            }
-	            var new_zip = new JSZip();
-	            new_zip.loadAsync(file)
-	            .then(function(zip) {
-	                DerFile._extractFiles(zip.files, Options.listContainer, function(error, der) {
-	                    if (error === null) {
-	                        Options.message('');
-	                        resolve(der);
-	                    } else {
-	                        Options.message(error, 'error');
-	                    }
-	                });
+	    openDerFile: function(file) {
+	        if (file.type.split('.').pop() !== 'application/zip') {
+	            DerFile.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error', 'error');
+	        }
+	        var new_zip = new JSZip();
+	        new_zip.loadAsync(file)
+	        .then(function(zip) {
+	            DerFile._extractFiles(zip.files, DerFile.layout.listContainer, function(error, der) {
+	                if (error === null) {
+	                    DerFile.message('');
+	                    DerFile.loadDer(der);
+	                } else {
+	                    DerFile.message(error, 'error');
+	                }
 	            });
 	        });
 	    },
@@ -568,10 +587,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                files: DerFile.filesByExt.svg,
 	                container: listContainer,
 	                actions: DerFile.changeSvg,
-	                selectedDocument: Options.selectedSVG
+	                selectedDocument: DerFile.selectedSVG
 	            });
 	        }
-	        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[Options.selectedSVG], callback);
+	        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[DerFile.selectedSVG], callback);
 	    },
 
 	    readFiles: function(xml, svg, callback) {
@@ -609,7 +628,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    changeSvg: function(index) {
-	        Options.selectedSVG = index;
+	        DerFile.selectedSVG = index;
 	        FilesList.changeFile(index);
 	        DerFile.readFiles(DerFile.filesByExt.xml[0], DerFile.filesByExt.svg[index], function(error, der) {
 	            DerFile.loadDer(der);
@@ -623,27 +642,37 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * @param container: {HTMLElement} required
 		 * @param tts: {Function}
 		 */
-	    loadDer(der, container, tts) {
-	        Options.tts = tts || Options.tts;
-	        Options.container = container || Options.container;
-
+	    loadDer: function(der) {
 	        if (der.svg !== undefined) {
-	            Options.container.innerHTML = der.svg;
+	            var svg = document.createElement('div');
+
+	            DerFile.layout.derContainer.innerHTML = der.svg;
 	        } else {
-	            Options.message('Aucun SVG trouvé', 'error');
+	            DerFile.message('Aucun SVG trouvé', 'error');
 	        }
 
 	        if (der.pois.poi !== undefined) {
-	            der.pois.poi.map(function(poi) {
+	            if (DerFile.mode === 'explore') {
+	                this.attachPoiActions(der.pois.poi);
+	            } else {
+	                var poi = der.pois.poi[1]
 	                var id = poi.id.split('-').pop();
-	                var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
-	                if (poiEl !== undefined) {
-	                    TouchEvents.init(poiEl, poi.actions.action, DerFile.readAudioFile, Options.tts);
-	                }
-	            });
+	                var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
+	                TouchEvents.setSearchEvents(elementToFind, DerFile.layout.derContainer, DerFile.tts);
+	            }
 	        } else {
-	            Options.message('Aucun JSON trouvé', 'error');
+	            DerFile.message('Aucun JSON trouvé', 'error');
 	        }
+	    },
+
+	    attachPoiActions: function(pois) {
+	        pois.map(function(poi) {
+	            var id = poi.id.split('-').pop();
+	            var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
+	            if (poiEl !== undefined) {
+	                TouchEvents.setExploreEvents(poiEl, poi.actions.action, DerFile.readAudioFile, DerFile.tts);
+	            }
+	        });
 	    }
 	};
 
@@ -20035,6 +20064,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Hammer = __webpack_require__(99);
+	var DerSounds = __webpack_require__(103);
 
 	var TouchEvents = {
 
@@ -20045,7 +20075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * @param {readAudioFile} tts
 		 * @param {Function} tts
 		 */
-	    init: function(element, actions, readAudioFile, tts) {
+	    setExploreEvents: function(element, actions, readAudioFile, tts) {
 	        var hammer = new Hammer.Manager(element, {});
 	        this._addTouchEventsListeners(hammer);
 
@@ -20053,7 +20083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var action = TouchEvents._getGestureAction(actions, e.type);
 
 	            if (action !== undefined) {
-	                
+
 	                TouchEvents._onEventStarted(element);
 
 	                if (action.protocol === 'mp3') {
@@ -20068,6 +20098,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    });
 	                }
 	            }
+	        });
+	    },
+
+	    setSearchEvents: function(element, container) {
+	        var boundingBox = element.getBoundingClientRect(),
+	            horizontalRange = {min: boundingBox.left, max: boundingBox.right},
+	            verticalRange = {min: boundingBox.top, max: boundingBox.bottom};
+
+	        var zone = {width: container.clientWidth, height: container.clientWidth};
+	        var hammer = new Hammer.Manager(container, {});
+	        var pan = new Hammer.Pan({ event: 'pan'});
+	        hammer.add(pan);
+
+	        function getDistanceNumber(number, min, max) {
+	            return Math.abs(Math.min(Math.round(number - min), Math.round(max - number)));
+	        }
+
+	        var sounds = false;
+	        hammer.on('panleft panright', function(e) {
+	            if (!sounds) {
+	                sounds = true;
+	                var distance = getDistanceNumber(e.center.x, horizontalRange.min, horizontalRange.max);
+
+	                DerSounds.play(distance, 'x', zone.width, function() {
+	                    sounds = false;
+	                });
+	            }
+	            return;
 	        });
 	    },
 
@@ -22810,7 +22868,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _createList: function(container) {
 	        var title = document.createElement('h2');
 	        var ul = document.createElement('ul');
-	        title.innerHTML = 'Votre document contient plusieurs cartes. Quelle carte voulez-vous afficher ?';
+	        title.innerHTML = 'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?';
 	        container.appendChild(title);
 	        container.appendChild(ul);
 	        return ul;
@@ -22861,9 +22919,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            e.preventDefault();
 	            var file = DerForm.fileInput.files[0];
 	            if (file !== undefined) {
-	                DerFile.openDerFile(file).then(function(der) {
-	                    DerFile.loadDer(der);
-	                });
+	                DerFile.openDerFile(file);
 	            } else {
 	                message('Aucun fichier seléctionné', 'error');
 	            }
@@ -22927,6 +22983,228 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	module.exports = DerForm;
+
+
+/***/ },
+/* 102 */
+/***/ function(module, exports) {
+
+	var DerMode = {
+	    init: function(container, mode, actions) {
+	        this._setDomElements(container, mode);
+	        var defaultMode = document.getElementById(mode);
+	        defaultMode.checked = true;
+	    },
+
+	    _setDomElements: function(container) {
+	        var mode_explore = document.createElement('input');
+	        mode_explore.setAttribute('type', 'radio');
+	        mode_explore.setAttribute('name', 'mode');
+	        mode_explore.setAttribute('id', 'explore');
+
+	        var mode_explore_label = document.createElement('label');
+	        mode_explore_label.setAttribute('for', 'explore');
+	        mode_explore_label.innerHTML = 'Exploration';
+
+	        var mode_search = document.createElement('input');
+	        mode_search.setAttribute('type', 'radio');
+	        mode_search.setAttribute('name', 'mode');
+	        mode_search.setAttribute('id', 'search');
+
+	        var mode_search_label= document.createElement('label');
+	        mode_search_label.setAttribute('for', 'search');
+	        mode_search_label.innerHTML = 'Recherche';
+
+	        container.appendChild(mode_explore);
+	        container.appendChild(mode_explore_label);
+	        container.appendChild(mode_search);
+	        container.appendChild(mode_search_label);
+	    }
+	};
+
+
+
+	module.exports = DerMode;
+
+
+/***/ },
+/* 103 */
+/***/ function(module, exports) {
+
+	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	var ctx = new AudioContext(), currentOsc;
+
+	var DerSounds = {
+	    play: function(distance, direction, size, callback) {
+	        var o = ctx.createOscillator();
+	        o.type = direction === 'x' ? 'sine' : 'square';
+	        o.frequency.value = this._getNote(distance, size);
+	        o.start(0);
+	        o.connect(ctx.destination);
+	        currentOsc = o;
+
+	        setTimeout(function() {
+	            DerSounds.stop();
+	            if (callback) {
+	                callback();
+	            }
+	        }, 200);
+	        return;
+	    },
+
+	    stop: function(){
+	        currentOsc.stop(0);
+	    },
+
+	    _getNote: function(distance, size) {
+	        var note = Math.round(distance / (size/2) * notes.length);
+	        note = notes.slice(-Math.abs(note)-1, -Math.abs(note));
+	        return note;
+	    }
+
+	};
+
+	module.exports = DerSounds;
+
+	var notes = [
+	    16.35,
+	    17.32,
+	    17.32,
+	    18.35,
+	    19.45,
+	    19.45,
+	    20.60,
+	    21.83,
+	    23.12,
+	    23.12,
+	    24.50,
+	    25.96,
+	    25.96,
+	    27.50,
+	    29.14,
+	    29.14,
+	    30.87,
+	    32.70,
+	    34.65,
+	    34.65,
+	    36.71,
+	    38.89,
+	    38.89,
+	    41.20,
+	    43.65,
+	    46.25,
+	    46.25,
+	    49.00,
+	    51.91,
+	    51.91,
+	    55.00,
+	    58.27,
+	    58.27,
+	    61.74,
+	    65.41,
+	    69.30,
+	    69.30,
+	    73.42,
+	    77.78,
+	    77.78,
+	    82.41,
+	    87.31,
+	    92.50,
+	    92.50,
+	    98.00,
+	    103.83,
+	    103.83,
+	    110.00,
+	    116.54,
+	    116.54,
+	    123.47,
+	    130.81,
+	    138.59,
+	    138.59,
+	    146.83,
+	    155.56,
+	    155.56,
+	    164.81,
+	    174.61,
+	    185.00,
+	    185.00,
+	    196.00,
+	    207.65,
+	    207.65,
+	    220.00,
+	    233.08,
+	    233.08,
+	    246.94,
+	    261.63,
+	    277.18,
+	    277.18,
+	    293.66,
+	    311.13,
+	    311.13,
+	    329.63,
+	    349.23,
+	    369.99,
+	    369.99,
+	    392.00,
+	    415.30,
+	    415.30,
+	    440.00,
+	    466.16,
+	    466.16,
+	    493.88,
+	    523.25,
+	    554.37,
+	    554.37,
+	    587.33,
+	    622.25,
+	    622.25,
+	    659.26,
+	    698.46,
+	    739.99,
+	    739.99,
+	    783.99,
+	    830.61,
+	    830.61,
+	    880.00,
+	    932.33,
+	    932.33,
+	    987.77,
+	    1046.50,
+	    1108.73,
+	    1108.73,
+	    1174.66,
+	    1244.51,
+	    1244.51,
+	    1318.51,
+	    1396.91,
+	    1479.98,
+	    1479.98,
+	    1567.98,
+	    1661.22,
+	    1661.22,
+	    1760.00,
+	    1864.66,
+	    1864.66,
+	    1975.53,
+	    2093.00,
+	    2217.46,
+	    2217.46,
+	    2349.32,
+	    2489.02,
+	    2489.02,
+	    2637.02,
+	    2793.83,
+	    2959.96,
+	    2959.96,
+	    3135.96,
+	    3322.44,
+	    3322.44,
+	    3520.00,
+	    3729.31,
+	    3729.31,
+	    3951.07,
+	    4186.01
+	];
 
 
 /***/ }

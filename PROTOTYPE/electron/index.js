@@ -10,5 +10,6 @@ var DerReader = require('../der-reader/der-reader.js');
 
 DerReader.init({
     derFile: './der/der2.zip',
-    tts: webspeechapi
+    tts: webspeechapi,
+    defaultMode: 'search'
 });
