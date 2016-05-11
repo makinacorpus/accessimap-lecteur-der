@@ -31,6 +31,4 @@ var DerMode = {
     }
 };
 
-
-
 module.exports = DerMode;

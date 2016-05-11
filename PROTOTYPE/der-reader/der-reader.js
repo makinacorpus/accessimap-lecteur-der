@@ -56,9 +56,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerLayout = __webpack_require__(1);
 	var DerFile = __webpack_require__(6);
-	var DerForm = __webpack_require__(102);
-	var DerMode = __webpack_require__(103);
+	var DerForm = __webpack_require__(103);
+	var DerMode = __webpack_require__(104);
 	var Utils = __webpack_require__(97);
+	var FastClick = __webpack_require__(105);
+	var TouchEmulator = __webpack_require__(106);
 
 	var DerReader = {
 	    /**
@@ -72,6 +74,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * }
 		 */
 	    init: function(options) {
+	        FastClick.attach(document.body, {});
+	        TouchEmulator();
+
 	        this._setOptions(options);
 	        this.layout = DerLayout.getLayout(options.container);
 
@@ -192,7 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n.files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n\n.switch-mode label {\n  color: #fff; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
+	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n.files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n\n.switch-mode label {\n  color: #fff; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  display: none;\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
 
 	// exports
 
@@ -511,8 +516,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var JSZip = __webpack_require__(7);
 	var Utils = __webpack_require__(97);
-	var TouchEvents = __webpack_require__(98);
-	var FilesList = __webpack_require__(101);
+	var DerExplore = __webpack_require__(98);
+	var DerSearch = __webpack_require__(100);
+	var FilesList = __webpack_require__(102);
 
 
 	var DerFile = {
@@ -658,7 +664,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var poi = der.pois.poi[1]
 	                var id = poi.id.split('-').pop();
 	                var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
-	                TouchEvents.setSearchEvents(elementToFind, DerFile.layout.derContainer, DerFile.tts);
+	                DerSearch.setSearchEvents(elementToFind, DerFile.layout.derContainer, DerFile.tts);
 	            }
 	        } else {
 	            DerFile.message('Aucun JSON trouvé', 'error');
@@ -670,7 +676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var id = poi.id.split('-').pop();
 	            var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
 	            if (poiEl !== undefined) {
-	                TouchEvents.setExploreEvents(poiEl, poi.actions.action, DerFile.readAudioFile, DerFile.tts);
+	                DerExplore.setExploreEvents(poiEl, poi.actions.action, DerFile.readAudioFile, DerFile.tts);
 	            }
 	        });
 	    }
@@ -9488,7 +9494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -20064,9 +20070,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Hammer = __webpack_require__(99);
-	var DerSounds = __webpack_require__(100);
 
-	var TouchEvents = {
+	var DerExplore = {
 
 	    /**
 		 * add event listener to DER elements
@@ -20097,44 +20102,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        TouchEvents._onEventEnded(element);
 	                    });
 	                }
-	            }
-	        });
-	    },
-
-	    setSearchEvents: function(element, container) {
-	        var boundingBox = element.getBoundingClientRect(),
-	            horizontalRange = {min: boundingBox.left, max: boundingBox.right},
-	            verticalRange = {min: boundingBox.top, max: boundingBox.bottom};
-
-	        var zone = {width: container.clientWidth, height: container.clientWidth};
-	        var hammer = new Hammer.Manager(container, {});
-	        var pan = new Hammer.Pan({ event: 'pan'});
-	        hammer.add(pan);
-
-	        function getDistanceNumber(number, min, max) {
-	            return Math.abs(Math.min(Math.round(number - min), Math.round(max - number)));
-	        }
-
-	        var sounds = false;
-	        hammer.on('panleft panright', function(e) {
-	            if (!sounds) {
-	                sounds = true;
-	                var distance = getDistanceNumber(e.center.x, horizontalRange.min, horizontalRange.max);
-
-	                DerSounds.play(distance, 'x', zone.width, function() {
-	                    sounds = false;
-	                });
-	            }
-	        });
-
-	        hammer.on('panup pandown', function(e) {
-	            if (!sounds) {
-	                sounds = true;
-	                var distance = getDistanceNumber(e.center.y, verticalRange.min, verticalRange.max);
-
-	                DerSounds.play(distance, 'y', zone.height, function() {
-	                    sounds = false;
-	                });
 	            }
 	        });
 	    },
@@ -20176,7 +20143,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
-	module.exports = TouchEvents;
+	module.exports = DerExplore;
 
 
 /***/ },
@@ -22830,185 +22797,207 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var DerSounds = __webpack_require__(101);
+	// var Hammer = require('hammerjs');
+
+	var DerSearch = {
+
+	    setSearchEvents: function(element, container) {
+	        this.container = container;
+	        var elementBoundingBox = element.getBoundingClientRect();
+	        this.elementCenter = {x: elementBoundingBox.left + elementBoundingBox.width/2, y: elementBoundingBox.top + elementBoundingBox.height/2};
+
+	        this.container.addEventListener('mousedown', this, false);
+	        this.container.addEventListener('touchstart', this, false);
+	        // this.exploreEvents = new Hammer.Manager(container, {
+	        //     // inputClass: Hammer.TouchInput
+	        //     touchAction: 'pan-x'
+	        // });
+	        // this.exploreEvents.add( new Hammer.Press({ event: 'press', time: 1 }) );
+	        // this.exploreEvents.add( new Hammer.Pan({ event: 'panmove', direction: Hammer.DIRECTION_ALL, threshold: 0.1}) );
+	        //
+	        // this.exploreEvents.on('press', DerSearch.handlePress.bind(this));
+	        // console.log(this.exploreEvents);
+	    },
+
+	    getSoundsPositions: function(distance, initialPos) {
+	        var ref = DerSounds.getNotesLength();
+
+	        var array = [];
+
+	        for (var i = 0; i < ref; i++) {
+	            var lastDistance = array[i-1] || initialPos;
+	            array.push(Math.round(lastDistance + distance/ref));
+	        }
+
+	        return array;
+	    },
+
+	    // handlePress: function(event) {
+	    //     this.exploreEvents.off('panmove', this.handlePan);
+	    //
+	    //     // Horizontal
+	    //     var pointerX = event.center.x,
+	    //         elementX = this.elementCenter.x,
+	    //         distance;
+	    //
+	    //     if (pointerX > elementX) {
+	    //         distance = pointerX - elementX;
+	    //     } else {
+	    //         distance = elementX - pointerX;
+	    //     }
+	    //
+	    //     this.sounds = this.getSoundsPositions(distance, pointerX);
+	    //
+	    //     this.exploreEvents.on('panmove', this.handlePan.bind(this));
+	    // },
+	    //
+	    // handlePan: function(event) {
+	    //     console.log(event.center.x);
+	    //     for (var i = 0; i < this.sounds.length; i++) {
+	    //         if (event.center.x === this.sounds[i]) {
+	    //             DerSounds.play(i);
+	    //         }
+	    //     }
+	    // }
+
+	    // Allow callback to run at most 1 time per 100ms
+	    // window.addEventListener("resize", throttle(callback, 100));
+	    // // Allow callback to run on each resize event
+	    // window.addEventListener("resize", callback2);
+	    //
+	    // function callback ()  { console.count("Throttled");     }
+	    // function callback2 () { console.count("Not Throttled"); }
+
+	    throttle: function(callback, limit) {
+	        console.log(limit);
+	        var wait = false;                  // Initially, we're not waiting
+	        return function () {               // We return a throttled function
+	            if (!wait) {                   // If we're not waiting
+	                callback.call();           // Execute users function
+	                wait = true;               // Prevent future invocations
+	                setTimeout(function () {   // After a period of time
+	                    wait = false;          // And allow future invocations
+	                }, limit);
+	            }
+	        }
+	    },
+
+	    playSound() {
+	        var x =  event.clientX || Math.round(event.touches[0].clientX);
+
+	        // console.log(x);
+	        for (var i = 0; i < DerSearch.sounds.length; i++) {
+	            if (x === DerSearch.sounds[i]) {
+	                DerSounds.play(i);
+	            }
+	        }
+	    },
+
+	    handleEvent: function(event) {
+	        // console.log(event.type);
+	        switch(event.type) {
+	        case 'mousedown':
+	        case 'touchstart':
+	            this.container.removeEventListener('mousemove', this, false);
+	            this.container.removeEventListener('touchmove', this, false);
+
+	            // Horizontal
+	            var pointerX = event.clientX || event.touches[0].clientX,
+	                elementX = this.elementCenter.x,
+	                distance;
+
+	            if (pointerX > elementX) {
+	                distance = pointerX - elementX;
+	            } else {
+	                distance = elementX - pointerX;
+	            }
+
+	            this.sounds = this.getSoundsPositions(distance, pointerX);
+	            console.log(this.sounds);
+
+	            this.lastTouchPos = event.clientX;
+	            this.container.addEventListener('mousemove', this.throttle(DerSearch.playSound, 100), false);
+	            this.container.addEventListener('touchmove', this.throttle(DerSearch.playSound, 100), false);
+
+	            break;
+
+	        case 'mousemove':
+	        case 'touchmove':
+	            this.container.addEventListener('mouseup', this, false);
+	            this.container.addEventListener('touchend', this, false);
+
+	            this.throttle(function() {
+
+	            }, 100);
+	            break;
+
+	        case 'mouseup':
+	        case 'touchend':
+	            this.container.removeEventListener('mousemove', this, false);
+	            this.container.removeEventListener('touchmove', this, false);
+	            break;
+	        }
+
+	    }
+	};
+
+	module.exports = DerSearch;
+
+
+/***/ },
+/* 101 */
 /***/ function(module, exports) {
 
 	window.AudioContext = window.AudioContext || window.webkitAudioContext;
 	var ctx = new AudioContext(), currentOsc;
 
 	var DerSounds = {
-	    play: function(distance, direction, size, callback) {
+	    play: function(index) {
+	        console.log(index);
+	        this.stop();
 	        var o = ctx.createOscillator();
-	        o.type = direction === 'x' ? 'sine' : 'triangle';
-	        o.frequency.value = this._getNote(distance, size);
+	        o.type = 'sine';
+	        o.frequency.value = notes[index];
 	        o.start(0);
 	        o.connect(ctx.destination);
 	        currentOsc = o;
-
+	        // console.log(o.frequency.value);
 	        setTimeout(function() {
 	            DerSounds.stop();
-	            if (callback) {
-	                callback();
-	            }
 	        }, 100);
 	        return;
 	    },
 
 	    stop: function(){
-	        currentOsc.stop(0);
+	        if (currentOsc) {
+	            currentOsc.stop(0);
+	        }
 	    },
 
-	    _getNote: function(distance, size) {
-	        var index = Math.round(distance / (size/2) * notes.length);
-	        var note = notes.slice(-Math.abs(index)-1, -Math.abs(index));
-	        return note;
+	    getNotesLength: function() {
+	        return notes.length;
 	    }
 	};
 
 	module.exports = DerSounds;
 
 	var notes = [
-	    16.35,
-	    17.32,
-	    17.32,
-	    18.35,
-	    19.45,
-	    19.45,
-	    20.60,
-	    21.83,
-	    23.12,
-	    23.12,
-	    24.50,
-	    25.96,
-	    25.96,
-	    27.50,
-	    29.14,
-	    29.14,
-	    30.87,
-	    32.70,
-	    34.65,
-	    34.65,
-	    36.71,
-	    38.89,
-	    38.89,
-	    41.20,
-	    43.65,
-	    46.25,
-	    46.25,
-	    49.00,
-	    51.91,
-	    51.91,
-	    55.00,
-	    58.27,
-	    58.27,
-	    61.74,
-	    65.41,
-	    69.30,
-	    69.30,
-	    73.42,
-	    77.78,
-	    77.78,
-	    82.41,
-	    87.31,
-	    92.50,
-	    92.50,
-	    98.00,
-	    103.83,
-	    103.83,
-	    110.00,
-	    116.54,
-	    116.54,
-	    123.47,
-	    130.81,
-	    138.59,
-	    138.59,
-	    146.83,
-	    155.56,
-	    155.56,
-	    164.81,
-	    174.61,
-	    185.00,
-	    185.00,
-	    196.00,
-	    207.65,
-	    207.65,
-	    220.00,
-	    233.08,
-	    233.08,
-	    246.94,
-	    261.63,
-	    277.18,
-	    277.18,
-	    293.66,
-	    311.13,
-	    311.13,
-	    329.63,
-	    349.23,
-	    369.99,
-	    369.99,
-	    392.00,
-	    415.30,
-	    415.30,
-	    440.00,
-	    466.16,
-	    466.16,
-	    493.88,
-	    523.25,
-	    554.37,
-	    554.37,
-	    587.33,
-	    622.25,
-	    622.25,
-	    659.26,
-	    698.46,
-	    739.99,
-	    739.99,
-	    783.99,
-	    830.61,
-	    830.61,
-	    880.00,
-	    932.33,
-	    932.33,
-	    987.77,
-	    1046.50,
-	    1108.73,
-	    1108.73,
-	    1174.66,
-	    1244.51,
-	    1244.51,
-	    1318.51,
-	    1396.91,
-	    1479.98,
-	    1479.98,
-	    1567.98,
-	    1661.22,
-	    1661.22,
-	    1760.00,
-	    1864.66,
-	    1864.66,
-	    1975.53,
-	    2093.00,
-	    2217.46,
-	    2217.46,
-	    2349.32,
-	    2489.02,
-	    2489.02,
-	    2637.02,
-	    2793.83,
-	    2959.96,
-	    2959.96,
-	    3135.96,
-	    3322.44,
-	    3322.44,
-	    3520.00,
-	    3729.31,
-	    3729.31,
-	    3951.07,
-	    4186.01
+	    261.63, // 'C4'
+	    293.66, // 'D4'
+	    329.63, // 'E4'
+	    349.23, // 'F4'
+	    392.00, // 'G4'
+	    440.00, // 'A4'
+	    493.88, // 'B4'
+	    523.25 // 'C5'
 	];
 
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports) {
 
 	var DerFilesList = {
@@ -23087,7 +23076,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Utils = __webpack_require__(97);
@@ -23175,7 +23164,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports) {
 
 	var DerMode = {
@@ -23211,9 +23200,1221 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
-
-
 	module.exports = DerMode;
+
+
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;;(function () {
+		'use strict';
+
+		/**
+		 * @preserve FastClick: polyfill to remove click delays on browsers with touch UIs.
+		 *
+		 * @codingstandard ftlabs-jsv2
+		 * @copyright The Financial Times Limited [All Rights Reserved]
+		 * @license MIT License (see LICENSE.txt)
+		 */
+
+		/*jslint browser:true, node:true*/
+		/*global define, Event, Node*/
+
+
+		/**
+		 * Instantiate fast-clicking listeners on the specified layer.
+		 *
+		 * @constructor
+		 * @param {Element} layer The layer to listen on
+		 * @param {Object} [options={}] The options to override the defaults
+		 */
+		function FastClick(layer, options) {
+			var oldOnClick;
+
+			options = options || {};
+
+			/**
+			 * Whether a click is currently being tracked.
+			 *
+			 * @type boolean
+			 */
+			this.trackingClick = false;
+
+
+			/**
+			 * Timestamp for when click tracking started.
+			 *
+			 * @type number
+			 */
+			this.trackingClickStart = 0;
+
+
+			/**
+			 * The element being tracked for a click.
+			 *
+			 * @type EventTarget
+			 */
+			this.targetElement = null;
+
+
+			/**
+			 * X-coordinate of touch start event.
+			 *
+			 * @type number
+			 */
+			this.touchStartX = 0;
+
+
+			/**
+			 * Y-coordinate of touch start event.
+			 *
+			 * @type number
+			 */
+			this.touchStartY = 0;
+
+
+			/**
+			 * ID of the last touch, retrieved from Touch.identifier.
+			 *
+			 * @type number
+			 */
+			this.lastTouchIdentifier = 0;
+
+
+			/**
+			 * Touchmove boundary, beyond which a click will be cancelled.
+			 *
+			 * @type number
+			 */
+			this.touchBoundary = options.touchBoundary || 10;
+
+
+			/**
+			 * The FastClick layer.
+			 *
+			 * @type Element
+			 */
+			this.layer = layer;
+
+			/**
+			 * The minimum time between tap(touchstart and touchend) events
+			 *
+			 * @type number
+			 */
+			this.tapDelay = options.tapDelay || 200;
+
+			/**
+			 * The maximum time for a tap
+			 *
+			 * @type number
+			 */
+			this.tapTimeout = options.tapTimeout || 700;
+
+			if (FastClick.notNeeded(layer)) {
+				return;
+			}
+
+			// Some old versions of Android don't have Function.prototype.bind
+			function bind(method, context) {
+				return function() { return method.apply(context, arguments); };
+			}
+
+
+			var methods = ['onMouse', 'onClick', 'onTouchStart', 'onTouchMove', 'onTouchEnd', 'onTouchCancel'];
+			var context = this;
+			for (var i = 0, l = methods.length; i < l; i++) {
+				context[methods[i]] = bind(context[methods[i]], context);
+			}
+
+			// Set up event handlers as required
+			if (deviceIsAndroid) {
+				layer.addEventListener('mouseover', this.onMouse, true);
+				layer.addEventListener('mousedown', this.onMouse, true);
+				layer.addEventListener('mouseup', this.onMouse, true);
+			}
+
+			layer.addEventListener('click', this.onClick, true);
+			layer.addEventListener('touchstart', this.onTouchStart, false);
+			layer.addEventListener('touchmove', this.onTouchMove, false);
+			layer.addEventListener('touchend', this.onTouchEnd, false);
+			layer.addEventListener('touchcancel', this.onTouchCancel, false);
+
+			// Hack is required for browsers that don't support Event#stopImmediatePropagation (e.g. Android 2)
+			// which is how FastClick normally stops click events bubbling to callbacks registered on the FastClick
+			// layer when they are cancelled.
+			if (!Event.prototype.stopImmediatePropagation) {
+				layer.removeEventListener = function(type, callback, capture) {
+					var rmv = Node.prototype.removeEventListener;
+					if (type === 'click') {
+						rmv.call(layer, type, callback.hijacked || callback, capture);
+					} else {
+						rmv.call(layer, type, callback, capture);
+					}
+				};
+
+				layer.addEventListener = function(type, callback, capture) {
+					var adv = Node.prototype.addEventListener;
+					if (type === 'click') {
+						adv.call(layer, type, callback.hijacked || (callback.hijacked = function(event) {
+							if (!event.propagationStopped) {
+								callback(event);
+							}
+						}), capture);
+					} else {
+						adv.call(layer, type, callback, capture);
+					}
+				};
+			}
+
+			// If a handler is already declared in the element's onclick attribute, it will be fired before
+			// FastClick's onClick handler. Fix this by pulling out the user-defined handler function and
+			// adding it as listener.
+			if (typeof layer.onclick === 'function') {
+
+				// Android browser on at least 3.2 requires a new reference to the function in layer.onclick
+				// - the old one won't work if passed to addEventListener directly.
+				oldOnClick = layer.onclick;
+				layer.addEventListener('click', function(event) {
+					oldOnClick(event);
+				}, false);
+				layer.onclick = null;
+			}
+		}
+
+		/**
+		* Windows Phone 8.1 fakes user agent string to look like Android and iPhone.
+		*
+		* @type boolean
+		*/
+		var deviceIsWindowsPhone = navigator.userAgent.indexOf("Windows Phone") >= 0;
+
+		/**
+		 * Android requires exceptions.
+		 *
+		 * @type boolean
+		 */
+		var deviceIsAndroid = navigator.userAgent.indexOf('Android') > 0 && !deviceIsWindowsPhone;
+
+
+		/**
+		 * iOS requires exceptions.
+		 *
+		 * @type boolean
+		 */
+		var deviceIsIOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !deviceIsWindowsPhone;
+
+
+		/**
+		 * iOS 4 requires an exception for select elements.
+		 *
+		 * @type boolean
+		 */
+		var deviceIsIOS4 = deviceIsIOS && (/OS 4_\d(_\d)?/).test(navigator.userAgent);
+
+
+		/**
+		 * iOS 6.0-7.* requires the target element to be manually derived
+		 *
+		 * @type boolean
+		 */
+		var deviceIsIOSWithBadTarget = deviceIsIOS && (/OS [6-7]_\d/).test(navigator.userAgent);
+
+		/**
+		 * BlackBerry requires exceptions.
+		 *
+		 * @type boolean
+		 */
+		var deviceIsBlackBerry10 = navigator.userAgent.indexOf('BB10') > 0;
+
+		/**
+		 * Determine whether a given element requires a native click.
+		 *
+		 * @param {EventTarget|Element} target Target DOM element
+		 * @returns {boolean} Returns true if the element needs a native click
+		 */
+		FastClick.prototype.needsClick = function(target) {
+			switch (target.nodeName.toLowerCase()) {
+
+			// Don't send a synthetic click to disabled inputs (issue #62)
+			case 'button':
+			case 'select':
+			case 'textarea':
+				if (target.disabled) {
+					return true;
+				}
+
+				break;
+			case 'input':
+
+				// File inputs need real clicks on iOS 6 due to a browser bug (issue #68)
+				if ((deviceIsIOS && target.type === 'file') || target.disabled) {
+					return true;
+				}
+
+				break;
+			case 'label':
+			case 'iframe': // iOS8 homescreen apps can prevent events bubbling into frames
+			case 'video':
+				return true;
+			}
+
+			return (/\bneedsclick\b/).test(target.className);
+		};
+
+
+		/**
+		 * Determine whether a given element requires a call to focus to simulate click into element.
+		 *
+		 * @param {EventTarget|Element} target Target DOM element
+		 * @returns {boolean} Returns true if the element requires a call to focus to simulate native click.
+		 */
+		FastClick.prototype.needsFocus = function(target) {
+			switch (target.nodeName.toLowerCase()) {
+			case 'textarea':
+				return true;
+			case 'select':
+				return !deviceIsAndroid;
+			case 'input':
+				switch (target.type) {
+				case 'button':
+				case 'checkbox':
+				case 'file':
+				case 'image':
+				case 'radio':
+				case 'submit':
+					return false;
+				}
+
+				// No point in attempting to focus disabled inputs
+				return !target.disabled && !target.readOnly;
+			default:
+				return (/\bneedsfocus\b/).test(target.className);
+			}
+		};
+
+
+		/**
+		 * Send a click event to the specified element.
+		 *
+		 * @param {EventTarget|Element} targetElement
+		 * @param {Event} event
+		 */
+		FastClick.prototype.sendClick = function(targetElement, event) {
+			var clickEvent, touch;
+
+			// On some Android devices activeElement needs to be blurred otherwise the synthetic click will have no effect (#24)
+			if (document.activeElement && document.activeElement !== targetElement) {
+				document.activeElement.blur();
+			}
+
+			touch = event.changedTouches[0];
+
+			// Synthesise a click event, with an extra attribute so it can be tracked
+			clickEvent = document.createEvent('MouseEvents');
+			clickEvent.initMouseEvent(this.determineEventType(targetElement), true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+			clickEvent.forwardedTouchEvent = true;
+			targetElement.dispatchEvent(clickEvent);
+		};
+
+		FastClick.prototype.determineEventType = function(targetElement) {
+
+			//Issue #159: Android Chrome Select Box does not open with a synthetic click event
+			if (deviceIsAndroid && targetElement.tagName.toLowerCase() === 'select') {
+				return 'mousedown';
+			}
+
+			return 'click';
+		};
+
+
+		/**
+		 * @param {EventTarget|Element} targetElement
+		 */
+		FastClick.prototype.focus = function(targetElement) {
+			var length;
+
+			// Issue #160: on iOS 7, some input elements (e.g. date datetime month) throw a vague TypeError on setSelectionRange. These elements don't have an integer value for the selectionStart and selectionEnd properties, but unfortunately that can't be used for detection because accessing the properties also throws a TypeError. Just check the type instead. Filed as Apple bug #15122724.
+			if (deviceIsIOS && targetElement.setSelectionRange && targetElement.type.indexOf('date') !== 0 && targetElement.type !== 'time' && targetElement.type !== 'month') {
+				length = targetElement.value.length;
+				targetElement.setSelectionRange(length, length);
+			} else {
+				targetElement.focus();
+			}
+		};
+
+
+		/**
+		 * Check whether the given target element is a child of a scrollable layer and if so, set a flag on it.
+		 *
+		 * @param {EventTarget|Element} targetElement
+		 */
+		FastClick.prototype.updateScrollParent = function(targetElement) {
+			var scrollParent, parentElement;
+
+			scrollParent = targetElement.fastClickScrollParent;
+
+			// Attempt to discover whether the target element is contained within a scrollable layer. Re-check if the
+			// target element was moved to another parent.
+			if (!scrollParent || !scrollParent.contains(targetElement)) {
+				parentElement = targetElement;
+				do {
+					if (parentElement.scrollHeight > parentElement.offsetHeight) {
+						scrollParent = parentElement;
+						targetElement.fastClickScrollParent = parentElement;
+						break;
+					}
+
+					parentElement = parentElement.parentElement;
+				} while (parentElement);
+			}
+
+			// Always update the scroll top tracker if possible.
+			if (scrollParent) {
+				scrollParent.fastClickLastScrollTop = scrollParent.scrollTop;
+			}
+		};
+
+
+		/**
+		 * @param {EventTarget} targetElement
+		 * @returns {Element|EventTarget}
+		 */
+		FastClick.prototype.getTargetElementFromEventTarget = function(eventTarget) {
+
+			// On some older browsers (notably Safari on iOS 4.1 - see issue #56) the event target may be a text node.
+			if (eventTarget.nodeType === Node.TEXT_NODE) {
+				return eventTarget.parentNode;
+			}
+
+			return eventTarget;
+		};
+
+
+		/**
+		 * On touch start, record the position and scroll offset.
+		 *
+		 * @param {Event} event
+		 * @returns {boolean}
+		 */
+		FastClick.prototype.onTouchStart = function(event) {
+			var targetElement, touch, selection;
+
+			// Ignore multiple touches, otherwise pinch-to-zoom is prevented if both fingers are on the FastClick element (issue #111).
+			if (event.targetTouches.length > 1) {
+				return true;
+			}
+
+			targetElement = this.getTargetElementFromEventTarget(event.target);
+			touch = event.targetTouches[0];
+
+			if (deviceIsIOS) {
+
+				// Only trusted events will deselect text on iOS (issue #49)
+				selection = window.getSelection();
+				if (selection.rangeCount && !selection.isCollapsed) {
+					return true;
+				}
+
+				if (!deviceIsIOS4) {
+
+					// Weird things happen on iOS when an alert or confirm dialog is opened from a click event callback (issue #23):
+					// when the user next taps anywhere else on the page, new touchstart and touchend events are dispatched
+					// with the same identifier as the touch event that previously triggered the click that triggered the alert.
+					// Sadly, there is an issue on iOS 4 that causes some normal touch events to have the same identifier as an
+					// immediately preceeding touch event (issue #52), so this fix is unavailable on that platform.
+					// Issue 120: touch.identifier is 0 when Chrome dev tools 'Emulate touch events' is set with an iOS device UA string,
+					// which causes all touch events to be ignored. As this block only applies to iOS, and iOS identifiers are always long,
+					// random integers, it's safe to to continue if the identifier is 0 here.
+					if (touch.identifier && touch.identifier === this.lastTouchIdentifier) {
+						event.preventDefault();
+						return false;
+					}
+
+					this.lastTouchIdentifier = touch.identifier;
+
+					// If the target element is a child of a scrollable layer (using -webkit-overflow-scrolling: touch) and:
+					// 1) the user does a fling scroll on the scrollable layer
+					// 2) the user stops the fling scroll with another tap
+					// then the event.target of the last 'touchend' event will be the element that was under the user's finger
+					// when the fling scroll was started, causing FastClick to send a click event to that layer - unless a check
+					// is made to ensure that a parent layer was not scrolled before sending a synthetic click (issue #42).
+					this.updateScrollParent(targetElement);
+				}
+			}
+
+			this.trackingClick = true;
+			this.trackingClickStart = event.timeStamp;
+			this.targetElement = targetElement;
+
+			this.touchStartX = touch.pageX;
+			this.touchStartY = touch.pageY;
+
+			// Prevent phantom clicks on fast double-tap (issue #36)
+			if ((event.timeStamp - this.lastClickTime) < this.tapDelay) {
+				event.preventDefault();
+			}
+
+			return true;
+		};
+
+
+		/**
+		 * Based on a touchmove event object, check whether the touch has moved past a boundary since it started.
+		 *
+		 * @param {Event} event
+		 * @returns {boolean}
+		 */
+		FastClick.prototype.touchHasMoved = function(event) {
+			var touch = event.changedTouches[0], boundary = this.touchBoundary;
+
+			if (Math.abs(touch.pageX - this.touchStartX) > boundary || Math.abs(touch.pageY - this.touchStartY) > boundary) {
+				return true;
+			}
+
+			return false;
+		};
+
+
+		/**
+		 * Update the last position.
+		 *
+		 * @param {Event} event
+		 * @returns {boolean}
+		 */
+		FastClick.prototype.onTouchMove = function(event) {
+			if (!this.trackingClick) {
+				return true;
+			}
+
+			// If the touch has moved, cancel the click tracking
+			if (this.targetElement !== this.getTargetElementFromEventTarget(event.target) || this.touchHasMoved(event)) {
+				this.trackingClick = false;
+				this.targetElement = null;
+			}
+
+			return true;
+		};
+
+
+		/**
+		 * Attempt to find the labelled control for the given label element.
+		 *
+		 * @param {EventTarget|HTMLLabelElement} labelElement
+		 * @returns {Element|null}
+		 */
+		FastClick.prototype.findControl = function(labelElement) {
+
+			// Fast path for newer browsers supporting the HTML5 control attribute
+			if (labelElement.control !== undefined) {
+				return labelElement.control;
+			}
+
+			// All browsers under test that support touch events also support the HTML5 htmlFor attribute
+			if (labelElement.htmlFor) {
+				return document.getElementById(labelElement.htmlFor);
+			}
+
+			// If no for attribute exists, attempt to retrieve the first labellable descendant element
+			// the list of which is defined here: http://www.w3.org/TR/html5/forms.html#category-label
+			return labelElement.querySelector('button, input:not([type=hidden]), keygen, meter, output, progress, select, textarea');
+		};
+
+
+		/**
+		 * On touch end, determine whether to send a click event at once.
+		 *
+		 * @param {Event} event
+		 * @returns {boolean}
+		 */
+		FastClick.prototype.onTouchEnd = function(event) {
+			var forElement, trackingClickStart, targetTagName, scrollParent, touch, targetElement = this.targetElement;
+
+			if (!this.trackingClick) {
+				return true;
+			}
+
+			// Prevent phantom clicks on fast double-tap (issue #36)
+			if ((event.timeStamp - this.lastClickTime) < this.tapDelay) {
+				this.cancelNextClick = true;
+				return true;
+			}
+
+			if ((event.timeStamp - this.trackingClickStart) > this.tapTimeout) {
+				return true;
+			}
+
+			// Reset to prevent wrong click cancel on input (issue #156).
+			this.cancelNextClick = false;
+
+			this.lastClickTime = event.timeStamp;
+
+			trackingClickStart = this.trackingClickStart;
+			this.trackingClick = false;
+			this.trackingClickStart = 0;
+
+			// On some iOS devices, the targetElement supplied with the event is invalid if the layer
+			// is performing a transition or scroll, and has to be re-detected manually. Note that
+			// for this to function correctly, it must be called *after* the event target is checked!
+			// See issue #57; also filed as rdar://13048589 .
+			if (deviceIsIOSWithBadTarget) {
+				touch = event.changedTouches[0];
+
+				// In certain cases arguments of elementFromPoint can be negative, so prevent setting targetElement to null
+				targetElement = document.elementFromPoint(touch.pageX - window.pageXOffset, touch.pageY - window.pageYOffset) || targetElement;
+				targetElement.fastClickScrollParent = this.targetElement.fastClickScrollParent;
+			}
+
+			targetTagName = targetElement.tagName.toLowerCase();
+			if (targetTagName === 'label') {
+				forElement = this.findControl(targetElement);
+				if (forElement) {
+					this.focus(targetElement);
+					if (deviceIsAndroid) {
+						return false;
+					}
+
+					targetElement = forElement;
+				}
+			} else if (this.needsFocus(targetElement)) {
+
+				// Case 1: If the touch started a while ago (best guess is 100ms based on tests for issue #36) then focus will be triggered anyway. Return early and unset the target element reference so that the subsequent click will be allowed through.
+				// Case 2: Without this exception for input elements tapped when the document is contained in an iframe, then any inputted text won't be visible even though the value attribute is updated as the user types (issue #37).
+				if ((event.timeStamp - trackingClickStart) > 100 || (deviceIsIOS && window.top !== window && targetTagName === 'input')) {
+					this.targetElement = null;
+					return false;
+				}
+
+				this.focus(targetElement);
+				this.sendClick(targetElement, event);
+
+				// Select elements need the event to go through on iOS 4, otherwise the selector menu won't open.
+				// Also this breaks opening selects when VoiceOver is active on iOS6, iOS7 (and possibly others)
+				if (!deviceIsIOS || targetTagName !== 'select') {
+					this.targetElement = null;
+					event.preventDefault();
+				}
+
+				return false;
+			}
+
+			if (deviceIsIOS && !deviceIsIOS4) {
+
+				// Don't send a synthetic click event if the target element is contained within a parent layer that was scrolled
+				// and this tap is being used to stop the scrolling (usually initiated by a fling - issue #42).
+				scrollParent = targetElement.fastClickScrollParent;
+				if (scrollParent && scrollParent.fastClickLastScrollTop !== scrollParent.scrollTop) {
+					return true;
+				}
+			}
+
+			// Prevent the actual click from going though - unless the target node is marked as requiring
+			// real clicks or if it is in the whitelist in which case only non-programmatic clicks are permitted.
+			if (!this.needsClick(targetElement)) {
+				event.preventDefault();
+				this.sendClick(targetElement, event);
+			}
+
+			return false;
+		};
+
+
+		/**
+		 * On touch cancel, stop tracking the click.
+		 *
+		 * @returns {void}
+		 */
+		FastClick.prototype.onTouchCancel = function() {
+			this.trackingClick = false;
+			this.targetElement = null;
+		};
+
+
+		/**
+		 * Determine mouse events which should be permitted.
+		 *
+		 * @param {Event} event
+		 * @returns {boolean}
+		 */
+		FastClick.prototype.onMouse = function(event) {
+
+			// If a target element was never set (because a touch event was never fired) allow the event
+			if (!this.targetElement) {
+				return true;
+			}
+
+			if (event.forwardedTouchEvent) {
+				return true;
+			}
+
+			// Programmatically generated events targeting a specific element should be permitted
+			if (!event.cancelable) {
+				return true;
+			}
+
+			// Derive and check the target element to see whether the mouse event needs to be permitted;
+			// unless explicitly enabled, prevent non-touch click events from triggering actions,
+			// to prevent ghost/doubleclicks.
+			if (!this.needsClick(this.targetElement) || this.cancelNextClick) {
+
+				// Prevent any user-added listeners declared on FastClick element from being fired.
+				if (event.stopImmediatePropagation) {
+					event.stopImmediatePropagation();
+				} else {
+
+					// Part of the hack for browsers that don't support Event#stopImmediatePropagation (e.g. Android 2)
+					event.propagationStopped = true;
+				}
+
+				// Cancel the event
+				event.stopPropagation();
+				event.preventDefault();
+
+				return false;
+			}
+
+			// If the mouse event is permitted, return true for the action to go through.
+			return true;
+		};
+
+
+		/**
+		 * On actual clicks, determine whether this is a touch-generated click, a click action occurring
+		 * naturally after a delay after a touch (which needs to be cancelled to avoid duplication), or
+		 * an actual click which should be permitted.
+		 *
+		 * @param {Event} event
+		 * @returns {boolean}
+		 */
+		FastClick.prototype.onClick = function(event) {
+			var permitted;
+
+			// It's possible for another FastClick-like library delivered with third-party code to fire a click event before FastClick does (issue #44). In that case, set the click-tracking flag back to false and return early. This will cause onTouchEnd to return early.
+			if (this.trackingClick) {
+				this.targetElement = null;
+				this.trackingClick = false;
+				return true;
+			}
+
+			// Very odd behaviour on iOS (issue #18): if a submit element is present inside a form and the user hits enter in the iOS simulator or clicks the Go button on the pop-up OS keyboard the a kind of 'fake' click event will be triggered with the submit-type input element as the target.
+			if (event.target.type === 'submit' && event.detail === 0) {
+				return true;
+			}
+
+			permitted = this.onMouse(event);
+
+			// Only unset targetElement if the click is not permitted. This will ensure that the check for !targetElement in onMouse fails and the browser's click doesn't go through.
+			if (!permitted) {
+				this.targetElement = null;
+			}
+
+			// If clicks are permitted, return true for the action to go through.
+			return permitted;
+		};
+
+
+		/**
+		 * Remove all FastClick's event listeners.
+		 *
+		 * @returns {void}
+		 */
+		FastClick.prototype.destroy = function() {
+			var layer = this.layer;
+
+			if (deviceIsAndroid) {
+				layer.removeEventListener('mouseover', this.onMouse, true);
+				layer.removeEventListener('mousedown', this.onMouse, true);
+				layer.removeEventListener('mouseup', this.onMouse, true);
+			}
+
+			layer.removeEventListener('click', this.onClick, true);
+			layer.removeEventListener('touchstart', this.onTouchStart, false);
+			layer.removeEventListener('touchmove', this.onTouchMove, false);
+			layer.removeEventListener('touchend', this.onTouchEnd, false);
+			layer.removeEventListener('touchcancel', this.onTouchCancel, false);
+		};
+
+
+		/**
+		 * Check whether FastClick is needed.
+		 *
+		 * @param {Element} layer The layer to listen on
+		 */
+		FastClick.notNeeded = function(layer) {
+			var metaViewport;
+			var chromeVersion;
+			var blackberryVersion;
+			var firefoxVersion;
+
+			// Devices that don't support touch don't need FastClick
+			if (typeof window.ontouchstart === 'undefined') {
+				return true;
+			}
+
+			// Chrome version - zero for other browsers
+			chromeVersion = +(/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [,0])[1];
+
+			if (chromeVersion) {
+
+				if (deviceIsAndroid) {
+					metaViewport = document.querySelector('meta[name=viewport]');
+
+					if (metaViewport) {
+						// Chrome on Android with user-scalable="no" doesn't need FastClick (issue #89)
+						if (metaViewport.content.indexOf('user-scalable=no') !== -1) {
+							return true;
+						}
+						// Chrome 32 and above with width=device-width or less don't need FastClick
+						if (chromeVersion > 31 && document.documentElement.scrollWidth <= window.outerWidth) {
+							return true;
+						}
+					}
+
+				// Chrome desktop doesn't need FastClick (issue #15)
+				} else {
+					return true;
+				}
+			}
+
+			if (deviceIsBlackBerry10) {
+				blackberryVersion = navigator.userAgent.match(/Version\/([0-9]*)\.([0-9]*)/);
+
+				// BlackBerry 10.3+ does not require Fastclick library.
+				// https://github.com/ftlabs/fastclick/issues/251
+				if (blackberryVersion[1] >= 10 && blackberryVersion[2] >= 3) {
+					metaViewport = document.querySelector('meta[name=viewport]');
+
+					if (metaViewport) {
+						// user-scalable=no eliminates click delay.
+						if (metaViewport.content.indexOf('user-scalable=no') !== -1) {
+							return true;
+						}
+						// width=device-width (or less than device-width) eliminates click delay.
+						if (document.documentElement.scrollWidth <= window.outerWidth) {
+							return true;
+						}
+					}
+				}
+			}
+
+			// IE10 with -ms-touch-action: none or manipulation, which disables double-tap-to-zoom (issue #97)
+			if (layer.style.msTouchAction === 'none' || layer.style.touchAction === 'manipulation') {
+				return true;
+			}
+
+			// Firefox version - zero for other browsers
+			firefoxVersion = +(/Firefox\/([0-9]+)/.exec(navigator.userAgent) || [,0])[1];
+
+			if (firefoxVersion >= 27) {
+				// Firefox 27+ does not have tap delay if the content is not zoomable - https://bugzilla.mozilla.org/show_bug.cgi?id=922896
+
+				metaViewport = document.querySelector('meta[name=viewport]');
+				if (metaViewport && (metaViewport.content.indexOf('user-scalable=no') !== -1 || document.documentElement.scrollWidth <= window.outerWidth)) {
+					return true;
+				}
+			}
+
+			// IE11: prefixed -ms-touch-action is no longer supported and it's recomended to use non-prefixed version
+			// http://msdn.microsoft.com/en-us/library/windows/apps/Hh767313.aspx
+			if (layer.style.touchAction === 'none' || layer.style.touchAction === 'manipulation') {
+				return true;
+			}
+
+			return false;
+		};
+
+
+		/**
+		 * Factory method for creating a FastClick object
+		 *
+		 * @param {Element} layer The layer to listen on
+		 * @param {Object} [options={}] The options to override the defaults
+		 */
+		FastClick.attach = function(layer, options) {
+			return new FastClick(layer, options);
+		};
+
+
+		if (true) {
+
+			// AMD. Register as an anonymous module.
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+				return FastClick;
+			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else if (typeof module !== 'undefined' && module.exports) {
+			module.exports = FastClick.attach;
+			module.exports.FastClick = FastClick;
+		} else {
+			window.FastClick = FastClick;
+		}
+	}());
+
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;(function(window, document, exportName, undefined) {
+	    "use strict";
+
+	    var isMultiTouch = false;
+	    var multiTouchStartPos;
+	    var eventTarget;
+	    var touchElements = {};
+
+	    // polyfills
+	    if(!document.createTouch) {
+	        document.createTouch = function(view, target, identifier, pageX, pageY, screenX, screenY, clientX, clientY) {
+	            // auto set
+	            if(clientX == undefined || clientY == undefined) {
+	                clientX = pageX - window.pageXOffset;
+	                clientY = pageY - window.pageYOffset;
+	            }
+
+	            return new Touch(target, identifier, {
+	                pageX: pageX,
+	                pageY: pageY,
+	                screenX: screenX,
+	                screenY: screenY,
+	                clientX: clientX,
+	                clientY: clientY
+	            });
+	        };
+	    }
+
+	    if(!document.createTouchList) {
+	        document.createTouchList = function() {
+	            var touchList = new TouchList();
+	            for (var i = 0; i < arguments.length; i++) {
+	                touchList[i] = arguments[i];
+	            }
+	            touchList.length = arguments.length;
+	            return touchList;
+	        };
+	    }
+
+	    /**
+	     * create an touch point
+	     * @constructor
+	     * @param target
+	     * @param identifier
+	     * @param pos
+	     * @param deltaX
+	     * @param deltaY
+	     * @returns {Object} touchPoint
+	     */
+	    function Touch(target, identifier, pos, deltaX, deltaY) {
+	        deltaX = deltaX || 0;
+	        deltaY = deltaY || 0;
+
+	        this.identifier = identifier;
+	        this.target = target;
+	        this.clientX = pos.clientX + deltaX;
+	        this.clientY = pos.clientY + deltaY;
+	        this.screenX = pos.screenX + deltaX;
+	        this.screenY = pos.screenY + deltaY;
+	        this.pageX = pos.pageX + deltaX;
+	        this.pageY = pos.pageY + deltaY;
+	    }
+
+	    /**
+	     * create empty touchlist with the methods
+	     * @constructor
+	     * @returns touchList
+	     */
+	    function TouchList() {
+	        var touchList = [];
+
+	        touchList.item = function(index) {
+	            return this[index] || null;
+	        };
+
+	        // specified by Mozilla
+	        touchList.identifiedTouch = function(id) {
+	            return this[id + 1] || null;
+	        };
+
+	        return touchList;
+	    }
+
+
+	    /**
+	     * Simple trick to fake touch event support
+	     * this is enough for most libraries like Modernizr and Hammer
+	     */
+	    function fakeTouchSupport() {
+	        var objs = [window, document.documentElement];
+	        var props = ['ontouchstart', 'ontouchmove', 'ontouchcancel', 'ontouchend'];
+
+	        for(var o=0; o<objs.length; o++) {
+	            for(var p=0; p<props.length; p++) {
+	                if(objs[o] && objs[o][props[p]] == undefined) {
+	                    objs[o][props[p]] = null;
+	                }
+	            }
+	        }
+	    }
+
+	    /**
+	     * we don't have to emulate on a touch device
+	     * @returns {boolean}
+	     */
+	    function hasTouchSupport() {
+	        return ("ontouchstart" in window) || // touch events
+	               (window.Modernizr && window.Modernizr.touch) || // modernizr
+	               (navigator.msMaxTouchPoints || navigator.maxTouchPoints) > 2; // pointer events
+	    }
+
+	    /**
+	     * disable mouseevents on the page
+	     * @param ev
+	     */
+	    function preventMouseEvents(ev) {
+	        ev.preventDefault();
+	        ev.stopPropagation();
+	    }
+
+	    /**
+	     * only trigger touches when the left mousebutton has been pressed
+	     * @param touchType
+	     * @returns {Function}
+	     */
+	    function onMouse(touchType) {
+	        return function(ev) {
+	            // prevent mouse events
+	            preventMouseEvents(ev);
+
+	            if (ev.which !== 1) {
+	                return;
+	            }
+
+	            // The EventTarget on which the touch point started when it was first placed on the surface,
+	            // even if the touch point has since moved outside the interactive area of that element.
+	            // also, when the target doesnt exist anymore, we update it
+	            if (ev.type == 'mousedown' || !eventTarget || (eventTarget && !eventTarget.dispatchEvent)) {
+	                eventTarget = ev.target;
+	            }
+
+	            // shiftKey has been lost, so trigger a touchend
+	            if (isMultiTouch && !ev.shiftKey) {
+	                triggerTouch('touchend', ev);
+	                isMultiTouch = false;
+	            }
+
+	            triggerTouch(touchType, ev);
+
+	            // we're entering the multi-touch mode!
+	            if (!isMultiTouch && ev.shiftKey) {
+	                isMultiTouch = true;
+	                multiTouchStartPos = {
+	                    pageX: ev.pageX,
+	                    pageY: ev.pageY,
+	                    clientX: ev.clientX,
+	                    clientY: ev.clientY,
+	                    screenX: ev.screenX,
+	                    screenY: ev.screenY
+	                };
+	                triggerTouch('touchstart', ev);
+	            }
+
+	            // reset
+	            if (ev.type == 'mouseup') {
+	                multiTouchStartPos = null;
+	                isMultiTouch = false;
+	                eventTarget = null;
+	            }
+	        }
+	    }
+
+	    /**
+	     * trigger a touch event
+	     * @param eventName
+	     * @param mouseEv
+	     */
+	    function triggerTouch(eventName, mouseEv) {
+	        var touchEvent = document.createEvent('Event');
+	        touchEvent.initEvent(eventName, true, true);
+
+	        touchEvent.altKey = mouseEv.altKey;
+	        touchEvent.ctrlKey = mouseEv.ctrlKey;
+	        touchEvent.metaKey = mouseEv.metaKey;
+	        touchEvent.shiftKey = mouseEv.shiftKey;
+
+	        touchEvent.touches = getActiveTouches(mouseEv, eventName);
+	        touchEvent.targetTouches = getActiveTouches(mouseEv, eventName);
+	        touchEvent.changedTouches = getChangedTouches(mouseEv, eventName);
+
+	        eventTarget.dispatchEvent(touchEvent);
+	    }
+
+	    /**
+	     * create a touchList based on the mouse event
+	     * @param mouseEv
+	     * @returns {TouchList}
+	     */
+	    function createTouchList(mouseEv) {
+	        var touchList = new TouchList();
+
+	        if (isMultiTouch) {
+	            var f = TouchEmulator.multiTouchOffset;
+	            var deltaX = multiTouchStartPos.pageX - mouseEv.pageX;
+	            var deltaY = multiTouchStartPos.pageY - mouseEv.pageY;
+
+	            touchList.push(new Touch(eventTarget, 1, multiTouchStartPos, (deltaX*-1) - f, (deltaY*-1) + f));
+	            touchList.push(new Touch(eventTarget, 2, multiTouchStartPos, deltaX+f, deltaY-f));
+	        } else {
+	            touchList.push(new Touch(eventTarget, 1, mouseEv, 0, 0));
+	        }
+
+	        return touchList;
+	    }
+
+	    /**
+	     * receive all active touches
+	     * @param mouseEv
+	     * @returns {TouchList}
+	     */
+	    function getActiveTouches(mouseEv, eventName) {
+	        // empty list
+	        if (mouseEv.type == 'mouseup') {
+	            return new TouchList();
+	        }
+
+	        var touchList = createTouchList(mouseEv);
+	        if(isMultiTouch && mouseEv.type != 'mouseup' && eventName == 'touchend') {
+	            touchList.splice(1, 1);
+	        }
+	        return touchList;
+	    }
+
+	    /**
+	     * receive a filtered set of touches with only the changed pointers
+	     * @param mouseEv
+	     * @param eventName
+	     * @returns {TouchList}
+	     */
+	    function getChangedTouches(mouseEv, eventName) {
+	        var touchList = createTouchList(mouseEv);
+
+	        // we only want to return the added/removed item on multitouch
+	        // which is the second pointer, so remove the first pointer from the touchList
+	        //
+	        // but when the mouseEv.type is mouseup, we want to send all touches because then
+	        // no new input will be possible
+	        if(isMultiTouch && mouseEv.type != 'mouseup' &&
+	            (eventName == 'touchstart' || eventName == 'touchend')) {
+	            touchList.splice(0, 1);
+	        }
+
+	        return touchList;
+	    }
+
+	    /**
+	     * show the touchpoints on the screen
+	     */
+	    function showTouches(ev) {
+	        var touch, i, el, styles;
+
+	        // first all visible touches
+	        for(i = 0; i < ev.touches.length; i++) {
+	            touch = ev.touches[i];
+	            el = touchElements[touch.identifier];
+	            if(!el) {
+	                el = touchElements[touch.identifier] = document.createElement("div");
+	                document.body.appendChild(el);
+	            }
+
+	            styles = TouchEmulator.template(touch);
+	            for(var prop in styles) {
+	                el.style[prop] = styles[prop];
+	            }
+	        }
+
+	        // remove all ended touches
+	        if(ev.type == 'touchend' || ev.type == 'touchcancel') {
+	            for(i = 0; i < ev.changedTouches.length; i++) {
+	                touch = ev.changedTouches[i];
+	                el = touchElements[touch.identifier];
+	                if(el) {
+	                    el.parentNode.removeChild(el);
+	                    delete touchElements[touch.identifier];
+	                }
+	            }
+	        }
+	    }
+
+	    /**
+	     * TouchEmulator initializer
+	     */
+	    function TouchEmulator() {
+	        if (hasTouchSupport()) {
+	            return;
+	        }
+
+	        fakeTouchSupport();
+
+	        window.addEventListener("mousedown", onMouse('touchstart'), true);
+	        window.addEventListener("mousemove", onMouse('touchmove'), true);
+	        window.addEventListener("mouseup", onMouse('touchend'), true);
+
+	        window.addEventListener("mouseenter", preventMouseEvents, true);
+	        window.addEventListener("mouseleave", preventMouseEvents, true);
+	        window.addEventListener("mouseout", preventMouseEvents, true);
+	        window.addEventListener("mouseover", preventMouseEvents, true);
+
+	        // it uses itself!
+	        window.addEventListener("touchstart", showTouches, false);
+	        window.addEventListener("touchmove", showTouches, false);
+	        window.addEventListener("touchend", showTouches, false);
+	        window.addEventListener("touchcancel", showTouches, false);
+	    }
+
+	    // start distance when entering the multitouch mode
+	    TouchEmulator.multiTouchOffset = 75;
+
+	    /**
+	     * css template for the touch rendering
+	     * @param touch
+	     * @returns object
+	     */
+	    TouchEmulator.template = function(touch) {
+	        var size = 30;
+	        var transform = 'translate('+ (touch.clientX-(size/2)) +'px, '+ (touch.clientY-(size/2)) +'px)';
+	        return {
+	            position: 'fixed',
+	            left: 0,
+	            top: 0,
+	            background: '#fff',
+	            border: 'solid 1px #999',
+	            opacity: .6,
+	            borderRadius: '100%',
+	            height: size + 'px',
+	            width: size + 'px',
+	            padding: 0,
+	            margin: 0,
+	            display: 'block',
+	            overflow: 'hidden',
+	            pointerEvents: 'none',
+	            webkitUserSelect: 'none',
+	            mozUserSelect: 'none',
+	            userSelect: 'none',
+	            webkitTransform: transform,
+	            mozTransform: transform,
+	            transform: transform
+	        }
+	    };
+
+	    // export
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	            return TouchEmulator;
+	        }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof module != "undefined" && module.exports) {
+	        module.exports = TouchEmulator;
+	    } else {
+	        window[exportName] = TouchEmulator;
+	    }
+	})(window, document, "TouchEmulator");
 
 
 /***/ }

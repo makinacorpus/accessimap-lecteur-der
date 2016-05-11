@@ -3,6 +3,8 @@ var DerFile = require('./der.file.js');
 var DerForm = require('./der.form.js');
 var DerMode = require('./der.mode.js');
 var Utils = require('./der.utils.js');
+var FastClick = require('fastclick');
+var TouchEmulator = require('hammer-touchemulator');
 
 var DerReader = {
     /**
@@ -16,6 +18,9 @@ var DerReader = {
      * }
 	 */
     init: function(options) {
+        FastClick.attach(document.body, {});
+        TouchEmulator();
+
         this._setOptions(options);
         this.layout = DerLayout.getLayout(options.container);
 

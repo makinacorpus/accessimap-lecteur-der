@@ -1,6 +1,7 @@
 var JSZip = require('jszip');
 var Utils = require('./der.utils.js');
-var TouchEvents = require('./der.events.js');
+var DerExplore = require('./der.explore.js');
+var DerSearch = require('./der.search.js');
 var FilesList = require('./der.filesList.js');
 
 
@@ -147,7 +148,7 @@ var DerFile = {
                 var poi = der.pois.poi[1]
                 var id = poi.id.split('-').pop();
                 var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
-                TouchEvents.setSearchEvents(elementToFind, DerFile.layout.derContainer, DerFile.tts);
+                DerSearch.setSearchEvents(elementToFind, DerFile.layout.derContainer, DerFile.tts);
             }
         } else {
             DerFile.message('Aucun JSON trouvé', 'error');
@@ -159,7 +160,7 @@ var DerFile = {
             var id = poi.id.split('-').pop();
             var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
             if (poiEl !== undefined) {
-                TouchEvents.setExploreEvents(poiEl, poi.actions.action, DerFile.readAudioFile, DerFile.tts);
+                DerExplore.setExploreEvents(poiEl, poi.actions.action, DerFile.readAudioFile, DerFile.tts);
             }
         });
     }

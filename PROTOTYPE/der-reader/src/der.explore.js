@@ -1,7 +1,6 @@
 var Hammer = require('hammerjs');
-var DerSounds = require('./der.sounds');
 
-var TouchEvents = {
+var DerExplore = {
 
     /**
 	 * add event listener to DER elements
@@ -32,44 +31,6 @@ var TouchEvents = {
                         TouchEvents._onEventEnded(element);
                     });
                 }
-            }
-        });
-    },
-
-    setSearchEvents: function(element, container) {
-        var boundingBox = element.getBoundingClientRect(),
-            horizontalRange = {min: boundingBox.left, max: boundingBox.right},
-            verticalRange = {min: boundingBox.top, max: boundingBox.bottom};
-
-        var zone = {width: container.clientWidth, height: container.clientWidth};
-        var hammer = new Hammer.Manager(container, {});
-        var pan = new Hammer.Pan({ event: 'pan'});
-        hammer.add(pan);
-
-        function getDistanceNumber(number, min, max) {
-            return Math.abs(Math.min(Math.round(number - min), Math.round(max - number)));
-        }
-
-        var sounds = false;
-        hammer.on('panleft panright', function(e) {
-            if (!sounds) {
-                sounds = true;
-                var distance = getDistanceNumber(e.center.x, horizontalRange.min, horizontalRange.max);
-
-                DerSounds.play(distance, 'x', zone.width, function() {
-                    sounds = false;
-                });
-            }
-        });
-
-        hammer.on('panup pandown', function(e) {
-            if (!sounds) {
-                sounds = true;
-                var distance = getDistanceNumber(e.center.y, verticalRange.min, verticalRange.max);
-
-                DerSounds.play(distance, 'y', zone.height, function() {
-                    sounds = false;
-                });
             }
         });
     },
@@ -111,4 +72,4 @@ var TouchEvents = {
     }
 };
 
-module.exports = TouchEvents;
+module.exports = DerExplore;

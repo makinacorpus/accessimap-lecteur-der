@@ -36,7 +36,8 @@ var app = {
 
         window.DerReader.init({
             derFile: './der/der2.zip',
-            tts: window.cordovaTTS
+            tts: window.cordovaTTS,
+            defaultMode: 'search'
         });
 
     }
