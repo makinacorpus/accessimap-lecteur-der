@@ -10,7 +10,7 @@ var DerSounds = {
         // var gainNode = ctx.createGain();
         // o.connect(gainNode);
         // gainNode.connect(ctx.destination);
-        // gainNode.gain.value = 0.3;
+        // gainNode.gain.value = 0.1;
 
         o.type = type || 'sine';
         o.frequency.value = notes[index];

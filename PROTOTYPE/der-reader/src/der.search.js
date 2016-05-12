@@ -1,8 +1,5 @@
 var DerSounds = require('./der.sounds.js');
-var Utils = require('./der.utils.js');
 var _ = require('lodash');
-
-var x, direction, sounds;
 
 var DerSearch = {
 
@@ -27,8 +24,12 @@ var DerSearch = {
         this.elementCenter = {x: this.elementBoundingBox.left + this.elementBoundingBox.width/2, y: this.elementBoundingBox.top + this.elementBoundingBox.height/2};
 
         this.mouseDown = false;
-        this.sounds = [];
+        this.soundsX = [];
+        this.soundsY = [];
         this.lastPos = null;
+        this.positionFromElement = {};
+        this.isXfound = false;
+        this.isYfound = false;
 
         DerSearch._setEventsListener();
     },
@@ -58,44 +59,60 @@ var DerSearch = {
         return {
             x: e.clientX || e.touches[0].clientX,
             y: e.clientY || e.touches[0].clientY
-        }
+        };
     },
 
-    isBoundingBoxInAxis: function(x, y) {
-        var result = {x: false, y: false};
-
-        if (x > DerSearch.elementBoundingBox.left && x < DerSearch.elementBoundingBox.right) {
-            result.x = true;
+    isInAxis: function(pointer, axis) {
+        if (axis === 'x') {
+            if (pointer.x > DerSearch.elementBoundingBox.left && pointer.x < DerSearch.elementBoundingBox.right) {
+                return true;
+            }
         }
-        if (y > DerSearch.elementBoundingBox.top && y < DerSearch.elementBoundingBox.bottom) {
-            result.y = true;
+        if (axis === 'y') {
+            if (pointer.y > DerSearch.elementBoundingBox.top && pointer.y < DerSearch.elementBoundingBox.bottom) {
+                return true;
+            }
         }
 
-        return result;
+        return false;
+    },
+
+    getPositionFromElement: function(pointer) {
+        var element = DerSearch.elementCenter;
+        var x = {},
+            y = {};
+
+        if (pointer.x > element.x) {
+            x.distance = pointer.x - element.x;
+            x.direction = 'left';
+        } else {
+            x.distance = element.x - pointer.x;
+            x.direction = 'right';
+        }
+
+        if (pointer.y > element.y) {
+            y.distance = pointer.y - element.y;
+            y.direction = 'top';
+        } else {
+            y.distance = element.y - pointer.y;
+            y.direction = 'bottom';
+        }
+
+        return {
+            x: x,
+            y: y
+        };
     },
 
     getInitialPos: function(event) {
         DerSounds.mouseDown = true;
+        DerSearch.isXfound = false;
+        DerSearch.isYfound = false;
 
-        // Horizontal
-        var pointer = DerSearch.getPointer(event),
-            elementX = DerSearch.elementCenter.x,
-            distance;
+        var pointer = DerSearch.getPointer(event);
 
-        if (pointer.x > elementX) {
-            distance = pointer.x - elementX;
-            direction = 'left';
-        } else {
-            distance = elementX - pointer.x;
-            direction = 'right';
-        }
-
-        if (DerSearch.isBoundingBoxInAxis(pointer.x, pointer.x).x) {
-            DerSounds.playTarget();
-        } else {
-            DerSearch.lastPos = pointer;
-            DerSearch.sounds = DerSearch.getSoundsPositions(distance, pointer.x, direction);
-        }
+        DerSearch.initXaxis(pointer);
+        DerSearch.findX(pointer);
     },
 
     checkCurrentPos: function(event) {
@@ -103,20 +120,72 @@ var DerSearch = {
             return;
         }
 
-        var pointer =  DerSearch.getPointer(event),
-            sounds = DerSearch.sounds;
+        var pointer =  DerSearch.getPointer(event);
 
-        if (DerSearch.isBoundingBoxInAxis(pointer.x, pointer.y).x) {
-            DerSounds.playTarget();
+        if (!DerSearch.isXfound) {
+            DerSearch.findX(pointer);
         } else {
+            if (!DerSearch.isYfound) {
+                DerSearch.findY(pointer);
+            }
+        }
+
+        DerSearch.lastPos = pointer;
+    },
+
+    initXaxis: function(pointer) {
+        this.positionFromElement = DerSearch.getPositionFromElement(pointer);
+
+        var x = pointer.x,
+            distance = this.positionFromElement.x.distance,
+            direction = this.positionFromElement.x.direction;
+
+        DerSearch.soundsX = DerSearch.getSoundsPositions(distance, x, direction);
+    },
+
+    initYaxis: function(pointer) {
+        this.positionFromElement = DerSearch.getPositionFromElement(pointer);
+
+        var y = pointer.y,
+            distance = this.positionFromElement.y.distance,
+            direction = this.positionFromElement.y.direction;
+
+        DerSearch.soundsY = DerSearch.getSoundsPositions(distance, y, direction);
+    },
+
+    findX: function(pointer) {
+        var sounds = DerSearch.soundsX;
+
+        if (DerSearch.isInAxis(pointer, 'x')) {
+            DerSearch.isXfound = true;
+            DerSearch.initYaxis(pointer);
+            DerSounds.playTarget();
+        } else if (DerSearch.lastPos === null) {
+            DerSounds.play(0);
+            DerSearch.lastPos = pointer;
+        }
+        else {
             _.map(sounds, function(sound, key) {
                 if(_.inRange(sound, DerSearch.lastPos.x, pointer.x)) {
                     DerSounds.play(key);
                 }
             });
-            DerSearch.lastPos = pointer;
         }
+    },
 
+    findY: function(pointer) {
+        var sounds = DerSearch.soundsY;
+
+        if (DerSearch.isInAxis(pointer, 'y')) {
+            DerSearch.isYfound = true;
+            DerSounds.playTarget();
+        } else {
+            _.map(sounds, function(sound, key) {
+                if(_.inRange(sound, DerSearch.lastPos.y, pointer.y)) {
+                    DerSounds.play(key);
+                }
+            });
+        }
     }
 };
 
