@@ -20061,15 +20061,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return filesByExt;
 	    },
 
-	    throttle: function(callback, limit) {
-	        var wait = false;                  // Initially, we're not waiting
-	        return function () {               // We return a throttled function
-	            if (!wait) {                   // If we're not waiting
-	                callback.call();           // Execute users function
-	                wait = true;               // Prevent future invocations
-	                setTimeout(function () {   // After a period of time
-	                    wait = false;          // And allow future invocations
-	                }, limit);
+	    throttle: function(fn, threshhold, scope) {
+	        threshhold || (threshhold = 250);
+	        var last,
+	            deferTimer;
+	        return function () {
+	            var context = scope || this;
+
+	            var now = +new Date,
+	                args = arguments;
+	            if (last && now < last + threshhold) {
+	                // hold on to it
+	                clearTimeout(deferTimer);
+	                deferTimer = setTimeout(function () {
+	                    last = now;
+	                    fn.apply(context, args);
+	                }, threshhold);
+	            } else {
+	                last = now;
+	                fn.apply(context, args);
 	            }
 	        };
 	    }
@@ -22817,18 +22827,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerSearch = {
 
+	    _setEventsListener: function() {
+	        this.container.addEventListener('mousedown', DerSearch.getInitialPos);
+	        this.container.addEventListener('touchstart', DerSearch.getInitialPos);
+
+	        this.container.addEventListener('mouseup', DerSearch._disableMouseHandler);
+	        this.container.addEventListener('touchend', DerSearch._disableMouseHandler);
+
+	        this.container.addEventListener('mousemove', Utils.throttle(DerSearch.checkCurrentPos));
+	        this.container.addEventListener('touchmove', Utils.throttle(DerSearch.checkCurrentPos));
+	    },
+
+	    _disableMouseHandler: function() {
+	        DerSounds.mouseDown = false;
+	    },
+
 	    setSearchEvents: function(element, container) {
 	        this.container = container;
-	        var elementBoundingBox = element.getBoundingClientRect();
-	        this.elementCenter = {x: elementBoundingBox.left + elementBoundingBox.width/2, y: elementBoundingBox.top + elementBoundingBox.height/2};
+	        this.elementBoundingBox = element.getBoundingClientRect();
+	        this.elementCenter = {x: this.elementBoundingBox.left + this.elementBoundingBox.width/2, y: this.elementBoundingBox.top + this.elementBoundingBox.height/2};
 
-	        this.container.addEventListener('mousedown', DerSearch.getInitialPos, false);
-	        this.container.addEventListener('touchstart', DerSearch.getInitialPos, false);
+	        this.mouseDown = false;
 	        this.sounds = [];
 	        this.lastPos = null;
+
+	        DerSearch._setEventsListener();
 	    },
 
 	    getSoundsPositions: function(distance, initialPos) {
+
 	        var ref = DerSounds.getNotesLength();
 
 	        var array = [];
@@ -22842,7 +22869,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    getInitialPos: function() {
-	        DerSearch._removeMoveEvents();
+	        DerSounds.mouseDown = true;
 
 	        // Horizontal
 	        var pointerX = event.clientX || event.touches[0].clientX,
@@ -22855,29 +22882,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	            distance = elementX - pointerX;
 	        }
 
-	        DerSearch.lastPos = pointerX;
-	        DerSearch.sounds = DerSearch.getSoundsPositions(distance, pointerX);
-	        DerSearch._addMoveEvents();
+	        if (pointerX > DerSearch.elementBoundingBox.left && pointerX < DerSearch.elementBoundingBox.right) {
+	            DerSounds.playTarget();
+	        } else {
+	            DerSearch.lastPos = pointerX;
+	            DerSearch.sounds = DerSearch.getSoundsPositions(distance, pointerX);
+	        }
 	    },
 
-	    checkCurrentPos() {
+	    checkCurrentPos: function(event) {
+	        if (!DerSounds.mouseDown) {
+	            return;
+	        }
 	        var x =  event.clientX || Math.round(event.touches[0].clientX);
 	        for (var i = 0; i < DerSearch.sounds.length; i++) {
-	            if ((DerSearch.lastPos <= DerSearch.sounds[i] && DerSearch.sounds[i] <= x) || DerSearch.lastPos >= DerSearch.sounds[i] && DerSearch.sounds[i] >= x) {
+	            if ((DerSearch.lastPos <= DerSearch.sounds[i] && DerSearch.sounds[i] <= x) ||
+	            DerSearch.lastPos >= DerSearch.sounds[i] && DerSearch.sounds[i] >= x) {
 	                DerSounds.play(i);
 	            }
 	        }
 	        DerSearch.lastPos = x;
-	    },
-
-	    _addMoveEvents: function() {
-	        this.container.addEventListener('mousemove', Utils.throttle(DerSearch.checkCurrentPos, 100), false);
-	        this.container.addEventListener('touchmove', Utils.throttle(DerSearch.checkCurrentPos, 100), false);
-	    },
-
-	    _removeMoveEvents: function() {
-	        this.container.removeEventListener('mousemove', DerSearch.getInitialPos, false);
-	        this.container.removeEventListener('touchmove', DerSearch.getInitialPos, false);
 	    }
 	};
 
@@ -22892,8 +22916,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ctx = new AudioContext(), currentOsc;
 
 	var DerSounds = {
+
 	    play: function(index) {
-	        console.log(index);
+	        // console.log(index);
 	        this.stop();
 	        var o = ctx.createOscillator();
 	        o.type = 'sine';
@@ -22901,11 +22926,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        o.start(0);
 	        o.connect(ctx.destination);
 	        currentOsc = o;
-	        // console.log(o.frequency.value);
-	        setTimeout(function() {
-	            DerSounds.stop();
-	        }, 100);
-	        return;
+
+	        return new Promise(function(resolve) {
+	            setTimeout(function() {
+	                DerSounds.stop();
+	                resolve();
+	            }, 100);
+	        });
+	    },
+
+	    playTarget() {
+	        this.play(0)
+	        .then(function() {
+	            DerSounds.play(notes.length-1);
+	        });
 	    },
 
 	    stop: function(){

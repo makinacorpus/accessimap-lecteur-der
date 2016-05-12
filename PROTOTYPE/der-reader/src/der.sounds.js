@@ -2,8 +2,9 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var ctx = new AudioContext(), currentOsc;
 
 var DerSounds = {
+
     play: function(index) {
-        console.log(index);
+        // console.log(index);
         this.stop();
         var o = ctx.createOscillator();
         o.type = 'sine';
@@ -11,11 +12,20 @@ var DerSounds = {
         o.start(0);
         o.connect(ctx.destination);
         currentOsc = o;
-        // console.log(o.frequency.value);
-        setTimeout(function() {
-            DerSounds.stop();
-        }, 100);
-        return;
+
+        return new Promise(function(resolve) {
+            setTimeout(function() {
+                DerSounds.stop();
+                resolve();
+            }, 100);
+        });
+    },
+
+    playTarget() {
+        this.play(0)
+        .then(function() {
+            DerSounds.play(notes.length-1);
+        });
     },
 
     stop: function(){
