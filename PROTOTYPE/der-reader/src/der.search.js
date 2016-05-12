@@ -1,5 +1,8 @@
 var DerSounds = require('./der.sounds.js');
 var Utils = require('./der.utils.js');
+var _ = require('lodash');
+
+var x, direction, sounds;
 
 var DerSearch = {
 
@@ -10,8 +13,8 @@ var DerSearch = {
         this.container.addEventListener('mouseup', DerSearch._disableMouseHandler);
         this.container.addEventListener('touchend', DerSearch._disableMouseHandler);
 
-        this.container.addEventListener('mousemove', Utils.throttle(DerSearch.checkCurrentPos));
-        this.container.addEventListener('touchmove', Utils.throttle(DerSearch.checkCurrentPos));
+        this.container.addEventListener('mousemove', _.throttle(DerSearch.checkCurrentPos, 200));
+        this.container.addEventListener('touchmove', _.throttle(DerSearch.checkCurrentPos, 200));
     },
 
     _disableMouseHandler: function() {
@@ -30,39 +33,68 @@ var DerSearch = {
         DerSearch._setEventsListener();
     },
 
-    getSoundsPositions: function(distance, initialPos) {
-
+    getSoundsPositions: function(distance, initialPos, direction) {
         var ref = DerSounds.getNotesLength();
 
-        var array = [];
+        var sounds = [];
 
         for (var i = 0; i < ref; i++) {
-            var lastDistance = array[i-1] || initialPos;
-            array.push(Math.round(lastDistance + distance/ref));
+            var lastSound = sounds[i-1] || initialPos;
+            if (i === 0) {
+                sounds.push(initialPos);
+            } else {
+                if (direction === 'right') {
+                    sounds.push(Math.round(lastSound + distance/(ref/2)));
+                } else {
+                    sounds.push(Math.round(lastSound - distance/(ref/2)));
+                }
+            }
         }
 
-        return array;
+        return sounds;
     },
 
-    getInitialPos: function() {
+    getPointer: function(e) {
+        return {
+            x: e.clientX || e.touches[0].clientX,
+            y: e.clientY || e.touches[0].clientY
+        }
+    },
+
+    isBoundingBoxInAxis: function(x, y) {
+        var result = {x: false, y: false};
+
+        if (x > DerSearch.elementBoundingBox.left && x < DerSearch.elementBoundingBox.right) {
+            result.x = true;
+        }
+        if (y > DerSearch.elementBoundingBox.top && y < DerSearch.elementBoundingBox.bottom) {
+            result.y = true;
+        }
+
+        return result;
+    },
+
+    getInitialPos: function(event) {
         DerSounds.mouseDown = true;
 
         // Horizontal
-        var pointerX = event.clientX || event.touches[0].clientX,
+        var pointer = DerSearch.getPointer(event),
             elementX = DerSearch.elementCenter.x,
             distance;
 
-        if (pointerX > elementX) {
-            distance = pointerX - elementX;
+        if (pointer.x > elementX) {
+            distance = pointer.x - elementX;
+            direction = 'left';
         } else {
-            distance = elementX - pointerX;
+            distance = elementX - pointer.x;
+            direction = 'right';
         }
 
-        if (pointerX > DerSearch.elementBoundingBox.left && pointerX < DerSearch.elementBoundingBox.right) {
+        if (DerSearch.isBoundingBoxInAxis(pointer.x, pointer.x).x) {
             DerSounds.playTarget();
         } else {
-            DerSearch.lastPos = pointerX;
-            DerSearch.sounds = DerSearch.getSoundsPositions(distance, pointerX);
+            DerSearch.lastPos = pointer;
+            DerSearch.sounds = DerSearch.getSoundsPositions(distance, pointer.x, direction);
         }
     },
 
@@ -70,14 +102,21 @@ var DerSearch = {
         if (!DerSounds.mouseDown) {
             return;
         }
-        var x =  event.clientX || Math.round(event.touches[0].clientX);
-        for (var i = 0; i < DerSearch.sounds.length; i++) {
-            if ((DerSearch.lastPos <= DerSearch.sounds[i] && DerSearch.sounds[i] <= x) ||
-            DerSearch.lastPos >= DerSearch.sounds[i] && DerSearch.sounds[i] >= x) {
-                DerSounds.play(i);
-            }
+
+        var pointer =  DerSearch.getPointer(event),
+            sounds = DerSearch.sounds;
+
+        if (DerSearch.isBoundingBoxInAxis(pointer.x, pointer.y).x) {
+            DerSounds.playTarget();
+        } else {
+            _.map(sounds, function(sound, key) {
+                if(_.inRange(sound, DerSearch.lastPos.x, pointer.x)) {
+                    DerSounds.play(key);
+                }
+            });
+            DerSearch.lastPos = pointer;
         }
-        DerSearch.lastPos = x;
+
     }
 };
 

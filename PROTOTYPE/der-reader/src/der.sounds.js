@@ -3,11 +3,16 @@ var ctx = new AudioContext(), currentOsc;
 
 var DerSounds = {
 
-    play: function(index) {
+    play: function(index, type) {
         // console.log(index);
         this.stop();
         var o = ctx.createOscillator();
-        o.type = 'sine';
+        // var gainNode = ctx.createGain();
+        // o.connect(gainNode);
+        // gainNode.connect(ctx.destination);
+        // gainNode.gain.value = 0.3;
+
+        o.type = type || 'sine';
         o.frequency.value = notes[index];
         o.start(0);
         o.connect(ctx.destination);
@@ -22,9 +27,9 @@ var DerSounds = {
     },
 
     playTarget() {
-        this.play(0)
+        this.play(0, 'triangle')
         .then(function() {
-            DerSounds.play(notes.length-1);
+            DerSounds.play(Math.ceil(notes.length/2), 'triangle');
         });
     },
 
@@ -49,5 +54,12 @@ var notes = [
     392.00, // 'G4'
     440.00, // 'A4'
     493.88, // 'B4'
-    523.25 // 'C5'
+    523.25, // 'C5'
+    493.88, // 'B4'
+    440.00, // 'A4'
+    392.00, // 'G4'
+    349.23, // 'F4'
+    329.63, // 'E4'
+    293.66, // 'D4'
+    261.63 // 'C4'
 ];
