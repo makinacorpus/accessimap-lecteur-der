@@ -197,7 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n.files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n\n.switch-mode label {\n  color: #fff; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1; }\n\n.menu {\n  display: none;\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
+	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n.files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n\n.switch-mode label {\n  color: #fff; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.menu {\n  display: none;\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
 
 	// exports
 
@@ -9494,7 +9494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -22801,7 +22801,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerSounds = __webpack_require__(101);
 	var _ = __webpack_require__(102);
-	var pressTimer;
+
+	var pressTimer,
+	    lastPos;
+	var mouseDown = false;
 
 	var DerSearch = {
 
@@ -22817,7 +22820,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    _disableMouseHandler: function() {
-	        DerSounds.mouseDown = false;
+	        mouseDown = false;
+	        clearTimeout(pressTimer);
 	    },
 
 	    setSearchEvents: function(element, container) {
@@ -22825,10 +22829,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.elementBoundingBox = element.getBoundingClientRect();
 	        this.elementCenter = {x: this.elementBoundingBox.left + this.elementBoundingBox.width/2, y: this.elementBoundingBox.top + this.elementBoundingBox.height/2};
 
-	        this.mouseDown = false;
 	        this.soundsX = [];
 	        this.soundsY = [];
-	        this.lastPos = null;
 	        this.positionFromElement = {};
 	        this.isXfound = false;
 	        this.isYfound = false;
@@ -22907,10 +22909,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    getInitialPos: function(event) {
-	        DerSounds.mouseDown = true;
+	        mouseDown = true;
+	        lastPos = null;
 	        DerSearch.isXfound = false;
 	        DerSearch.isYfound = false;
-	        DerSearch.lastPos = null;
 
 	        var pointer = DerSearch.getPointer(event);
 
@@ -22919,7 +22921,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    checkCurrentPos: function(event) {
-	        if (!DerSounds.mouseDown) {
+	        if (!mouseDown) {
 	            return;
 	        }
 
@@ -22933,7 +22935,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 
-	        DerSearch.lastPos = pointer;
+	        lastPos = pointer;
 	    },
 
 	    initXaxis: function(pointer) {
@@ -22958,43 +22960,50 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    findX: function(pointer) {
 	        var sounds = DerSearch.soundsX;
-	        clearTimeout(pressTimer);
 
-	        if (DerSearch.lastPos === null) {
-	            var ref = DerSounds.getNotesLength();
+	        if (lastPos === null || lastPos === undefined) {
 	            DerSounds.play(0);
-	            DerSearch.lastPos = pointer;
+	            lastPos = pointer;
 	        } else {
 	            for (var i = 1; i < sounds.length; i++) {
-	                if(_.inRange(sounds[i], DerSearch.lastPos.x, pointer.x)) {
+	                if(_.inRange(sounds[i], lastPos.x, pointer.x)) {
 	                    DerSounds.play(i);
 	                }
 	            }
 	            if (DerSearch.isInAxis(pointer, 'x')) {
-	                pressTimer =  setTimeout(function() {
-	                    DerSearch.isXfound = true;
-	                    DerSearch.initYaxis(pointer);
-	                    DerSounds.playTarget();
-	                }, 500);
+	                pressTimer = setTimeout(function() {
+	                    if (mouseDown && !DerSearch.isXfound) {
+	                        console.log('Axe X trouvé');
+	                        DerSearch.isXfound = true;
+	                        DerSearch.initYaxis(pointer);
+	                        DerSounds.playTarget();
+	                    }
+	                }, 1000);
+	            } else {
+	                clearTimeout(pressTimer);
 	            }
 	        }
 	    },
 
 	    findY: function(pointer) {
 	        var sounds = DerSearch.soundsY;
-	        clearTimeout(pressTimer);
 
 	        for (var i = 1; i < sounds.length; i++) {
-	            if(_.inRange(sounds[i], DerSearch.lastPos.y, pointer.y)) {
+	            if(_.inRange(sounds[i], lastPos.y, pointer.y)) {
 	                DerSounds.play(i);
 	            }
 	        }
 
 	        if (DerSearch.isInAxis(pointer, 'y')) {
 	            pressTimer =  setTimeout(function() {
-	                DerSearch.isYfound = true;
-	                DerSounds.playTarget();
-	            }, 500);
+	                if (mouseDown && !DerSearch.isYfound) {
+	                    console.log('Axe Y trouvé');
+	                    DerSearch.isYfound = true;
+	                    DerSounds.playTarget();
+	                }
+	            }, 1000);
+	        } else {
+	            clearTimeout(pressTimer);
 	        }
 	    }
 	};

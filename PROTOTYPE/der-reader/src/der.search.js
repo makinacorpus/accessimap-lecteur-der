@@ -1,6 +1,9 @@
 var DerSounds = require('./der.sounds.js');
 var _ = require('lodash');
-var pressTimer;
+
+var pressTimer,
+    lastPos;
+var mouseDown = false;
 
 var DerSearch = {
 
@@ -16,7 +19,8 @@ var DerSearch = {
     },
 
     _disableMouseHandler: function() {
-        DerSounds.mouseDown = false;
+        mouseDown = false;
+        clearTimeout(pressTimer);
     },
 
     setSearchEvents: function(element, container) {
@@ -24,10 +28,8 @@ var DerSearch = {
         this.elementBoundingBox = element.getBoundingClientRect();
         this.elementCenter = {x: this.elementBoundingBox.left + this.elementBoundingBox.width/2, y: this.elementBoundingBox.top + this.elementBoundingBox.height/2};
 
-        this.mouseDown = false;
         this.soundsX = [];
         this.soundsY = [];
-        this.lastPos = null;
         this.positionFromElement = {};
         this.isXfound = false;
         this.isYfound = false;
@@ -106,10 +108,10 @@ var DerSearch = {
     },
 
     getInitialPos: function(event) {
-        DerSounds.mouseDown = true;
+        mouseDown = true;
+        lastPos = null;
         DerSearch.isXfound = false;
         DerSearch.isYfound = false;
-        DerSearch.lastPos = null;
 
         var pointer = DerSearch.getPointer(event);
 
@@ -118,7 +120,7 @@ var DerSearch = {
     },
 
     checkCurrentPos: function(event) {
-        if (!DerSounds.mouseDown) {
+        if (!mouseDown) {
             return;
         }
 
@@ -132,7 +134,7 @@ var DerSearch = {
             }
         }
 
-        DerSearch.lastPos = pointer;
+        lastPos = pointer;
     },
 
     initXaxis: function(pointer) {
@@ -157,43 +159,50 @@ var DerSearch = {
 
     findX: function(pointer) {
         var sounds = DerSearch.soundsX;
-        clearTimeout(pressTimer);
 
-        if (DerSearch.lastPos === null) {
-            var ref = DerSounds.getNotesLength();
+        if (lastPos === null || lastPos === undefined) {
             DerSounds.play(0);
-            DerSearch.lastPos = pointer;
+            lastPos = pointer;
         } else {
             for (var i = 1; i < sounds.length; i++) {
-                if(_.inRange(sounds[i], DerSearch.lastPos.x, pointer.x)) {
+                if(_.inRange(sounds[i], lastPos.x, pointer.x)) {
                     DerSounds.play(i);
                 }
             }
             if (DerSearch.isInAxis(pointer, 'x')) {
-                pressTimer =  setTimeout(function() {
-                    DerSearch.isXfound = true;
-                    DerSearch.initYaxis(pointer);
-                    DerSounds.playTarget();
-                }, 500);
+                pressTimer = setTimeout(function() {
+                    if (mouseDown && !DerSearch.isXfound) {
+                        console.log('Axe X trouvé');
+                        DerSearch.isXfound = true;
+                        DerSearch.initYaxis(pointer);
+                        DerSounds.playTarget();
+                    }
+                }, 1000);
+            } else {
+                clearTimeout(pressTimer);
             }
         }
     },
 
     findY: function(pointer) {
         var sounds = DerSearch.soundsY;
-        clearTimeout(pressTimer);
 
         for (var i = 1; i < sounds.length; i++) {
-            if(_.inRange(sounds[i], DerSearch.lastPos.y, pointer.y)) {
+            if(_.inRange(sounds[i], lastPos.y, pointer.y)) {
                 DerSounds.play(i);
             }
         }
 
         if (DerSearch.isInAxis(pointer, 'y')) {
             pressTimer =  setTimeout(function() {
-                DerSearch.isYfound = true;
-                DerSounds.playTarget();
-            }, 500);
+                if (mouseDown && !DerSearch.isYfound) {
+                    console.log('Axe Y trouvé');
+                    DerSearch.isYfound = true;
+                    DerSounds.playTarget();
+                }
+            }, 1000);
+        } else {
+            clearTimeout(pressTimer);
         }
     }
 };

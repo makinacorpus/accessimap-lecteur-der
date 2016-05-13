@@ -22,7 +22,6 @@ body {
     padding: 0;
     font-family: 'Arial', sans-serif;
     overflow: hidden;
-
 }
 
 svg {
@@ -55,6 +54,7 @@ svg {
 
 .der-container {
     flex: 1;
+    overflow: hidden;
 }
 
 .menu {
