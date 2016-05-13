@@ -197,7 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  font-size: 100%;\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n.files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n\n.switch-mode label {\n  color: #fff; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.menu {\n  display: none;\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
+	exports.push([module.id, ".inputfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n  .inputfile + label {\n    color: #fff;\n    background-color: #000;\n    border: 3px solid #fff;\n    padding: 0; }\n    .inputfile + label.fill {\n      color: #5BC0EB;\n      border-color: #5BC0EB; }\n    .inputfile + label span {\n      width: 100%;\n      min-height: 2em;\n      display: inline-block;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden;\n      vertical-align: top; }\n    .inputfile + label strong {\n      height: 100%;\n      color: #fff;\n      background-color: #000;\n      display: block; }\n  .inputfile:focus + label {\n    outline: 1px dotted #000;\n    outline: -webkit-focus-ring-color auto 5px; }\n\n.inputfile + label,\n.inputsubmit {\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px; }\n\n.inputsubmit {\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  height: 100%;\n  color: #000;\n  background-color: #fff;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top; }\n\n.inputfile + label:hover {\n  border-color: #5BC0EB;\n  color: #5BC0EB; }\n\n.inputfile + label span,\n.inputfile + label strong {\n  padding: 0.625rem 1.25rem;\n  /* 10px 20px */ }\n\n.inputfile:focus + label strong,\n.inputfile.has-focus + label strong,\n.inputfile + label:hover strong {\n  background-color: #5BC0EB; }\n\n.inputsubmit:hover {\n  border-color: #5BC0EB;\n  background-color: #5BC0EB; }\n\n.files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n\n.switch-mode .title {\n  color: white;\n  text-align: center; }\n\n.switch-mode label {\n  color: #fff; }\n\n.switch-mode .choose-element {\n  display: none;\n  font-size: 100%;\n  color: #fff;\n  background-color: #000;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  height: 100%;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  padding: 0.625rem 1.25rem; }\n  .switch-mode .choose-element:hover {\n    border-color: #FCA311;\n    color: #FCA311; }\n\n*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.menu {\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
 
 	// exports
 
@@ -39500,38 +39500,72 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 105 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
+
+	var Utils = __webpack_require__(97);
+
+	var title = document.createElement('h2');
+	title.setAttribute('class', 'title');
+	title.innerHTML = 'Mode';
+
+	var mode_explore = document.createElement('input');
+	Utils.setAttributes(mode_explore, {
+	    'type': 'radio',
+	    'name': 'mode',
+	    'id': 'explore'
+	});
+
+	var mode_explore_label = document.createElement('label');
+	mode_explore_label.setAttribute('for', 'explore');
+	mode_explore_label.innerHTML = 'Exploration';
+
+	var mode_search = document.createElement('input');
+	Utils.setAttributes(mode_search, {
+	    'type': 'radio',
+	    'name': 'mode',
+	    'id': 'search'
+	});
+
+	var mode_search_label= document.createElement('label');
+	mode_search_label.setAttribute('for', 'search');
+	mode_search_label.innerHTML = 'Recherche';
+
+	var choose_element = document.createElement('button');
+	choose_element.innerHTML = 'Choisir un élément à trouver';
+	choose_element.setAttribute('class', 'choose-element');
+
 
 	var DerMode = {
-	    init: function(container, mode, actions) {
+	    init: function(container, mode) {
 	        this._setDomElements(container, mode);
+	        this._setEventListener();
 	        var defaultMode = document.getElementById(mode);
+	        defaultMode.click;
 	        defaultMode.checked = true;
 	    },
 
 	    _setDomElements: function(container) {
-	        var mode_explore = document.createElement('input');
-	        mode_explore.setAttribute('type', 'radio');
-	        mode_explore.setAttribute('name', 'mode');
-	        mode_explore.setAttribute('id', 'explore');
-
-	        var mode_explore_label = document.createElement('label');
-	        mode_explore_label.setAttribute('for', 'explore');
-	        mode_explore_label.innerHTML = 'Exploration';
-
-	        var mode_search = document.createElement('input');
-	        mode_search.setAttribute('type', 'radio');
-	        mode_search.setAttribute('name', 'mode');
-	        mode_search.setAttribute('id', 'search');
-
-	        var mode_search_label= document.createElement('label');
-	        mode_search_label.setAttribute('for', 'search');
-	        mode_search_label.innerHTML = 'Recherche';
-
+	        container.appendChild(title);
 	        container.appendChild(mode_explore);
 	        container.appendChild(mode_explore_label);
 	        container.appendChild(mode_search);
 	        container.appendChild(mode_search_label);
+	        container.appendChild(choose_element);
+	    },
+
+	    _setEventListener: function() {
+	        mode_explore.addEventListener('click', this.setExploreMode);
+	        mode_search.addEventListener('click', this.setSearchMode);
+	    },
+
+	    setExploreMode: function(event) {
+	        console.log(event);
+	        choose_element.style.display = 'none';
+	    },
+
+	    setSearchMode: function(event) {
+	        console.log(event);
+	        choose_element.style.display = 'block';
 	    }
 	};
 

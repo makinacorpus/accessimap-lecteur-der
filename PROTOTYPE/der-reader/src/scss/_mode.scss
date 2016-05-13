@@ -1,5 +1,34 @@
 .switch-mode {
+    .title {
+        color: white;
+        text-align: center;
+    }
     label {
         color: $white;
+    }
+    .choose-element {
+        display: none;
+        font-size: 100%;
+        color: $white;
+        background-color: $black;
+        border: 3px solid $white;
+        width: 100%;
+        min-height: 2em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: top;
+        height: 100%;
+        text-align: center;
+        font-weight: 700;
+        display: block;
+        cursor: pointer;
+        border-radius: $base-border-radius;
+        padding: 0.625rem 1.25rem;
+
+        &:hover {
+            border-color: $orange;
+            color: $orange;
+        }
     }
 }
