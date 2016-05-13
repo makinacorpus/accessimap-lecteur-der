@@ -9494,7 +9494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -22801,6 +22801,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerSounds = __webpack_require__(101);
 	var _ = __webpack_require__(102);
+	var pressTimer;
 
 	var DerSearch = {
 
@@ -22909,6 +22910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        DerSounds.mouseDown = true;
 	        DerSearch.isXfound = false;
 	        DerSearch.isYfound = false;
+	        DerSearch.lastPos = null;
 
 	        var pointer = DerSearch.getPointer(event);
 
@@ -22956,36 +22958,43 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    findX: function(pointer) {
 	        var sounds = DerSearch.soundsX;
+	        clearTimeout(pressTimer);
 
-	        if (DerSearch.isInAxis(pointer, 'x')) {
-	            DerSearch.isXfound = true;
-	            DerSearch.initYaxis(pointer);
-	            DerSounds.playTarget();
-	        } else if (DerSearch.lastPos === null) {
+	        if (DerSearch.lastPos === null) {
+	            var ref = DerSounds.getNotesLength();
 	            DerSounds.play(0);
 	            DerSearch.lastPos = pointer;
-	        }
-	        else {
-	            _.map(sounds, function(sound, key) {
-	                if(_.inRange(sound, DerSearch.lastPos.x, pointer.x)) {
-	                    DerSounds.play(key);
+	        } else {
+	            for (var i = 1; i < sounds.length; i++) {
+	                if(_.inRange(sounds[i], DerSearch.lastPos.x, pointer.x)) {
+	                    DerSounds.play(i);
 	                }
-	            });
+	            }
+	            if (DerSearch.isInAxis(pointer, 'x')) {
+	                pressTimer =  setTimeout(function() {
+	                    DerSearch.isXfound = true;
+	                    DerSearch.initYaxis(pointer);
+	                    DerSounds.playTarget();
+	                }, 500);
+	            }
 	        }
 	    },
 
 	    findY: function(pointer) {
 	        var sounds = DerSearch.soundsY;
+	        clearTimeout(pressTimer);
+
+	        for (var i = 1; i < sounds.length; i++) {
+	            if(_.inRange(sounds[i], DerSearch.lastPos.y, pointer.y)) {
+	                DerSounds.play(i);
+	            }
+	        }
 
 	        if (DerSearch.isInAxis(pointer, 'y')) {
-	            DerSearch.isYfound = true;
-	            DerSounds.playTarget();
-	        } else {
-	            _.map(sounds, function(sound, key) {
-	                if(_.inRange(sound, DerSearch.lastPos.y, pointer.y)) {
-	                    DerSounds.play(key);
-	                }
-	            });
+	            pressTimer =  setTimeout(function() {
+	                DerSearch.isYfound = true;
+	                DerSounds.playTarget();
+	            }, 500);
 	        }
 	    }
 	};

@@ -1,5 +1,6 @@
 var DerSounds = require('./der.sounds.js');
 var _ = require('lodash');
+var pressTimer;
 
 var DerSearch = {
 
@@ -108,6 +109,7 @@ var DerSearch = {
         DerSounds.mouseDown = true;
         DerSearch.isXfound = false;
         DerSearch.isYfound = false;
+        DerSearch.lastPos = null;
 
         var pointer = DerSearch.getPointer(event);
 
@@ -155,36 +157,43 @@ var DerSearch = {
 
     findX: function(pointer) {
         var sounds = DerSearch.soundsX;
+        clearTimeout(pressTimer);
 
-        if (DerSearch.isInAxis(pointer, 'x')) {
-            DerSearch.isXfound = true;
-            DerSearch.initYaxis(pointer);
-            DerSounds.playTarget();
-        } else if (DerSearch.lastPos === null) {
+        if (DerSearch.lastPos === null) {
+            var ref = DerSounds.getNotesLength();
             DerSounds.play(0);
             DerSearch.lastPos = pointer;
-        }
-        else {
-            _.map(sounds, function(sound, key) {
-                if(_.inRange(sound, DerSearch.lastPos.x, pointer.x)) {
-                    DerSounds.play(key);
+        } else {
+            for (var i = 1; i < sounds.length; i++) {
+                if(_.inRange(sounds[i], DerSearch.lastPos.x, pointer.x)) {
+                    DerSounds.play(i);
                 }
-            });
+            }
+            if (DerSearch.isInAxis(pointer, 'x')) {
+                pressTimer =  setTimeout(function() {
+                    DerSearch.isXfound = true;
+                    DerSearch.initYaxis(pointer);
+                    DerSounds.playTarget();
+                }, 500);
+            }
         }
     },
 
     findY: function(pointer) {
         var sounds = DerSearch.soundsY;
+        clearTimeout(pressTimer);
+
+        for (var i = 1; i < sounds.length; i++) {
+            if(_.inRange(sounds[i], DerSearch.lastPos.y, pointer.y)) {
+                DerSounds.play(i);
+            }
+        }
 
         if (DerSearch.isInAxis(pointer, 'y')) {
-            DerSearch.isYfound = true;
-            DerSounds.playTarget();
-        } else {
-            _.map(sounds, function(sound, key) {
-                if(_.inRange(sound, DerSearch.lastPos.y, pointer.y)) {
-                    DerSounds.play(key);
-                }
-            });
+            pressTimer =  setTimeout(function() {
+                DerSearch.isYfound = true;
+                DerSounds.playTarget();
+            }, 500);
         }
     }
 };
