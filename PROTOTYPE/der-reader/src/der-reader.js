@@ -29,13 +29,15 @@ var App = React.createClass({
   },
 
   changeDerFile: function(file) {
-    this.setState({derFile: file, selectedDocument: 0}, function() {
-      console.log(this.state);
-    });
+    this.setState({derFile: file, selectedDocument: 0});
   },
 
   changeDocument: function(fileIndex) {
     this.setState({selectedDocument: fileIndex});
+  },
+
+  changeMode: function(mode) {
+    this.setState({mode: mode});
   },
 
   render: function() {
@@ -55,9 +57,11 @@ var App = React.createClass({
         <Menu
           files={this.state.files}
           message={this.showMessage}
+          mode={this.state.mode}
+          selectedDocument={this.state.selectedDocument}
           changeDerFile={this.changeDerFile}
           changeDocument={this.changeDocument}
-          selectedDocument={this.state.selectedDocument} />
+          changeMode={this.changeMode} />
 
       </div>
     );
