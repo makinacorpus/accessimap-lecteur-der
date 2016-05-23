@@ -66,8 +66,9 @@ var DerContainer = React.createClass({
   * @param name: {string} required
   */
   readAudioFile(name) {
+    var _this = this;
     return new Promise(function(resolve, reject) {
-      this.state.filesByExt.audioFiles[name].async('base64')
+      _this.state.filesByExt.audioFiles[name].async('base64')
       .then(function(base64string) {
         var sound = new Audio('data:audio/wav;base64,' + base64string);
         sound.play();
@@ -164,7 +165,6 @@ var DerContainer = React.createClass({
     switch(mode) {
     case 'explore':
       Explore.setExploreEvents(this.state.der.pois, this.readAudioFile, this.props.tts);
-      // this.attachPoiActions(this.state.der.pois.poi);
       Search.removeEventsListener(this.refs.container);
       break;
     case 'search':
@@ -172,26 +172,11 @@ var DerContainer = React.createClass({
       var id = poi.id.split('-').pop();
       var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
       Search.setSearchEvents(elementToFind, this.refs.container, this.props.tts);
+      Explore.removeExploreEvents();
     }
   },
 
-  attachPoiActions: function(pois) {
-    var _this = this;
-    pois.map(function(poi) {
-      var id = poi.id.split('-').pop();
-      var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
-      if (poiEl !== undefined) {
-        Explore.setExploreEvents(poiEl, {
-          actions: poi.actions.action,
-          read: _this.readAudioFile,
-          tts: _this.props.tts
-        });
-      }
-    });
-  },
-
   render: function() {
-
     return (
       <div className="der-container" ref="container">
       </div>

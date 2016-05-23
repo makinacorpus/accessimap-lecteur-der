@@ -15,17 +15,27 @@ var Explore = {
   setExploreEvents: function(pois, readFunction, tts) {
     this.readFunction = readFunction;
     this.tts = tts;
+    this.pois = [];
     this.actions = {};
 
     pois.poi.map(function(poi) {
       var id = poi.id.split('-').pop();
       var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
       if (poiEl !== undefined) {
+        Explore.pois.push(poiEl);
         Explore.actions[id] = poi.actions.action;
         Object.keys(GESTURES).map(function(gesture) {
           poiEl.addEventListener(gesture, Explore.action);
         });
       }
+    });
+  },
+
+  removeExploreEvents: function() {
+    Explore.pois.map(function(poiEl) {
+      Object.keys(GESTURES).map(function(gesture) {
+        poiEl.removeEventListener(gesture, Explore.action);
+      });
     });
   },
 
