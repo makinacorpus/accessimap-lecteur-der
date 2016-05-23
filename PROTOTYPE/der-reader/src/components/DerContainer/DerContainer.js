@@ -24,6 +24,9 @@ var DerContainer = React.createClass({
     if (this.props.selectedDocument !== nextProps.selectedDocument) {
       this.changeDocument(nextProps.selectedDocument);
     }
+    if (this.props.mode !== nextProps.mode) {
+      this.setDerActions(nextProps.mode);
+    }
   },
 
   setDerFile: function(derFile) {
@@ -49,6 +52,7 @@ var DerContainer = React.createClass({
       _this._extractFiles(zip.files, function(error, der) {
         if (error === null) {
           _this.props.message('');
+          _this.setState({der: der});
           _this.loadDer(der);
         } else {
           _this.props.message(error, 'error');
@@ -130,6 +134,7 @@ var DerContainer = React.createClass({
   changeDocument: function(index) {
     var _this = this;
     this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[index], function(error, der) {
+      _this.setState({der: der});
       _this.loadDer(der);
     });
   },
@@ -148,17 +153,25 @@ var DerContainer = React.createClass({
       this.props.message('Aucun SVG trouvé', 'error');
     }
 
-    if (der.pois.poi !== undefined) {
-      if (this.props.mode === 'explore') {
-        this.attachPoiActions(der.pois.poi);
-      } else {
-        var poi = der.pois.poi[1]
-        var id = poi.id.split('-').pop();
-        var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
-        Search.setSearchEvents(elementToFind, this.refs.container, this.props.tts);
-      }
-    } else {
+    if (der.pois.poi === undefined) {
       this.props.message('Aucun JSON trouvé', 'error');
+    } else {
+      this.setState({der: der});
+      this.setDerActions(this.props.mode);
+    }
+  },
+
+  setDerActions: function(mode) {
+    console.log(mode);
+    switch(mode) {
+    case 'explore':
+      this.attachPoiActions(this.state.der.pois.poi);
+      break;
+    case 'search':
+      var poi = this.state.der.pois.poi[1]
+      var id = poi.id.split('-').pop();
+      var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
+      Search.setSearchEvents(elementToFind, this.refs.container, this.props.tts);
     }
   },
 

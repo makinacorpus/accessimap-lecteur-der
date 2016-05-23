@@ -36,7 +36,7 @@ const RadioButtonGroup = React.createClass({
     });
 
     return (
-      <div className="change-mode">
+      <div>
         {choiceItems}
       </div>
     );

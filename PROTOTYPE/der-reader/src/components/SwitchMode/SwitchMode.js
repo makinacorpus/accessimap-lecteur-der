@@ -17,14 +17,16 @@ const SwitchMode = React.createClass({
     ];
 
     return (
-      <div>
+      <aside className="change-mode">
+        <h2 className="title">Mode</h2>
         <RadioButtonGroup
           name="mode"
           checkedValue={checkedValue}
           choices={choices}
           onChange={this.handleChange}
         />
-      </div>
+        <button className="choose-element">Choisir un élément à trouver</button>
+      </aside>
     );
   },
 
@@ -32,6 +34,7 @@ const SwitchMode = React.createClass({
     this.setState({
       checkedValue: value
     });
+    this.props.changeMode(value);
   }
 });
 
