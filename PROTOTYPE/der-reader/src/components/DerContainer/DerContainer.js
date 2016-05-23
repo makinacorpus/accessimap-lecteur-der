@@ -1,4 +1,4 @@
-var Utils = require('./../../der.utils.js');
+var Utils = require('./Utils.js');
 var JSZip = require('jszip');
 
 var Explore = require('./DerContainer-explore.js');
@@ -9,7 +9,6 @@ var React = require('react');
 var DerContainer = React.createClass({
   getInitialState: function() {
     return {
-      svg: ''
     }
   },
 

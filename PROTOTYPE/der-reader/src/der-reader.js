@@ -90,44 +90,7 @@ var DerReader = {
       document.getElementById(options.container)
     );
 
-  },
-  //
-  //         this.layout = DerLayout.getLayout(options.container);
-  //
-  //         DerForm.init(this.layout.formContainer, this.message);
-  //         // DerMode.init(this.layout.switchModeContainer, this.mode, this.changeMode);
-  //
-  //         Utils.getFileObject(this.derFile, function (file) {
-  //             DerFile.init({
-  //                 message: DerReader.message,
-  //                 layout: DerReader.layout,
-  //                 tts: DerReader.tts,
-  //                 mode: DerReader.mode
-  //             });
-  //             DerFile.openDerFile(file);
-  //         });
-  //
-  //         ReactDOM.render(
-  //           <DerReader />,
-  //           document.body
-  //         );
-  //
-  //         return this;
-  //     },
-  //
-
-  //
-  //     changeMode: function(mode) {
-  //         this.mode = mode;
-  //     },
-  //
-  // _setOptions(options) {
-  //     options = options || {};
-  //     this.container = options.container;
-  //     this.derFile = options.derFile;
-  //     this.tts = options.tts;
-  //     this.mode = options.defaultMode || 'explore';
-  // }
+  }
 };
 
 module.exports = DerReader;
