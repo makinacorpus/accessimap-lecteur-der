@@ -11,7 +11,7 @@ var Menu = React.createClass({
     return (
       <div className="menu">
         <FileInput message={this.props.message} changeDerFile={this.props.changeDerFile} />
-        <FilesList files={files} />
+        <FilesList files={files} changeDocument={this.props.changeDocument} selectedDocument={this.props.selectedDocument} />
         <SwitchMode />
       </div>
     );

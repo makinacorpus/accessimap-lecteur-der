@@ -72,7 +72,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      message: '',
 	      mode: DerReader.options.defaultMode,
-	      derFile: DerReader.options.derFile
+	      derFile: DerReader.options.derFile,
+	      selectedDocument: 0
 	    };
 	  },
 
@@ -85,8 +86,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  changeDerFile: function (file) {
-	    this.setState({ derFile: file });
-	    // console.log(this.state);
+	    this.setState({ derFile: file, selectedDocument: 0 }, function () {
+	      console.log(this.state);
+	    });
+	  },
+
+	  changeDocument: function (fileIndex) {
+	    this.setState({ selectedDocument: fileIndex });
 	  },
 
 	  render: function () {
@@ -96,11 +102,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      React.createElement(Message, { text: this.state.message.text, type: this.state.message.type }),
 	      React.createElement(DerContainer, {
 	        setFilesList: this.setFilesList,
+	        selectedDocument: this.state.selectedDocument,
 	        message: this.showMessage,
 	        tts: DerReader.options.tts,
 	        mode: this.state.mode,
 	        derFile: this.state.derFile }),
-	      React.createElement(Menu, { files: this.state.files, message: this.showMessage, changeDerFile: this.changeDerFile })
+	      React.createElement(Menu, {
+	        files: this.state.files,
+	        message: this.showMessage,
+	        changeDerFile: this.changeDerFile,
+	        changeDocument: this.changeDocument,
+	        selectedDocument: this.state.selectedDocument })
 	    );
 	  }
 	});
@@ -524,8 +536,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  getInitialState: function () {
 	    return {
-	      svg: '',
-	      selectedSVG: 0
+	      svg: ''
 	    };
 	  },
 
@@ -536,6 +547,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  componentWillReceiveProps: function (nextProps) {
 	    if (this.props.derFile !== nextProps.derFile) {
 	      this.setDerFile(nextProps.derFile);
+	    }
+	    if (this.props.selectedDocument !== nextProps.selectedDocument) {
+	      this.changeDocument(nextProps.selectedDocument);
 	    }
 	  },
 
@@ -598,15 +612,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (this.state.filesByExt.svg.length > 1) {
 	      this.props.setFilesList(this.state.filesByExt.svg);
-	      // FilesList.init({
-	      //     files: DerFile.filesByExt.svg,
-	      //     container: listContainer,
-	      //     actions: DerFile.changeSvg,
-	      //     selectedDocument: DerFile.selectedSVG
-	      // });
 	    }
-
-	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.state.selectedSVG], callback);
+	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument], callback);
 	  },
 
 	  readFiles: function (xml, svg, callback) {
@@ -641,10 +648,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 
-	  changeSvg: function (index) {
+	  changeDocument: function (index) {
 	    var _this = this;
-	    this.state.selectedSVG = index;
-	    FilesList.changeFile(index);
 	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[index], function (error, der) {
 	      _this.loadDer(der);
 	    });
@@ -657,7 +662,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  * @param tts: {Function}
 	  */
 	  loadDer: function (der) {
-	    console.log('load');
 	    if (der.svg !== undefined) {
 	      this.refs.container.innerHTML = der.svg;
 	    } else {
@@ -9293,7 +9297,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -23163,7 +23167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      'div',
 	      { className: 'menu' },
 	      React.createElement(FileInput, { message: this.props.message, changeDerFile: this.props.changeDerFile }),
-	      React.createElement(FilesList, { files: files }),
+	      React.createElement(FilesList, { files: files, changeDocument: this.props.changeDocument, selectedDocument: this.props.selectedDocument }),
 	      React.createElement(SwitchMode, null)
 	    );
 	  }
@@ -23278,19 +23282,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var FilesList = React.createClass({
 	  displayName: 'FilesList',
 
-	  getInitialState: function () {
-	    return {
-	      selectedDocument: 0
-	    };
-	  },
-
 	  changeFile: function (event) {
-	    this.setState({
-	      selectedDocument: Number(event._targetInst._currentElement.key)
-	    });
+	    this.props.changeDocument(Number(event._targetInst._currentElement.key));
 	  },
 
 	  render: function () {
+	    console.log(this.props);
 	    return React.createElement(
 	      'div',
 	      { className: 'files-list' },
@@ -23303,7 +23300,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'ul',
 	        null,
 	        this.props.files.map(function (file, key) {
-	          var className = key === this.state.selectedDocument ? 'selected' : '';
+	          var className = key === this.props.selectedDocument ? 'selected' : '';
 	          return React.createElement(
 	            'li',
 	            { key: key, onClick: this.changeFile },

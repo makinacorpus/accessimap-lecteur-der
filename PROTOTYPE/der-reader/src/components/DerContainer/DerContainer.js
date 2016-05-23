@@ -7,8 +7,7 @@ var React = require('react');
 var DerContainer = React.createClass({
   getInitialState: function() {
     return {
-      svg: '',
-      selectedSVG: 0
+      svg: ''
     }
   },
 
@@ -19,6 +18,9 @@ var DerContainer = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     if (this.props.derFile !== nextProps.derFile) {
       this.setDerFile(nextProps.derFile);
+    }
+    if (this.props.selectedDocument !== nextProps.selectedDocument) {
+      this.changeDocument(nextProps.selectedDocument);
     }
   },
 
@@ -85,15 +87,8 @@ var DerContainer = React.createClass({
 
     if (this.state.filesByExt.svg.length > 1) {
       this.props.setFilesList(this.state.filesByExt.svg);
-      // FilesList.init({
-      //     files: DerFile.filesByExt.svg,
-      //     container: listContainer,
-      //     actions: DerFile.changeSvg,
-      //     selectedDocument: DerFile.selectedSVG
-      // });
     }
-
-    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.state.selectedSVG], callback);
+    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument], callback);
   },
 
   readFiles: function(xml, svg, callback) {
@@ -130,10 +125,8 @@ var DerContainer = React.createClass({
     });
   },
 
-  changeSvg: function(index) {
+  changeDocument: function(index) {
     var _this = this;
-    this.state.selectedSVG = index;
-    FilesList.changeFile(index);
     this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[index], function(error, der) {
       _this.loadDer(der);
     });
@@ -147,7 +140,6 @@ var DerContainer = React.createClass({
   * @param tts: {Function}
   */
   loadDer: function(der) {
-    console.log('load');
     if (der.svg !== undefined) {
       this.refs.container.innerHTML = der.svg
     } else {
