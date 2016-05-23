@@ -1,6 +1,8 @@
 var Utils = require('./../../der.utils.js');
 var JSZip = require('jszip');
-// var DerExplore = require('./der.explore.js');
+
+var Explore = require('./DerContainer-explore.js');
+var Search = require('./DerContainer-search.js');
 
 var React = require('react');
 
@@ -153,7 +155,7 @@ var DerContainer = React.createClass({
         var poi = der.pois.poi[1]
         var id = poi.id.split('-').pop();
         var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
-        // DerSearch.setSearchEvents(elementToFind, DerFile.layout.derContainer, DerFile.tts);
+        Search.setSearchEvents(elementToFind, this.refs.container, this.props.tts);
       }
     } else {
       this.props.message('Aucun JSON trouvé', 'error');
@@ -161,11 +163,12 @@ var DerContainer = React.createClass({
   },
 
   attachPoiActions: function(pois) {
+    var _this = this;
     pois.map(function(poi) {
       var id = poi.id.split('-').pop();
       var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
       if (poiEl !== undefined) {
-        // DerExplore.setExploreEvents(poiEl, poi.actions.action, DerFile.readAudioFile, DerFile.tts);
+        Explore.setExploreEvents(poiEl, poi.actions.action, _this.readAudioFile, _this.props.tts);
       }
     });
   },
