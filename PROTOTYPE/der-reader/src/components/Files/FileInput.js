@@ -14,7 +14,6 @@ var FileInput = React.createClass({
     if (file !== undefined) {
       this.props.changeDerFile(file);
     } else {
-      console.log(this);
       this.props.message('Aucun fichier seléctionné', 'error');
     }
   },

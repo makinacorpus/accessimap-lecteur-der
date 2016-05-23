@@ -18,6 +18,18 @@ var DerSearch = {
     this.container.addEventListener('touchmove', _.throttle(DerSearch.checkCurrentPos, 200));
   },
 
+  removeEventsListener: function(container) {
+    this.container = container;
+    this.container.removeEventListener('mousedown', DerSearch.getInitialPos);
+    this.container.removeEventListener('touchstart', DerSearch.getInitialPos);
+
+    this.container.removeEventListener('mouseup', DerSearch._disableMouseHandler);
+    this.container.removeEventListener('touchend', DerSearch._disableMouseHandler);
+
+    this.container.removeEventListener('mousemove', _.throttle(DerSearch.checkCurrentPos, 200));
+    this.container.removeEventListener('touchmove', _.throttle(DerSearch.checkCurrentPos, 200));
+  },
+
   _disableMouseHandler: function() {
     mouseDown = false;
     clearTimeout(pressTimer);

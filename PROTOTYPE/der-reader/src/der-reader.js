@@ -4,7 +4,7 @@ var DerContainer = require('./components/DerContainer/DerContainer.js');
 var Menu = require('./components/Menu/Menu.js');
 var Message = require('./components/Message/Message.js');
 var FastClick = require('fastclick');
-var TouchEmulator = require('hammer-touchemulator');
+// var TouchEmulator = require('hammer-touchemulator');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -83,7 +83,7 @@ var DerReader = {
   init: function(options) {
     this.options = options;
     FastClick.attach(document.body, {});
-    TouchEmulator();
+    // TouchEmulator();
 
     ReactDOM.render(
       <App options={options} />,

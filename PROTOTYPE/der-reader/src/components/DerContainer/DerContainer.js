@@ -161,10 +161,11 @@ var DerContainer = React.createClass({
   },
 
   setDerActions: function(mode) {
-    console.log(mode);
     switch(mode) {
     case 'explore':
-      this.attachPoiActions(this.state.der.pois.poi);
+      Explore.setExploreEvents(this.state.der.pois, this.readAudioFile, this.props.tts);
+      // this.attachPoiActions(this.state.der.pois.poi);
+      Search.removeEventsListener(this.refs.container);
       break;
     case 'search':
       var poi = this.state.der.pois.poi[1]
@@ -180,7 +181,11 @@ var DerContainer = React.createClass({
       var id = poi.id.split('-').pop();
       var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
       if (poiEl !== undefined) {
-        Explore.setExploreEvents(poiEl, poi.actions.action, _this.readAudioFile, _this.props.tts);
+        Explore.setExploreEvents(poiEl, {
+          actions: poi.actions.action,
+          read: _this.readAudioFile,
+          tts: _this.props.tts
+        });
       }
     });
   },

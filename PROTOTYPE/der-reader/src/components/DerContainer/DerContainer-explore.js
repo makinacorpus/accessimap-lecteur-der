@@ -1,6 +1,9 @@
-var Hammer = require('hammerjs');
+const GESTURES = {
+  'click': 'tap',
+  'dblclick': 'double_tap'
+}
 
-var DerExplore = {
+var Explore = {
 
   /**
   * add event listener to DER elements
@@ -9,30 +12,58 @@ var DerExplore = {
   * @param {readAudioFile} tts
   * @param {Function} tts
   */
-  setExploreEvents: function(element, actions, readAudioFile, tts) {
-    var hammer = new Hammer.Manager(element, {});
-    this._addTouchEventsListeners(hammer);
+  setExploreEvents: function(pois, readFunction, tts) {
+    this.readFunction = readFunction;
+    this.tts = tts;
+    this.actions = {};
 
-    hammer.on('swipe triple_tap double_tap tap', function(e) {
-      var action = TouchEvents._getGestureAction(actions, e.type);
-
-      if (action !== undefined) {
-
-        TouchEvents._onEventStarted(element);
-
-        if (action.protocol === 'mp3') {
-          readAudioFile(action.value).then(function() {
-            TouchEvents._onEventEnded(element);
-          });
-        }
-
-        if (action.protocol === 'tts') {
-          tts(action.value).then(function() {
-            TouchEvents._onEventEnded(element);
-          });
-        }
+    pois.poi.map(function(poi) {
+      var id = poi.id.split('-').pop();
+      var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
+      if (poiEl !== undefined) {
+        Explore.actions[id] = poi.actions.action;
+        Object.keys(GESTURES).map(function(gesture) {
+          poiEl.addEventListener(gesture, Explore.action);
+        });
       }
     });
+  },
+
+  action: function(event) {
+    let element = event.target;
+    let actions = Explore.actions[element.getAttribute('data-link')];
+
+    let action = Explore._getGestureAction(actions, event.type);
+
+    // console.log(e);
+    if (action !== undefined) {
+      Explore._onEventStarted(element);
+
+      if (action.protocol === 'mp3') {
+        Explore.readFunction(action.value).then(function() {
+          Explore._onEventEnded(element);
+        });
+      }
+
+      if (action.protocol === 'tts') {
+        Explore.tts(action.value).then(function() {
+          Explore._onEventEnded(element);
+        });
+      }
+    }
+  },
+
+  _getGestureAction: function(actions, type) {
+    if (actions.length === undefined) {
+      return actions;
+    } else {
+      for (var i = 0; i < actions.length; i++) {
+        if (GESTURES[type] === actions[i].gesture && actions[i].protocol !== undefined) {
+          return actions[i];
+        }
+      }
+    }
+    return;
   },
 
   _onEventStarted: function(element) {
@@ -42,34 +73,8 @@ var DerExplore = {
 
   _onEventEnded: function(element) {
     element.style.fill = this.initialColor;
-  },
-
-  _addTouchEventsListeners: function(hammer) {
-    var singleTap = new Hammer.Tap({ event: 'tap' });
-    var doubleTap = new Hammer.Tap({event: 'double_tap', taps: 2 });
-    var tripleTap = new Hammer.Tap({event: 'triple_tap', taps: 3 });
-
-    hammer.add([tripleTap, doubleTap, singleTap]);
-    tripleTap.recognizeWith([doubleTap, singleTap]);
-    doubleTap.recognizeWith(singleTap);
-
-    doubleTap.requireFailure(tripleTap);
-    singleTap.requireFailure([tripleTap, doubleTap]);
-  },
-
-
-  _getGestureAction: function(actions, type) {
-    if (actions.length === undefined) {
-      return actions;
-    } else {
-      for (var i = 0; i < actions.length; i++) {
-        if (type === actions[i].gesture && actions[i].protocol !== undefined) {
-          return actions[i];
-        }
-      }
-    }
-    return;
   }
+
 };
 
-module.exports = DerExplore;
+module.exports = Explore;
