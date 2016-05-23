@@ -1,9 +1,6 @@
-var Utils = require('./der.utils.js');
-
 var React = require('react');
-var ReactDOM = require('react-dom');
 
-var DerMode = React.createClass({
+var SwitchMode = React.createClass({
   render: function() {
     return (
       <aside className="change-mode">
@@ -17,4 +14,4 @@ var DerMode = React.createClass({
   }
 });
 
-module.exports = DerMode;
+module.exports = SwitchMode;

@@ -1,51 +1,33 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
-
 
 var FilesList = React.createClass({
-    getInitialState: function() {
-        return {
-            selectedDocument: 0
-        }
-    },
+  getInitialState: function() {
+    return {
+      selectedDocument: 0
+    };
+  },
 
-    getList: function() {
-        var _this = this;
-        console.log(this);
-        if (this.props.files !== undefined) {
-            this.props.files.map(function(file, index) {
-                if (index === 0) {
-                    return '';
-                }
-                var className = (index === _this.state.selectedDocument) ? 'selected' : '';
-                return (
-                    <li key={index}><a className={className}>{file.name.replace('.svg', '')}</a></li>
-                );
-            });
-        } else {
-            return '';
-        }
-    },
+  changeFile: function(event) {
+    this.setState({
+      selectedDocument: Number(event._targetInst._currentElement.key)
+    });
+  },
 
-    render: function() {
-        var _this = this;
-
-        return (
-            <div className="files-list">
-                <ul>
-                    {this.props.files.map(function(file, index) {
-                        if (index === 0) {
-                            return '';
-                        }
-                        var className = (index === _this.state.selectedDocument) ? 'selected' : '';
-                        return (
-                            <li key={index}><a className={className}>{file.name.replace('.svg', '')}</a></li>
-                        );
-                    })}
-                </ul>
-            </div>
-        );
-    }
+  render: function() {
+    return (
+      <div className="files-list">
+        <h2>Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?</h2>
+        <ul>
+          {this.props.files.map(function(file, key) {
+            var className = (key === this.state.selectedDocument) ? 'selected' : '';
+            return (
+              <li key={key} onClick={this.changeFile}><a key={key} className={className}>{file.name.replace('.svg', '')}</a></li>
+            );
+          }.bind(this))}
+        </ul>
+      </div>
+    );
+  }
 });
 
 //
@@ -75,18 +57,6 @@ var FilesList = React.createClass({
 //         }
 //     },
 //
-//     changeFile: function(index) {
-//         this.selectedDocument = index;
-//         var links = document.querySelectorAll('.files-list a');
-//
-//         for (var i = 0; i < links.length; i++) {
-//             if (i === this.selectedDocument) {
-//                 links[i].className = 'selected';
-//             } else {
-//                 links[i].className = '';
-//             }
-//         }
-//     },
 //
 //     _resetFilesList: function() {
 //         this.listContainer.innerHTML = '';
