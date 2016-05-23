@@ -1,4 +1,4 @@
-require('!style!css!sass!./scss/styles.scss');
+require('!style!css!sass!./der-reader.scss');
 
 var DerContainer = require('./components/DerContainer/DerContainer.js');
 var Menu = require('./components/Menu/Menu.js');

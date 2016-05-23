@@ -1,3 +1,5 @@
+require('!style!css!sass!./FileInput.scss');
+
 var React = require('react');
 
 var FileInput = React.createClass({

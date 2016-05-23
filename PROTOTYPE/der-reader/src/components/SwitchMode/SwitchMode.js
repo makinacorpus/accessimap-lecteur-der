@@ -1,3 +1,5 @@
+require('!style!css!sass!./SwitchMode.scss');
+
 var React = require('react');
 
 var RadioButtonGroup = require('./../RadioButton/RadioButtonGroup.js');

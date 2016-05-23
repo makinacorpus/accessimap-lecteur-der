@@ -1,3 +1,5 @@
+require('!style!css!sass!./FilesList.scss');
+
 var React = require('react');
 
 var FilesList = React.createClass({
