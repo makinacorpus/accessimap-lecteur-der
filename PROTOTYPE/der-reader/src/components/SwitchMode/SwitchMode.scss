@@ -1,36 +1,63 @@
 @import './../../der-reader-variables.scss';
 
-.change-mode {
-    .title {
-        color: white;
-        text-align: center;
-    }
-    label {
-        color: $white;
-    }
-    .choose-element {
-        display: none;
-        font-size: 100%;
-        color: $white;
-        background-color: $black;
-        border: 3px solid $white;
-        width: 100%;
-        min-height: 2em;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        vertical-align: top;
-        height: 100%;
-        text-align: center;
-        font-weight: 700;
-        display: block;
-        cursor: pointer;
-        border-radius: $base-border-radius;
-        padding: 0.625rem 1.25rem;
+.switch-title {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  text-align: center;
+}
 
-        &:hover {
-            border-color: $orange;
-            color: $orange;
-        }
+.switch-button {
+  height: 40px;
+  text-align: center;
+  will-change: transform;
+  z-index: 197 !important;
+  cursor: pointer;
+  transition: .3s ease all;
+  border-radius: $base-border-radius;
+  border: 2px solid white;
+  &-case{
+    font-size: 1em;;
+    display: inline-block;
+    background: none;
+    width: 50%;
+    height: 100%;
+    color: white;
+    position: relative;
+    border: none;
+    transition: .3s ease all;
+    // text-transform: uppercase;
+    font-weight: bold;
+    padding-bottom: 1px;
+    &:hover{
+      background: $orange;
+      color: black;
+      cursor: pointer;
     }
+    &:focus {
+      outline: none;
+    }
+  }
+  .active {
+    color: #151515;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    z-index: -1;
+    transition: .3s ease-out all;
+    &-case{
+      color: #151515;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      left: 50%;
+    }
+  }
 }
