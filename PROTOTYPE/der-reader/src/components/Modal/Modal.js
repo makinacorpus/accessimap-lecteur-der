@@ -30,6 +30,10 @@ const Modal = React.createClass({
   },
 
   closeModal: function() {
+    const {onCloseModal} = this.props;
+    if (onCloseModal) {
+      this.props.onCloseModal();
+    }
     this.setState({
       visibility: 'hidden'
     });

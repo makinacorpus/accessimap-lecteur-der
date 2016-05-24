@@ -16,21 +16,8 @@ const Menu = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if (this.props.mode === nextProps.mode && this.props.currentIndex === nextProps.currentIndex) {
-      this.setState({
-        modal: 'hidden'
-      }, function() {
-        if (this.props.currentIndex) {  
-          this.resetMenu();
-        }
-      });
+      this.closeModal();
     }
-  },
-
-  resetMenu: function() {
-    var _this = this;
-    setTimeout(function() {
-      _this.props.setMenu(null);
-    }, 300);
   },
 
   render: function() {
@@ -51,7 +38,7 @@ const Menu = React.createClass({
     return (
       <div>
         <Button type="button" className="fill red open-menu" value="Menu" onClick={this.openModal}/>
-        <Modal name="mainMenu" content={mainMenu} title="Menu principal" visibility={this.state.modal}></Modal>
+        <Modal name="mainMenu" content={mainMenu} title="Menu principal" visibility={this.state.modal} onCloseModal={this.closeModal}></Modal>
       </div>
     );
   },
@@ -59,6 +46,16 @@ const Menu = React.createClass({
   openModal: function() {
     this.setState({
       modal: 'visible'
+    });
+  },
+
+  closeModal: function() {
+    this.setState({
+      modal: 'hidden'
+    }, function() {
+      if (this.props.currentIndex) {
+        this.props.setMenu(null);
+      }
     });
   }
 });

@@ -19,13 +19,8 @@ const App = React.createClass({
       selectedDocument: 0,
       der: [],
       searchableElement: null,
-      // currentIndexMenu: null
+      currentIndexMenu: null
     }
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    console.log(this.props.currentIndexMenu);
-    console.log(nextProps.currentIndexMenu);
   },
 
   showMessage: function(text, type) {

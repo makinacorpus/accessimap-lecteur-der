@@ -75,14 +75,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      derFile: DerReader.options.derFile,
 	      selectedDocument: 0,
 	      der: [],
-	      searchableElement: null
+	      searchableElement: null,
+	      currentIndexMenu: null
 	    };
-	  },
-
-	  // currentIndexMenu: null
-	  componentWillReceiveProps: function (nextProps) {
-	    console.log(this.props.currentIndexMenu);
-	    console.log(nextProps.currentIndexMenu);
 	  },
 
 	  showMessage: function (text, type) {
@@ -9287,7 +9282,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -32634,21 +32629,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  componentWillReceiveProps: function (nextProps) {
 	    if (this.props.mode === nextProps.mode && this.props.currentIndex === nextProps.currentIndex) {
-	      this.setState({
-	        modal: 'hidden'
-	      }, function () {
-	        if (this.props.currentIndex) {
-	          this.resetMenu();
-	        }
-	      });
+	      this.closeModal();
 	    }
-	  },
-
-	  resetMenu: function () {
-	    var _this = this;
-	    setTimeout(function () {
-	      _this.props.setMenu(null);
-	    }, 300);
 	  },
 
 	  render: function () {
@@ -32666,13 +32648,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	      'div',
 	      null,
 	      React.createElement(Button, { type: 'button', className: 'fill red open-menu', value: 'Menu', onClick: this.openModal }),
-	      React.createElement(Modal, { name: 'mainMenu', content: mainMenu, title: 'Menu principal', visibility: this.state.modal })
+	      React.createElement(Modal, { name: 'mainMenu', content: mainMenu, title: 'Menu principal', visibility: this.state.modal, onCloseModal: this.closeModal })
 	    );
 	  },
 
 	  openModal: function () {
 	    this.setState({
 	      modal: 'visible'
+	    });
+	  },
+
+	  closeModal: function () {
+	    this.setState({
+	      modal: 'hidden'
+	    }, function () {
+	      if (this.props.currentIndex) {
+	        this.props.setMenu(null);
+	      }
 	    });
 	  }
 	});
@@ -32853,6 +32845,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  closeModal: function () {
+	    const { onCloseModal } = this.props;
+	    if (onCloseModal) {
+	      this.props.onCloseModal();
+	    }
 	    this.setState({
 	      visibility: 'hidden'
 	    });
