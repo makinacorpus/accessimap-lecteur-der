@@ -12,10 +12,11 @@ var FileInput = React.createClass({
     const {type, value} = this.props;
     const className = this.props.className || '';
     const form = this.props.form || '';
+    const onClick = this.props.onClick || '';
     const buttonClasses = 'button ' + className;
 
     return (
-      <button type={type} form={form} className={buttonClasses}>{value}</button>
+      <button type={type} form={form} className={buttonClasses} onClick={onClick}>{value}</button>
     );
   }
 });

@@ -1,0 +1,25 @@
+@import './../../der-reader-variables.scss';
+
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 20px;
+  background: $black;
+  z-index: 100;
+  transition: .3s ease-out all;
+  &--title {
+    color: $white;
+    text-align: center;
+  }
+  &--close-button {
+    color: $white;
+  }
+
+  &.hidden {
+    top: 100vh;
+  }
+}
