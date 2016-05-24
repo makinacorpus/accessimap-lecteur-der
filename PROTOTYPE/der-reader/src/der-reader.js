@@ -63,6 +63,7 @@ var App = React.createClass({
           setDer={this.setDer}
           der={der}
           selectedDocument={selectedDocument}
+          searchableElement={searchableElement}
           message={this.showMessage}
           tts={DerReader.options.tts}
           mode={mode}

@@ -35,18 +35,25 @@ var DerSearch = {
     clearTimeout(pressTimer);
   },
 
-  setSearchEvents: function(element, container) {
-    this.container = container;
-    this.elementBoundingBox = element.getBoundingClientRect();
-    this.elementCenter = {x: this.elementBoundingBox.left + this.elementBoundingBox.width/2, y: this.elementBoundingBox.top + this.elementBoundingBox.height/2};
+  setSearchEvents: function(searchableElement, container, pois) {
+    if (searchableElement) {
+      var poi = pois.poi[searchableElement];
+      var id = poi.id.split('-').pop();
+      var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
 
-    this.soundsX = [];
-    this.soundsY = [];
-    this.positionFromElement = {};
-    this.isXfound = false;
-    this.isYfound = false;
+      this.container = container;
+      this.elementBoundingBox = elementToFind.getBoundingClientRect();
+      this.elementCenter = {x: this.elementBoundingBox.left + this.elementBoundingBox.width/2, y: this.elementBoundingBox.top + this.elementBoundingBox.height/2};
 
-    DerSearch._setEventsListener();
+      this.soundsX = [];
+      this.soundsY = [];
+      this.positionFromElement = {};
+      this.isXfound = false;
+      this.isYfound = false;
+
+      DerSearch._setEventsListener();
+
+    }
   },
 
   getSoundsPositions: function(distance, initialPos, direction) {

@@ -13,22 +13,23 @@ var DerContainer = React.createClass({
   },
 
   componentWillMount: function() {
-    this.setDerFile(this.props.derFile);
+    this.setDerFile();
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (this.props.derFile !== nextProps.derFile) {
-      this.setDerFile(nextProps.derFile);
+    const oldProps = this.props;
+    this.props = nextProps;
+    if (oldProps.derFile !== nextProps.derFile) {
+      this.setDerFile();
     }
-    if (this.props.selectedDocument !== nextProps.selectedDocument) {
-      this.changeDocument(nextProps.selectedDocument);
+    if (oldProps.selectedDocument !== nextProps.selectedDocument) {
+      this.changeDocument();
     }
-    if (this.props.mode !== nextProps.mode) {
-      this.setDerActions(nextProps.mode);
-    }
+    this.setDerActions();
   },
 
-  setDerFile: function(derFile) {
+  setDerFile: function() {
+    const {derFile} = this.props;
     var _this = this;
     if (typeof derFile === 'string') {
       Utils.getFileObject(derFile, function (file) {
@@ -131,9 +132,10 @@ var DerContainer = React.createClass({
     });
   },
 
-  changeDocument: function(index) {
+  changeDocument: function() {
+    const {selectedDocument} = this.props;
     var _this = this;
-    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[index], function(error, der) {
+    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument], function(error, der) {
       _this.props.setDer(der);
       _this.loadDer(der);
     });
@@ -156,24 +158,22 @@ var DerContainer = React.createClass({
     if (der.pois.poi === undefined) {
       this.props.message('Aucun JSON trouvé', 'error');
     } else {
-      this.setDerActions(this.props.mode);
+      this.setDerActions();
     }
   },
 
-  setDerActions: function(mode) {
-    const {der, tts} = this.props;
-
-    switch(mode) {
-    case 'explore':
-      Explore.setExploreEvents(der.pois, this.readAudioFile, tts);
-      Search.removeEventsListener(this.refs.container);
-      break;
-    case 'search':
-      var poi = der.pois.poi[1]
-      var id = poi.id.split('-').pop();
-      var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
-      Search.setSearchEvents(elementToFind, this.refs.container, tts);
-      Explore.removeExploreEvents();
+  setDerActions: function() {
+    const {mode, der, tts, searchableElement} = this.props;
+    if (der.pois) {
+      switch(mode) {
+      case 'explore':
+        Explore.setExploreEvents(der.pois, this.readAudioFile, tts);
+        Search.removeEventsListener(this.refs.container);
+        break;
+      case 'search':
+        Search.setSearchEvents(searchableElement, this.refs.container, der.pois);
+        Explore.removeExploreEvents();
+      }
     }
   },
 

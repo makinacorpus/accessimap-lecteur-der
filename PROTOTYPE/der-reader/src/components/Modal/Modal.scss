@@ -11,6 +11,7 @@
   background: $black;
   z-index: 100;
   transition: .3s ease-out all;
+  overflow: auto;
   &--title {
     color: $white;
     text-align: center;

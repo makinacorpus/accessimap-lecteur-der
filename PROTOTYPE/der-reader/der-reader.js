@@ -119,6 +119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        setDer: this.setDer,
 	        der: der,
 	        selectedDocument: selectedDocument,
+	        searchableElement: searchableElement,
 	        message: this.showMessage,
 	        tts: DerReader.options.tts,
 	        mode: mode,
@@ -525,22 +526,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  componentWillMount: function () {
-	    this.setDerFile(this.props.derFile);
+	    this.setDerFile();
 	  },
 
 	  componentWillReceiveProps: function (nextProps) {
-	    if (this.props.derFile !== nextProps.derFile) {
-	      this.setDerFile(nextProps.derFile);
+	    const oldProps = this.props;
+	    this.props = nextProps;
+	    if (oldProps.derFile !== nextProps.derFile) {
+	      this.setDerFile();
 	    }
-	    if (this.props.selectedDocument !== nextProps.selectedDocument) {
-	      this.changeDocument(nextProps.selectedDocument);
+	    if (oldProps.selectedDocument !== nextProps.selectedDocument) {
+	      this.changeDocument();
 	    }
-	    if (this.props.mode !== nextProps.mode) {
-	      this.setDerActions(nextProps.mode);
-	    }
+	    this.setDerActions();
 	  },
 
-	  setDerFile: function (derFile) {
+	  setDerFile: function () {
+	    const { derFile } = this.props;
 	    var _this = this;
 	    if (typeof derFile === 'string') {
 	      Utils.getFileObject(derFile, function (file) {
@@ -637,9 +639,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 
-	  changeDocument: function (index) {
+	  changeDocument: function () {
+	    const { selectedDocument } = this.props;
 	    var _this = this;
-	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[index], function (error, der) {
+	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument], function (error, der) {
 	      _this.props.setDer(der);
 	      _this.loadDer(der);
 	    });
@@ -661,24 +664,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (der.pois.poi === undefined) {
 	      this.props.message('Aucun JSON trouvé', 'error');
 	    } else {
-	      this.setDerActions(this.props.mode);
+	      this.setDerActions();
 	    }
 	  },
 
-	  setDerActions: function (mode) {
-	    const { der, tts } = this.props;
-
-	    switch (mode) {
-	      case 'explore':
-	        Explore.setExploreEvents(der.pois, this.readAudioFile, tts);
-	        Search.removeEventsListener(this.refs.container);
-	        break;
-	      case 'search':
-	        var poi = der.pois.poi[1];
-	        var id = poi.id.split('-').pop();
-	        var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
-	        Search.setSearchEvents(elementToFind, this.refs.container, tts);
-	        Explore.removeExploreEvents();
+	  setDerActions: function () {
+	    const { mode, der, tts, searchableElement } = this.props;
+	    if (der.pois) {
+	      switch (mode) {
+	        case 'explore':
+	          Explore.setExploreEvents(der.pois, this.readAudioFile, tts);
+	          Search.removeEventsListener(this.refs.container);
+	          break;
+	        case 'search':
+	          Search.setSearchEvents(searchableElement, this.refs.container, der.pois);
+	          Explore.removeExploreEvents();
+	      }
 	    }
 	  },
 
@@ -19727,18 +19728,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    clearTimeout(pressTimer);
 	  },
 
-	  setSearchEvents: function (element, container) {
-	    this.container = container;
-	    this.elementBoundingBox = element.getBoundingClientRect();
-	    this.elementCenter = { x: this.elementBoundingBox.left + this.elementBoundingBox.width / 2, y: this.elementBoundingBox.top + this.elementBoundingBox.height / 2 };
+	  setSearchEvents: function (searchableElement, container, pois) {
+	    if (searchableElement) {
+	      var poi = pois.poi[searchableElement];
+	      var id = poi.id.split('-').pop();
+	      var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
 
-	    this.soundsX = [];
-	    this.soundsY = [];
-	    this.positionFromElement = {};
-	    this.isXfound = false;
-	    this.isYfound = false;
+	      this.container = container;
+	      this.elementBoundingBox = elementToFind.getBoundingClientRect();
+	      this.elementCenter = { x: this.elementBoundingBox.left + this.elementBoundingBox.width / 2, y: this.elementBoundingBox.top + this.elementBoundingBox.height / 2 };
 
-	    DerSearch._setEventsListener();
+	      this.soundsX = [];
+	      this.soundsY = [];
+	      this.positionFromElement = {};
+	      this.isXfound = false;
+	      this.isYfound = false;
+
+	      DerSearch._setEventsListener();
+	    }
 	  },
 
 	  getSoundsPositions: function (distance, initialPos, direction) {
@@ -32592,7 +32599,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var FileInput = __webpack_require__(133);
 	var SwitchMode = __webpack_require__(139);
-	var FilesList = __webpack_require__(149);
+	var FilesList = __webpack_require__(152);
 
 	var React = __webpack_require__(101);
 
@@ -32661,6 +32668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    e.preventDefault();
 	    var file = document.getElementById('file').files[0];
 	    if (file !== undefined) {
+	      console.log(this.props);
 	      this.props.changeDerFile(file);
 	    } else {
 	      this.props.message('Aucun fichier seléctionné', 'error');
@@ -32972,7 +32980,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(101);
 	var Modal = __webpack_require__(146);
 	var Button = __webpack_require__(136);
-	var SelectableList = __webpack_require__(152);
+	var SelectableList = __webpack_require__(149);
 
 	const SelectElement = React.createClass({
 	  displayName: 'SelectElement',
@@ -33150,7 +33158,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  padding: 20px;\n  background: #000;\n  z-index: 100;\n  transition: .3s ease-out all; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    top: 100vh; }\n", ""]);
+	exports.push([module.id, ".modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  padding: 20px;\n  background: #000;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    top: 100vh; }\n", ""]);
 
 	// exports
 
@@ -33160,80 +33168,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(150);
-
-	var React = __webpack_require__(101);
-	var SelectableList = __webpack_require__(152);
-
-	var FilesList = React.createClass({
-	  displayName: 'FilesList',
-
-	  changeFile: function (event) {
-	    this.props.changeDocument(Number(event._targetInst._currentElement.key));
-	  },
-
-	  render: function () {
-	    const { files, selectedDocument } = this.props;
-
-	    return React.createElement(
-	      'div',
-	      { className: 'files-list' },
-	      React.createElement(
-	        'h2',
-	        null,
-	        'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?'
-	      ),
-	      React.createElement(SelectableList, { items: files, selectedItem: selectedDocument, handleClick: this.changeFile })
-	    );
-	  }
-	});
-
-	module.exports = FilesList;
-
-/***/ },
-/* 150 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(151);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./FilesList.scss", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./FilesList.scss");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 151 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 152 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(153);
 
 	var React = __webpack_require__(101);
 
@@ -33268,13 +33202,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = SelectableList;
 
 /***/ },
-/* 153 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(154);
+	var content = __webpack_require__(151);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -33294,7 +33228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 154 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -33303,6 +33237,80 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// module
 	exports.push([module.id, ".selectable-list {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n  .selectable-list--item {\n    list-style-type: none; }\n    .selectable-list--item:not(:last-child) {\n      border-bottom: solid 2px #9BC53D; }\n    .selectable-list--item a {\n      box-sizing: padding-box;\n      display: block;\n      font-weight: bold;\n      padding: .8em; }\n      .selectable-list--item a.selected, .selectable-list--item a:hover.selected {\n        background: #9BC53D;\n        color: #000;\n        cursor: normal; }\n      .selectable-list--item a:hover {\n        background: #afd164;\n        color: #000;\n        cursor: pointer; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(153);
+
+	var React = __webpack_require__(101);
+	var SelectableList = __webpack_require__(149);
+
+	var FilesList = React.createClass({
+	  displayName: 'FilesList',
+
+	  changeFile: function (event) {
+	    this.props.changeDocument(Number(event._targetInst._currentElement.key));
+	  },
+
+	  render: function () {
+	    const { files, selectedDocument } = this.props;
+
+	    return React.createElement(
+	      'div',
+	      { className: 'files-list' },
+	      React.createElement(
+	        'h2',
+	        null,
+	        'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?'
+	      ),
+	      React.createElement(SelectableList, { items: files, selectedItem: selectedDocument, handleClick: this.changeFile })
+	    );
+	  }
+	});
+
+	module.exports = FilesList;
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(154);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./FilesList.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./FilesList.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 154 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n", ""]);
 
 	// exports
 
