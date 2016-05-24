@@ -1,0 +1,35 @@
+@import './../../der-reader-variables.scss';
+
+.selectable-list {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: $white;
+    border-radius: $base-border-radius;
+    border: solid 2px $green;
+
+    &--item {
+        list-style-type: none;
+        &:not(:last-child) {
+            border-bottom: solid 2px $green;
+        }
+        a {
+          box-sizing: padding-box;
+          display: block;
+          font-weight: bold;
+          padding: .8em;
+
+          &.selected, &:hover.selected {
+            background: $green;
+            color: $black;
+            cursor: normal;
+          }
+
+          &:hover {
+            background: lighten($green, 10%);
+            color: $black;
+            cursor: pointer;
+          }
+        }
+    }
+}

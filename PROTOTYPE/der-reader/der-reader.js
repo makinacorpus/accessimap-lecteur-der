@@ -33131,6 +33131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(150);
 
 	var React = __webpack_require__(101);
+	var SelectableList = __webpack_require__(289);
 
 	var FilesList = React.createClass({
 	  displayName: 'FilesList',
@@ -33140,6 +33141,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  render: function () {
+	    const { files, selectedDocument } = this.props;
+
 	    return React.createElement(
 	      'div',
 	      { className: 'files-list' },
@@ -33148,22 +33151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        null,
 	        'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?'
 	      ),
-	      React.createElement(
-	        'ul',
-	        null,
-	        this.props.files.map(function (file, key) {
-	          var className = key === this.props.selectedDocument ? 'selected' : '';
-	          return React.createElement(
-	            'li',
-	            { key: key, onClick: this.changeFile },
-	            React.createElement(
-	              'a',
-	              { key: key, className: className },
-	              file.name.replace('.svg', '')
-	            )
-	          );
-	        }.bind(this))
-	      )
+	      React.createElement(SelectableList, { items: files, selectedItem: selectedDocument, handleClick: this.changeFile })
 	    );
 	  }
 	});
@@ -33205,7 +33193,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n\n.files-list ul {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n\n.files-list li {\n  list-style-type: none; }\n  .files-list li:not(:last-child) {\n    border-bottom: solid 2px #9BC53D; }\n\n.files-list a {\n  box-sizing: padding-box;\n  display: block;\n  font-weight: bold;\n  padding: .8em; }\n  .files-list a.selected, .files-list a:hover.selected {\n    background: #9BC53D;\n    color: #000;\n    cursor: normal; }\n  .files-list a:hover {\n    background: #afd164;\n    color: #000;\n    cursor: pointer; }\n", ""]);
+	exports.push([module.id, ".files-list h2 {\n  padding: 1em 0 0;\n  color: #fff;\n  font-size: 15px;\n  line-height: 150%;\n  font-weight: normal;\n  text-align: center; }\n", ""]);
 
 	// exports
 
@@ -50520,6 +50508,84 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ReactMount = __webpack_require__(279);
 
 	module.exports = ReactMount.renderSubtreeIntoContainer;
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(290);
+
+	var React = __webpack_require__(101);
+
+	var SelectableList = React.createClass({
+	  displayName: 'SelectableList',
+
+	  changeFile: function (event) {
+	    this.props.changeDocument(Number(event._targetInst._currentElement.key));
+	  },
+
+	  render: function () {
+	    const { items, selectedItem, handleClick } = this.props;
+	    return React.createElement(
+	      'ul',
+	      { className: 'selectable-list' },
+	      items.map(function (file, key) {
+	        const isSelected = key === selectedItem ? 'selected' : '';
+	        return React.createElement(
+	          'li',
+	          { key: key, onClick: handleClick, className: 'selectable-list--item' },
+	          React.createElement(
+	            'a',
+	            { key: key, className: isSelected },
+	            file.name.replace('.svg', '')
+	          )
+	        );
+	      }.bind(this))
+	    );
+	  }
+	});
+
+	module.exports = SelectableList;
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(291);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./SelectableList.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./SelectableList.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".selectable-list {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 2px #9BC53D; }\n  .selectable-list--item {\n    list-style-type: none; }\n    .selectable-list--item:not(:last-child) {\n      border-bottom: solid 2px #9BC53D; }\n    .selectable-list--item a {\n      box-sizing: padding-box;\n      display: block;\n      font-weight: bold;\n      padding: .8em; }\n      .selectable-list--item a.selected, .selectable-list--item a:hover.selected {\n        background: #9BC53D;\n        color: #000;\n        cursor: normal; }\n      .selectable-list--item a:hover {\n        background: #afd164;\n        color: #000;\n        cursor: pointer; }\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ])

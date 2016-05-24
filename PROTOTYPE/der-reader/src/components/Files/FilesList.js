@@ -1,6 +1,7 @@
 require('!style!css!sass!./FilesList.scss');
 
 var React = require('react');
+var SelectableList = require('./../SelectableList/SelectableList.js');
 
 var FilesList = React.createClass({
   changeFile: function(event) {
@@ -8,17 +9,12 @@ var FilesList = React.createClass({
   },
 
   render: function() {
+    const {files, selectedDocument} = this.props;
+
     return (
       <div className="files-list">
         <h2>Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?</h2>
-        <ul>
-          {this.props.files.map(function(file, key) {
-            var className = (key === this.props.selectedDocument) ? 'selected' : '';
-            return (
-              <li key={key} onClick={this.changeFile}><a key={key} className={className}>{file.name.replace('.svg', '')}</a></li>
-            );
-          }.bind(this))}
-        </ul>
+        <SelectableList items={files} selectedItem={selectedDocument} handleClick={this.changeFile}></SelectableList>
       </div>
     );
   }
