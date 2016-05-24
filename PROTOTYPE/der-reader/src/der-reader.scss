@@ -55,9 +55,10 @@ svg {
     overflow: hidden;
 }
 
-.menu {
-    // display: none;
-    width: 320px;
-    background: $black;
-    padding: 60px 1.25rem;
+.button.open-menu {
+  position: absolute;
+  width: auto;
+  margin: .5em;
+  top: 0;
+  right: 0;
 }

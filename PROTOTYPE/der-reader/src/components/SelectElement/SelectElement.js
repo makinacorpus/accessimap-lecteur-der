@@ -1,9 +1,9 @@
 require('!style!css!sass!./SelectElement.scss');
 
-var React = require('react');
-var Modal = require('./../Modal/Modal.js');
-var Button = require('./../Button/Button.js');
-var SelectableList = require('./../SelectableList/SelectableList.js');
+const React = require('react');
+const Modal = require('./../Modal/Modal.js');
+const Button = require('./../Button/Button.js');
+const SelectableList = require('./../SelectableList/SelectableList.js');
 
 const SelectElement = React.createClass({
   getInitialState: function() {
@@ -35,8 +35,8 @@ const SelectElement = React.createClass({
     return (
       <div>
         <span className="current-element">{currentElement}</span>
-        <Button type="button" value="Choisir un élément à trouver" onClick={this.closeModal} />
-        <Modal name="selectElement" content={content} title="Sélectionner un élément à rechercher" visibility={this.state.modal}></Modal>
+        <Button type="button" value="Choisir un élément à trouver" onClick={this.openModal} />
+        <Modal name="selectSearchableElement" content={content} title="Sélectionner un élément à rechercher" visibility={this.state.modal}></Modal>
       </div>
     );
   },
@@ -45,7 +45,7 @@ const SelectElement = React.createClass({
     this.props.setSearchableElement(Number(event._targetInst._currentElement.key));
   },
 
-  closeModal: function() {
+  openModal: function() {
     this.setState({
       modal: 'visible'
     })

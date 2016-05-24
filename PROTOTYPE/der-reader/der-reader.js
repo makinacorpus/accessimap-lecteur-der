@@ -56,16 +56,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(1);
 
-	var DerContainer = __webpack_require__(5);
-	var Menu = __webpack_require__(132);
-	var Message = __webpack_require__(155);
-	var FastClick = __webpack_require__(156);
-	// var TouchEmulator = require('hammer-touchemulator');
+	const DerContainer = __webpack_require__(5);
+	const Menu = __webpack_require__(132);
+	const Message = __webpack_require__(155);
+	const FastClick = __webpack_require__(156);
+	// const TouchEmulator = require('hammer-touchemulator');
 
-	var React = __webpack_require__(101);
-	var ReactDOM = __webpack_require__(157);
+	const React = __webpack_require__(101);
+	const ReactDOM = __webpack_require__(157);
 
-	var App = React.createClass({
+	const App = React.createClass({
 	  displayName: 'App',
 
 	  getInitialState: function () {
@@ -196,7 +196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.menu {\n  width: 320px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
+	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.message {\n  color: white;\n  position: absolute;\n  z-index: 10;\n  width: 100%; }\n  .message span {\n    text-align: center;\n    display: block;\n    font-weight: bold;\n    padding: 10px; }\n    .message span.error {\n      background-color: #F91818; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.button.open-menu {\n  position: absolute;\n  width: auto;\n  margin: .5em;\n  top: 0;\n  right: 0; }\n", ""]);
 
 	// exports
 
@@ -9273,7 +9273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -32597,14 +32597,24 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var FileInput = __webpack_require__(133);
-	var SwitchMode = __webpack_require__(139);
-	var FilesList = __webpack_require__(152);
+	__webpack_require__(292);
 
-	var React = __webpack_require__(101);
+	const Button = __webpack_require__(136);
+	const Modal = __webpack_require__(146);
+	const FileInput = __webpack_require__(133);
+	const SwitchMode = __webpack_require__(139);
+	const FilesList = __webpack_require__(152);
 
-	var Menu = React.createClass({
+	const React = __webpack_require__(101);
+
+	const Menu = React.createClass({
 	  displayName: 'Menu',
+
+	  getInitialState: function () {
+	    return {
+	      modal: 'hidden'
+	    };
+	  },
 
 	  render: function () {
 	    const {
@@ -32620,7 +32630,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } = this.props;
 	    const files = this.props.files || [];
 
-	    return React.createElement(
+	    const menuContent = React.createElement(
 	      'div',
 	      { className: 'menu' },
 	      React.createElement(FileInput, {
@@ -32640,6 +32650,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        searchableElement: searchableElement
 	      })
 	    );
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(Button, { type: 'button', className: 'fill red open-menu', value: 'Menu', onClick: this.openModal }),
+	      React.createElement(Modal, { name: 'mainMenu', content: menuContent, title: 'Menu principal', visibility: this.state.modal })
+	    );
+	  },
+
+	  openModal: function () {
+	    this.setState({
+	      modal: 'visible'
+	    });
 	  }
 	});
 
@@ -32668,7 +32691,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    e.preventDefault();
 	    var file = document.getElementById('file').files[0];
 	    if (file !== undefined) {
-	      console.log(this.props);
 	      this.props.changeDerFile(file);
 	    } else {
 	      this.props.message('Aucun fichier seléctionné', 'error');
@@ -32817,7 +32839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
+	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: 0.625rem 1.25rem;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #000; }\n      .button.fill.red:hover {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: transparent; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
 
 	// exports
 
@@ -32977,10 +32999,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(144);
 
-	var React = __webpack_require__(101);
-	var Modal = __webpack_require__(146);
-	var Button = __webpack_require__(136);
-	var SelectableList = __webpack_require__(149);
+	const React = __webpack_require__(101);
+	const Modal = __webpack_require__(146);
+	const Button = __webpack_require__(136);
+	const SelectableList = __webpack_require__(149);
 
 	const SelectElement = React.createClass({
 	  displayName: 'SelectElement',
@@ -33015,8 +33037,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        { className: 'current-element' },
 	        currentElement
 	      ),
-	      React.createElement(Button, { type: 'button', value: 'Choisir un élément à trouver', onClick: this.closeModal }),
-	      React.createElement(Modal, { name: 'selectElement', content: content, title: 'Sélectionner un élément à rechercher', visibility: this.state.modal })
+	      React.createElement(Button, { type: 'button', value: 'Choisir un élément à trouver', onClick: this.openModal }),
+	      React.createElement(Modal, { name: 'selectSearchableElement', content: content, title: 'Sélectionner un élément à rechercher', visibility: this.state.modal })
 	    );
 	  },
 
@@ -33024,7 +33046,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.setSearchableElement(Number(event._targetInst._currentElement.key));
 	  },
 
-	  closeModal: function () {
+	  openModal: function () {
 	    this.setState({
 	      modal: 'visible'
 	    });
@@ -33158,7 +33180,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  padding: 20px;\n  background: #000;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    top: 100vh; }\n", ""]);
+	exports.push([module.id, ".modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  padding: .5em;\n  background: #000;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    top: 100vh; }\n", ""]);
 
 	// exports
 
@@ -50625,6 +50647,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ReactMount = __webpack_require__(282);
 
 	module.exports = ReactMount.renderSubtreeIntoContainer;
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(293);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Menu.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Menu.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".menu {\n  width: 90%;\n  margin: 0 auto;\n  max-width: 720px;\n  background: #000;\n  padding: 60px 1.25rem; }\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ])

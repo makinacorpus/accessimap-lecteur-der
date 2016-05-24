@@ -1,16 +1,16 @@
 require('!style!css!sass!./der-reader.scss');
 
-var DerContainer = require('./components/DerContainer/DerContainer.js');
-var Menu = require('./components/Menu/Menu.js');
-var Message = require('./components/Message/Message.js');
-var FastClick = require('fastclick');
-// var TouchEmulator = require('hammer-touchemulator');
+const DerContainer = require('./components/DerContainer/DerContainer.js');
+const Menu = require('./components/Menu/Menu.js');
+const Message = require('./components/Message/Message.js');
+const FastClick = require('fastclick');
+// const TouchEmulator = require('hammer-touchemulator');
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 
-var App = React.createClass({
+const App = React.createClass({
   getInitialState: function() {
     return {
       message: '',

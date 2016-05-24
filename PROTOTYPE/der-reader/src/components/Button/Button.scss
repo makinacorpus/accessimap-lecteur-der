@@ -30,7 +30,18 @@
       border-color: $blue;
       background-color: $blue;
     }
+    &.red {
+      background-color: $red;
+      border-color: $red;
+      color: $black;
+      &:hover {
+        border-color: $red;
+        color: $red;
+        background-color: transparent;
+      }
+    }
   }
+
 
   &.width-auto {
     width: auto;

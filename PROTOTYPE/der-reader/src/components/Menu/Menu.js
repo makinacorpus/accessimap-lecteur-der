@@ -1,11 +1,21 @@
-var FileInput = require('./../Files/FileInput.js');
-var SwitchMode = require('./../SwitchMode/SwitchMode.js');
-var FilesList = require('./../Files/FilesList.js');
+require('!style!css!sass!./Menu.scss');
 
-var React = require('react');
+const Button = require('./../Button/Button.js');
+const Modal = require('./../Modal/Modal.js');
+const FileInput = require('./../Files/FileInput.js');
+const SwitchMode = require('./../SwitchMode/SwitchMode.js');
+const FilesList = require('./../Files/FilesList.js');
+
+const React = require('react');
 
 
-var Menu = React.createClass({
+const Menu = React.createClass({
+  getInitialState: function() {
+    return {
+      modal: 'hidden'
+    };
+  },
+
   render: function() {
     const {
       message,
@@ -20,7 +30,7 @@ var Menu = React.createClass({
     } = this.props;
     const files = this.props.files || [];
 
-    return (
+    const menuContent = (
       <div className="menu">
         <FileInput
           message={message}
@@ -40,6 +50,19 @@ var Menu = React.createClass({
           />
       </div>
     );
+
+    return (
+      <div>
+        <Button type="button" className="fill red open-menu" value="Menu" onClick={this.openModal}/>
+        <Modal name="mainMenu" content={menuContent} title="Menu principal" visibility={this.state.modal}></Modal>
+      </div>
+    );
+  },
+
+  openModal: function() {
+    this.setState({
+      modal: 'visible'
+    })
   }
 });
 
