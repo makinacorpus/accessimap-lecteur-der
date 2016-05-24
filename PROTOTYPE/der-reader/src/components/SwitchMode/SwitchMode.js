@@ -19,9 +19,11 @@ const SwitchMode = React.createClass({
 
   render: function() {
     const {checkedValue, position} = this.state;
-    const {pois} = this.props;
+    const {pois, setSearchableElement, searchableElement} = this.props;
     const onChange = this.onChange;
-    const explore = checkedValue === 'search' ? <SelectElement pois={pois}></SelectElement> : '';
+    const explore = checkedValue === 'search' ?
+      <SelectElement pois={pois} setSearchableElement={setSearchableElement} searchableElement={searchableElement}></SelectElement>
+    : '';
 
     const choiceItems = choices.map(choice => {
       const {value, label} = choice;
@@ -40,7 +42,7 @@ const SwitchMode = React.createClass({
 
     return (
       <aside className="switch">
-        <h2 className="switch-title">Mode</h2>
+        <h2 className="switch-title">Mode</h2>        
         <div className="switch-button">
           <span className={'active ' + position}></span>
           {choiceItems}

@@ -17,7 +17,8 @@ var App = React.createClass({
       mode: DerReader.options.defaultMode,
       derFile: DerReader.options.derFile,
       selectedDocument: 0,
-      der: []
+      der: [],
+      searchableElement: null
     }
   },
 
@@ -45,8 +46,12 @@ var App = React.createClass({
     this.setState({mode: mode});
   },
 
+  setSearchableElement: function(searchableElement) {
+    this.setState({searchableElement: searchableElement});
+  },
+
   render: function() {
-    const {message, der, selectedDocument, mode, derFile, files} = this.state;
+    const {message, der, selectedDocument, mode, derFile, files, searchableElement} = this.state;
 
     return (
       <div className="container">
@@ -68,6 +73,8 @@ var App = React.createClass({
           message={this.showMessage}
           mode={mode}
           pois={der.pois}
+          setSearchableElement={this.setSearchableElement}
+          searchableElement={searchableElement}
           selectedDocument={selectedDocument}
           changeDerFile={this.changeDerFile}
           changeDocument={this.changeDocument}

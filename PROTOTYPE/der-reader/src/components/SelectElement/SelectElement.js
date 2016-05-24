@@ -3,6 +3,7 @@ require('!style!css!sass!./SelectElement.scss');
 var React = require('react');
 var Modal = require('./../Modal/Modal.js');
 var Button = require('./../Button/Button.js');
+var SelectableList = require('./../SelectableList/SelectableList.js');
 
 const SelectElement = React.createClass({
   getInitialState: function() {
@@ -18,31 +19,33 @@ const SelectElement = React.createClass({
   },
 
   render: function() {
-    const {pois} = this.props;
-    const elementList = pois.poi.map((poi, key) => {
-      return (
-        <li className="select-element--item" key={key}>{poi.id}</li>
-      );
+    const {pois, searchableElement} = this.props;
+    pois.poi.map((poi) => {
+      poi.name = poi.name || poi.id;
     });
 
     const content = (
-        <ul className="select-element">
-          {elementList}
-        </ul>
+        <SelectableList items={pois.poi} selectedItem={searchableElement} handleClick={this.selectElement}></SelectableList>
     );
 
-    console.log(this.props);
+    const currentElement = searchableElement ?
+      'Recherche de : ' + pois.poi[searchableElement].name
+      : 'Aucun élément sélectionné' ;
 
     return (
       <div>
-        <Button type="button" value="Choisir un élément à trouver" onClick={this.handleClick} />
+        <span className="current-element">{currentElement}</span>
+        <Button type="button" value="Choisir un élément à trouver" onClick={this.closeModal} />
         <Modal name="selectElement" content={content} title="Sélectionner un élément à rechercher" visibility={this.state.modal}></Modal>
       </div>
     );
   },
 
-  handleClick: function() {
-    console.log('click');
+  selectElement: function(event) {
+    this.props.setSearchableElement(Number(event._targetInst._currentElement.key));
+  },
+
+  closeModal: function() {
     this.setState({
       modal: 'visible'
     })

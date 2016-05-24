@@ -11,10 +11,12 @@ var SelectableList = React.createClass({
     const {items, selectedItem, handleClick} = this.props;
     return (
       <ul className="selectable-list">
-        {items.map(function(file, key) {
+        {items.map(function(item, key) {
           const isSelected = (key === selectedItem) ? 'selected' : '';
           return (
-            <li key={key} onClick={handleClick} className="selectable-list--item"><a key={key} className={isSelected}>{file.name.replace('.svg', '')}</a></li>
+            <li key={key} onClick={handleClick} className="selectable-list--item">
+              <a key={key} className={isSelected}>{item.name}</a>  
+            </li>
           );
         }.bind(this))}
       </ul>
