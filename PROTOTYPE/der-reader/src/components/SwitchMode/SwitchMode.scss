@@ -26,11 +26,10 @@
     position: relative;
     border: none;
     transition: .3s ease all;
-    // text-transform: uppercase;
     font-weight: bold;
     padding-bottom: 1px;
     &:hover{
-      background: $orange;
+      background: darken(white, 10%);
       color: black;
       cursor: pointer;
     }
@@ -60,4 +59,26 @@
       left: 50%;
     }
   }
+}
+
+.choose-element {
+  text-align: center;
+  font-weight: 700;
+  display: block;
+  cursor: pointer;
+  border-radius: $base-border-radius;
+  width: 100%;
+  min-height: 2em;
+  margin-top: 10px;
+  padding: 0.625rem 1.25rem;
+  height: 100%;
+  color: $black;
+  background-color: transparent;
+  border: 3px solid $white;
+  width: 100%;
+  min-height: 2em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
 }

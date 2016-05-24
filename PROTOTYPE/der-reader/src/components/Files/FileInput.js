@@ -1,6 +1,7 @@
 require('!style!css!sass!./FileInput.scss');
 
 var React = require('react');
+var Button = require('./../Button/Button.js');
 
 var FileInput = React.createClass({
   getInitialState: function() {
@@ -36,12 +37,12 @@ var FileInput = React.createClass({
 
   render: function() {
     return (
-      <form onSubmit={this.loadNewDer}>
+      <form onSubmit={this.loadNewDer} id="fileform">
         <input type="file" className="inputfile" id="file" onChange={this.changeInputState} />
         <label htmlFor="file" className={this.state.labelClass}>
           <span>{this.state.label}</span>
         </label>
-        <input type="submit" className="inputsubmit" value="Envoyer" />
+        <Button type="submit" form="fileform" className="fill" value="Envoyer"/>
       </form>
     );
   }

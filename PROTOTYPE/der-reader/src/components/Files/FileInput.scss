@@ -40,8 +40,7 @@
     }
 }
 
-.inputfile + label,
-.inputsubmit {
+.inputfile + label {
     text-align: center;
     font-weight: 700;
     display: block;
@@ -49,24 +48,6 @@
     border-radius: $base-border-radius;
 }
 
-.inputsubmit {
-    margin-top: 10px;
-    padding: 0.625rem 1.25rem;
-    height: 100%;
-    color: $black;
-    background-color: $white;
-    border: 3px solid $white;
-    width: 100%;
-    min-height: 2em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    vertical-align: top;
-}
-
-
-// .inputfile:focus + label,
-// .inputfile.has-focus + label,
 .inputfile + label:hover {
     border-color: $blue;
     color: $blue;
@@ -81,10 +62,5 @@
 .inputfile:focus + label strong,
 .inputfile.has-focus + label strong,
 .inputfile + label:hover strong {
-    background-color: $blue;
-}
-
-.inputsubmit:hover {
-    border-color: $blue;
     background-color: $blue;
 }

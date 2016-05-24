@@ -1,0 +1,35 @@
+@import './../../der-reader-variables.scss';
+
+.button {
+  margin-top: 10px;
+  padding: 0.625rem 1.25rem;
+  height: 100%;
+  color: $white;
+  background-color: transparent;
+  border: 3px solid $white;
+  width: 100%;
+  min-height: 2em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
+  text-align: center;
+  font-weight: 700;
+  display: block;
+  cursor: pointer;
+  border-radius: $base-border-radius;
+  font-size: 100%;
+  &:hover {
+    background-color: $white;
+    color: $black;
+  }
+
+  &.fill {
+    background-color: $white;
+    color: $black;
+    &:hover {
+      border-color: $blue;
+      background-color: $blue;
+    }
+  }
+}

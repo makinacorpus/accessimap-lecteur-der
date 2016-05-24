@@ -2,6 +2,7 @@ require('!style!css!sass!./SwitchMode.scss');
 
 var React = require('react');
 var SwitchButton = require('./SwitchButton.js');
+var Button = require('./../Button/Button.js');
 
 const choices = [
   {value: 'explore', label: 'Exploration', position: 'left'},
@@ -19,10 +20,7 @@ const SwitchMode = React.createClass({
   render: function() {
     const {checkedValue, position} = this.state;
     const onChange = this.onChange;
-
-    const explore = function() {
-      return checkedValue === 'search' ? <button className="choose-element">Choisir un élément à trouver</button> : '';
-    }
+    const explore = checkedValue === 'search' ? <Button type="button" value="Choisir un élément à trouver"/> : '';
 
     const choiceItems = choices.map(choice => {
       const {value, label} = choice;
@@ -43,10 +41,9 @@ const SwitchMode = React.createClass({
       <aside className="switch">
         <h2 className="switch-title">Mode</h2>
         <div className="switch-button">
-          <span className={'active ' + this.state.position}></span>
+          <span className={'active ' + position}></span>
           {choiceItems}
         </div>
-
         {explore}
       </aside>
     );
@@ -55,9 +52,7 @@ const SwitchMode = React.createClass({
   getModePosition: function(value) {
     var position;
     choices.map(function(choice) {
-      console.log(choice.value === value);
       if (choice.value === value) {
-        console.log(choice.position);
         position = choice.position;
       }
     });
