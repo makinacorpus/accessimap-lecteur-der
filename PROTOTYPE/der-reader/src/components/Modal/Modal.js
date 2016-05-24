@@ -22,7 +22,7 @@ const Modal = React.createClass({
 
     return (
       <div className={'modal ' + visibility} ref={name} id={name}>
-        <Button className="modal--close-button width-auto" onClick={this.closeModal} value="Retour" />
+        <Button className="modal--close-button width-auto" onDoubleClick={this.closeModal} value="Retour" />
         <h2 className="modal--title">{title}</h2>
         {content}
       </div>

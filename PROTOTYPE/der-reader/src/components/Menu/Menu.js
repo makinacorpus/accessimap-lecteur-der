@@ -1,6 +1,7 @@
 require('!style!css!sass!./Menu.scss');
 
 const MenuItems = require('./MenuItems.js');
+const Speaker = require('./../Speaker/Speaker.js');
 const Button = require('./../Button/Button.js');
 const Modal = require('./../Modal/Modal.js');
 const SelectableList = require('./../SelectableList/SelectableList.js');
@@ -10,8 +11,15 @@ const React = require('react');
 const Menu = React.createClass({
   getInitialState: function() {
     return {
+      open: false,
       modal: 'hidden'
     };
+  },
+
+  componentDidMount: function() {
+    const button = document.getElementById('menuButton');
+    console.log(button);
+    Speaker.setEventsListener(document.getElementById('menuButton'));
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -28,29 +36,37 @@ const Menu = React.createClass({
       {id: 'mode', name: 'Changer le mode de lecture'}
     ];
 
-    const mainMenu = (
+    const content = (
       <div className="menu">
         <SelectableList items={menuItems} onClick={setMenu}></SelectableList>
         <MenuItems parentProps={this.props} index={currentIndex} menuItems={menuItems}></MenuItems>
       </div>
     );
 
+    const menu = this.state.open ?
+      <Modal name="mainMenu" content={content} title="Menu principal" visibility={this.state.modal} onCloseModal={this.closeModal}></Modal>
+      : '';
+
     return (
       <div>
-        <Button type="button" className="fill red open-menu" value="Menu" onClick={this.openModal}/>
-        <Modal name="mainMenu" content={mainMenu} title="Menu principal" visibility={this.state.modal} onCloseModal={this.closeModal}></Modal>
+        <Button id="menuButton" type="button" className="fill red open-menu" value="Menu" onDoubleClick={this.openModal} />
+        {menu}
       </div>
     );
   },
 
   openModal: function() {
     this.setState({
+      open: true,
       modal: 'visible'
+    }, function() {
+      Speaker.setEventsListener(document.getElementById('mainMenu'));
     });
   },
 
   closeModal: function() {
     this.setState({
+      open: false,
       modal: 'hidden'
     }, function() {
       if (this.props.currentIndex) {

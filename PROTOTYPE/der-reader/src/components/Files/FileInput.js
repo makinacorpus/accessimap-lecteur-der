@@ -37,12 +37,12 @@ var FileInput = React.createClass({
 
   render: function() {
     return (
-      <form onSubmit={this.loadNewDer} id="fileform">
+      <form id="fileform">
         <input type="file" className="inputfile" id="file" onChange={this.changeInputState} />
         <label htmlFor="file" className={this.state.labelClass}>
           <span>{this.state.label}</span>
         </label>
-        <Button type="submit" form="fileform" className="fill" value="Envoyer"/>
+        <Button type="button" onDoubleClick={this.loadNewDer} className="fill" value="Envoyer"/>
       </form>
     );
   }

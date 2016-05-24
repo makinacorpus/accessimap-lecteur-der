@@ -1,5 +1,6 @@
 require('!style!css!sass!./der-reader.scss');
 
+const Speaker = require('./components/Speaker/Speaker.js');
 const DerContainer = require('./components/DerContainer/DerContainer.js');
 const Menu = require('./components/Menu/Menu.js');
 const Message = require('./components/Message/Message.js');
@@ -22,6 +23,8 @@ const App = React.createClass({
       currentIndexMenu: null
     }
   },
+
+
 
   showMessage: function(text, type) {
     this.setState({ message: {text: text, type: type} });
@@ -61,7 +64,7 @@ const App = React.createClass({
     const {message, der, selectedDocument, mode, derFile, files, searchableElement, currentIndexMenu} = this.state;
 
     return (
-      <div className="container">
+      <div className="container" ref="app">
 
         <Message text={message.text} type={message.type} />
 
@@ -109,6 +112,7 @@ var DerReader = {
   */
   init: function(options) {
     this.options = options;
+    Speaker.setTTS(this.options.tts);
     FastClick.attach(document.body, {});
     // TouchEmulator();
 

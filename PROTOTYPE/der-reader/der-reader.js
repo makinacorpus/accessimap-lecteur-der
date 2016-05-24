@@ -56,6 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(1);
 
+	const Speaker = __webpack_require__(298);
 	const DerContainer = __webpack_require__(5);
 	const Menu = __webpack_require__(132);
 	const Message = __webpack_require__(158);
@@ -119,7 +120,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return React.createElement(
 	      'div',
-	      { className: 'container' },
+	      { className: 'container', ref: 'app' },
 	      React.createElement(Message, { text: message.text, type: message.type }),
 	      React.createElement(DerContainer, {
 	        setFilesList: this.setFilesList,
@@ -161,6 +162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  */
 	  init: function (options) {
 	    this.options = options;
+	    Speaker.setTTS(this.options.tts);
 	    FastClick.attach(document.body, {});
 	    // TouchEmulator();
 
@@ -9282,7 +9284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -19942,44 +19944,44 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerSounds = {
 
-	    play: function (index, type) {
-	        // console.log(index);
-	        this.stop();
-	        var o = ctx.createOscillator();
-	        // var gainNode = ctx.createGain();
-	        // o.connect(gainNode);
-	        // gainNode.connect(ctx.destination);
-	        // gainNode.gain.value = 0.1;
+	  play: function (index, type) {
+	    // console.log(index);
+	    this.stop();
+	    var o = ctx.createOscillator();
+	    // var gainNode = ctx.createGain();
+	    // o.connect(gainNode);
+	    // gainNode.connect(ctx.destination);
+	    // gainNode.gain.value = 0.1;
 
-	        o.type = type || 'sine';
-	        o.frequency.value = notes[index];
-	        o.start(0);
-	        o.connect(ctx.destination);
-	        currentOsc = o;
+	    o.type = type || 'sine';
+	    o.frequency.value = notes[index];
+	    o.start(0);
+	    o.connect(ctx.destination);
+	    currentOsc = o;
 
-	        return new Promise(function (resolve) {
-	            setTimeout(function () {
-	                DerSounds.stop();
-	                resolve();
-	            }, 100);
-	        });
-	    },
+	    return new Promise(function (resolve) {
+	      setTimeout(function () {
+	        DerSounds.stop();
+	        resolve();
+	      }, 100);
+	    });
+	  },
 
-	    playTarget() {
-	        this.play(0, 'triangle').then(function () {
-	            DerSounds.play(Math.ceil(notes.length / 2), 'triangle');
-	        });
-	    },
+	  playTarget() {
+	    this.play(0, 'triangle').then(function () {
+	      DerSounds.play(Math.ceil(notes.length / 2), 'triangle');
+	    });
+	  },
 
-	    stop: function () {
-	        if (currentOsc) {
-	            currentOsc.stop(0);
-	        }
-	    },
-
-	    getNotesLength: function () {
-	        return notes.length;
+	  stop: function () {
+	    if (currentOsc) {
+	      currentOsc.stop(0);
 	    }
+	  },
+
+	  getNotesLength: function () {
+	    return notes.length;
+	  }
 	};
 
 	module.exports = DerSounds;
@@ -32612,6 +32614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(133);
 
 	const MenuItems = __webpack_require__(135);
+	const Speaker = __webpack_require__(298);
 	const Button = __webpack_require__(139);
 	const Modal = __webpack_require__(136);
 	const SelectableList = __webpack_require__(152);
@@ -32623,8 +32626,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  getInitialState: function () {
 	    return {
+	      open: false,
 	      modal: 'hidden'
 	    };
+	  },
+
+	  componentDidMount: function () {
+	    const button = document.getElementById('menuButton');
+	    console.log(button);
+	    Speaker.setEventsListener(document.getElementById('menuButton'));
 	  },
 
 	  componentWillReceiveProps: function (nextProps) {
@@ -32637,29 +32647,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	    const { currentIndex, setMenu } = this.props;
 	    const menuItems = [{ id: 'file', name: 'Charger un nouveau document en relief (format zip)' }, { id: 'doc', name: 'Définir le document à visualiser' }, { id: 'mode', name: 'Changer le mode de lecture' }];
 
-	    const mainMenu = React.createElement(
+	    const content = React.createElement(
 	      'div',
 	      { className: 'menu' },
 	      React.createElement(SelectableList, { items: menuItems, onClick: setMenu }),
 	      React.createElement(MenuItems, { parentProps: this.props, index: currentIndex, menuItems: menuItems })
 	    );
 
+	    const menu = this.state.open ? React.createElement(Modal, { name: 'mainMenu', content: content, title: 'Menu principal', visibility: this.state.modal, onCloseModal: this.closeModal }) : '';
+
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(Button, { type: 'button', className: 'fill red open-menu', value: 'Menu', onClick: this.openModal }),
-	      React.createElement(Modal, { name: 'mainMenu', content: mainMenu, title: 'Menu principal', visibility: this.state.modal, onCloseModal: this.closeModal })
+	      React.createElement(Button, { id: 'menuButton', type: 'button', className: 'fill red open-menu', value: 'Menu', onDoubleClick: this.openModal }),
+	      menu
 	    );
 	  },
 
 	  openModal: function () {
 	    this.setState({
+	      open: true,
 	      modal: 'visible'
+	    }, function () {
+	      Speaker.setEventsListener(document.getElementById('mainMenu'));
 	    });
 	  },
 
 	  closeModal: function () {
 	    this.setState({
+	      open: false,
 	      modal: 'hidden'
 	    }, function () {
 	      if (this.props.currentIndex) {
@@ -32834,7 +32850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return React.createElement(
 	      'div',
 	      { className: 'modal ' + visibility, ref: name, id: name },
-	      React.createElement(Button, { className: 'modal--close-button width-auto', onClick: this.closeModal, value: 'Retour' }),
+	      React.createElement(Button, { className: 'modal--close-button width-auto', onDoubleClick: this.closeModal, value: 'Retour' }),
 	      React.createElement(
 	        'h2',
 	        { className: 'modal--title' },
@@ -32915,13 +32931,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function () {
 	    const { type, value } = this.props;
 	    const className = this.props.className || '';
-	    const form = this.props.form || '';
+	    const id = this.props.id || '';
 	    const onClick = this.props.onClick || '';
+	    const onDoubleClick = this.props.onDoubleClick || '';
 	    const buttonClasses = 'button ' + className;
 
 	    return React.createElement(
 	      'button',
-	      { type: type, form: form, className: buttonClasses, onClick: onClick },
+	      { ref: 'button', id: id, type: type, className: buttonClasses, onClick: onClick, onDoubleClick: onDoubleClick },
 	      value
 	    );
 	  }
@@ -33015,7 +33032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function () {
 	    return React.createElement(
 	      'form',
-	      { onSubmit: this.loadNewDer, id: 'fileform' },
+	      { id: 'fileform' },
 	      React.createElement('input', { type: 'file', className: 'inputfile', id: 'file', onChange: this.changeInputState }),
 	      React.createElement(
 	        'label',
@@ -33026,7 +33043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.state.label
 	        )
 	      ),
-	      React.createElement(Button, { type: 'submit', form: 'fileform', className: 'fill', value: 'Envoyer' })
+	      React.createElement(Button, { type: 'button', onDoubleClick: this.loadNewDer, className: 'fill', value: 'Envoyer' })
 	    );
 	  }
 	});
@@ -33257,7 +33274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    const content = React.createElement(
 	      'div',
 	      { className: 'menu' },
-	      React.createElement(SelectableList, { items: pois.poi, selectedItem: searchableElement, onClick: this.selectElement })
+	      React.createElement(SelectableList, { items: pois.poi, selectedItem: searchableElement, onDoubleClick: this.selectElement })
 	    );
 
 	    const currentElement = searchableElement ? 'Recherche de : ' + pois.poi[searchableElement].name : 'Aucun élément sélectionné';
@@ -33270,7 +33287,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        { className: 'current-element' },
 	        currentElement
 	      ),
-	      React.createElement(Button, { type: 'button', value: 'Choisir un élément à trouver', onClick: this.openModal }),
+	      React.createElement(Button, { type: 'button', value: 'Choisir un élément à trouver', onDoubleClick: this.openModal }),
 	      React.createElement(Modal, { name: 'selectSearchableElement', content: content, title: 'Sélectionner un élément à rechercher', visibility: this.state.modal })
 	    );
 	  },
@@ -33352,7 +33369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        const isSelected = key === selectedItem ? 'selected' : '';
 	        return React.createElement(
 	          'li',
-	          { key: key, onClick: this.handleClick, className: 'selectable-list--item' },
+	          { key: key, onDoubleClick: this.handleClick, className: 'selectable-list--item' },
 	          React.createElement(
 	            'a',
 	            { key: key, className: isSelected },
@@ -50832,6 +50849,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ReactMount = __webpack_require__(287);
 
 	module.exports = ReactMount.renderSubtreeIntoContainer;
+
+/***/ },
+/* 297 */,
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(100);
+
+	var Speaker = {
+
+	  setEventsListener: function (container) {
+	    console.log(container);
+	    container.addEventListener('mouseover', _.throttle(Speaker.speak, 300));
+	  },
+
+	  speak: function (event) {
+	    var delegationSelector = '.button, li.selectable-list--item a, .modal--title';
+	    var target = event.target,
+	        related = event.relatedTarget,
+	        match;
+
+	    // search for a parent node matching the delegation selector
+	    while (target && target != document && !(match = Speaker.matchesSelector(target, delegationSelector))) {
+	      target = target.parentNode;
+	    }
+
+	    // exit if no matching node has been found
+	    if (!match) {
+	      return;
+	    }
+
+	    // loop through the parent of the related target to make sure that it's not a child of the target
+	    while (related && related != target && related != document) {
+	      related = related.parentNode;
+	    }
+
+	    // exit if this is the case
+	    if (related == target) {
+	      return;
+	    }
+	    Speaker.tts(target.textContent);
+	  },
+
+	  matchesSelector: function (element, selector) {
+	    var matches = (element.document || element.ownerDocument).querySelectorAll(selector);
+	    var i = 0;
+
+	    while (matches[i] && matches[i] !== element) {
+	      i++;
+	    }
+
+	    return matches[i] ? true : false;
+	  },
+
+	  setTTS: function (tts) {
+	    Speaker.tts = tts;
+	  }
+	};
+
+	module.exports = Speaker;
 
 /***/ }
 /******/ ])

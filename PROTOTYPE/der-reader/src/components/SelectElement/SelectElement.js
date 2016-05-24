@@ -26,7 +26,7 @@ const SelectElement = React.createClass({
 
     const content = (
       <div className="menu">
-        <SelectableList items={pois.poi} selectedItem={searchableElement} onClick={this.selectElement}></SelectableList>
+        <SelectableList items={pois.poi} selectedItem={searchableElement} onDoubleClick={this.selectElement}></SelectableList>
       </div>
     );
 
@@ -37,7 +37,7 @@ const SelectElement = React.createClass({
     return (
       <div>
         <span className="current-element">{currentElement}</span>
-        <Button type="button" value="Choisir un élément à trouver" onClick={this.openModal} />
+        <Button type="button" value="Choisir un élément à trouver" onDoubleClick={this.openModal} />
         <Modal name="selectSearchableElement" content={content} title="Sélectionner un élément à rechercher" visibility={this.state.modal}></Modal>
       </div>
     );

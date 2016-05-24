@@ -14,7 +14,7 @@ var SelectableList = React.createClass({
         {items.map(function(item, key) {
           const isSelected = (key === selectedItem) ? 'selected' : '';
           return (
-            <li key={key} onClick={this.handleClick} className="selectable-list--item">
+            <li key={key} onDoubleClick={this.handleClick} className="selectable-list--item">
               <a key={key} className={isSelected}>{item.name}</a>
             </li>
           );
