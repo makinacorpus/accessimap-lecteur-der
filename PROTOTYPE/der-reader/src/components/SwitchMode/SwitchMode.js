@@ -19,8 +19,9 @@ const SwitchMode = React.createClass({
 
   render: function() {
     const {checkedValue, position} = this.state;
+    const {pois} = this.props;
     const onChange = this.onChange;
-    const explore = checkedValue === 'search' ? <SelectElement></SelectElement> : '';
+    const explore = checkedValue === 'search' ? <SelectElement pois={pois}></SelectElement> : '';
 
     const choiceItems = choices.map(choice => {
       const {value, label} = choice;

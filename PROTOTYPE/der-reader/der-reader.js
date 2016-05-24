@@ -122,7 +122,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        files: files,
 	        message: this.showMessage,
 	        mode: mode,
-	        der: der,
+	        pois: der.pois,
 	        selectedDocument: selectedDocument,
 	        changeDerFile: this.changeDerFile,
 	        changeDocument: this.changeDocument,
@@ -32593,13 +32593,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  displayName: 'Menu',
 
 	  render: function () {
-	    var files = this.props.files || [];
+	    const { message, changeDerFile, changeDocument, selectedDocument, mode, changeMode, pois } = this.props;
+	    const files = this.props.files || [];
+
 	    return React.createElement(
 	      'div',
 	      { className: 'menu' },
-	      React.createElement(FileInput, { message: this.props.message, changeDerFile: this.props.changeDerFile }),
-	      React.createElement(FilesList, { files: files, changeDocument: this.props.changeDocument, selectedDocument: this.props.selectedDocument }),
-	      React.createElement(SwitchMode, { mode: this.props.mode, changeMode: this.props.changeMode })
+	      React.createElement(FileInput, { message: message, changeDerFile: changeDerFile }),
+	      React.createElement(FilesList, { files: files, changeDocument: changeDocument, selectedDocument: selectedDocument }),
+	      React.createElement(SwitchMode, { mode: mode, changeMode: changeMode, pois: pois })
 	    );
 	  }
 	});
@@ -32806,8 +32808,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  render: function () {
 	    const { checkedValue, position } = this.state;
+	    const { pois } = this.props;
 	    const onChange = this.onChange;
-	    const explore = checkedValue === 'search' ? React.createElement(SelectElement, null) : '';
+	    const explore = checkedValue === 'search' ? React.createElement(SelectElement, { pois: pois }) : '';
 
 	    const choiceItems = choices.map(choice => {
 	      const { value, label } = choice;
@@ -32956,11 +32959,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  render: function () {
-	    const elementList = ['element1', 'element2'].map((element, key) => {
+	    const { pois } = this.props;
+	    const elementList = pois.poi.map((poi, key) => {
 	      return React.createElement(
 	        'li',
 	        { className: 'select-element--item', key: key },
-	        element
+	        poi.id
 	      );
 	    });
 

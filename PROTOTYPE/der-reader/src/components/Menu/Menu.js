@@ -7,12 +7,14 @@ var React = require('react');
 
 var Menu = React.createClass({
   render: function() {
-    var files = this.props.files || [];
+    const {message, changeDerFile, changeDocument, selectedDocument, mode, changeMode, pois} = this.props;
+    const files = this.props.files || [];
+
     return (
       <div className="menu">
-        <FileInput message={this.props.message} changeDerFile={this.props.changeDerFile} />
-        <FilesList files={files} changeDocument={this.props.changeDocument} selectedDocument={this.props.selectedDocument} />
-        <SwitchMode mode={this.props.mode} changeMode={this.props.changeMode} />
+        <FileInput message={message} changeDerFile={changeDerFile} />
+        <FilesList files={files} changeDocument={changeDocument} selectedDocument={selectedDocument} />
+        <SwitchMode mode={mode} changeMode={changeMode} pois={pois} />
       </div>
     );
   }

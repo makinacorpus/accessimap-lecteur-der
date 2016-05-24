@@ -162,7 +162,7 @@ var DerContainer = React.createClass({
 
   setDerActions: function(mode) {
     const {der, tts} = this.props;
-    
+
     switch(mode) {
     case 'explore':
       Explore.setExploreEvents(der.pois, this.readAudioFile, tts);

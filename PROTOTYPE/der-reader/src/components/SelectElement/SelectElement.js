@@ -18,9 +18,10 @@ const SelectElement = React.createClass({
   },
 
   render: function() {
-    const elementList = ['element1', 'element2'].map((element, key) => {
+    const {pois} = this.props;
+    const elementList = pois.poi.map((poi, key) => {
       return (
-        <li className="select-element--item" key={key}>{element}</li>
+        <li className="select-element--item" key={key}>{poi.id}</li>
       );
     });
 
