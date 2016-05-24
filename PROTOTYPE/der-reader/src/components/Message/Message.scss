@@ -1,0 +1,20 @@
+@import './../../der-reader-variables.scss';
+
+.message {
+    color: white;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    span {
+        text-align: center;
+        display: block;
+        font-weight: bold;
+        padding: 10px;
+        &.error {
+            background-color: $red;
+        }
+        &.info {
+            background-color: $green;
+        }
+    }
+}

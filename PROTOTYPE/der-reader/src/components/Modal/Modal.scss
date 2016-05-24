@@ -21,6 +21,7 @@
   }
 
   &.hidden {
+    transition-delay: .3s;
     top: 100vh;
   }
 }

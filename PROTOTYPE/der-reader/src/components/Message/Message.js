@@ -1,6 +1,8 @@
-var React = require('react');
+require('!style!css!sass!./Message.scss');
 
-var Message = React.createClass({
+const React = require('react');
+
+const Message = React.createClass({
   render: function() {
     return (
       <div className="message">

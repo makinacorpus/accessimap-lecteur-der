@@ -163,7 +163,7 @@ var DerContainer = React.createClass({
   },
 
   setDerActions: function() {
-    const {mode, der, tts, searchableElement} = this.props;
+    const {mode, der, tts, searchableElement, message} = this.props;
     if (der.pois) {
       switch(mode) {
       case 'explore':
@@ -171,7 +171,7 @@ var DerContainer = React.createClass({
         Search.removeEventsListener(this.refs.container);
         break;
       case 'search':
-        Search.setSearchEvents(searchableElement, this.refs.container, der.pois);
+        Search.setSearchEvents(searchableElement, this.refs.container, der.pois, message);
         Explore.removeExploreEvents();
       }
     }

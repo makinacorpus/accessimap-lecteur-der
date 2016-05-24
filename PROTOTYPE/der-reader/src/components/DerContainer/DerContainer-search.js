@@ -35,7 +35,8 @@ var DerSearch = {
     clearTimeout(pressTimer);
   },
 
-  setSearchEvents: function(searchableElement, container, pois) {
+  setSearchEvents: function(searchableElement, container, pois, message) {
+    this.message = message;
     if (searchableElement) {
       var poi = pois.poi[searchableElement];
       var id = poi.id.split('-').pop();
@@ -160,8 +161,8 @@ var DerSearch = {
     this.positionFromElement = DerSearch.getPositionFromElement(pointer);
 
     var x = pointer.x,
-    distance = this.positionFromElement.x.distance,
-    direction = this.positionFromElement.x.direction;
+      distance = this.positionFromElement.x.distance,
+      direction = this.positionFromElement.x.direction;
 
     DerSearch.soundsX = DerSearch.getSoundsPositions(distance, x, direction);
   },
@@ -170,8 +171,8 @@ var DerSearch = {
     this.positionFromElement = DerSearch.getPositionFromElement(pointer);
 
     var y = pointer.y,
-    distance = this.positionFromElement.y.distance,
-    direction = this.positionFromElement.y.direction;
+      distance = this.positionFromElement.y.distance,
+      direction = this.positionFromElement.y.direction;
 
     DerSearch.soundsY = DerSearch.getSoundsPositions(distance, y, direction);
   },
@@ -192,6 +193,7 @@ var DerSearch = {
         pressTimer = setTimeout(function() {
           if (mouseDown && !DerSearch.isXfound) {
             console.log('Axe X trouvé');
+            DerSearch.message('Axe X trouvé');
             DerSearch.isXfound = true;
             DerSearch.initYaxis(pointer);
             DerSounds.playTarget();
@@ -216,6 +218,7 @@ var DerSearch = {
       pressTimer =  setTimeout(function() {
         if (mouseDown && !DerSearch.isYfound) {
           console.log('Axe Y trouvé');
+          DerSearch.message('Axe Y trouvé');
           DerSearch.isYfound = true;
           DerSounds.playTarget();
         }

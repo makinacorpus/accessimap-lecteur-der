@@ -25,7 +25,7 @@ const SelectElement = React.createClass({
     });
 
     const content = (
-        <SelectableList items={pois.poi} selectedItem={searchableElement} handleClick={this.selectElement}></SelectableList>
+        <SelectableList items={pois.poi} selectedItem={searchableElement} onClick={this.selectElement}></SelectableList>
     );
 
     const currentElement = searchableElement ?
