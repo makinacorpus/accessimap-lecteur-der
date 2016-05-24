@@ -18,8 +18,14 @@ const App = React.createClass({
       derFile: DerReader.options.derFile,
       selectedDocument: 0,
       der: [],
-      searchableElement: null
+      searchableElement: null,
+      // currentIndexMenu: null
     }
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    console.log(this.props.currentIndexMenu);
+    console.log(nextProps.currentIndexMenu);
   },
 
   showMessage: function(text, type) {
@@ -50,8 +56,14 @@ const App = React.createClass({
     this.setState({searchableElement: searchableElement});
   },
 
+  setMenu: function(currentIndexMenu) {
+    this.setState({
+      currentIndexMenu: currentIndexMenu
+    });
+  },
+
   render: function() {
-    const {message, der, selectedDocument, mode, derFile, files, searchableElement} = this.state;
+    const {message, der, selectedDocument, mode, derFile, files, searchableElement, currentIndexMenu} = this.state;
 
     return (
       <div className="container">
@@ -75,7 +87,9 @@ const App = React.createClass({
           mode={mode}
           pois={der.pois}
           setSearchableElement={this.setSearchableElement}
+          setMenu={this.setMenu}
           searchableElement={searchableElement}
+          currentIndex={currentIndexMenu}
           selectedDocument={selectedDocument}
           changeDerFile={this.changeDerFile}
           changeDocument={this.changeDocument}

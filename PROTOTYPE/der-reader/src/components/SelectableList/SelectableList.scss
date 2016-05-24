@@ -6,27 +6,28 @@
     text-align: center;
     color: $white;
     border-radius: $base-border-radius;
-    border: solid 2px $green;
+    border: solid 3px white;
 
     &--item {
         list-style-type: none;
+        font-size: 100%;
         &:not(:last-child) {
-            border-bottom: solid 2px $green;
+            border-bottom: solid 3px white;
         }
         a {
           box-sizing: padding-box;
           display: block;
           font-weight: bold;
-          padding: .8em;
+          padding: 1em;
 
           &.selected, &:hover.selected {
-            background: $green;
+            background: white;
             color: $black;
             cursor: normal;
           }
 
           &:hover {
-            background: lighten($green, 10%);
+            background: lighten(white, 10%);
             color: $black;
             cursor: pointer;
           }

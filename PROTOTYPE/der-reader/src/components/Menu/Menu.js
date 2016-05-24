@@ -10,26 +10,31 @@ const React = require('react');
 const Menu = React.createClass({
   getInitialState: function() {
     return {
-      modal: 'hidden',
-      currentIndex: null
+      modal: 'hidden'
     };
   },
 
-  componentWillReceiveProps: function() {
-    this.setState({
-      modal: 'hidden'
-    }, function() {
-      var _this = this;
-      setTimeout(function() {
-        _this.setState({
-          currentIndex: null
-        });
-      }, 300);
-    });
+  componentWillReceiveProps: function(nextProps) {
+    if (this.props.mode === nextProps.mode && this.props.currentIndex === nextProps.currentIndex) {
+      this.setState({
+        modal: 'hidden'
+      }, function() {
+        if (this.props.currentIndex) {  
+          this.resetMenu();
+        }
+      });
+    }
+  },
+
+  resetMenu: function() {
+    var _this = this;
+    setTimeout(function() {
+      _this.props.setMenu(null);
+    }, 300);
   },
 
   render: function() {
-    const {currentIndex} = this.state;
+    const {currentIndex, setMenu} = this.props;
     const menuItems = [
       {id: 'file', name: 'Charger un nouveau document en relief (format zip)'},
       {id: 'doc', name: 'Définir le document à visualiser'},
@@ -38,7 +43,7 @@ const Menu = React.createClass({
 
     const mainMenu = (
       <div className="menu">
-        <SelectableList items={menuItems} onClick={this.openChildMenu}></SelectableList>
+        <SelectableList items={menuItems} onClick={setMenu}></SelectableList>
         <MenuItems parentProps={this.props} index={currentIndex} menuItems={menuItems}></MenuItems>
       </div>
     );
@@ -49,12 +54,6 @@ const Menu = React.createClass({
         <Modal name="mainMenu" content={mainMenu} title="Menu principal" visibility={this.state.modal}></Modal>
       </div>
     );
-  },
-
-  openChildMenu: function(currentIndex) {
-    this.setState({
-      currentIndex: currentIndex
-    });
   },
 
   openModal: function() {

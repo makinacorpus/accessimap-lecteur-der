@@ -25,7 +25,9 @@ const SelectElement = React.createClass({
     });
 
     const content = (
+      <div className="menu">
         <SelectableList items={pois.poi} selectedItem={searchableElement} onClick={this.selectElement}></SelectableList>
+      </div>
     );
 
     const currentElement = searchableElement ?
@@ -41,8 +43,8 @@ const SelectElement = React.createClass({
     );
   },
 
-  selectElement: function(event) {
-    this.props.setSearchableElement(Number(event._targetInst._currentElement.key));
+  selectElement: function(index) {
+    this.props.setSearchableElement(index);
   },
 
   openModal: function() {

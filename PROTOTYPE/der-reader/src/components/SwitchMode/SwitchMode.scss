@@ -8,16 +8,16 @@
 }
 
 .switch-button {
-  height: 40px;
+  height: 50px;
   text-align: center;
   will-change: transform;
   z-index: 197 !important;
   cursor: pointer;
   transition: .3s ease all;
   border-radius: $base-border-radius;
-  border: 2px solid white;
+  border: 3px solid white;
   &-case{
-    font-size: 1em;;
+    font-size: 100%;
     display: inline-block;
     background: none;
     width: 50%;
@@ -27,7 +27,6 @@
     border: none;
     transition: .3s ease all;
     font-weight: bold;
-    padding-bottom: 1px;
     &:hover{
       background: darken(white, 10%);
       color: black;
@@ -59,26 +58,4 @@
       left: 50%;
     }
   }
-}
-
-.choose-element {
-  text-align: center;
-  font-weight: 700;
-  display: block;
-  cursor: pointer;
-  border-radius: $base-border-radius;
-  width: 100%;
-  min-height: 2em;
-  margin-top: 10px;
-  padding: 0.625rem 1.25rem;
-  height: 100%;
-  color: $black;
-  background-color: transparent;
-  border: 3px solid $white;
-  width: 100%;
-  min-height: 2em;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  vertical-align: top;
 }
