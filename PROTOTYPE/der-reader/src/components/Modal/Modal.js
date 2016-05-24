@@ -1,6 +1,7 @@
 require('!style!css!sass!./Modal.scss');
 
 var React = require('react');
+var Button = require('./../Button/Button.js');
 
 const Modal = React.createClass({
   getInitialState: function() {
@@ -21,7 +22,7 @@ const Modal = React.createClass({
 
     return (
       <div className={'modal ' + visibility} ref={name}>
-        <button className="modal--close-button" onClick={this.closeModal}>Retour</button>
+        <Button className="modal--close-button width-auto" onClick={this.closeModal} value="Retour" />
         <h2 className="modal--title">{title}</h2>
         {content}
       </div>

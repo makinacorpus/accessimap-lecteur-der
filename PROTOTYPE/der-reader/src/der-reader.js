@@ -16,7 +16,8 @@ var App = React.createClass({
       message: '',
       mode: DerReader.options.defaultMode,
       derFile: DerReader.options.derFile,
-      selectedDocument: 0
+      selectedDocument: 0,
+      der: []
     }
   },
 
@@ -26,6 +27,10 @@ var App = React.createClass({
 
   setFilesList: function(files) {
     this.setState({files: files});
+  },
+
+  setDer: function(der) {
+    this.setState({der: der});
   },
 
   changeDerFile: function(file) {
@@ -41,24 +46,29 @@ var App = React.createClass({
   },
 
   render: function() {
+    const {message, der, selectedDocument, mode, derFile, files} = this.state;
+
     return (
       <div className="container">
 
-        <Message text={this.state.message.text} type={this.state.message.type} />
+        <Message text={message.text} type={message.type} />
 
         <DerContainer
           setFilesList={this.setFilesList}
-          selectedDocument={this.state.selectedDocument}
+          setDer={this.setDer}
+          der={der}
+          selectedDocument={selectedDocument}
           message={this.showMessage}
           tts={DerReader.options.tts}
-          mode={this.state.mode}
-          derFile={this.state.derFile} />
+          mode={mode}
+          derFile={derFile} />
 
         <Menu
-          files={this.state.files}
+          files={files}
           message={this.showMessage}
-          mode={this.state.mode}
-          selectedDocument={this.state.selectedDocument}
+          mode={mode}
+          der={der}
+          selectedDocument={selectedDocument}
           changeDerFile={this.changeDerFile}
           changeDocument={this.changeDocument}
           changeMode={this.changeMode} />

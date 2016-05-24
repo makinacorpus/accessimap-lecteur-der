@@ -51,7 +51,7 @@ var DerContainer = React.createClass({
       _this._extractFiles(zip.files, function(error, der) {
         if (error === null) {
           _this.props.message('');
-          _this.setState({der: der});
+          _this.props.setDer(der);
           _this.loadDer(der);
         } else {
           _this.props.message(error, 'error');
@@ -134,7 +134,7 @@ var DerContainer = React.createClass({
   changeDocument: function(index) {
     var _this = this;
     this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[index], function(error, der) {
-      _this.setState({der: der});
+      _this.props.setDer(der);
       _this.loadDer(der);
     });
   },
@@ -156,22 +156,23 @@ var DerContainer = React.createClass({
     if (der.pois.poi === undefined) {
       this.props.message('Aucun JSON trouvé', 'error');
     } else {
-      this.setState({der: der});
       this.setDerActions(this.props.mode);
     }
   },
 
   setDerActions: function(mode) {
+    const {der, tts} = this.props;
+    
     switch(mode) {
     case 'explore':
-      Explore.setExploreEvents(this.state.der.pois, this.readAudioFile, this.props.tts);
+      Explore.setExploreEvents(der.pois, this.readAudioFile, tts);
       Search.removeEventsListener(this.refs.container);
       break;
     case 'search':
-      var poi = this.state.der.pois.poi[1]
+      var poi = der.pois.poi[1]
       var id = poi.id.split('-').pop();
       var elementToFind = document.querySelectorAll('[data-link="' + id + '"]')[0];
-      Search.setSearchEvents(elementToFind, this.refs.container, this.props.tts);
+      Search.setSearchEvents(elementToFind, this.refs.container, tts);
       Explore.removeExploreEvents();
     }
   },

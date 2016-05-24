@@ -11,6 +11,12 @@ const SelectElement = React.createClass({
     };
   },
 
+  componentWillReceiveProps: function() {
+    this.setState({
+      modal: 'hidden'
+    })
+  },
+
   render: function() {
     const elementList = ['element1', 'element2'].map((element, key) => {
       return (
@@ -23,6 +29,8 @@ const SelectElement = React.createClass({
           {elementList}
         </ul>
     );
+
+    console.log(this.props);
 
     return (
       <div>

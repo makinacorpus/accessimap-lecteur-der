@@ -3,7 +3,6 @@
 .button {
   margin-top: 10px;
   padding: 0.625rem 1.25rem;
-  height: 100%;
   color: $white;
   background-color: transparent;
   border: 3px solid $white;
@@ -31,5 +30,9 @@
       border-color: $blue;
       background-color: $blue;
     }
+  }
+
+  &.width-auto {
+    width: auto;
   }
 }
