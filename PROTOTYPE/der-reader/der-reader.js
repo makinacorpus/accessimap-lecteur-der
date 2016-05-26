@@ -32708,7 +32708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    const content = React.createElement(
 	      'div',
 	      { className: 'menu' },
-	      React.createElement(SelectableList, { items: menuItems, onClick: setMenu }),
+	      React.createElement(SelectableList, { items: menuItems, onDoubleClick: setMenu }),
 	      React.createElement(MenuItems, { parentProps: this.props, index: currentIndex, menuItems: menuItems })
 	    );
 
@@ -33285,7 +33285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      {
 	        className: 'switch-button-case' + active,
 	        value: value,
-	        onClick: this.handleClick },
+	        onDoubleClick: this.handleClick },
 	      label
 	    );
 	  },

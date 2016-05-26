@@ -32,4 +32,9 @@ Compiler l'app avec [electron packager](https://github.com/electron-userland/ele
 ```
 electron-packager <sourcedir> <appname> --platform=<platform> --arch=<arch>
 ```
->>>>>>> Restructured folders and add electron app
+
+
+## Prototype final
+
+Le prototype le plus abouti se trouve dans le dossier PROTOTYPE. Il est basé sur les différents tests réalisés précédemment.
+>>>>>>> Readme and comments

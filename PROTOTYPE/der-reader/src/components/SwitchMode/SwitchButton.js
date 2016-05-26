@@ -8,7 +8,7 @@ const SwitchButton = React.createClass({
         <button
           className={'switch-button-case' + active}
           value={value}
-          onClick={this.handleClick}>
+          onDoubleClick={this.handleClick}>
           {label}
         </button>
     );

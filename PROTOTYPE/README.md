@@ -87,9 +87,23 @@ npm install
 npm run start
 ```
 
+Lors du développement de der-reader, changer le chemin des modules pour éviter de devoir effectuer un npm install pour mettre à jour le module à chaque modification.
+Ne pas oublier de remettre le bon chemin lors du build.
+
+```
+// Dev
+var webspeechapi = require('./../tts-webspeechapi/tts-webspeechapi.js');
+var DerReader = require('./../der-reader/der-reader.js');
+
+// Bundle
+// var webspeechapi = require('tts-webspeechapi');
+// var DerReader = require('der-reader');
+```
+
 Builder l'application (pour Windows x64, cf. script npm pour d'autres paramètres/os)
 
 ```
+npm install der-reader
 npm run build
 ```
 

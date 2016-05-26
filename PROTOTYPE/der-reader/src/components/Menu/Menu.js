@@ -38,7 +38,7 @@ const Menu = React.createClass({
 
     const content = (
       <div className="menu">
-        <SelectableList items={menuItems} onClick={setMenu}></SelectableList>
+        <SelectableList items={menuItems} onDoubleClick={setMenu}></SelectableList>
         <MenuItems parentProps={this.props} index={currentIndex} menuItems={menuItems}></MenuItems>
       </div>
     );
