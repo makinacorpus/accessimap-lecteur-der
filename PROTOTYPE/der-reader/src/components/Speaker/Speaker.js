@@ -3,7 +3,6 @@ var _ = require('lodash');
 var Speaker = {
 
   setEventsListener: function(container) {
-    console.log(container);
     container.addEventListener('mouseover', _.throttle(Speaker.speak, 300));
   },
 

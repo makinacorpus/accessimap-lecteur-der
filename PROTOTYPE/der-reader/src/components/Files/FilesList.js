@@ -14,7 +14,7 @@ var FilesList = React.createClass({
     return (
       <div className="files-list">
         <h2>Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?</h2>
-        <SelectableList items={files} selectedItem={selectedDocument} onClick={this.changeFile}></SelectableList>
+        <SelectableList items={files} selectedItem={selectedDocument} onDoubleClick={this.changeFile}></SelectableList>
       </div>
     );
   }

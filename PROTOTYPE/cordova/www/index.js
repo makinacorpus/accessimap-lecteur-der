@@ -35,9 +35,10 @@ var app = {
     onDeviceReady: function() {
 
         window.DerReader.init({
-            derFile: './der/der2.zip',
-            tts: window.cordovaTTS,
-            defaultMode: 'search'
+          container: 'der-reader',
+          derFile: './der/der2.zip',
+          tts: window.cordovaTTS,
+          defaultMode: 'explore'
         });
 
     }
