@@ -19,7 +19,7 @@ const Menu = React.createClass({
   componentDidMount: function() {
     const button = document.getElementById('menuButton');
     console.log(button);
-    Speaker.setEventsListener(document.getElementById('menuButton'));
+    // Speaker.setEventsListener(document.getElementById('menuButton'));
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -60,7 +60,7 @@ const Menu = React.createClass({
       open: true,
       modal: 'visible'
     }, function() {
-      Speaker.setEventsListener(document.getElementById('mainMenu'));
+      // Speaker.setEventsListener(document.getElementById('mainMenu'));
     });
   },
 
