@@ -1,44 +1,27 @@
-var _ = require('lodash');
+var Hammer = require('hammerjs');
 
 var Speaker = {
 
-  setEventsListener: function(container) {
-    container.addEventListener('mouseover', _.throttle(Speaker.speak, 300));
+  setEventsListener: function() {
+    var mc = new Hammer.Manager(document.body);
+
+    mc.add( new Hammer.Pan({ direction: Hammer.DIRECTION_ALL, threshold: 20 }) );
+
+    mc.on('pan', this.handlePan);
+
+    this.voice = 'off';
   },
 
-  speak: function(event) {
-    var delegationSelector = '.button, li.selectable-list--item a, .modal--title';
-    var target = event.target,
-        related = event.relatedTarget,
-        match;
-
-    // search for a parent node matching the delegation selector
-    while ( target && target != document && !( match = Speaker.matchesSelector( target, delegationSelector ) ) ) {
-      target = target.parentNode;
+  handlePan: function(event) {
+    var element = event.srcElement || event.target;
+    console.log(element.tagName);
+    if ((element.tagName == 'H2' || element.tagName == 'BUTTON' || element.tagName === 'A')
+    && element.innerText && Speaker.voice === 'off') {
+      Speaker.voice = 'on';
+      Speaker.tts(element.innerText).then(function() {
+        Speaker.voice = 'off';
+      });
     }
-
-    // exit if no matching node has been found
-    if ( !match ) { return; }
-
-    // loop through the parent of the related target to make sure that it's not a child of the target
-    while ( related && related != target && related != document ) {
-      related = related.parentNode;
-    }
-
-    // exit if this is the case
-    if ( related == target ) { return; }
-    Speaker.tts(target.textContent);
-  },
-
-  matchesSelector: function(element, selector) {
-    var matches = (element.document || element.ownerDocument).querySelectorAll(selector);
-    var i = 0;
-
-    while (matches[i] && matches[i] !== element) {
-      i++;
-    }
-
-    return matches[i] ? true : false;
   },
 
   setTTS: function(tts) {

@@ -64,7 +64,7 @@ const App = React.createClass({
     const {message, der, selectedDocument, mode, derFile, files, searchableElement, currentIndexMenu} = this.state;
 
     return (
-      <div className="container" ref="app">
+      <div className="options.container" ref="app">
 
         <Message text={message.text} type={message.type} />
 
