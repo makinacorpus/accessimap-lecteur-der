@@ -1,20 +1,35 @@
-function webspeechapi(text) {
-  var msg = new SpeechSynthesisUtterance();
-  var voices = speechSynthesis.getVoices();
-  msg.voice = voices[0]; // Note: some voices don't support altering params
-  // msg.voiceURI = 'native';
-  msg.volume = 1; // 0 to 1
-  msg.rate = 1; // 0.1 to 10
-  msg.pitch = 1; //0 to 2
-  msg.text = text;
-  msg.lang = 'fr';
-  speechSynthesis.speak(msg);
+const voices = speechSynthesis.getVoices();
 
-  return new Promise(function(resolve) {
-    msg.onend = function() {
-      resolve();
-    };
-  });
-}
+const webspeechapi = {
+  initUtterance: function() {
+    const utterance = new SpeechSynthesisUtterance();
+    utterance.voice = voices[0]; // Note: some voices don't support altering params
+    // utterance.voiceURI = 'native';
+    utterance.volume = 1; // 0 to 1
+    utterance.rate = 1; // 0.1 to 10
+    utterance.pitch = 1; //0 to 2
+    utterance.lang = 'fr';
+    return utterance;
+  },
+
+  speak: function(text, pendingFunction) {
+    this.utterance = this.utterance || this.initUtterance();
+
+    return new Promise((resolve, reject) => {
+      if (text !== this.utterance.text) {
+        speechSynthesis.cancel();
+        pendingFunction;
+        this.utterance.text = text;
+        this.utterance.onend = function() {
+          this.text = '';
+          resolve();
+        };
+        speechSynthesis.speak(this.utterance);
+      } else {
+        reject();
+      }
+    });
+  }
+};
 
 module.exports = webspeechapi;

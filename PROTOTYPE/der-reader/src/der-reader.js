@@ -102,16 +102,17 @@ var DerReader = {
   * Initialise DER Reader
   * @param {Object} options
   * {
+  *     container: {HTMLElement} required
   *     derFile: {string (zip file)} required
   *     tts: {Function} required
+  *     vibrate: {Function} required
   *     defaultMode: {string}
-  *     container: {HTMLElement}
   * }
   */
   init: function(options) {
     this.options = options;
-    
-    ScreenReader.init(this.options.tts);
+
+    ScreenReader.init(this.options.tts, this.options.vibrate);
     FastClick.attach(document.body, {});
     // TouchEmulator();
 

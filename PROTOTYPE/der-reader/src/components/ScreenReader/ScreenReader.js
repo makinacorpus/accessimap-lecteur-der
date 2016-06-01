@@ -3,8 +3,9 @@ const _ = require('lodash');
 let mouseDown = false;
 
 var ScreenReader = {
-  init: function(tts) {
+  init: function(tts, vibrate) {
     this.tts = tts;
+    this.vibrate = vibrate;
     this.setEventsListener();
   },
 
@@ -17,10 +18,9 @@ var ScreenReader = {
     this.container.addEventListener('mouseup', e => this._disableMouseHandler(e));
     this.container.addEventListener('touchend', e => this._disableMouseHandler(e));
 
-    this.container.addEventListener('mousemove', _.throttle(e => this.handlePan(e), 200));
-    this.container.addEventListener('touchmove', _.throttle(e => this.handlePan(e), 200));
+    this.container.addEventListener('mousemove', _.throttle(e => this.handlePan(e), 400));
+    this.container.addEventListener('touchmove', _.throttle(e => this.handlePan(e), 400));
 
-    this.voice = 'off';
   },
 
   initSpeak: function() {
@@ -40,11 +40,8 @@ var ScreenReader = {
     const element = document.elementFromPoint(touch.clientX, touch.clientY);
 
     if ((element.tagName == 'H2' || element.tagName == 'BUTTON' || element.tagName === 'A')
-    && element.innerText && this.voice === 'off') {
-      this.voice = 'on';
-      this.tts(element.innerText).then(() => {
-        this.voice = 'off';
-      });
+    && element.innerText) {
+      this.tts.speak(element.innerText, this.vibrate(0));
     }
   }
 };

@@ -53,7 +53,6 @@ var DerSearch = {
       this.isYfound = false;
 
       DerSearch._setEventsListener();
-
     }
   },
 

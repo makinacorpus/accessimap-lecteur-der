@@ -20,6 +20,7 @@ var app = {
           container: 'der-reader',
           derFile: './der/der2.zip',
           tts: window.cordovaTTS,
+          vibrate: vibrateCordova,
           defaultMode: 'explore'
         });
 

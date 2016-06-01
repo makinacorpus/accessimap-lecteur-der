@@ -154,16 +154,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  * Initialise DER Reader
 	  * @param {Object} options
 	  * {
+	  *     container: {HTMLElement} required
 	  *     derFile: {string (zip file)} required
 	  *     tts: {Function} required
+	  *     vibrate: {Function} required
 	  *     defaultMode: {string}
-	  *     container: {HTMLElement}
 	  * }
 	  */
 	  init: function (options) {
 	    this.options = options;
 
-	    ScreenReader.init(this.options.tts);
+	    ScreenReader.init(this.options.tts, this.options.vibrate);
 	    FastClick.attach(document.body, {});
 	    // TouchEmulator();
 
@@ -18369,7 +18370,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -28736,7 +28737,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      if (action.protocol === 'tts') {
-	        Explore.tts(action.value).then(function () {
+	        Explore.tts.speak(action.value).then(function () {
 	          Explore._onEventEnded(element);
 	        });
 	      }
@@ -50856,8 +50857,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	let mouseDown = false;
 
 	var ScreenReader = {
-	  init: function (tts) {
+	  init: function (tts, vibrate) {
 	    this.tts = tts;
+	    this.vibrate = vibrate;
 	    this.setEventsListener();
 	  },
 
@@ -50870,10 +50872,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.container.addEventListener('mouseup', e => this._disableMouseHandler(e));
 	    this.container.addEventListener('touchend', e => this._disableMouseHandler(e));
 
-	    this.container.addEventListener('mousemove', _.throttle(e => this.handlePan(e), 200));
-	    this.container.addEventListener('touchmove', _.throttle(e => this.handlePan(e), 200));
-
-	    this.voice = 'off';
+	    this.container.addEventListener('mousemove', _.throttle(e => this.handlePan(e), 400));
+	    this.container.addEventListener('touchmove', _.throttle(e => this.handlePan(e), 400));
 	  },
 
 	  initSpeak: function () {
@@ -50892,11 +50892,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    const touch = event.touches ? event.touches.item(0) : event;
 	    const element = document.elementFromPoint(touch.clientX, touch.clientY);
 
-	    if ((element.tagName == 'H2' || element.tagName == 'BUTTON' || element.tagName === 'A') && element.innerText && this.voice === 'off') {
-	      this.voice = 'on';
-	      this.tts(element.innerText).then(() => {
-	        this.voice = 'off';
-	      });
+	    if ((element.tagName == 'H2' || element.tagName == 'BUTTON' || element.tagName === 'A') && element.innerText) {
+	      this.tts.speak(element.innerText, this.vibrate(0));
 	    }
 	  }
 	};

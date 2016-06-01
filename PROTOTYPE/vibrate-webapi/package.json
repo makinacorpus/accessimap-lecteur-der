@@ -1,0 +1,8 @@
+{
+    "name": "vibrate-webapi",
+    "version": "1.0.0",
+    "main": "vibrate-webapi.js",
+    "author": "Alexandra JANIN",
+    "license": "MIT",
+    "description": ""
+}

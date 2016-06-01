@@ -56,7 +56,7 @@ var Explore = {
       }
 
       if (action.protocol === 'tts') {
-        Explore.tts(action.value).then(function() {
+        Explore.tts.speak(action.value).then(function() {
           Explore._onEventEnded(element);
         });
       }
