@@ -1,16 +1,11 @@
 require('!style!css!sass!./Button.scss');
 
 var React = require('react');
-var Speaker = require('./../Speaker/Speaker.js');
 
 var FileInput = React.createClass({
   getInitialState: function() {
     return {
     }
-  },
-
-  componentDidMount: function() {
-    Speaker.setEventsListener(this.refs.button);
   },
 
   render: function() {

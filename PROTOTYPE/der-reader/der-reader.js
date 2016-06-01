@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(1);
 
-	const Speaker = __webpack_require__(5);
+	const ScreenReader = __webpack_require__(298);
 	const DerContainer = __webpack_require__(8);
 	const Menu = __webpack_require__(133);
 	const Message = __webpack_require__(159);
@@ -162,7 +162,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  */
 	  init: function (options) {
 	    this.options = options;
-	    Speaker.setTTS(this.options.tts);
+	    console.log(ScreenReader);
+	    ScreenReader.init(this.options.tts);
 	    FastClick.attach(document.body, {});
 	    // TouchEmulator();
 
@@ -518,62 +519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// var Hammer = require('hammerjs');
-	var _ = __webpack_require__(6);
-
-	var mouseDown = false;
-
-	var Speaker = {
-	  setEventsListener: function () {
-	    this.container = document.body;
-
-	    this.container.addEventListener('mousedown', Speaker.initSpeak);
-	    this.container.addEventListener('touchstart', Speaker.initSpeak);
-
-	    this.container.addEventListener('mouseup', Speaker._disableMouseHandler);
-	    this.container.addEventListener('touchend', Speaker._disableMouseHandler);
-
-	    this.container.addEventListener('mousemove', _.throttle(Speaker.handlePan, 200));
-	    this.container.addEventListener('touchmove', _.throttle(Speaker.handlePan, 200));
-
-	    this.voice = 'off';
-	  },
-
-	  initSpeak: function () {
-	    mouseDown = true;
-	  },
-
-	  _disableMouseHandler: function () {
-	    mouseDown = false;
-	  },
-
-	  handlePan: function (event) {
-	    if (!mouseDown) {
-	      return;
-	    }
-
-	    var touch = event.touches ? event.touches.item(0) : event;
-	    var element = document.elementFromPoint(touch.clientX, touch.clientY);
-
-	    if ((element.tagName == 'H2' || element.tagName == 'BUTTON' || element.tagName === 'A') && element.innerText && Speaker.voice === 'off') {
-	      Speaker.voice = 'on';
-	      Speaker.tts(element.innerText).then(function () {
-	        Speaker.voice = 'off';
-	      });
-	    }
-	  },
-
-	  setTTS: function (tts) {
-	    Speaker.tts = tts;
-	  }
-	};
-
-	module.exports = Speaker;
-
-/***/ },
+/* 5 */,
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32665,7 +32611,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(134);
 
 	const MenuItems = __webpack_require__(136);
-	const Speaker = __webpack_require__(5);
 	const Button = __webpack_require__(140);
 	const Modal = __webpack_require__(137);
 	const SelectableList = __webpack_require__(153);
@@ -32685,7 +32630,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  componentDidMount: function () {
 	    const button = document.getElementById('menuButton');
 	    console.log(button);
-	    // Speaker.setEventsListener(document.getElementById('menuButton'));
 	  },
 
 	  componentWillReceiveProps: function (nextProps) {
@@ -32719,8 +32663,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({
 	      open: true,
 	      modal: 'visible'
-	    }, function () {
-	      // Speaker.setEventsListener(document.getElementById('mainMenu'));
 	    });
 	  },
 
@@ -32971,17 +32913,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(141);
 
 	var React = __webpack_require__(102);
-	var Speaker = __webpack_require__(5);
 
 	var FileInput = React.createClass({
 	  displayName: 'FileInput',
 
 	  getInitialState: function () {
 	    return {};
-	  },
-
-	  componentDidMount: function () {
-	    Speaker.setEventsListener(this.refs.button);
 	  },
 
 	  render: function () {
@@ -50910,6 +50847,62 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ReactMount = __webpack_require__(288);
 
 	module.exports = ReactMount.renderSubtreeIntoContainer;
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	const _ = __webpack_require__(6);
+
+	let mouseDown = false;
+
+	var ScreenReader = {
+	  init: function (tts) {
+	    ScreenReader.tts = tts;
+	    ScreenReader.setEventsListener();
+	  },
+
+	  setEventsListener: function () {
+	    this.container = document.body;
+
+	    this.container.addEventListener('mousedown', e => this.initSpeak(e));
+	    this.container.addEventListener('touchstart', e => this.initSpeak(e));
+
+	    this.container.addEventListener('mouseup', e => this._disableMouseHandler(e));
+	    this.container.addEventListener('touchend', e => this._disableMouseHandler(e));
+
+	    this.container.addEventListener('mousemove', _.throttle(e => this.handlePan(e), 200));
+	    this.container.addEventListener('touchmove', _.throttle(e => this.handlePan(e), 200));
+
+	    this.voice = 'off';
+	  },
+
+	  initSpeak: function () {
+	    mouseDown = true;
+	  },
+
+	  _disableMouseHandler: function () {
+	    mouseDown = false;
+	  },
+
+	  handlePan: function (event) {
+	    if (!mouseDown) {
+	      return;
+	    }
+
+	    const touch = event.touches ? event.touches.item(0) : event;
+	    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+
+	    if ((element.tagName == 'H2' || element.tagName == 'BUTTON' || element.tagName === 'A') && element.innerText && this.voice === 'off') {
+	      this.voice = 'on';
+	      this.tts(element.innerText).then(() => {
+	        this.voice = 'off';
+	      });
+	    }
+	  }
+	};
+
+	module.exports = ScreenReader;
 
 /***/ }
 /******/ ])

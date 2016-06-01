@@ -1,7 +1,6 @@
 require('!style!css!sass!./Menu.scss');
 
 const MenuItems = require('./MenuItems.js');
-const Speaker = require('./../Speaker/Speaker.js');
 const Button = require('./../Button/Button.js');
 const Modal = require('./../Modal/Modal.js');
 const SelectableList = require('./../SelectableList/SelectableList.js');
@@ -19,7 +18,6 @@ const Menu = React.createClass({
   componentDidMount: function() {
     const button = document.getElementById('menuButton');
     console.log(button);
-    // Speaker.setEventsListener(document.getElementById('menuButton'));
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -59,8 +57,6 @@ const Menu = React.createClass({
     this.setState({
       open: true,
       modal: 'visible'
-    }, function() {
-      // Speaker.setEventsListener(document.getElementById('mainMenu'));
     });
   },
 
