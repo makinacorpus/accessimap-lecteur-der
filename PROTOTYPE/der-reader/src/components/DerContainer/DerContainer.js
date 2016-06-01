@@ -30,10 +30,9 @@ var DerContainer = React.createClass({
 
   setDerFile: function() {
     const {derFile} = this.props;
-    var _this = this;
     if (typeof derFile === 'string') {
-      Utils.getFileObject(derFile, function (file) {
-        _this.openDerFile(file);
+      Utils.getFileObject(derFile, file => {
+        this.openDerFile(file);
       });
     } else {
       this.openDerFile(derFile);
@@ -41,21 +40,19 @@ var DerContainer = React.createClass({
   },
 
   openDerFile: function(file) {
-    var _this = this;
-
     if (file.type.split('.').pop() !== 'application/zip') {
       this.props.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
     }
     var new_zip = new JSZip();
     new_zip.loadAsync(file)
-    .then(function(zip) {
-      _this._extractFiles(zip.files, function(error, der) {
+    .then(zip => {
+      this._extractFiles(zip.files, (error, der) => {
         if (error === null) {
-          _this.props.message('');
-          _this.props.setDer(der);
-          _this.loadDer(der);
+          this.props.message('');
+          this.props.setDer(der);
+          this.loadDer(der);
         } else {
-          _this.props.message(error, 'error');
+          this.props.message(error, 'error');
         }
       });
     });
@@ -67,9 +64,8 @@ var DerContainer = React.createClass({
   * @param name: {string} required
   */
   readAudioFile(name) {
-    var _this = this;
-    return new Promise(function(resolve, reject) {
-      _this.state.filesByExt.audioFiles[name].async('base64')
+    return new Promise((resolve, reject) => {
+      this.state.filesByExt.audioFiles[name].async('base64')
       .then(function(base64string) {
         var sound = new Audio('data:audio/wav;base64,' + base64string);
         sound.play();
@@ -134,10 +130,9 @@ var DerContainer = React.createClass({
 
   changeDocument: function() {
     const {selectedDocument} = this.props;
-    var _this = this;
-    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument], function(error, der) {
-      _this.props.setDer(der);
-      _this.loadDer(der);
+    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument], (error, der) => {
+      this.props.setDer(der);
+      this.loadDer(der);
     });
   },
 
