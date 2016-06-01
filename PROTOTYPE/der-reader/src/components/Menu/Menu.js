@@ -17,7 +17,6 @@ const Menu = React.createClass({
 
   componentDidMount: function() {
     const button = document.getElementById('menuButton');
-    console.log(button);
   },
 
   componentWillReceiveProps: function(nextProps) {

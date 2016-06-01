@@ -4,8 +4,8 @@ let mouseDown = false;
 
 var ScreenReader = {
   init: function(tts) {
-    ScreenReader.tts = tts;
-    ScreenReader.setEventsListener();
+    this.tts = tts;
+    this.setEventsListener();
   },
 
   setEventsListener: function() {

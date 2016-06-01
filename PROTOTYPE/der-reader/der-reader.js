@@ -162,7 +162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  */
 	  init: function (options) {
 	    this.options = options;
-	    console.log(ScreenReader);
+
 	    ScreenReader.init(this.options.tts);
 	    FastClick.attach(document.body, {});
 	    // TouchEmulator();
@@ -18369,7 +18369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -32629,7 +32629,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  componentDidMount: function () {
 	    const button = document.getElementById('menuButton');
-	    console.log(button);
 	  },
 
 	  componentWillReceiveProps: function (nextProps) {
@@ -50858,8 +50857,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ScreenReader = {
 	  init: function (tts) {
-	    ScreenReader.tts = tts;
-	    ScreenReader.setEventsListener();
+	    this.tts = tts;
+	    this.setEventsListener();
 	  },
 
 	  setEventsListener: function () {

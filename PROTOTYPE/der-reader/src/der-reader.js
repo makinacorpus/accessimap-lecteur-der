@@ -110,7 +110,7 @@ var DerReader = {
   */
   init: function(options) {
     this.options = options;
-    console.log(ScreenReader);
+    
     ScreenReader.init(this.options.tts);
     FastClick.attach(document.body, {});
     // TouchEmulator();
