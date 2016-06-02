@@ -7,6 +7,7 @@ var DerReader = require('./../der-reader/der-reader.js');
 
 // Bundle
 // var webspeechapi = require('tts-webspeechapi');
+// var vibrateWebApi = require('vibrate-webapi');
 // var DerReader = require('der-reader');
 
 DerReader.init({

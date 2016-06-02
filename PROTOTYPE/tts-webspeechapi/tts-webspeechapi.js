@@ -1,7 +1,7 @@
 const voices = speechSynthesis.getVoices();
 
 const webspeechapi = {
-  initUtterance: function() {
+  initUtterance: function(text) {
     const utterance = new SpeechSynthesisUtterance();
     utterance.voice = voices[0]; // Note: some voices don't support altering params
     // utterance.voiceURI = 'native';
@@ -9,26 +9,25 @@ const webspeechapi = {
     utterance.rate = 1; // 0.1 to 10
     utterance.pitch = 1; //0 to 2
     utterance.lang = 'fr';
+    utterance.text = text;
+    this.utterance = utterance;
+    utterance.onend = () => {
+      delete this.utterance;
+    };
+
+    speechSynthesis.speak(utterance);
     return utterance;
   },
 
   speak: function(text, pendingFunction) {
-    this.utterance = this.utterance || this.initUtterance();
-
-    return new Promise((resolve, reject) => {
-      if (text !== this.utterance.text) {
-        speechSynthesis.cancel();
-        pendingFunction;
-        this.utterance.text = text;
-        this.utterance.onend = function() {
-          this.text = '';
-          resolve();
-        };
-        speechSynthesis.speak(this.utterance);
-      } else {
-        reject();
-      }
-    });
+    if (!this.utterance) {
+      this.utterance = this.initUtterance(text);
+      pendingFunction;
+    } else if (text !== this.utterance.text) {
+      speechSynthesis.cancel();
+      this.utterance = this.initUtterance(text);
+      pendingFunction;
+    }
   }
 };
 

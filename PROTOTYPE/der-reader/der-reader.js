@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(1);
 
-	const ScreenReader = __webpack_require__(298);
+	const ScreenReader = __webpack_require__(5);
 	const DerContainer = __webpack_require__(8);
 	const Menu = __webpack_require__(133);
 	const Message = __webpack_require__(159);
@@ -520,7 +520,38 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 5 */,
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	const _ = __webpack_require__(6);
+
+	var ScreenReader = {
+	  init: function (tts, vibrate) {
+	    this.tts = tts;
+	    this.vibrate = vibrate;
+	    this.setEventsListener();
+	  },
+
+	  setEventsListener: function () {
+	    this.container = document.body;
+
+	    this.container.addEventListener('mousemove', _.throttle(e => this.handlePan(e), 400));
+	    this.container.addEventListener('touchmove', _.throttle(e => this.handlePan(e), 400));
+	  },
+
+	  handlePan: function (event) {
+	    const touch = event.touches ? event.touches.item(0) : event;
+	    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+
+	    if ((element.tagName == 'H2' || element.tagName == 'BUTTON' || element.tagName === 'A') && element.innerText) {
+	      this.tts.speak(element.innerText, this.vibrate(0));
+	    }
+	  }
+	};
+
+	module.exports = ScreenReader;
+
+/***/ },
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32924,7 +32955,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function () {
 	    const { type, value } = this.props;
 	    const className = this.props.className || '';
-	    const form = this.props.form || '';
 	    const id = this.props.id || '';
 	    const onClick = this.props.onClick || '';
 	    const onDoubleClick = this.props.onDoubleClick || '';
@@ -32932,7 +32962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return React.createElement(
 	      'button',
-	      { ref: 'button', id: id, type: type, form: form, className: buttonClasses, onClick: onClick, onDoubleClick: onDoubleClick },
+	      { ref: 'button', id: id, type: type, className: buttonClasses, onClick: onClick, onDoubleClick: onDoubleClick },
 	      value
 	    );
 	  }
@@ -32975,7 +33005,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .8em 1em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: transparent; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
+	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .8em 1em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: transparent; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
 
 	// exports
 
@@ -33416,7 +33446,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".selectable-list {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 3px white; }\n  .selectable-list--item {\n    list-style-type: none;\n    font-size: 100%; }\n    .selectable-list--item:not(:last-child) {\n      border-bottom: solid 3px white; }\n    .selectable-list--item a {\n      box-sizing: padding-box;\n      display: block;\n      font-weight: bold;\n      padding: 1em; }\n      .selectable-list--item a.selected, .selectable-list--item a:hover.selected {\n        background: white;\n        color: #000;\n        cursor: normal; }\n      .selectable-list--item a:hover {\n        background: white;\n        color: #000;\n        cursor: pointer; }\n", ""]);
+	exports.push([module.id, ".selectable-list {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 3px white; }\n  .selectable-list--item {\n    list-style-type: none;\n    font-size: 100%; }\n    .selectable-list--item:not(:last-child) {\n      border-bottom: solid 3px white; }\n    .selectable-list--item a {\n      box-sizing: padding-box;\n      display: block;\n      font-weight: bold;\n      padding: 1em; }\n      .selectable-list--item a.selected, .selectable-list--item a:hover.selected {\n        background: white;\n        color: #000;\n        cursor: normal; }\n      .selectable-list--item a:hover, .selectable-list--item a.active {\n        background: white;\n        color: #000;\n        cursor: pointer; }\n", ""]);
 
 	// exports
 
@@ -50847,58 +50877,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ReactMount = __webpack_require__(288);
 
 	module.exports = ReactMount.renderSubtreeIntoContainer;
-
-/***/ },
-/* 298 */
-/***/ function(module, exports, __webpack_require__) {
-
-	const _ = __webpack_require__(6);
-
-	let mouseDown = false;
-
-	var ScreenReader = {
-	  init: function (tts, vibrate) {
-	    this.tts = tts;
-	    this.vibrate = vibrate;
-	    this.setEventsListener();
-	  },
-
-	  setEventsListener: function () {
-	    this.container = document.body;
-
-	    this.container.addEventListener('mousedown', e => this.initSpeak(e));
-	    this.container.addEventListener('touchstart', e => this.initSpeak(e));
-
-	    this.container.addEventListener('mouseup', e => this._disableMouseHandler(e));
-	    this.container.addEventListener('touchend', e => this._disableMouseHandler(e));
-
-	    this.container.addEventListener('mousemove', _.throttle(e => this.handlePan(e), 400));
-	    this.container.addEventListener('touchmove', _.throttle(e => this.handlePan(e), 400));
-	  },
-
-	  initSpeak: function () {
-	    mouseDown = true;
-	  },
-
-	  _disableMouseHandler: function () {
-	    mouseDown = false;
-	  },
-
-	  handlePan: function (event) {
-	    if (!mouseDown) {
-	      return;
-	    }
-
-	    const touch = event.touches ? event.touches.item(0) : event;
-	    const element = document.elementFromPoint(touch.clientX, touch.clientY);
-
-	    if ((element.tagName == 'H2' || element.tagName == 'BUTTON' || element.tagName === 'A') && element.innerText) {
-	      this.tts.speak(element.innerText, this.vibrate(0));
-	    }
-	  }
-	};
-
-	module.exports = ScreenReader;
 
 /***/ }
 /******/ ])

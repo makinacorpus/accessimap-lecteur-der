@@ -18,7 +18,7 @@
   cursor: pointer;
   border-radius: $base-border-radius;
   font-size: 100%;
-  &:hover {
+  &:hover, &.active {
     background-color: $white;
     color: $black;
   }
@@ -34,7 +34,7 @@
       background-color: $red;
       border-color: $red;
       color: $white;
-      &:hover {
+      &:hover, &.active {
         border-color: $red;
         color: $red;
         background-color: transparent;
