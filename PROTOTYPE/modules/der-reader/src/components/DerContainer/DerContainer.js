@@ -63,7 +63,7 @@ var DerContainer = React.createClass({
   * Read MP3 contained in ZIP file
   * @param name: {string} required
   */
-  readAudioFile(name) {
+  readAudioFile: function(name) {
     return new Promise((resolve, reject) => {
       this.state.filesByExt.audioFiles[name].async('base64')
       .then(function(base64string) {

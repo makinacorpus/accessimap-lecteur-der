@@ -12,6 +12,7 @@ const ReactDOM = require('react-dom');
 
 
 const App = React.createClass({
+
   getInitialState: function() {
     return {
       message: '',
@@ -59,8 +60,9 @@ const App = React.createClass({
   },
 
   render: function() {
-    const {message, der, selectedDocument, mode, derFile, files, searchableElement, currentIndexMenu} = this.state;
 
+    const {message, der, selectedDocument, mode, derFile, files, searchableElement, currentIndexMenu} = this.state;
+    
     return (
       <div className="options.container" ref="app">
 
