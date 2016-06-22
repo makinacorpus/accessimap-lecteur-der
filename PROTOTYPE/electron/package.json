@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "der-reader": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/modules/der-reader",
-    "tts-webspeechapi": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/modules/tts-webspeechapi",
-    "vibrate-webapi": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/modules/vibrate-webapi"
+    "tts-webspeechapi": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/modules/tts.webapi",
+    "vibrate-webapi": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/modules/vibrate.webapi"
   }
 }
