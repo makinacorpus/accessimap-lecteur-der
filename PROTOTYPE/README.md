@@ -53,13 +53,13 @@ Chaque implémentation de ces services se trouve dans un module intépendant de 
 On charge de la même manière que der-reader le module souhaité, soit pour Electron :
 
 ```
-var webspeechapi = require('tts-webspeechapi');
+var webspeechapi = require('tts.webspeechapi');
 ```
 
 Et pour Cordova :
 
 ```
-<script type="text/javascript" src="node_modules/tts-cordova/tts-cordova.js"></script>
+<script type="text/javascript" src="node_modules/tts.cordova/tts.cordova.js"></script>
 ```
 
 
@@ -92,11 +92,11 @@ Ne pas oublier de remettre le bon chemin lors du build.
 
 ```
 // Dev
-var webspeechapi = require('./../tts-webspeechapi/tts-webspeechapi.js');
+var webspeechapi = require('./../tts.webspeechapi/tts.webspeechapi.js');
 var DerReader = require('./../der-reader/der-reader.js');
 
 // Bundle
-// var webspeechapi = require('tts-webspeechapi');
+// var webspeechapi = require('tts.webspeechapi');
 // var DerReader = require('der-reader');
 ```
 

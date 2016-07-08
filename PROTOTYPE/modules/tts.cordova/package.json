@@ -1,7 +1,7 @@
 {
-    "name": "tts-cordova",
+    "name": "tts.cordova",
     "version": "1.0.0",
-    "main": "tts-cordova.js",
+    "main": "tts.cordova.js",
     "author": "Alexandra JANIN",
     "license": "MIT",
     "description": ""
