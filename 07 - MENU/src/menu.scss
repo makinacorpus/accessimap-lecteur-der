@@ -1,0 +1,33 @@
+#a11y-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  font-size: 22px;
+  background: black;
+  color: white;
+  font-family: sans-serif;
+  padding: 1em;
+  ul {
+    padding: 0;
+    margin: 0;
+    border: solid 3px white;
+    border-radius: 4px;
+    li {
+      font-weight: bold;
+      text-align: center;
+      padding: 1em 2em;
+      list-style-type: none;
+      border-bottom: solid 3px white;
+      &.active {
+        background: white;
+        color: black;
+      }
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
