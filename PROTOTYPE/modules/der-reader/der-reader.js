@@ -77,7 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      message: '',
 	      mode: DerReader.options.defaultMode,
 	      derFile: DerReader.options.derFile,
-	      selectedDocument: 0,
+	      selectedDocument: 1,
 	      der: [],
 	      searchableElement: null,
 	      currentIndexMenu: null
@@ -9774,6 +9774,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var Utils = __webpack_require__(10);
 	var JSZip = __webpack_require__(11);
 
@@ -9827,14 +9829,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    var new_zip = new JSZip();
 	    new_zip.loadAsync(file).then(function (zip) {
-	      _this2._extractFiles(zip.files, function (error, der) {
-	        if (error === null) {
-	          _this2.props.message('');
-	          _this2.props.setDer(der);
-	          _this2.loadDer(der);
-	        } else {
-	          _this2.props.message(error, 'error');
-	        }
+	      _this2._extractFiles(zip.files).then(function (der) {
+	        _this2.props.message('');
+	        _this2.props.setDer(der);
+	        _this2.loadDer(der);
+	      }, function (error) {
+	        _this2.props.message(error, 'error');
 	      });
 	    });
 	  },
@@ -9865,16 +9865,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  * @param listContainer: {HTMLElement} required
 	  * @param callback: {Function}
 	  */
-	  _extractFiles: function _extractFiles(files, callback) {
+	  _extractFiles: function _extractFiles(files) {
+	    var _this4 = this;
+
 	    this.setState({ filesByExt: Utils.orderFilesByExt(files) });
 
 	    if (this.state.filesByExt.svg.length > 1) {
 	      this.props.setFilesList(this.state.filesByExt.svg);
 	    }
-	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument], callback);
+	    return new Promise(function (resolve, reject) {
+	      _this4.readFiles(_this4.state.filesByExt.xml[0], _this4.state.filesByExt.svg[_this4.props.selectedDocument]).then(function (res) {
+	        var der = _extends(res[0], res[1]);
+	        resolve(der);
+	      }, function (err) {
+	        reject(err);
+	      });
+	    });
 	  },
 
-	  readFiles: function readFiles(xml, svg, callback) {
+	  readFiles: function readFiles(xml, svg) {
 	    var getJson = new Promise(function (resolve, reject) {
 	      xml.async('string').then(function (data) {
 	        var node = Utils.parseXml(data);
@@ -9893,27 +9902,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    });
 
-	    Promise.all([getJson, getSvg]).then(function (values) {
-	      var der = {};
-	      Object.assign(der, values[0], values[1]);
-	      if (callback) {
-	        callback(null, der);
-	      }
-	    }, function () {
-	      if (callback) {
-	        callback('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
-	      }
+	    return new Promise(function (resolve, reject) {
+	      Promise.all([getJson, getSvg]).then(function (values) {
+	        resolve([values[0], values[1]]);
+	      }, function () {
+	        reject('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
+	      });
 	    });
 	  },
 
 	  changeDocument: function changeDocument() {
-	    var _this4 = this;
+	    var _this5 = this;
 
 	    var selectedDocument = this.props.selectedDocument;
 
 	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument], function (error, der) {
-	      _this4.props.setDer(der);
-	      _this4.loadDer(der);
+	      _this5.props.setDer(der);
+	      _this5.loadDer(der);
 	    });
 	  },
 
@@ -18665,7 +18670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -29490,6 +29495,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	/* eslint-disable no-unused-vars */
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -29533,7 +29540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
 				test3[letter] = letter;
 			});
-			if (Object.keys(Object.assign({}, test3)).join('') !== 'abcdefghijklmnopqrst') {
+			if (Object.keys(_extends({}, test3)).join('') !== 'abcdefghijklmnopqrst') {
 				return false;
 			}
 

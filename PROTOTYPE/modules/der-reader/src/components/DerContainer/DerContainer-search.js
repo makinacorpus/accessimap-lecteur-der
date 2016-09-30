@@ -102,7 +102,7 @@ var DerSearch = {
   getPositionFromElement: function(pointer) {
     var element = DerSearch.elementCenter;
     var x = {},
-    y = {};
+      y = {};
 
     if (pointer.x > element.x) {
       x.distance = pointer.x - element.x;

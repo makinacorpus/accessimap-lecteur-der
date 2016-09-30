@@ -18,7 +18,7 @@ const App = React.createClass({
       message: '',
       mode: DerReader.options.defaultMode,
       derFile: DerReader.options.derFile,
-      selectedDocument: 0,
+      selectedDocument: 1,
       der: [],
       searchableElement: null,
       currentIndexMenu: null

@@ -46,14 +46,12 @@ var DerContainer = React.createClass({
     var new_zip = new JSZip();
     new_zip.loadAsync(file)
     .then(zip => {
-      this._extractFiles(zip.files, (error, der) => {
-        if (error === null) {
-          this.props.message('');
-          this.props.setDer(der);
-          this.loadDer(der);
-        } else {
-          this.props.message(error, 'error');
-        }
+      this._extractFiles(zip.files).then((der) => {
+        this.props.message('');
+        this.props.setDer(der);
+        this.loadDer(der);
+      }, (error) => {
+        this.props.message(error, 'error');
       });
     });
   },
@@ -85,16 +83,23 @@ var DerContainer = React.createClass({
   * @param listContainer: {HTMLElement} required
   * @param callback: {Function}
   */
-  _extractFiles: function(files, callback) {
+  _extractFiles: function(files) {
     this.setState({filesByExt: Utils.orderFilesByExt(files)});
 
     if (this.state.filesByExt.svg.length > 1) {
       this.props.setFilesList(this.state.filesByExt.svg);
     }
-    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument], callback);
+    return new Promise((resolve, reject) => {
+      this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument]).then(res => {
+        var der = Object.assign(res[0], res[1]);
+        resolve(der);
+      }, (err) => {
+        reject(err);
+      });
+    });
   },
 
-  readFiles: function(xml, svg, callback) {
+  readFiles: function(xml, svg) {
     var getJson = new Promise(function(resolve, reject) {
       xml.async('string')
       .then(function(data) {
@@ -115,16 +120,12 @@ var DerContainer = React.createClass({
       });
     });
 
-    Promise.all([getJson, getSvg]).then(function(values) {
-      var der = {};
-      Object.assign(der, values[0], values[1]);
-      if (callback) {
-        callback(null, der);
-      }
-    }, function() {
-      if (callback) {
-        callback('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
-      }
+    return new Promise((resolve, reject) => {
+      Promise.all([getJson, getSvg]).then(function(values) {
+        resolve([values[0], values[1]]);
+      }, function() {
+        reject('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
+      });
     });
   },
 

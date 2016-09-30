@@ -15,12 +15,11 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-
         window.DerReader.init({
           container: 'der-reader',
-          derFile: './der/der2.zip',
+          derFile: './der/Londres.zip',
           tts: window.cordovaTTS,
-          vibrate: vibrateCordova,
+          vibrate: window.vibrateCordova,
           defaultMode: 'explore'
         });
 
