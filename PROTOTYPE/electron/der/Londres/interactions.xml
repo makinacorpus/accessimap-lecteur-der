@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<filters>
+		<filter expandable="false" id="f0" name="Nom"/>
+		<filter expandable="false" id="f1" name="Son"/>
+	</filters>
+	<pois>
+		<poi id="title">
+			<actions>
+				<action filter="f0" gesture="double_tap" protocol="tts" value="Titre par défaut"/>
+			</actions>
+		</poi>
+		<!-- <poi height="20" id="poi-127" width="20" x="158.28721618652344" y="103.12477111816406"> -->
+		<poi height="40" id="poi-127" width="40" x="153" y="109">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="regent.mp3"/>
+			</actions>
+		</poi>
+		<!-- <poi height="20" id="poi-128" width="20.00000762939453" x="104.99620819091797" y="672.4970703125"> -->
+		<poi height="40" id="poi-128" width="40" x="102" y="661">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="hyde.mp3"/>
+			</actions>
+		</poi>
+		<!-- <poi height="20" id="poi-130" width="20" x="299.46160888671875" y="717.3737182617188"> -->
+		<poi height="40" id="poi-130" width="40" x="268" y="734">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="greenpark.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-132" width="20" x="470.55377197265625" y="749.1613159179688">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="jamespark.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-124" width="20" x="660.3446044921875" y="677.1717529296875">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="garonne.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="thames.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-126" width="20" x="990.3748779296875" y="583.6787719726562">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="garonne.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="thames.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-171" width="20.00006103515625" x="642.5810546875" y="799.6475830078125">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="westminsterb.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-121" width="20" x="714.570556640625" y="606.1171264648438">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="waterloob.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-135" width="20" x="909.9708251953125" y="573.3944702148438">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="blackfriarsb.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-133" width="20" x="1159.59716796875" y="622.0108642578125">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="londonb.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-134" width="20.0001220703125" x="1352.1927490234375" y="684.651123046875">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="towerbridge.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="towerb.mp3"/>
+			</actions>
+		</poi>
+		<poi height="25" id="poi-87" width="25" x="95.95185852050781" y="254.88821411132812">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="bakerstation.mp3"/>
+			</actions>
+		</poi>
+		<poi height="25" id="poi-86" width="25" x="509.19085693359375" y="438.1344909667969">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="holbornstation.mp3"/>
+			</actions>
+		</poi>
+		<poi height="25" id="poi-84" width="25" x="571.8311767578125" y="770.0346069335938">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="westminsterstation.mp3"/>
+			</actions>
+		</poi>
+		<poi height="25" id="poi-88" width="25" x="755.0774536132812" y="742.921630859375">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="waterloostation.mp3"/>
+			</actions>
+		</poi>
+		<!--<poi height="25" id="poi-85" width="25" x="1330.059326171875" y="565.2849731445312">-->
+		<poi height="25" id="poi-85" width="25" x="1300" y="584">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="towerhill.mp3"/>
+			</actions>
+		</poi>
+		<poi height="25" id="poi-83" width="25" x="609.2283935546875" y="67.90223693847656">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="station.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="kingcross.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-55" width="20" x="136.78395080566406" y="265.8026123046875">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap" protocol="mp3" value="tussaudpop.mp3"/> -->
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="tussaudpop.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="tussaud.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-96" width="20" x="560.3072509765625" y="76.94674682617188">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="biginn.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-56" width="20" x="566.8516845703125" y="344.33673095703125">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="britishmu.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-57" width="20" x="342.4685363769531" y="788.4284057617188">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="buckingham.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="buckinghampa.mp3"/>
+			</actions>
+		</poi>
+		<!-- <poi height="20" id="poi-47" width="20" x="516.365478515625" y="853.87353515625"> -->
+		<poi height="40" id="poi-47" width="40" x="491" y="837">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="westminsterchoir.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="westminsterab.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-50" width="20" x="550.02294921875" y="796.8427734375">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="bbenchimes.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="bigben.mp3"/>
+			</actions>
+		</poi>
+		<!-- <poi height="20" id="poi-44" width="20" x="566.8516845703125" y="836.10986328125"> -->
+		<poi height="30" id="poi-44" width="30" x="545" y="833">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="order.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="westminsterpa.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-52" width="20" x="692.13232421875" y="742.6168823242188">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="londoneye.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-53" width="20" x="1348.4532470703125" y="607.052001953125">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="towerraven.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="towerlondon.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-54" width="20" x="1005.3338623046875" y="478.03173828125">
+			<actions>
+				<action filter="f1" gesture="double_tap" protocol="mp3" value="bellscath.mp3"/>
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="pcathedral.mp3"/>
+			</actions>
+		</poi>
+		<poi height="19.05255126953125" id="poi-72" width="22" x="455.5300598144531" y="560.6022338867188">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="piccadilly.mp3"/>
+			</actions>
+		</poi>
+		<poi height="19.05255126953125" id="poi-74" width="22" x="542.4785766601562" y="590.5199584960938">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="trafalgar.mp3"/>
+			</actions>
+		</poi>
+		<!-- <poi height="20" id="poi-172" width="20.00006103515625" x="904.3613891601562" y="759.445556640625"> --> 
+		<poi height="40" id="poi-172" width="40" x="899" y="761">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="blackfriarsrd.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-149" width="20.00006103515625" x="900.6215209960938" y="433.155029296875">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="farringdonst.mp3"/>
+			</actions>
+		</poi>
+		<!-- <poi height="20" id="poi-150" width="20" x="751.03271484375" y="141.45687866210938"> -->
+		<poi height="40" id="poi-150" width="40" x="833" y="229">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="farringdonrd.mp3"/>
+			</actions>
+		</poi>
+		<!-- <poi height="19.99999237060547" id="poi-152" width="20.00006103515625" x="727.6597290039062" y="119.95352935791016"> -->
+		<poi height="40" id="poi-152" width="40" x="709" y="98">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="kcrossrd.mp3"/>
+			</actions>
+		</poi>
+		<!-- <poi height="20" id="poi-140" width="20" x="377.0608215332031" y="435.9598083496094"> -->
+		<poi height="40" id="poi-140" width="40" x="259" y="450">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="oxfordst.mp3"/>
+			</actions>
+		</poi>
+		<!--<poi height="20" id="poi-144" width="20" x="531.32421875" y="407.9119567871094">-->
+		<poi height="30" id="poi-144" width="30" x="529" y="407.9119567871094">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="holbornst.mp3"/>
+			</actions>
+		</poi>
+		<!--<poi height="20" id="poi-176" width="20" x="362.1020812988281" y="521.0384521484375">-->
+		<poi height="30" id="poi-176" width="30" x="362.1020812988281" y="521.0384521484375">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="regentst.mp3"/>
+			</actions>
+		</poi>
+		<poi height="20" id="poi-147" width="19.999969482421875" x="496.7318420410156" y="660.3429565429688">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="mall.mp3"/>
+			</actions>
+		</poi>
+		<!--<poi height="20" id="poi-148" width="20.00006103515625" x="632.296630859375" y="554.6958618164062">-->
+		<poi height="30" id="poi-148" width="30" x="632.296630859375" y="554.6958618164062">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="strand.mp3"/>
+			</actions>
+		</poi>
+		<!--<poi height="20" id="poi-146" width="20" x="720.1800537109375" y="540.6719360351562">-->
+		<poi height="30" id="poi-146" width="30" x="722" y="534">
+			<actions>
+				<!-- <action filter="f1" gesture="double_tap"/> -->
+				<action filter="f0" gesture="double_tap" protocol="mp3" value="victoria.mp3"/>
+			</actions>
+		</poi>
+	</pois>
+</config>
