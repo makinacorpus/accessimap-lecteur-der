@@ -1,73 +1,54 @@
 require('!style!css!sass!./Menu.scss');
 
-const MenuItems = require('./MenuItems.js');
-const Button = require('./../Button/Button.js');
-const Modal = require('./../Modal/Modal.js');
-const SelectableList = require('./../SelectableList/SelectableList.js');
-
-const React = require('react');
+var React = require('react');
+const Hammer = require('hammerjs');
 
 const Menu = React.createClass({
   getInitialState: function() {
     return {
-      open: false,
-      modal: 'hidden'
+      visibility: this.props.visibility
     };
   },
 
-  componentDidMount: function() {
-    const button = document.getElementById('menuButton');
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      visibility: nextProps.visibility
+    });
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if (this.props.mode === nextProps.mode && this.props.currentIndex === nextProps.currentIndex) {
-      this.closeModal();
-    }
+  componentDidMount: function() {
+    const modal = document.getElementById(this.props.name);
+    var hammertime = new Hammer(modal, {});
+    hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+    hammertime.on('swipeleft', () => {
+      this.props.closeMenu();
+    });
+    hammertime.on('swiperight', () => {
+      this.props.openChidMenu();
+    });
+    hammertime.on('swipeup', () => {
+      this.props.navigateMenu('up');
+    });
+    hammertime.on('swipedown', () => {
+      this.props.navigateMenu('down');
+    });
+
+    hammertime.get('tap').set({ taps: 2 });
+    hammertime.on('tap', () => {
+      this.props.selectMenu();
+    });
   },
+
 
   render: function() {
-    const {currentIndex, setMenu} = this.props;
-    const menuItems = [
-      {id: 'file', name: 'Charger un nouveau document en relief (format zip)'},
-      {id: 'doc', name: 'Définir le document à visualiser'},
-      {id: 'mode', name: 'Changer le mode de lecture'}
-    ];
-
-    const content = (
-      <div className="menu">
-        <SelectableList items={menuItems} onDoubleClick={setMenu}></SelectableList>
-        <MenuItems parentProps={this.props} index={currentIndex} menuItems={menuItems}></MenuItems>
-      </div>
-    );
-
-    const menu = this.state.open ?
-      <Modal name="mainMenu" content={content} title="Menu principal" visibility={this.state.modal} onCloseModal={this.closeModal}></Modal>
-      : '';
+    const {name, title, content, visibility} = this.props;
 
     return (
-      <div>
-        <Button id="menuButton" type="button" className="fill red open-menu" value="Menu" onDoubleClick={this.openModal} />
-        {menu}
-      </div>
+        <div className={'modal ' + visibility} ref={name} id={name}>
+          <h2 className="modal--title">{title}</h2>
+          {content}
+        </div>
     );
-  },
-
-  openModal: function() {
-    this.setState({
-      open: true,
-      modal: 'visible'
-    });
-  },
-
-  closeModal: function() {
-    this.setState({
-      open: false,
-      modal: 'hidden'
-    }, function() {
-      if (this.props.currentIndex) {
-        this.props.setMenu(null);
-      }
-    });
   }
 });
 

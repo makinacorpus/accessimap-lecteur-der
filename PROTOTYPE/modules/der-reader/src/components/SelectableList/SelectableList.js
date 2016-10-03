@@ -4,13 +4,14 @@ var React = require('react');
 
 var SelectableList = React.createClass({
   handleClick: function(event) {
-    this.props.onClick(Number(event._targetInst._currentElement.key));
+    console.log(Number(event._targetInst._currentElement.key));
+    // this.props.onClick(Number(event._targetInst._currentElement.key));
   },
-
   handleDoubleClick: function(event) {
-    this.props.onDoubleClick(Number(event._targetInst._currentElement.key));
+    console.log(this.props);
+    this.props.openChidMenu(Number(event._targetInst._currentElement.key));
+    // this.props.onDoubleClick(Number(event._targetInst._currentElement.key));
   },
-
   render: function() {
     const {items, selectedItem} = this.props;
     return (
@@ -18,8 +19,8 @@ var SelectableList = React.createClass({
         {items.map(function(item, key) {
           const isSelected = (key === selectedItem) ? 'selected' : '';
           return (
-            <li key={key} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick} className="selectable-list--item">
-              <a key={key} className={isSelected}>{item.name}</a>
+            <li key={key} className="selectable-list--item">
+              <a key={key} className={isSelected} onDoubleClick={this.handleDoubleClick}>{item.name}</a>
             </li>
           );
         }.bind(this))}

@@ -2,7 +2,7 @@ require('!style!css!sass!./SwitchMode.scss');
 
 var React = require('react');
 var SwitchButton = require('./SwitchButton.js');
-var SelectElement = require('./../SelectElement/SelectElement.js');
+var SelectElementContainer = require('./../SelectElement/SelectElement.container.js');
 
 const choices = [
   {value: 'explore', label: 'Exploration', position: 'left'},
@@ -22,7 +22,7 @@ const SwitchMode = React.createClass({
     const {pois, setSearchableElement, searchableElement} = this.props;
     const onChange = this.onChange;
     const explore = checkedValue === 'search' ?
-      <SelectElement pois={pois} setSearchableElement={setSearchableElement} searchableElement={searchableElement}></SelectElement>
+      <SelectElementContainer pois={pois} setSearchableElement={setSearchableElement} searchableElement={searchableElement}></SelectElementContainer>
     : '';
 
     const choiceItems = choices.map(choice => {
@@ -42,7 +42,7 @@ const SwitchMode = React.createClass({
 
     return (
       <aside className="switch">
-        <h2 className="switch-title">Mode</h2>        
+        <h2 className="switch-title">Mode</h2>
         <div className="switch-button">
           <span className={'active ' + position}></span>
           {choiceItems}

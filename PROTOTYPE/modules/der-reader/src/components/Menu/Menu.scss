@@ -3,7 +3,31 @@
 .menu {
     width: 90%;
     margin: 0 auto;
-    max-width: 720px;
     background: $black;
-    padding: 60px 1.25rem;
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  padding: .5em;
+  background: $black;
+  z-index: 100;
+  transition: .3s ease-out all;
+  overflow: auto;
+  &--title {
+    color: $white;
+    text-align: center;
+  }
+  &--close-button {
+    color: $white;
+  }
+
+  &.hidden {
+    transition-delay: .3s;
+    top: 100vh;
+  }
 }

@@ -1,7 +1,6 @@
 require('!style!css!sass!./Menu.scss');
 
-
-const Modal = require('./../Modal/Modal.js');
+const Menu = require('./Menu.js');
 
 const FileInput = require('./../Files/FileInput.js');
 const SwitchMode = require('./../SwitchMode/SwitchMode.js');
@@ -9,7 +8,7 @@ const FilesList = require('./../Files/FilesList.js');
 
 const React = require('react');
 
-const MenuItems = React.createClass({
+const MenuItemsContainer = React.createClass({
   getInitialState: function() {
     return {
     };
@@ -68,7 +67,7 @@ const MenuItems = React.createClass({
       }
     ];
 
-    const menu = itemsComponents.map(function(component, key) {
+    const menu = itemsComponents.map((component, key) => {
       const item = menuItems[index];
       if (item) {
         const visibility = component.id === item.id ? 'visible' : 'hidden';
@@ -78,7 +77,14 @@ const MenuItems = React.createClass({
           </div>
         )
         return (
-          <Modal key={key} name="childMenu" content={content} title={item.name} visibility={visibility}></Modal>
+          <Menu
+            key={key}
+            name="childMenu"
+            content={content}
+            title={item.name}
+            visibility={visibility}
+            index={this.props.index}
+            closeMenu={this.props.closeMenu}></Menu>
         );
       }
       return;
@@ -96,4 +102,4 @@ const MenuItems = React.createClass({
   }
 });
 
-module.exports = MenuItems;
+module.exports = MenuItemsContainer;

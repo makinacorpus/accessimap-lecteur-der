@@ -37,6 +37,7 @@ var DerContainer = React.createClass({
     } else {
       this.openDerFile(derFile);
     }
+
   },
 
   openDerFile: function(file) {

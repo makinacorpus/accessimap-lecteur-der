@@ -1,56 +1,24 @@
 require('!style!css!sass!./SelectElement.scss');
 
 const React = require('react');
-const Modal = require('./../Modal/Modal.js');
+const Menu = require('./../Menu/Menu.js');
 const Button = require('./../Button/Button.js');
-const SelectableList = require('./../SelectableList/SelectableList.js');
 
 const SelectElement = React.createClass({
-  getInitialState: function() {
-    return {
-      modal: 'hidden'
-    };
-  },
-
-  componentWillReceiveProps: function() {
-    this.setState({
-      modal: 'hidden'
-    })
-  },
 
   render: function() {
-    const {pois, searchableElement} = this.props;
-    pois.poi.map((poi) => {
-      poi.name = poi.name || poi.id;
-    });
-
-    const content = (
-      <div className="menu">
-        <SelectableList items={pois.poi} selectedItem={searchableElement} onDoubleClick={this.selectElement}></SelectableList>
-      </div>
-    );
-
-    const currentElement = searchableElement ?
-      'Recherche de : ' + pois.poi[searchableElement].name
-      : 'Aucun élément sélectionné' ;
-
     return (
       <div>
-        <span className="current-element">{currentElement}</span>
-        <Button type="button" value="Choisir un élément à trouver" onDoubleClick={this.openModal} />
-        <Modal name="selectSearchableElement" content={content} title="Sélectionner un élément à rechercher" visibility={this.state.modal}></Modal>
+        <span className="current-element">{this.props.element}</span>
+        <Button type="button" value="Choisir un élément à trouver" />
+        <Menu
+          name="selectSearchableElement"
+          content={this.props.content}
+          title="Sélectionner un élément à rechercher"
+          visibility={this.props.modal}
+          ></Menu>
       </div>
     );
-  },
-
-  selectElement: function(index) {
-    this.props.setSearchableElement(index);
-  },
-
-  openModal: function() {
-    this.setState({
-      modal: 'visible'
-    })
   }
 });
 

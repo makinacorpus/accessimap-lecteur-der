@@ -2,7 +2,7 @@ require('!style!css!sass!./der-reader.scss');
 
 const ScreenReader = require('./components/ScreenReader/ScreenReader.js');
 const DerContainer = require('./components/DerContainer/DerContainer.js');
-const Menu = require('./components/Menu/Menu.js');
+const MenuContainer = require('./components/Menu/Menu.container.js');
 const Message = require('./components/Message/Message.js');
 const FastClick = require('fastclick');
 // const TouchEmulator = require('hammer-touchemulator');
@@ -20,8 +20,7 @@ const App = React.createClass({
       derFile: DerReader.options.derFile,
       selectedDocument: 1,
       der: [],
-      searchableElement: null,
-      currentIndexMenu: null
+      searchableElement: null
     }
   },
 
@@ -53,16 +52,8 @@ const App = React.createClass({
     this.setState({searchableElement: searchableElement});
   },
 
-  setMenu: function(currentIndexMenu) {
-    this.setState({
-      currentIndexMenu: currentIndexMenu
-    });
-  },
-
   render: function() {
-
     const {message, der, selectedDocument, mode, derFile, files, searchableElement, currentIndexMenu} = this.state;
-    
     return (
       <div className="options.container" ref="app">
 
@@ -79,20 +70,17 @@ const App = React.createClass({
           mode={mode}
           derFile={derFile} />
 
-        <Menu
+        <MenuContainer
           files={files}
           message={this.showMessage}
           mode={mode}
           pois={der.pois}
           setSearchableElement={this.setSearchableElement}
-          setMenu={this.setMenu}
           searchableElement={searchableElement}
-          currentIndex={currentIndexMenu}
           selectedDocument={selectedDocument}
           changeDerFile={this.changeDerFile}
           changeDocument={this.changeDocument}
           changeMode={this.changeMode} />
-
       </div>
     );
   }
