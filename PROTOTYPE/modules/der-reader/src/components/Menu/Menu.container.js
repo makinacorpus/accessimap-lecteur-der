@@ -13,7 +13,12 @@ const menuItems = [
 ];
 
 const MenuContainer = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
   getInitialState: function() {
+    console.log(this);
     return {
       open: false,
       modal: 'hidden',
@@ -23,7 +28,6 @@ const MenuContainer = React.createClass({
   },
 
   closeChidMenu: function() {
-    console.log('closeChidMenu');
     this.setState({
       currentIndex: null
     });
@@ -43,13 +47,7 @@ const MenuContainer = React.createClass({
   },
 
   closeMenu: function() {
-    console.log('closeMenu');
-    this.setState({
-      open: false,
-      modal: 'hidden'
-    }, function() {
-      this.closeChidMenu();
-    });
+    this.context.router.push('/');
   },
 
   navigateMenu: function(direction) {
@@ -73,29 +71,21 @@ const MenuContainer = React.createClass({
       <div className="menu">
         <SelectableList items={menuItems} selectedItem={selectedItem}></SelectableList>
         <MenuItemsContainer
-          parentProps={this.props}
+          parentProps={this.props.options}
           index={currentIndex}
           menuItems={menuItems}
-          visibility={this.state.modal}
           closeMenu={this.closeChidMenu}
           ></MenuItemsContainer>
       </div>
     );
     return (
       <div>
-        <Button
-          id="menuButton"
-          type="button"
-          className="fill red open-menu"
-          value="Menu"
-          onDoubleClick={() => this.openMenu()} />
         <Menu
           openChidMenu={this.openChidMenu}
           name="mainMenu"
           navigateMenu={this.navigateMenu}
           content={content}
           title="Menu principal"
-          visibility={this.state.modal}
           closeMenu={this.closeMenu}
           />
       </div>

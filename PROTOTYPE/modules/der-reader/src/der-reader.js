@@ -2,13 +2,16 @@ require('!style!css!sass!./der-reader.scss');
 
 const ScreenReader = require('./components/ScreenReader/ScreenReader.js');
 const DerContainer = require('./components/DerContainer/DerContainer.js');
-const MenuContainer = require('./components/Menu/Menu.container.js');
 const Message = require('./components/Message/Message.js');
+const Button = require('./components/Button/Button.js');
+const MenuContainer = require('./components/Menu/Menu.container.js');
 const FastClick = require('fastclick');
 // const TouchEmulator = require('hammer-touchemulator');
 
 const React = require('react');
 const ReactDOM = require('react-dom');
+
+import { Router, hashHistory } from 'react-router';
 
 
 const App = React.createClass({
@@ -53,7 +56,12 @@ const App = React.createClass({
   },
 
   render: function() {
-    const {message, der, selectedDocument, mode, derFile, files, searchableElement, currentIndexMenu} = this.state;
+    const {message, der, selectedDocument, mode, derFile, searchableElement} = this.state;
+    var childrenWithProps
+    if (this.props.children) {
+      childrenWithProps = React.cloneElement(this.props.children, {options: this.state}); 
+    }
+
     return (
       <div className="options.container" ref="app">
 
@@ -70,22 +78,26 @@ const App = React.createClass({
           mode={mode}
           derFile={derFile} />
 
-        <MenuContainer
-          files={files}
-          message={this.showMessage}
-          mode={mode}
-          pois={der.pois}
-          setSearchableElement={this.setSearchableElement}
-          searchableElement={searchableElement}
-          selectedDocument={selectedDocument}
-          changeDerFile={this.changeDerFile}
-          changeDocument={this.changeDocument}
-          changeMode={this.changeMode} />
+        { childrenWithProps || '' }
+
+        <Button
+          id="menuButton"
+          type="button"
+          className="fill red open-menu"
+          value="Menu"
+          onDoubleClick={() => hashHistory.push('menu')} />
+
       </div>
     );
   }
 });
-
+const routes = {
+  path: '/',
+  component: App,
+  childRoutes: [
+    { path: 'menu', component: MenuContainer },
+  ]
+};
 
 var DerReader = {
   /**
@@ -102,12 +114,14 @@ var DerReader = {
   init: function(options) {
     this.options = options;
 
+    console.log(location);
+
     ScreenReader.init(this.options.tts, this.options.vibrate);
     FastClick.attach(document.body, {});
     // TouchEmulator();
 
     ReactDOM.render(
-      <App options={options} />,
+      <Router routes={routes} history={hashHistory} />,
       document.getElementById(options.container)
     );
 
