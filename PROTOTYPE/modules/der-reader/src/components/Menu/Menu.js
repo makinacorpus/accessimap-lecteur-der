@@ -1,55 +1,61 @@
-require('!style!css!sass!./Menu.scss');
+const SelectableList = require('./../SelectableList/SelectableList.js');
+const React = require('react');
+const Navigation = require('./../Menu/Navigation.js');
 
-var React = require('react');
-const Hammer = require('hammerjs');
+const menuItems = [
+  {id: 'file', name: 'Charger un nouveau document en relief (format zip)'},
+  {id: 'doc', name: 'Définir le document à visualiser'},
+  {id: 'mode', name: 'Changer le mode de lecture'}
+];
 
-const Menu = React.createClass({
+const MenuContainer = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
   getInitialState: function() {
     return {
-      visibility: this.props.visibility
+      activeMenu: 0
     };
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      visibility: nextProps.visibility
-    });
+    if (nextProps.options !== this.props.options) {
+      this.context.router.push('/');
+    }
   },
 
-  componentDidMount: function() {
-    const modal = document.getElementById(this.props.name);
-    var hammertime = new Hammer(modal, {});
-    hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-    hammertime.on('swipeleft', () => {
-      this.props.closeMenu();
-    });
-    hammertime.on('swiperight', () => {
-      this.props.openChidMenu();
-    });
-    hammertime.on('swipeup', () => {
-      this.props.navigateMenu('up');
-    });
-    hammertime.on('swipedown', () => {
-      this.props.navigateMenu('down');
-    });
-
-    hammertime.get('tap').set({ taps: 2 });
-    hammertime.on('tap', () => {
-      this.props.selectMenu();
-    });
+  handleAction: function() {
+    this.context.router.push('menu/' + menuItems[this.state.activeMenu].id);
   },
 
+  changeActiveMenu: function(index) {
+    this.setState({activeMenu: index});
+  },
 
   render: function() {
-    const {name, title, content, visibility} = this.props;
+    var childrenWithProps;
+    if (this.props.children) {
+      childrenWithProps = React.cloneElement(this.props.children, {
+        options: this.props.options,
+        actions: this.props.actions
+      });
+    }
 
     return (
-        <div className={'modal ' + visibility} ref={name} id={name}>
-          <h2 className="modal--title">{title}</h2>
-          {content}
-        </div>
+      <Navigation
+        action={this.handleAction}
+        content={
+        childrenWithProps ||
+        <SelectableList
+          index={this.state.activeMenu}
+          items={menuItems}
+          changeIndex={this.changeActiveMenu}
+          ></SelectableList>
+        }>
+      </Navigation>
     );
   }
 });
 
-module.exports = Menu;
+module.exports = MenuContainer;

@@ -4,7 +4,11 @@ const ScreenReader = require('./components/ScreenReader/ScreenReader.js');
 const DerContainer = require('./components/DerContainer/DerContainer.js');
 const Message = require('./components/Message/Message.js');
 const Button = require('./components/Button/Button.js');
-const MenuContainer = require('./components/Menu/Menu.container.js');
+const MenuContainer = require('./components/Menu/Menu.js');
+const FileInput = require('./components/Files/FileInput.js');
+const SwitchMode = require('./components/SwitchMode/SwitchMode.js');
+const FilesList = require('./components/Files/FilesList.js');
+
 const FastClick = require('fastclick');
 // const TouchEmulator = require('hammer-touchemulator');
 
@@ -23,6 +27,7 @@ const App = React.createClass({
       derFile: DerReader.options.derFile,
       selectedDocument: 1,
       der: [],
+      files: [],
       searchableElement: null
     }
   },
@@ -59,7 +64,18 @@ const App = React.createClass({
     const {message, der, selectedDocument, mode, derFile, searchableElement} = this.state;
     var childrenWithProps
     if (this.props.children) {
-      childrenWithProps = React.cloneElement(this.props.children, {options: this.state}); 
+      childrenWithProps = React.cloneElement(this.props.children, {
+        options: this.state,
+        actions: {
+          showMessage: this.showMessage,
+          setFilesList: this.setFilesList,
+          setDer: this.setDer,
+          changeDerFile: this.changeDerFile,
+          changeDocument: this.changeDocument,
+          changeMode: this.changeMode,
+          setSearchableElement: this.setSearchableElement
+        }
+      });
     }
 
     return (
@@ -95,7 +111,15 @@ const routes = {
   path: '/',
   component: App,
   childRoutes: [
-    { path: 'menu', component: MenuContainer },
+    {
+      path: 'menu',
+      component: MenuContainer,
+      childRoutes: [
+        { path: 'file', component: FileInput },
+        { path: 'doc', component: FilesList },
+        { path: 'mode', component: SwitchMode },
+      ]
+    },
   ]
 };
 
@@ -113,9 +137,6 @@ var DerReader = {
   */
   init: function(options) {
     this.options = options;
-
-    console.log(location);
-
     ScreenReader.init(this.options.tts, this.options.vibrate);
     FastClick.attach(document.body, {});
     // TouchEmulator();

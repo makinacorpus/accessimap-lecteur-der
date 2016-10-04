@@ -2,7 +2,7 @@ require('!style!css!sass!./SwitchMode.scss');
 
 var React = require('react');
 var SwitchButton = require('./SwitchButton.js');
-var SelectElementContainer = require('./../SelectElement/SelectElement.container.js');
+var SelectElementContainer = require('./../SelectElement/SelectElement.js');
 
 const choices = [
   {value: 'explore', label: 'Exploration', position: 'left'},
@@ -12,14 +12,15 @@ const choices = [
 const SwitchMode = React.createClass({
   getInitialState: function() {
     return {
-      checkedValue: this.props.mode,
-      position: this.getModePosition(this.props.mode)
+      checkedValue: this.props.options.mode,
+      position: this.getModePosition(this.props.options.mode)
     };
   },
 
   render: function() {
     const {checkedValue, position} = this.state;
-    const {pois, setSearchableElement, searchableElement} = this.props;
+    const {pois} = this.props.options;
+    const {setSearchableElement, searchableElement} = this.props.actions;
     const onChange = this.onChange;
     const explore = checkedValue === 'search' ?
       <SelectElementContainer pois={pois} setSearchableElement={setSearchableElement} searchableElement={searchableElement}></SelectElementContainer>
@@ -67,7 +68,7 @@ const SwitchMode = React.createClass({
       checkedValue: value,
       position: this.getModePosition(value)
     });
-    this.props.changeMode(value);
+    this.props.actions.changeMode(value);
   }
 });
 

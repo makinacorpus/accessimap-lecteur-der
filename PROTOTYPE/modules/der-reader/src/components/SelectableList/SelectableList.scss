@@ -20,16 +20,10 @@
           font-weight: bold;
           padding: 1em;
 
-          &.selected, &:hover.selected {
+          &.selected {
             background: white;
             color: $black;
             cursor: normal;
-          }
-
-          &:hover, &.active {
-            background: lighten(white, 10%);
-            color: $black;
-            cursor: pointer;
           }
         }
     }
