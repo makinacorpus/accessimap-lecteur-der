@@ -2,7 +2,7 @@
 
 .button {
   margin-top: 10px;
-  padding: .8em 1em;
+  padding: .2em .8em;
   color: $white;
   background-color: transparent;
   border: 3px solid $white;
@@ -37,7 +37,17 @@
       &:hover, &.active {
         border-color: $red;
         color: $red;
-        background-color: transparent;
+        background-color: white;
+      }
+    }
+    &.black {
+      background-color: $black;
+      border-color: $black;
+      color: $white;
+      &:hover, &.active {
+        border-color: $black;
+        color: $black;
+        background-color: white;
       }
     }
   }

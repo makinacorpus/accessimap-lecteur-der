@@ -3,7 +3,7 @@ require('!style!css!sass!./der-reader.scss');
 const DerContainer = require('./components/DerContainer/DerContainer.js');
 const Message = require('./components/Message/Message.js');
 const Button = require('./components/Button/Button.js');
-const MenuContainer = require('./components/Menu/Menu.js');
+const Menu = require('./components/Menu/Menu.js');
 const FileInput = require('./components/Files/FileInput.js');
 const SwitchMode = require('./components/SwitchMode/SwitchMode.js');
 const FilesList = require('./components/Files/FilesList.js');
@@ -28,7 +28,8 @@ const App = React.createClass({
       der: [],
       files: [],
       searchableElement: null,
-      tts: DerReader.options.tts
+      tts: DerReader.options.tts,
+      exit: DerReader.options.exit
     }
   },
 
@@ -62,6 +63,8 @@ const App = React.createClass({
 
   render: function() {
     const {message, der, selectedDocument, mode, derFile, searchableElement} = this.state;
+    var menuLabel = 'Menu';
+    var filtresLabel = 'Filtres';
     var childrenWithProps
     if (this.props.children) {
       childrenWithProps = React.cloneElement(this.props.children, {
@@ -84,15 +87,15 @@ const App = React.createClass({
           <Button
             id="menuButton"
             type="button"
-            className="fill red open-menu"
-            value="Filters"
+            className="fill black open-menu"
+            value={menuLabel}
             onDoubleClick={() => hashHistory.push('menu')} />
 
           <Button
             id="menuButton"
             type="button"
-            className="fill red open-filters"
-            value="Menu"
+            className="fill black open-filters"
+            value={filtresLabel}
             onDoubleClick={() => hashHistory.push('filters')} />
         </nav>
 
@@ -121,16 +124,20 @@ const routes = {
   childRoutes: [
     {
       path: 'menu',
-      component: MenuContainer,
+      component: Menu,
       childRoutes: [
-        { path: 'file', component: FileInput },
-        { path: 'doc', component: FilesList },
-        { path: 'mode', component: SwitchMode },
+        { path: 'file', component: FileInput, name: 'Charger un nouveau document en relief (format zip)' },
+        { path: 'doc', component: FilesList, name: 'Définir le document à visualiser' },
+        { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' },
+        { path: 'quit', name: 'Quitter l\'application' }
       ]
     },
     {
       path: 'filters',
-      component: MenuContainer
+      component: Menu,
+      childRoutes: [
+        { path: 'name', component: FileInput, name: 'Filtre par nom' }
+      ]
     }
   ]
 };

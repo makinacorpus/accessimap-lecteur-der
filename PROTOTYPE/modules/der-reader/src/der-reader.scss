@@ -48,6 +48,10 @@ svg {
 
 .nav-buttons {
   overflow: hidden;
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  padding: 2.5%;
   .button {
     width: auto;
     border-radius: 0;

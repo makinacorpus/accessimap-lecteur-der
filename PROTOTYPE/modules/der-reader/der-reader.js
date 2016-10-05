@@ -63,7 +63,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DerContainer = __webpack_require__(105);
 	var Message = __webpack_require__(201);
 	var Button = __webpack_require__(204);
-	var MenuContainer = __webpack_require__(207);
+	var Menu = __webpack_require__(207);
 	var FileInput = __webpack_require__(215);
 	var SwitchMode = __webpack_require__(218);
 	var FilesList = __webpack_require__(225);
@@ -87,7 +87,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      der: [],
 	      files: [],
 	      searchableElement: null,
-	      tts: DerReader.options.tts
+	      tts: DerReader.options.tts,
+	      exit: DerReader.options.exit
 	    };
 	  },
 
@@ -128,6 +129,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var derFile = _state.derFile;
 	    var searchableElement = _state.searchableElement;
 
+	    var menuLabel = 'Menu';
+	    var filtresLabel = 'Filtres';
 	    var childrenWithProps;
 	    if (this.props.children) {
 	      childrenWithProps = React.cloneElement(this.props.children, {
@@ -153,16 +156,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        React.createElement(Button, {
 	          id: 'menuButton',
 	          type: 'button',
-	          className: 'fill red open-menu',
-	          value: 'Filters',
+	          className: 'fill black open-menu',
+	          value: menuLabel,
 	          onDoubleClick: function onDoubleClick() {
 	            return _reactRouter.hashHistory.push('menu');
 	          } }),
 	        React.createElement(Button, {
 	          id: 'menuButton',
 	          type: 'button',
-	          className: 'fill red open-filters',
-	          value: 'Menu',
+	          className: 'fill black open-filters',
+	          value: filtresLabel,
 	          onDoubleClick: function onDoubleClick() {
 	            return _reactRouter.hashHistory.push('filters');
 	          } })
@@ -187,11 +190,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  component: App,
 	  childRoutes: [{
 	    path: 'menu',
-	    component: MenuContainer,
-	    childRoutes: [{ path: 'file', component: FileInput }, { path: 'doc', component: FilesList }, { path: 'mode', component: SwitchMode }]
+	    component: Menu,
+	    childRoutes: [{ path: 'file', component: FileInput, name: 'Charger un nouveau document en relief (format zip)' }, { path: 'doc', component: FilesList, name: 'Définir le document à visualiser' }, { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' }, { path: 'quit', name: 'Quitter l\'application' }]
 	  }, {
 	    path: 'filters',
-	    component: MenuContainer
+	    component: Menu,
+	    childRoutes: [{ path: 'name', component: FileInput, name: 'Filtre par nom' }]
 	  }]
 	};
 
@@ -10365,7 +10369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.nav-buttons {\n  overflow: hidden; }\n  .nav-buttons .button {\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button.open-filters {\n      float: left; }\n    .nav-buttons .button.open-menu {\n      float: right; }\n", ""]);
+	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.nav-buttons {\n  overflow: hidden;\n  position: absolute;\n  width: 100%;\n  z-index: 999;\n  padding: 2.5%; }\n  .nav-buttons .button {\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button.open-filters {\n      float: left; }\n    .nav-buttons .button.open-menu {\n      float: right; }\n", ""]);
 
 	// exports
 
@@ -19449,7 +19453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -39502,7 +39506,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .8em 1em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: transparent; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
+	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .2em .8em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: white; }\n    .button.fill.black {\n      background-color: #000;\n      border-color: #000;\n      color: #fff; }\n      .button.fill.black:hover, .button.fill.black.active {\n        border-color: #000;\n        color: #000;\n        background-color: white; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
 
 	// exports
 
@@ -39517,10 +39521,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(3);
 	var Navigation = __webpack_require__(212);
 
-	var menuItems = [{ id: 'file', name: 'Charger un nouveau document en relief (format zip)' }, { id: 'doc', name: 'Définir le document à visualiser' }, { id: 'mode', name: 'Changer le mode de lecture' }];
-
-	var MenuContainer = React.createClass({
-	  displayName: 'MenuContainer',
+	var Menu = React.createClass({
+	  displayName: 'Menu',
 
 	  contextTypes: {
 	    router: React.PropTypes.object.isRequired
@@ -39539,7 +39541,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  handleAction: function handleAction() {
-	    this.context.router.push('menu/' + menuItems[this.state.activeMenu].id);
+	    if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
+	      this.props.options.exit();
+	    } else {
+	      this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
+	    }
 	  },
 
 	  changeActiveMenu: function changeActiveMenu(index) {
@@ -39551,6 +39557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  render: function render() {
+	    console.log(this);
 	    var childrenWithProps;
 	    if (this.props.children) {
 	      childrenWithProps = React.cloneElement(this.props.children, {
@@ -39570,7 +39577,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          childrenWithProps || React.createElement(SelectableList, {
 	            read: this.read,
 	            index: this.state.activeMenu,
-	            items: menuItems,
+	            items: this.props.route.childRoutes,
 	            changeIndex: this.changeActiveMenu
 	          })
 	        )
@@ -39578,7 +39585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	module.exports = MenuContainer;
+	module.exports = Menu;
 
 /***/ },
 /* 208 */
@@ -42433,7 +42440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".menu {\n  width: 90%;\n  margin: 0 auto;\n  background: #000; }\n\n.modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  padding: .5em;\n  background: #000;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    transition-delay: .3s;\n    top: 100vh; }\n", ""]);
+	exports.push([module.id, ".menu {\n  width: 100%;\n  margin: 100px auto;\n  background: #000; }\n\n.modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  padding: 2.5%;\n  background: #000;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    transition-delay: .3s;\n    top: 100vh; }\n", ""]);
 
 	// exports
 

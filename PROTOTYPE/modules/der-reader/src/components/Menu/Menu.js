@@ -2,13 +2,7 @@ const SelectableList = require('./../SelectableList/SelectableList.js');
 const React = require('react');
 const Navigation = require('./../Menu/Navigation.js');
 
-const menuItems = [
-  {id: 'file', name: 'Charger un nouveau document en relief (format zip)'},
-  {id: 'doc', name: 'Définir le document à visualiser'},
-  {id: 'mode', name: 'Changer le mode de lecture'}
-];
-
-const MenuContainer = React.createClass({
+const Menu = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -26,7 +20,11 @@ const MenuContainer = React.createClass({
   },
 
   handleAction: function() {
-    this.context.router.push('menu/' + menuItems[this.state.activeMenu].id);
+    if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
+      this.props.options.exit();
+    } else {
+      this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
+    }
   },
 
   changeActiveMenu: function(index) {
@@ -38,6 +36,7 @@ const MenuContainer = React.createClass({
   },
 
   render: function() {
+    console.log(this);
     var childrenWithProps;
     if (this.props.children) {
       childrenWithProps = React.cloneElement(this.props.children, {
@@ -56,7 +55,7 @@ const MenuContainer = React.createClass({
               <SelectableList
                 read={this.read}
                 index={this.state.activeMenu}
-                items={menuItems}
+                items={this.props.route.childRoutes}
                 changeIndex={this.changeActiveMenu}
                 ></SelectableList>}
             </div>
@@ -67,4 +66,4 @@ const MenuContainer = React.createClass({
   }
 });
 
-module.exports = MenuContainer;
+module.exports = Menu;
