@@ -97,10 +97,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      childRoutes: [{
 	        path: 'menu',
 	        component: Menu,
+	        name: 'Menu principal',
 	        childRoutes: [{ path: 'file', component: FileInput, name: 'Charger un nouveau document en relief (format zip)' }, { path: 'doc', component: FilesList, name: 'Définir le document à visualiser' }, { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' }, { path: 'quit', name: 'Quitter l\'application' }]
 	      }, {
 	        path: 'filters',
 	        component: Menu,
+	        name: 'Filtres',
 	        childRoutes: [{ path: 'name', component: FileInput, name: 'Filtre par nom' }]
 	      }]
 	    };
@@ -19342,7 +19344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -39463,6 +39465,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        React.createElement(
 	          'div',
 	          { className: 'menu' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            this.props.route.name
+	          ),
 	          childrenWithProps || React.createElement(SelectableList, {
 	            read: this.read,
 	            index: this.state.activeMenu,
@@ -42333,7 +42340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".menu {\n  width: 100%;\n  margin: 100px auto;\n  background: #000; }\n\n.modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  padding: 2.5%;\n  background: #000;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    transition-delay: .3s;\n    top: 100vh; }\n", ""]);
+	exports.push([module.id, ".menu {\n  width: 100%;\n  margin: 100px auto;\n  background: #000; }\n\nh1, h2 {\n  color: white;\n  text-align: center; }\n\n.modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  padding: 2.5%;\n  background: #000;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    transition-delay: .3s;\n    top: 100vh; }\n", ""]);
 
 	// exports
 

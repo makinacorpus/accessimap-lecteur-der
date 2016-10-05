@@ -38,6 +38,7 @@ var DerReader = {
         {
           path: 'menu',
           component: Menu,
+          name: 'Menu principal',
           childRoutes: [
             { path: 'file', component: FileInput, name: 'Charger un nouveau document en relief (format zip)' },
             { path: 'doc', component: FilesList, name: 'Définir le document à visualiser' },
@@ -48,6 +49,7 @@ var DerReader = {
         {
           path: 'filters',
           component: Menu,
+          name: 'Filtres',
           childRoutes: [
             { path: 'name', component: FileInput, name: 'Filtre par nom' }
           ]

@@ -51,6 +51,7 @@ const Menu = React.createClass({
         content={
           <div className="modal" ref="mainMenu" id="mainMenu">
             <div className="menu">
+              <h2>{this.props.route.name}</h2>
               {childrenWithProps ||
               <SelectableList
                 read={this.read}
