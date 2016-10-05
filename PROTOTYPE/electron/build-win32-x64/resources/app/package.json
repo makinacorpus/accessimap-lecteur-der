@@ -13,7 +13,8 @@
     "electron-prebuilt": "^0.37.8"
   },
   "dependencies": {
-    "der-reader": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/der-reader",
-    "tts-webspeechapi": "file:///home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE/tts-webspeechapi"
+    "der-reader": "../modules/der-reader",
+    "tts.webapi": "../modules/tts.webapi",
+    "vibrate.webapi": "../modules/vibrate.webapi"
   }
 }

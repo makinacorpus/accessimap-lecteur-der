@@ -1,6 +1,5 @@
 require('!style!css!sass!./der-reader.scss');
 
-const ScreenReader = require('./components/ScreenReader/ScreenReader.js');
 const DerContainer = require('./components/DerContainer/DerContainer.js');
 const Message = require('./components/Message/Message.js');
 const Button = require('./components/Button/Button.js');
@@ -28,7 +27,8 @@ const App = React.createClass({
       selectedDocument: 1,
       der: [],
       files: [],
-      searchableElement: null
+      searchableElement: null,
+      tts: DerReader.options.tts
     }
   },
 
@@ -80,6 +80,21 @@ const App = React.createClass({
 
     return (
       <div className="options.container" ref="app">
+        <nav className="nav-buttons">
+          <Button
+            id="menuButton"
+            type="button"
+            className="fill red open-menu"
+            value="Filters"
+            onDoubleClick={() => hashHistory.push('menu')} />
+
+          <Button
+            id="menuButton"
+            type="button"
+            className="fill red open-filters"
+            value="Menu"
+            onDoubleClick={() => hashHistory.push('filters')} />
+        </nav>
 
         <Message text={message.text} type={message.type} />
 
@@ -90,18 +105,11 @@ const App = React.createClass({
           selectedDocument={selectedDocument}
           searchableElement={searchableElement}
           message={this.showMessage}
-          tts={DerReader.options.tts}
+          tts={this.state.tts}
           mode={mode}
           derFile={derFile} />
 
         { childrenWithProps || '' }
-
-        <Button
-          id="menuButton"
-          type="button"
-          className="fill red open-menu"
-          value="Menu"
-          onDoubleClick={() => hashHistory.push('menu')} />
 
       </div>
     );
@@ -120,6 +128,10 @@ const routes = {
         { path: 'mode', component: SwitchMode },
       ]
     },
+    {
+      path: 'filters',
+      component: MenuContainer
+    }
   ]
 };
 
@@ -137,7 +149,6 @@ var DerReader = {
   */
   init: function(options) {
     this.options = options;
-    ScreenReader.init(this.options.tts, this.options.vibrate);
     FastClick.attach(document.body, {});
     // TouchEmulator();
 

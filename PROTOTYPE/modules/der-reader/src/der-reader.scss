@@ -46,10 +46,18 @@ svg {
     overflow: hidden;
 }
 
-.button.open-menu {
-  position: absolute;
-  width: auto;
-  margin: .5em;
-  top: 0;
-  right: 0;
+.nav-buttons {
+  overflow: hidden;
+  .button {
+    width: auto;
+    border-radius: 0;
+    margin: 0;
+    &.open-filters {
+      float: left;
+    }
+
+    &.open-menu {
+      float: right;
+    }
+  }
 }

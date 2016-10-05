@@ -1,11 +1,14 @@
 require('!style!css!sass!./SelectableList.scss');
-const Navigation = require('./../Menu/Navigation.js');
 var React = require('react');
 const Hammer = require('hammerjs');
 
 var SelectableList = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.props.read(nextProps.items[nextProps.index].name);
   },
 
   componentDidMount: function() {

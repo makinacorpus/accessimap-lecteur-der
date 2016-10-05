@@ -1,18 +1,23 @@
 'use strict';
 
 // Dev
-// var webspeechapi = require('./../tts-webspeechapi/tts-webspeechapi.js');
-// var vibrateWebApi = require('./../vibrate-webapi/vibrate-webapi.js');
-// var DerReader = require('./../der-reader/der-reader.js');
+// var webspeechapi = require('./../modules/tts.webapi/tts.webapi.js');
+// var vibrateWebApi = require('./../modules/vibrate.webapi/vibrate.webapi.js');
+// var DerReader = require('./../modules/der-reader/der-reader.js');
 
 // Bundle
-var webspeechapi = require('tts-webspeechapi');
-var vibrateWebApi = require('vibrate-webapi');
+var webspeechapi = require('tts.webapi');
+var vibrateWebApi = require('vibrate.webapi');
 var DerReader = require('der-reader');
+
+window.nodeRequire = require;
+delete window.require;
+delete window.exports;
+delete window.module;
 
 DerReader.init({
   container: 'der-reader',
-  derFile: './der/der2.zip',
+  derFile: './der/Londres.zip',
   tts: webspeechapi,
   vibrate: vibrateWebApi,
   defaultMode: 'explore'

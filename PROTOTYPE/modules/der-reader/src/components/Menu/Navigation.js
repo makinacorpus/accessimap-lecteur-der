@@ -14,7 +14,6 @@ const Navigation = React.createClass({
     this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
     this.hammer.get('tap').set({ taps: 2 });
     this.hammer.on('swipeleft', () => {
-      console.log(this);
       this.context.router.goBack();
     });
     this.hammer.on('swiperight', () => {
@@ -39,12 +38,7 @@ const Navigation = React.createClass({
   render: function() {
     return (
       <div id="navigation">
-        <div className="modal" ref="mainMenu" id="mainMenu">
-          <h2 className="modal--title">Menu principal</h2>
-          <div className="menu">
-            {this.props.content}
-          </div>
-        </div>
+        {this.props.content}
       </div>
     );
   }

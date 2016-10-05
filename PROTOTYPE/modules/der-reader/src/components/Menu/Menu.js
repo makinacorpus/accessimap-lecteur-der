@@ -33,6 +33,10 @@ const MenuContainer = React.createClass({
     this.setState({activeMenu: index});
   },
 
+  read: function(text) {
+    this.props.options.tts.speak(text);
+  },
+
   render: function() {
     var childrenWithProps;
     if (this.props.children) {
@@ -46,12 +50,17 @@ const MenuContainer = React.createClass({
       <Navigation
         action={this.handleAction}
         content={
-        childrenWithProps ||
-        <SelectableList
-          index={this.state.activeMenu}
-          items={menuItems}
-          changeIndex={this.changeActiveMenu}
-          ></SelectableList>
+          <div className="modal" ref="mainMenu" id="mainMenu">
+            <div className="menu">
+              {childrenWithProps ||
+              <SelectableList
+                read={this.read}
+                index={this.state.activeMenu}
+                items={menuItems}
+                changeIndex={this.changeActiveMenu}
+                ></SelectableList>}
+            </div>
+          </div>
         }>
       </Navigation>
     );
