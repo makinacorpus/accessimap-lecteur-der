@@ -21,6 +21,7 @@ const Navigation = React.createClass({
     });
     this.hammer.get('tap').set({ taps: 2 });
     this.hammer.on('tap', () => {
+      this.props.action();
     });
   },
 
@@ -32,6 +33,7 @@ const Navigation = React.createClass({
       this.props.action();
     });
     this.hammer.off('tap', () => {
+      this.props.action();
     });
   },
 

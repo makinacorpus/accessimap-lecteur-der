@@ -60,144 +60,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(101);
 
-	var DerContainer = __webpack_require__(105);
-	var Message = __webpack_require__(201);
-	var Button = __webpack_require__(204);
 	var Menu = __webpack_require__(207);
 	var FileInput = __webpack_require__(215);
 	var SwitchMode = __webpack_require__(218);
 	var FilesList = __webpack_require__(225);
-
 	var FastClick = __webpack_require__(228);
 	// const TouchEmulator = require('hammer-touchemulator');
-
+	var App = __webpack_require__(360);
 	var React = __webpack_require__(3);
 	var ReactDOM = __webpack_require__(229);
 
-	var App = React.createClass({
-	  displayName: 'App',
-
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      message: '',
-	      mode: DerReader.options.defaultMode,
-	      derFile: DerReader.options.derFile,
-	      selectedDocument: 1,
-	      der: [],
-	      files: [],
-	      searchableElement: null,
-	      tts: DerReader.options.tts,
-	      exit: DerReader.options.exit
-	    };
-	  },
-
-	  showMessage: function showMessage(text, type) {
-	    this.setState({ message: { text: text, type: type } });
-	  },
-
-	  setFilesList: function setFilesList(files) {
-	    this.setState({ files: files });
-	  },
-
-	  setDer: function setDer(der) {
-	    this.setState({ der: der });
-	  },
-
-	  changeDerFile: function changeDerFile(file) {
-	    this.setState({ derFile: file, selectedDocument: 0 });
-	  },
-
-	  changeDocument: function changeDocument(fileIndex) {
-	    this.setState({ selectedDocument: fileIndex });
-	  },
-
-	  changeMode: function changeMode(mode) {
-	    this.setState({ mode: mode });
-	  },
-
-	  setSearchableElement: function setSearchableElement(searchableElement) {
-	    this.setState({ searchableElement: searchableElement });
-	  },
-
-	  render: function render() {
-	    var _state = this.state;
-	    var message = _state.message;
-	    var der = _state.der;
-	    var selectedDocument = _state.selectedDocument;
-	    var mode = _state.mode;
-	    var derFile = _state.derFile;
-	    var searchableElement = _state.searchableElement;
-
-	    var menuLabel = 'Menu';
-	    var filtresLabel = 'Filtres';
-	    var childrenWithProps;
-	    if (this.props.children) {
-	      childrenWithProps = React.cloneElement(this.props.children, {
-	        options: this.state,
-	        actions: {
-	          showMessage: this.showMessage,
-	          setFilesList: this.setFilesList,
-	          setDer: this.setDer,
-	          changeDerFile: this.changeDerFile,
-	          changeDocument: this.changeDocument,
-	          changeMode: this.changeMode,
-	          setSearchableElement: this.setSearchableElement
-	        }
-	      });
-	    }
-
-	    return React.createElement(
-	      'div',
-	      { className: 'options.container', ref: 'app' },
-	      React.createElement(
-	        'nav',
-	        { className: 'nav-buttons' },
-	        React.createElement(Button, {
-	          id: 'menuButton',
-	          type: 'button',
-	          className: 'fill black open-menu',
-	          value: menuLabel,
-	          onDoubleClick: function onDoubleClick() {
-	            return _reactRouter.hashHistory.push('menu');
-	          } }),
-	        React.createElement(Button, {
-	          id: 'menuButton',
-	          type: 'button',
-	          className: 'fill black open-filters',
-	          value: filtresLabel,
-	          onDoubleClick: function onDoubleClick() {
-	            return _reactRouter.hashHistory.push('filters');
-	          } })
-	      ),
-	      React.createElement(Message, { text: message.text, type: message.type }),
-	      React.createElement(DerContainer, {
-	        setFilesList: this.setFilesList,
-	        setDer: this.setDer,
-	        der: der,
-	        selectedDocument: selectedDocument,
-	        searchableElement: searchableElement,
-	        message: this.showMessage,
-	        tts: this.state.tts,
-	        mode: mode,
-	        derFile: derFile }),
-	      childrenWithProps || ''
-	    );
-	  }
-	});
-	var routes = {
-	  path: '/',
-	  component: App,
-	  childRoutes: [{
-	    path: 'menu',
-	    component: Menu,
-	    childRoutes: [{ path: 'file', component: FileInput, name: 'Charger un nouveau document en relief (format zip)' }, { path: 'doc', component: FilesList, name: 'Définir le document à visualiser' }, { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' }, { path: 'quit', name: 'Quitter l\'application' }]
-	  }, {
-	    path: 'filters',
-	    component: Menu,
-	    childRoutes: [{ path: 'name', component: FileInput, name: 'Filtre par nom' }]
-	  }]
-	};
+	var config = null;
 
 	var DerReader = {
 	  /**
@@ -205,18 +78,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	  * @param {Object} options
 	  * {
 	  *     container: {HTMLElement} required
-	  *     derFile: {string (zip file)} required
+	  *     derFile: (zip file path) {string} required
 	  *     tts: {Function} required
 	  *     vibrate: {Function} required
 	  *     defaultMode: {string}
+	  *     exit: {Function} required
 	  * }
 	  */
-	  init: function init(options) {
-	    this.options = options;
+	  init: function init(env_config) {
+	    config = env_config;
 	    FastClick.attach(document.body, {});
 	    // TouchEmulator();
 
-	    ReactDOM.render(React.createElement(_reactRouter.Router, { routes: routes, history: _reactRouter.hashHistory }), document.getElementById(options.container));
+	    var routes = {
+	      path: '/',
+	      component: App,
+	      config: config,
+	      childRoutes: [{
+	        path: 'menu',
+	        component: Menu,
+	        childRoutes: [{ path: 'file', component: FileInput, name: 'Charger un nouveau document en relief (format zip)' }, { path: 'doc', component: FilesList, name: 'Définir le document à visualiser' }, { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' }, { path: 'quit', name: 'Quitter l\'application' }]
+	      }, {
+	        path: 'filters',
+	        component: Menu,
+	        childRoutes: [{ path: 'name', component: FileInput, name: 'Filtre par nom' }]
+	      }]
+	    };
+
+	    ReactDOM.render(React.createElement(_reactRouter.Router, { routes: routes, history: _reactRouter.hashHistory }), document.getElementById(config.container));
 	  }
 	};
 
@@ -10369,7 +10258,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.nav-buttons {\n  overflow: hidden;\n  position: absolute;\n  width: 100%;\n  z-index: 999;\n  padding: 2.5%; }\n  .nav-buttons .button {\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button.open-filters {\n      float: left; }\n    .nav-buttons .button.open-menu {\n      float: right; }\n", ""]);
+	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.nav-buttons {\n  overflow: hidden;\n  position: absolute;\n  width: 100%;\n  z-index: 999;\n  padding: 2.5%; }\n  .nav-buttons .button {\n    padding: .2em .6em;\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button.open-filters {\n      float: left; }\n    .nav-buttons .button.open-menu {\n      float: right; }\n", ""]);
 
 	// exports
 
@@ -39506,7 +39395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .2em .8em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: white; }\n    .button.fill.black {\n      background-color: #000;\n      border-color: #000;\n      color: #fff; }\n      .button.fill.black:hover, .button.fill.black.active {\n        border-color: #000;\n        color: #000;\n        background-color: white; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
+	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .8em 1em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: white; }\n    .button.fill.black {\n      background-color: #000;\n      border-color: #000;\n      color: #fff; }\n      .button.fill.black:hover, .button.fill.black.active {\n        border-color: #000;\n        color: #000;\n        background-color: white; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
 
 	// exports
 
@@ -42379,7 +42268,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.props.action();
 	    });
 	    this.hammer.get('tap').set({ taps: 2 });
-	    this.hammer.on('tap', function () {});
+	    this.hammer.on('tap', function () {
+	      _this.props.action();
+	    });
 	  },
 
 	  componentWillUnmount: function componentWillUnmount() {
@@ -42391,7 +42282,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.hammer.off('swiperight', function () {
 	      _this2.props.action();
 	    });
-	    this.hammer.off('tap', function () {});
+	    this.hammer.off('tap', function () {
+	      _this2.props.action();
+	    });
 	  },
 
 	  render: function render() {
@@ -59887,6 +59780,136 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ReactMount = __webpack_require__(351);
 
 	module.exports = ReactMount.renderSubtreeIntoContainer;
+
+/***/ },
+/* 359 */,
+/* 360 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _reactRouter = __webpack_require__(1);
+
+	__webpack_require__(101);
+
+	var DerContainer = __webpack_require__(105);
+	var Message = __webpack_require__(201);
+	var Button = __webpack_require__(204);
+	var React = __webpack_require__(3);
+
+	var App = React.createClass({
+	  displayName: 'App',
+
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      message: '',
+	      mode: this.props.route.config.defaultMode,
+	      derFile: this.props.route.config.derFile,
+	      selectedDocument: 1,
+	      der: [],
+	      files: [],
+	      searchableElement: null,
+	      tts: this.props.route.config.tts,
+	      exit: this.props.route.config.exit
+	    };
+	  },
+
+	  showMessage: function showMessage(text, type) {
+	    this.setState({ message: { text: text, type: type } });
+	  },
+
+	  setFilesList: function setFilesList(files) {
+	    this.setState({ files: files });
+	  },
+
+	  setDer: function setDer(der) {
+	    this.setState({ der: der });
+	  },
+
+	  changeDerFile: function changeDerFile(file) {
+	    this.setState({ derFile: file, selectedDocument: 0 });
+	  },
+
+	  changeDocument: function changeDocument(fileIndex) {
+	    this.setState({ selectedDocument: fileIndex });
+	  },
+
+	  changeMode: function changeMode(mode) {
+	    this.setState({ mode: mode });
+	  },
+
+	  setSearchableElement: function setSearchableElement(searchableElement) {
+	    this.setState({ searchableElement: searchableElement });
+	  },
+
+	  render: function render() {
+	    var _state = this.state;
+	    var message = _state.message;
+	    var der = _state.der;
+	    var selectedDocument = _state.selectedDocument;
+	    var mode = _state.mode;
+	    var derFile = _state.derFile;
+	    var searchableElement = _state.searchableElement;
+
+	    var menuLabel = 'Menu';
+	    var filtresLabel = 'Filtres';
+	    var childrenWithProps;
+	    if (this.props.children) {
+	      childrenWithProps = React.cloneElement(this.props.children, {
+	        options: this.state,
+	        actions: {
+	          showMessage: this.showMessage,
+	          setFilesList: this.setFilesList,
+	          setDer: this.setDer,
+	          changeDerFile: this.changeDerFile,
+	          changeDocument: this.changeDocument,
+	          changeMode: this.changeMode,
+	          setSearchableElement: this.setSearchableElement
+	        }
+	      });
+	    }
+
+	    return React.createElement(
+	      'div',
+	      { className: 'options.container', ref: 'app' },
+	      React.createElement(
+	        'nav',
+	        { className: 'nav-buttons' },
+	        React.createElement(Button, {
+	          id: 'menuButton',
+	          type: 'button',
+	          className: 'fill black open-menu',
+	          value: menuLabel,
+	          onDoubleClick: function onDoubleClick() {
+	            return _reactRouter.hashHistory.push('menu');
+	          } }),
+	        React.createElement(Button, {
+	          id: 'menuButton',
+	          type: 'button',
+	          className: 'fill black open-filters',
+	          value: filtresLabel,
+	          onDoubleClick: function onDoubleClick() {
+	            return _reactRouter.hashHistory.push('filters');
+	          } })
+	      ),
+	      React.createElement(Message, { text: message.text, type: message.type }),
+	      React.createElement(DerContainer, {
+	        setFilesList: this.setFilesList,
+	        setDer: this.setDer,
+	        der: der,
+	        selectedDocument: selectedDocument,
+	        searchableElement: searchableElement,
+	        message: this.showMessage,
+	        tts: this.state.tts,
+	        mode: mode,
+	        derFile: derFile }),
+	      childrenWithProps || ''
+	    );
+	  }
+	});
+
+	module.exports = App;
 
 /***/ }
 /******/ ])
