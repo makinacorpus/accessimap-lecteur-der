@@ -20,14 +20,17 @@ var Explore = {
 
     pois.poi.map(function(poi) {
       var id = poi.id.split('-').pop();
-      var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
-      if (poiEl !== undefined) {
-        Explore.pois.push(poiEl);
-        Explore.actions[id] = poi.actions.action;
-        Object.keys(GESTURES).map(function(gesture) {
-          poiEl.addEventListener(gesture, Explore.action);
-        });
-      }
+      var elements = document.querySelectorAll('[data-link="' + id + '"]');
+
+      Object.keys(elements).forEach((index) => {
+        if (elements[index] !== undefined) {
+          Explore.pois.push(elements[index]);
+          Explore.actions[id] = poi.actions.action;
+          Object.keys(GESTURES).map(function(gesture) {
+            elements[index].addEventListener(gesture, Explore.action);
+          });
+        }
+      });
     });
   },
 

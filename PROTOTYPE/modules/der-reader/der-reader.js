@@ -10260,7 +10260,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.nav-buttons {\n  overflow: hidden;\n  position: absolute;\n  width: 100%;\n  z-index: 999;\n  padding: 2.5%; }\n  .nav-buttons .button {\n    padding: .2em .6em;\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button.open-filters {\n      float: left; }\n    .nav-buttons .button.open-menu {\n      float: right; }\n", ""]);
+	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\nsvg {\n  width: 100%;\n  height: auto; }\n\n.container {\n  display: flex;\n  height: 100%; }\n\n.der-container {\n  flex: 1;\n  overflow: hidden; }\n\n.nav-buttons {\n  overflow: hidden;\n  position: absolute;\n  width: 100%;\n  z-index: 999;\n  padding: 2.5% 2.5% 0 2.5%; }\n  .nav-buttons .button {\n    padding: .2em .6em;\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button.open-filters {\n      float: left; }\n    .nav-buttons .button.open-menu {\n      float: right; }\n", ""]);
 
 	// exports
 
@@ -19344,7 +19344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -29700,14 +29700,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    pois.poi.map(function (poi) {
 	      var id = poi.id.split('-').pop();
-	      var poiEl = document.querySelectorAll('[data-link="' + id + '"]')[0];
-	      if (poiEl !== undefined) {
-	        Explore.pois.push(poiEl);
-	        Explore.actions[id] = poi.actions.action;
-	        Object.keys(GESTURES).map(function (gesture) {
-	          poiEl.addEventListener(gesture, Explore.action);
-	        });
-	      }
+	      var elements = document.querySelectorAll('[data-link="' + id + '"]');
+
+	      Object.keys(elements).forEach(function (index) {
+	        if (elements[index] !== undefined) {
+	          Explore.pois.push(elements[index]);
+	          Explore.actions[id] = poi.actions.action;
+	          Object.keys(GESTURES).map(function (gesture) {
+	            elements[index].addEventListener(gesture, Explore.action);
+	          });
+	        }
+	      });
 	    });
 	  },
 

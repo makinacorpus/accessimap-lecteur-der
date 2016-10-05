@@ -1,8 +1,7 @@
 0 info it worked if it ends with ok
 1 verbose cli [ '/usr/local/bin/node',
 1 verbose cli   '/home/lellex/node_modules/.bin/npm',
-1 verbose cli   'run',
-1 verbose cli   'build' ]
+1 verbose cli   'start' ]
 2 info using npm@3.8.6
 3 info using node@v5.1.0
 4 verbose config Skipping project config: /home/lellex/.npmrc. (matches userconfig)
@@ -10,7 +9,7 @@
 5 verbose stack     at Error (native)
 6 verbose cwd /home/lellex/Projets/accessimap/accessimap-lecteur-der/PROTOTYPE
 7 error Linux 4.4.0-38-generic
-8 error argv "/usr/local/bin/node" "/home/lellex/node_modules/.bin/npm" "run" "build"
+8 error argv "/usr/local/bin/node" "/home/lellex/node_modules/.bin/npm" "start"
 9 error node v5.1.0
 10 error npm  v3.8.6
 11 error path /home/lellex/package.json
