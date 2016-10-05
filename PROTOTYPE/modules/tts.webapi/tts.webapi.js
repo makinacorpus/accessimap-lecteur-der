@@ -24,7 +24,6 @@ const webspeechapi = {
 
     setTimeout(() => {
       this.utterance = this.initUtterance(text);
-      console.log(text, this);
       speechSynthesis.speak(this.utterance);
     }, 100);
   }

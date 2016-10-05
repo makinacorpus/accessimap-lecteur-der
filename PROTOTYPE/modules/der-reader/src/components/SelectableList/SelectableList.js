@@ -8,7 +8,9 @@ var SelectableList = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.props.read(nextProps.items[nextProps.index].name);
+    if (this.props.read) {
+      this.props.read(nextProps.items[nextProps.index].name);
+    }
   },
 
   componentDidMount: function() {
@@ -43,7 +45,6 @@ var SelectableList = React.createClass({
 
   render: function() {
     const {items, index} = this.props;
-
     return (
       <ul className="selectable-list">
         {items.map(function(item, key) {

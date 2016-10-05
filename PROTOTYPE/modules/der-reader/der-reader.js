@@ -19344,7 +19344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -39408,9 +39408,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var SelectableList = __webpack_require__(208);
 	var React = __webpack_require__(3);
-	var Navigation = __webpack_require__(212);
+	var MainMenu = __webpack_require__(361);
 
 	var Menu = React.createClass({
 	  displayName: 'Menu',
@@ -39419,36 +39418,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    router: React.PropTypes.object.isRequired
 	  },
 
-	  getInitialState: function getInitialState() {
-	    return {
-	      activeMenu: 0
-	    };
-	  },
-
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if (nextProps.options !== this.props.options) {
 	      this.context.router.push('/');
 	    }
 	  },
 
-	  handleAction: function handleAction() {
-	    if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
-	      this.props.options.exit();
-	    } else {
-	      this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
-	    }
-	  },
-
-	  changeActiveMenu: function changeActiveMenu(index) {
-	    this.setState({ activeMenu: index });
-	  },
-
-	  read: function read(text) {
-	    this.props.options.tts.speak(text);
-	  },
-
 	  render: function render() {
-	    console.log(this);
 	    var childrenWithProps;
 	    if (this.props.children) {
 	      childrenWithProps = React.cloneElement(this.props.children, {
@@ -39457,27 +39433,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 
-	    return React.createElement(Navigation, {
-	      action: this.handleAction,
-	      content: React.createElement(
-	        'div',
-	        { className: 'modal', ref: 'mainMenu', id: 'mainMenu' },
-	        React.createElement(
-	          'div',
-	          { className: 'menu' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            this.props.route.name
-	          ),
-	          childrenWithProps || React.createElement(SelectableList, {
-	            read: this.read,
-	            index: this.state.activeMenu,
-	            items: this.props.route.childRoutes,
-	            changeIndex: this.changeActiveMenu
-	          })
-	        )
-	      ) });
+	    return React.createElement(
+	      'div',
+	      null,
+	      childrenWithProps || React.createElement(MainMenu, {
+	        route: this.props.route,
+	        options: this.props.options,
+	        actions: this.props.actions
+	      })
+	    );
 	  }
 	});
 
@@ -39501,7 +39465,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    this.props.read(nextProps.items[nextProps.index].name);
+	    if (this.props.read) {
+	      this.props.read(nextProps.items[nextProps.index].name);
+	    }
 	  },
 
 	  componentDidMount: function componentDidMount() {
@@ -39542,7 +39508,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _props = this.props;
 	    var items = _props.items;
 	    var index = _props.index;
-
 
 	    return React.createElement(
 	      'ul',
@@ -42271,13 +42236,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.hammer.on('swipeleft', function () {
 	      _this.context.router.goBack();
 	    });
-	    this.hammer.on('swiperight', function () {
-	      _this.props.action();
-	    });
-	    this.hammer.get('tap').set({ taps: 2 });
-	    this.hammer.on('tap', function () {
-	      _this.props.action();
-	    });
+
+	    if (this.props.action) {
+	      this.hammer.on('swiperight', function () {
+	        _this.props.action();
+	      });
+	      this.hammer.get('tap').set({ taps: 2 });
+	      this.hammer.on('tap', function () {
+	        _this.props.action();
+	      });
+	    }
 	  },
 
 	  componentWillUnmount: function componentWillUnmount() {
@@ -42298,7 +42266,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return React.createElement(
 	      'div',
 	      { id: 'navigation' },
-	      this.props.content
+	      React.createElement(
+	        'div',
+	        { className: 'modal', ref: 'mainMenu', id: 'mainMenu' },
+	        React.createElement(
+	          'div',
+	          { className: 'menu' },
+	          this.props.content
+	        )
+	      )
 	    );
 	  }
 	});
@@ -42352,9 +42328,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	__webpack_require__(216);
-
 	var React = __webpack_require__(3);
 	var Button = __webpack_require__(204);
+	var Navigation = __webpack_require__(212);
 
 	var FileInput = React.createClass({
 	  displayName: 'FileInput',
@@ -42391,21 +42367,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  render: function render() {
-	    return React.createElement(
-	      'form',
-	      { id: 'fileform' },
-	      React.createElement('input', { type: 'file', className: 'inputfile', id: 'file', onChange: this.changeInputState }),
-	      React.createElement(
-	        'label',
-	        { htmlFor: 'file', className: this.state.labelClass },
+	    return React.createElement(Navigation, {
+	      content: React.createElement(
+	        'form',
+	        { id: 'fileform' },
+	        React.createElement('input', { type: 'file', className: 'inputfile', id: 'file', onChange: this.changeInputState }),
 	        React.createElement(
-	          'span',
-	          null,
-	          this.state.label
-	        )
-	      ),
-	      React.createElement(Button, { type: 'button', onDoubleClick: this.loadNewDer, className: 'fill', value: 'Envoyer' })
-	    );
+	          'label',
+	          { htmlFor: 'file', className: this.state.labelClass },
+	          React.createElement(
+	            'span',
+	            null,
+	            this.state.label
+	          )
+	        ),
+	        React.createElement(Button, { type: 'button', onDoubleClick: this.loadNewDer, className: 'fill', value: 'Envoyer' })
+	      ) });
 	  }
 	});
 
@@ -42458,84 +42435,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	__webpack_require__(219);
-
+	var _ = __webpack_require__(199);
 	var React = __webpack_require__(3);
-	var SwitchButton = __webpack_require__(221);
 	var SelectElementContainer = __webpack_require__(222);
+	var SelectableList = __webpack_require__(208);
+	var Navigation = __webpack_require__(212);
 
-	var choices = [{ value: 'explore', label: 'Exploration', position: 'left' }, { value: 'search', label: 'Recherche', position: 'right' }];
+	var modes = [{ id: 'explore', name: 'Exploration' }, { id: 'search', name: 'Recherche' }];
 
 	var SwitchMode = React.createClass({
 	  displayName: 'SwitchMode',
 
 	  getInitialState: function getInitialState() {
+	    var i = parseInt(_.findKey(modes, { id: this.props.options.mode }));
+
 	    return {
-	      checkedValue: this.props.options.mode,
-	      position: this.getModePosition(this.props.options.mode)
+	      index: i
 	    };
 	  },
 
+	  handleAction: function handleAction(index) {
+	    this.setState({ index: index });
+	  },
+
+	  changeMode: function changeMode(index) {
+	    this.props.actions.changeMode({ index: index });
+	  },
+
 	  render: function render() {
-	    var _state = this.state;
-	    var checkedValue = _state.checkedValue;
-	    var position = _state.position;
 	    var pois = this.props.options.pois;
 	    var _props$actions = this.props.actions;
 	    var setSearchableElement = _props$actions.setSearchableElement;
 	    var searchableElement = _props$actions.searchableElement;
 
-	    var onChange = this.onChange;
-	    var explore = checkedValue === 'search' ? React.createElement(SelectElementContainer, { pois: pois, setSearchableElement: setSearchableElement, searchableElement: searchableElement }) : '';
-
-	    var choiceItems = choices.map(function (choice) {
-	      var value = choice.value;
-	      var label = choice.label;
-
-	      var active = value === checkedValue ? ' active-case' : '';
-
-	      return React.createElement(SwitchButton, {
-	        key: 'radio-button-' + value,
-	        label: label,
-	        value: value,
-	        active: active,
-	        onChange: onChange
-	      });
-	    });
-
-	    return React.createElement(
-	      'aside',
-	      { className: 'switch' },
-	      React.createElement(
-	        'h2',
-	        { className: 'switch-title' },
-	        'Mode'
-	      ),
-	      React.createElement(
+	    var explore = this.state.index === 'search' ? React.createElement(SelectElementContainer, { pois: pois, setSearchableElement: setSearchableElement, searchableElement: searchableElement }) : '';
+	    return React.createElement(Navigation, {
+	      action: this.changeMode,
+	      content: React.createElement(
 	        'div',
-	        { className: 'switch-button' },
-	        React.createElement('span', { className: 'active ' + position }),
-	        choiceItems
-	      ),
-	      explore
-	    );
-	  },
-
-	  getModePosition: function getModePosition(value) {
-	    var position;
-	    choices.map(function (choice) {
-	      if (choice.value === value) {
-	        position = choice.position;
-	      }
-	    });
-	    return position;
-	  },
-
-	  onChange: function onChange(value) {
-	    this.setState({
-	      checkedValue: value,
-	      position: this.getModePosition(value)
-	    });
-	    this.props.actions.changeMode(value);
+	        null,
+	        React.createElement(SelectableList, {
+	          index: this.state.index,
+	          items: modes,
+	          changeIndex: this.handleAction }),
+	        explore
+	      ) });
 	  }
 	});
 
@@ -42582,41 +42526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 221 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(3);
-
-	var SwitchButton = React.createClass({
-	  displayName: 'SwitchButton',
-
-	  render: function render() {
-	    var _props = this.props;
-	    var value = _props.value;
-	    var active = _props.active;
-	    var label = _props.label;
-
-
-	    return React.createElement(
-	      'button',
-	      {
-	        className: 'switch-button-case' + active,
-	        value: value,
-	        onDoubleClick: this.handleClick },
-	      label
-	    );
-	  },
-
-	  handleClick: function handleClick() {
-	    this.props.onChange(this.props.value);
-	  }
-	});
-
-	module.exports = SwitchButton;
-
-/***/ },
+/* 221 */,
 /* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -42746,30 +42656,49 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React = __webpack_require__(3);
 	var SelectableList = __webpack_require__(208);
+	var Navigation = __webpack_require__(212);
 
 	var FilesList = React.createClass({
 	  displayName: 'FilesList',
 
-	  changeFile: function changeFile(index) {
-	    this.props.actions.changeDocument(index);
+	  getInitialState: function getInitialState() {
+	    return {
+	      index: this.props.options.selectedDocument
+	    };
+	  },
+
+	  handleAction: function handleAction(index) {
+	    this.setState({ index: index });
+	  },
+
+	  changeDocument: function changeDocument() {
+	    this.props.actions.changeDocument(this.state.index);
+	  },
+
+	  read: function read(text) {
+	    this.props.options.tts.speak(text);
 	  },
 
 	  render: function render() {
 	    var files = this.props.options.files;
 
 
-	    return React.createElement(
-	      'div',
-	      { className: 'files-list', onDoubleClick: this.changeFile },
-	      React.createElement(
-	        'h2',
-	        null,
-	        'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?'
-	      ),
-	      React.createElement(SelectableList, {
-	        items: files,
-	        action: this.changeFile })
-	    );
+	    return React.createElement(Navigation, {
+	      action: this.changeDocument,
+	      content: React.createElement(
+	        'div',
+	        { className: 'files-list', onDoubleClick: this.changeFile },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Ce document contient plusieurs cartes. Laquelle voulez-vous afficher ?'
+	        ),
+	        React.createElement(SelectableList, {
+	          read: this.read,
+	          index: this.state.index,
+	          items: files,
+	          changeIndex: this.handleAction })
+	      ) });
 	  }
 	});
 
@@ -59917,6 +59846,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	module.exports = App;
+
+/***/ },
+/* 361 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var SelectableList = __webpack_require__(208);
+	var React = __webpack_require__(3);
+	var Navigation = __webpack_require__(212);
+
+	var Menu = React.createClass({
+	  displayName: 'Menu',
+
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      activeMenu: 0
+	    };
+	  },
+
+	  handleAction: function handleAction() {
+	    if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
+	      this.props.options.exit();
+	    } else {
+	      this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
+	    }
+	  },
+
+	  changeActiveMenu: function changeActiveMenu(index) {
+	    this.setState({ activeMenu: index });
+	  },
+
+	  read: function read(text) {
+	    this.props.options.tts.speak(text);
+	  },
+
+	  render: function render() {
+	    return React.createElement(Navigation, {
+	      action: this.handleAction,
+	      content: React.createElement(SelectableList, {
+	        read: this.read,
+	        index: this.state.activeMenu,
+	        items: this.props.route.childRoutes,
+	        changeIndex: this.changeActiveMenu
+	      }) });
+	  }
+	});
+
+	module.exports = Menu;
 
 /***/ }
 /******/ ])

@@ -1,7 +1,7 @@
 require('!style!css!sass!./FileInput.scss');
-
 var React = require('react');
 var Button = require('./../Button/Button.js');
+const Navigation = require('./../Menu/Navigation.js');
 
 var FileInput = React.createClass({
   getInitialState: function() {
@@ -37,13 +37,17 @@ var FileInput = React.createClass({
 
   render: function() {
     return (
-      <form id="fileform">
-        <input type="file" className="inputfile" id="file" onChange={this.changeInputState} />
-        <label htmlFor="file" className={this.state.labelClass}>
-          <span>{this.state.label}</span>
-        </label>
-        <Button type="button" onDoubleClick={this.loadNewDer} className="fill" value="Envoyer"/>
-      </form>
+      <Navigation
+        content={
+          <form id="fileform">
+            <input type="file" className="inputfile" id="file" onChange={this.changeInputState} />
+            <label htmlFor="file" className={this.state.labelClass}>
+              <span>{this.state.label}</span>
+            </label>
+            <Button type="button" onDoubleClick={this.loadNewDer} className="fill" value="Envoyer"/>
+          </form>
+        }>
+      </Navigation>
     );
   }
 });
