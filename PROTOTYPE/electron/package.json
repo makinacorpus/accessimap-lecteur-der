@@ -3,11 +3,17 @@
   "version": "0.0.1",
   "description": "Accessimap Lecteur DERi",
   "main": "electron.js",
+  "repository": "https://github.com/makinacorpus/accessimap-lecteur-der/",
+  "homepage": "https://github.com/makinacorpus/accessimap-lecteur-der/",
   "scripts": {
     "start": "electron electron.js",
     "build": "build --win --linux --x64"
   },
-  "author": "Alexandra JANIN",
+  "author": { 
+    "name" : "Makina Corpus",
+    "email" : "contact@makina-corpus.com",
+    "url" : "http://makina-corpus.com/"
+  },
   "license": "MIT",
   "devDependencies": {
     "electron-builder": "^7.11.4",
@@ -19,10 +25,14 @@
     "vibrate.webapi": "../modules/vibrate.webapi"
   },
   "build": {
-    "appId": "your.id",
-    "category": "your.app.category.type",
+    "appId": "accessimap.lecteur",
+    "productName": "accessimap-lecteur-der",
     "win": {
       "target": "zip"
+    },
+    "linux": {
+      "category": "Education",
+      "target": "AppImage"
     }
   }
 }
