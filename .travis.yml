@@ -17,12 +17,12 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install --no-install-recommends -y mono-devel ca-certificates-mono
 
-  - 'cd PROTOTYPE/electron'
+  - 'cd electron'
 
 script:
   - 'npm install'
   - 'npm run build'
-  - 'ls $TRAVIS_BUILD_DIR/PROTOTYPE/electron/dist'
+  - 'ls $TRAVIS_BUILD_DIR/electron/dist'
 
 cache:
   directories:
@@ -32,8 +32,8 @@ deploy:
   provider: releases
   api_key: "$GITHUB_API_TOKEN"
   file: 
-    - "$TRAVIS_BUILD_DIR/PROTOTYPE/electron/dist/accessimap-lecteur-der-0.0.1-win.zip"
-    - "$TRAVIS_BUILD_DIR/PROTOTYPE/electron/dist/accessimap-lecteur-der-0.0.1-x86_64.AppImage"
+    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-0.0.1-win.zip"
+    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-0.0.1-x86_64.AppImage"
   skip_cleanup: true
   on:
     all_branches: true
