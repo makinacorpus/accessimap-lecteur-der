@@ -106,7 +106,7 @@ DerReader.init({
 
 ### Comment lancer et compiler les prototypes ?
 
-### Electron
+#### Electron
 
 Lancer l'app (développement)
 
@@ -137,7 +137,7 @@ npm run build
 ```
 
 
-### Cordova
+#### Cordova
 
 ```
 cd cordova/www
@@ -145,3 +145,14 @@ npm install
 cordova prepare
 cordova run android
 ```
+
+### Comment générer automatiquement les builds ?
+
+Ce projet est câblé à Travis CI.
+
+A chaque nouveau commit, travis vérifiera que le build pour electron se construit correctement.
+
+Pour ajouter ces builds aux releases, il faut créer une nouvelle release en respectant le [Semantic Versioning](http://semver.org/).
+
+Travis déclenchera à nouveau un build electron, et attachera les résultats (zip pour windows, AppImage pour Linux) à la dernière release créée.
+
