@@ -24474,8 +24474,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	var Utils = __webpack_require__(131);
 	var JSZip = __webpack_require__(132);
 
@@ -24498,6 +24496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    var oldProps = this.props;
 	    this.props = nextProps;
+
 	    if (oldProps.derFile !== nextProps.derFile) {
 	      this.setDerFile();
 	    }
@@ -24574,8 +24573,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.props.setFilesList(this.state.filesByExt.svg);
 	    }
 	    return new Promise(function (resolve, reject) {
-	      _this4.readFiles(_this4.state.filesByExt.xml[0], _this4.state.filesByExt.svg[_this4.props.selectedDocument]).then(function (res) {
-	        var der = _extends(res[0], res[1]);
+	      _this4.readFiles(_this4.state.filesByExt.xml[0], _this4.state.filesByExt.svg[_this4.props.selectedDocument]).then(function (der) {
 	        resolve(der);
 	      }, function (err) {
 	        reject(err);
@@ -24584,11 +24582,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  readFiles: function readFiles(xml, svg) {
+	    var der = {};
+
 	    var getJson = new Promise(function (resolve, reject) {
 	      xml.async('string').then(function (data) {
 	        var node = Utils.parseXml(data);
 	        var json = Utils.XML2jsobj(node.documentElement);
-	        resolve(json);
+
+	        der['filters'] = json.filters;
+	        der['pois'] = json.pois;
+
+	        resolve();
 	      }, function (error) {
 	        reject(error);
 	      });
@@ -24596,15 +24600,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var getSvg = new Promise(function (resolve, reject) {
 	      svg.async('string').then(function (data) {
-	        resolve({ svg: data });
+	        der['svg'] = data;
+	        resolve();
 	      }, function (error) {
 	        reject(error);
 	      });
 	    });
 
 	    return new Promise(function (resolve, reject) {
-	      Promise.all([getJson, getSvg]).then(function (values) {
-	        resolve([values[0], values[1]]);
+	      Promise.all([getJson, getSvg]).then(function () {
+	        resolve(der);
 	      }, function () {
 	        reject('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
 	      });
@@ -24616,9 +24621,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var selectedDocument = this.props.selectedDocument;
 
-	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument], function (error, der) {
+	    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument]).then(function (der) {
 	      _this5.props.setDer(der);
 	      _this5.loadDer(der);
+	    }, function (err) {
+	      _this5.props.message(err, 'error');
 	    });
 	  },
 
@@ -24629,12 +24636,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  * @param tts: {Function}
 	  */
 	  loadDer: function loadDer(der) {
-	    if (der.svg !== undefined) {
+	    if (der.svg && der.svg.length) {
 	      this.refs.container.innerHTML = der.svg;
 	    } else {
 	      this.props.message('Aucun SVG trouvé', 'error');
 	    }
-
 	    if (der.pois.poi === undefined) {
 	      this.props.message('Ce document ne contient aucune interaction', 'error');
 	    } else {
