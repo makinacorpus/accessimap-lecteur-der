@@ -153,7 +153,7 @@ var DerContainer = React.createClass({
     }
 
     if (der.pois.poi === undefined) {
-      this.props.message('Aucun JSON trouvé', 'error');
+      this.props.message('Ce document ne contient aucune interaction', 'error');
     } else {
       this.setDerActions();
     }
@@ -161,7 +161,7 @@ var DerContainer = React.createClass({
 
   setDerActions: function() {
     const {mode, der, tts, searchableElement, message} = this.props;
-    if (der.pois) {
+    if (der.pois && der.pois.poi) {
       switch(mode) {
       case 'explore':
         Explore.setExploreEvents(der.pois, this.readAudioFile, tts);

@@ -53,9 +53,9 @@ const App = React.createClass({
     const {message, der, selectedDocument, mode, derFile, searchableElement} = this.state;
     var menuLabel = 'Menu';
     var filtresLabel = 'Filtres';
-    var childrenWithProps
+    var navigation
     if (this.props.children) {
-      childrenWithProps = React.cloneElement(this.props.children, {
+      navigation = React.cloneElement(this.props.children, {
         options: this.state,
         actions: {
           showMessage: this.showMessage,
@@ -100,7 +100,7 @@ const App = React.createClass({
           mode={mode}
           derFile={derFile} />
 
-        { childrenWithProps || '' }
+        { navigation || '' }
 
       </div>
     );
