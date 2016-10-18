@@ -1,12 +1,12 @@
 require('!style!css!sass!./der-reader.scss');
 
-const Menu = require('./components/Menu/Menu.js');
-const FileInput = require('./components/Files/FileInput.js');
-const SwitchMode = require('./components/SwitchMode/SwitchMode.js');
-const FilesList = require('./components/Files/FilesList.js');
+const Menu = require('./routes/Menu/Menu.js');
+const SelectFile = require('./routes/Menu/SelectFile/SelectFile.js');
+const SwitchMode = require('./routes/Menu/SwitchMode/SwitchMode.js');
+const SelectDocument = require('./routes/Menu/SelectDocument/SelectDocument.js');
 const FastClick = require('fastclick');
 // const TouchEmulator = require('hammer-touchemulator');
-const App = require('./App');
+const App = require('./routes/App');
 const React = require('react');
 const ReactDOM = require('react-dom');
 import { Router, hashHistory } from 'react-router';
@@ -40,8 +40,8 @@ var DerReader = {
           component: Menu,
           name: 'Menu principal',
           childRoutes: [
-            { path: 'file', component: FileInput, name: 'Charger un nouveau document en relief (format zip)' },
-            { path: 'doc', component: FilesList, name: 'Définir le document à visualiser' },
+            { path: 'file', component: SelectFile, name: 'Charger un nouveau document en relief (format zip)' },
+            { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' },
             { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' },
             { path: 'quit', name: 'Quitter l\'application' }
           ]
@@ -51,7 +51,7 @@ var DerReader = {
           component: Menu,
           name: 'Filtres',
           childRoutes: [
-            { path: 'name', component: FileInput, name: 'Filtre par nom' }
+            { path: 'name', component: SelectFile, name: 'Filtre par nom' }
           ]
         }
       ]

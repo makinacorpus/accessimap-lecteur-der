@@ -61,9 +61,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(97);
 
 	var Menu = __webpack_require__(101);
-	var FileInput = __webpack_require__(110);
+	var SelectFile = __webpack_require__(110);
 	var SwitchMode = __webpack_require__(116);
-	var FilesList = __webpack_require__(125);
+	var SelectDocument = __webpack_require__(125);
 	var FastClick = __webpack_require__(128);
 	// const TouchEmulator = require('hammer-touchemulator');
 	var App = __webpack_require__(129);
@@ -98,12 +98,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        path: 'menu',
 	        component: Menu,
 	        name: 'Menu principal',
-	        childRoutes: [{ path: 'file', component: FileInput, name: 'Charger un nouveau document en relief (format zip)' }, { path: 'doc', component: FilesList, name: 'Définir le document à visualiser' }, { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' }, { path: 'quit', name: 'Quitter l\'application' }]
+	        childRoutes: [{ path: 'file', component: SelectFile, name: 'Charger un nouveau document en relief (format zip)' }, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' }, { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' }, { path: 'quit', name: 'Quitter l\'application' }]
 	      }, {
 	        path: 'filters',
 	        component: Menu,
 	        name: 'Filtres',
-	        childRoutes: [{ path: 'name', component: FileInput, name: 'Filtre par nom' }]
+	        childRoutes: [{ path: 'name', component: SelectFile, name: 'Filtre par nom' }]
 	      }]
 	    };
 
@@ -10624,8 +10624,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var SelectableList = __webpack_require__(103);
 	var React = __webpack_require__(3);
+	var SelectableList = __webpack_require__(103);
 	var Navigation = __webpack_require__(107);
 
 	var Menu = React.createClass({
@@ -13521,8 +13521,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Menu.scss", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Menu.scss");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Navigation.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Navigation.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -13556,8 +13556,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Button = __webpack_require__(113);
 	var Navigation = __webpack_require__(107);
 
-	var FileInput = React.createClass({
-	  displayName: 'FileInput',
+	var SelectFile = React.createClass({
+	  displayName: 'SelectFile',
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -13610,7 +13610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	module.exports = FileInput;
+	module.exports = SelectFile;
 
 /***/ },
 /* 111 */
@@ -13628,8 +13628,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./FileInput.scss", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./FileInput.scss");
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/sass-loader/index.js!./SelectFile.scss", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/sass-loader/index.js!./SelectFile.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -13803,8 +13803,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./SwitchMode.scss", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./SwitchMode.scss");
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/sass-loader/index.js!./SwitchMode.scss", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/sass-loader/index.js!./SwitchMode.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -23421,8 +23421,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var SelectableList = __webpack_require__(103);
 	var Navigation = __webpack_require__(107);
 
-	var FilesList = React.createClass({
-	  displayName: 'FilesList',
+	var SelectDocument = React.createClass({
+	  displayName: 'SelectDocument',
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -23465,7 +23465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	module.exports = FilesList;
+	module.exports = SelectDocument;
 
 /***/ },
 /* 126 */
@@ -23483,8 +23483,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./FilesList.scss", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./FilesList.scss");
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/sass-loader/index.js!./SelectDocument.scss", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/sass-loader/index.js!./SelectDocument.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -24347,8 +24347,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _reactRouter = __webpack_require__(1);
 
-	__webpack_require__(97);
-
 	var DerContainer = __webpack_require__(130);
 	var Message = __webpack_require__(233);
 	var Button = __webpack_require__(113);
@@ -24496,7 +24494,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    var oldProps = this.props;
 	    this.props = nextProps;
-
 	    if (oldProps.derFile !== nextProps.derFile) {
 	      this.setDerFile();
 	    }

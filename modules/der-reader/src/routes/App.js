@@ -1,8 +1,6 @@
-require('!style!css!sass!./der-reader.scss');
-
-const DerContainer = require('./components/DerContainer/DerContainer.js');
-const Message = require('./components/Message/Message.js');
-const Button = require('./components/Button/Button.js');
+const DerContainer = require('./../components/DerContainer/DerContainer.js');
+const Message = require('./../components/Message/Message.js');
+const Button = require('./../components/Button/Button.js');
 const React = require('react');
 import { hashHistory } from 'react-router';
 const App = React.createClass({

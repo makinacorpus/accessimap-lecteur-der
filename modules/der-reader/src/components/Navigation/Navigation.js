@@ -1,4 +1,4 @@
-require('!style!css!sass!./Menu.scss');
+require('!style!css!sass!./Navigation.scss');
 
 const Hammer = require('hammerjs');
 const React = require('react');

@@ -1,9 +1,9 @@
-require('!style!css!sass!./FileInput.scss');
+require('!style!css!sass!./SelectFile.scss');
 var React = require('react');
-var Button = require('./../Button/Button.js');
-const Navigation = require('./../Menu/Navigation.js');
+var Button = require('./../../../components/Button/Button.js');
+const Navigation = require('./../../../components/Navigation/Navigation.js');
 
-var FileInput = React.createClass({
+var SelectFile = React.createClass({
   getInitialState: function() {
     return {
       label: 'Choisir un fichier',
@@ -52,4 +52,4 @@ var FileInput = React.createClass({
   }
 });
 
-module.exports = FileInput;
+module.exports = SelectFile;
