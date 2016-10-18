@@ -14,6 +14,7 @@ const App = React.createClass({
       der: [],
       files: [],
       searchableElement: null,
+      activeFilter: null,
       tts: this.props.route.config.tts,
       exit: this.props.route.config.exit
     }
@@ -43,6 +44,11 @@ const App = React.createClass({
     this.setState({mode: mode});
   },
 
+  changeFilter: function(filter) {
+    console.log(filter);
+    this.setState({activeFilter: filter});
+  },
+
   setSearchableElement: function(searchableElement) {
     this.setState({searchableElement: searchableElement});
   },
@@ -62,6 +68,7 @@ const App = React.createClass({
           changeDerFile: this.changeDerFile,
           changeDocument: this.changeDocument,
           changeMode: this.changeMode,
+          changeFilter: this.changeFilter,
           setSearchableElement: this.setSearchableElement
         }
       });

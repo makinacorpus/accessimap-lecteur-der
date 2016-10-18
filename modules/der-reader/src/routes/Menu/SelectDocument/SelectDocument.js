@@ -1,10 +1,10 @@
 require('!style!css!sass!./SelectDocument.scss');
 
-var React = require('react');
-var SelectableList = require('./../../../components/SelectableList/SelectableList.js');
+const React = require('react');
+const SelectableList = require('./../../../components/SelectableList/SelectableList.js');
 const Navigation = require('./../../../components/Navigation/Navigation.js');
 
-var SelectDocument = React.createClass({
+const SelectDocument = React.createClass({
   getInitialState: function() {
     return {
       index: this.props.options.selectedDocument

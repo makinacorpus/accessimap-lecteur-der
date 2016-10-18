@@ -61,6 +61,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(97);
 
 	var Menu = __webpack_require__(101);
+	var Filters = __webpack_require__(374);
 	var SelectFile = __webpack_require__(110);
 	var SwitchMode = __webpack_require__(116);
 	var SelectDocument = __webpack_require__(125);
@@ -101,7 +102,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        childRoutes: [{ path: 'file', component: SelectFile, name: 'Charger un nouveau document en relief (format zip)' }, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' }, { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' }, { path: 'quit', name: 'Quitter l\'application' }]
 	      }, {
 	        path: 'filters',
-	        component: Menu,
+	        component: Filters,
 	        name: 'Filtres',
 	        childRoutes: [{ path: 'name', component: SelectFile, name: 'Filtre par nom' }]
 	      }]
@@ -24365,6 +24366,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      der: [],
 	      files: [],
 	      searchableElement: null,
+	      activeFilter: null,
 	      tts: this.props.route.config.tts,
 	      exit: this.props.route.config.exit
 	    };
@@ -24394,6 +24396,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({ mode: mode });
 	  },
 
+	  changeFilter: function changeFilter(filter) {
+	    console.log(filter);
+	    this.setState({ activeFilter: filter });
+	  },
+
 	  setSearchableElement: function setSearchableElement(searchableElement) {
 	    this.setState({ searchableElement: searchableElement });
 	  },
@@ -24420,6 +24427,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          changeDerFile: this.changeDerFile,
 	          changeDocument: this.changeDocument,
 	          changeMode: this.changeMode,
+	          changeFilter: this.changeFilter,
 	          setSearchableElement: this.setSearchableElement
 	        }
 	      });
@@ -59190,6 +59198,87 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = ReactDOMNullInputValuePropHook;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ },
+/* 374 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(3);
+	var SelectableList = __webpack_require__(103);
+	var Navigation = __webpack_require__(107);
+
+	var Filters = React.createClass({
+	  displayName: 'Filters',
+
+	  getInitialState: function getInitialState() {
+	    var index = 0;
+	    var der = this.props.options.der;
+
+	    if (der && der.filters && der.filters.filter) {
+	      var indexTemp = der.filters.filter.indexOf(this.props.options.activeFilter) + 1; // +1 for 'no filter' item on top
+	      index = indexTemp !== -1 ? indexTemp : 0;
+	    }
+
+	    return {
+	      index: index
+	    };
+	  },
+
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if (nextProps.options !== this.props.options) {
+	      this.context.router.push('/');
+	    }
+	  },
+
+	  handleAction: function handleAction(index) {
+	    this.setState({ index: index });
+	  },
+
+	  read: function read(text) {
+	    this.props.options.tts.speak(text);
+	  },
+
+	  changeFilter: function changeFilter() {
+	    var der = this.props.options.der;
+
+	    var newFilter = der.filters.filter[this.state.index - 1] ? der.filters.filter[this.state.index - 1] : null;
+	    this.props.actions.changeFilter(newFilter);
+	  },
+
+	  render: function render() {
+	    var der = this.props.options.der;
+
+
+	    var filters = [{ name: 'Aucun Filtre' }];
+	    if (der && der.filters && der.filters.filter) {
+	      der.filters.filter.map(function (filter) {
+	        filters.push(filter);
+	      });
+	    }
+
+	    var filtersList = 'Ce document ne contient pas de filtre.';
+
+	    if (filters.length > 0) {
+	      filtersList = React.createElement(SelectableList, {
+	        read: this.read,
+	        index: this.state.index,
+	        items: filters,
+	        changeIndex: this.handleAction });
+	    }
+
+	    return React.createElement(Navigation, {
+	      action: this.changeFilter,
+	      content: filtersList });
+	  }
+	});
+
+	module.exports = Filters;
 
 /***/ }
 /******/ ])
