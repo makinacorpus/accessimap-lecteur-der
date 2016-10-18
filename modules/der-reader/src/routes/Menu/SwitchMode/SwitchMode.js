@@ -1,9 +1,9 @@
 require('!style!css!sass!./SwitchMode.scss');
 const _ = require('lodash');
 const React = require('react');
-const SelectElementContainer = require('./../SelectElement/SelectElement.js');
-const SelectableList = require('./../SelectableList/SelectableList.js');
-const Navigation = require('./../Menu/Navigation.js');
+const SelectElementContainer = require('./../../../components/SelectElement/SelectElement.js');
+const SelectableList = require('./../../../components/SelectableList/SelectableList.js');
+const Navigation = require('./../../../components/Navigation/Navigation.js');
 
 const modes = [
   {id: 'explore', name: 'Exploration'},
