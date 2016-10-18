@@ -91,8 +91,7 @@ var DerContainer = React.createClass({
       this.props.setFilesList(this.state.filesByExt.svg);
     }
     return new Promise((resolve, reject) => {
-      this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument]).then(res => {
-        var der = Object.assign(res[0], res[1]);
+      this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument]).then(der => {
         resolve(der);
       }, (err) => {
         reject(err);
@@ -101,12 +100,18 @@ var DerContainer = React.createClass({
   },
 
   readFiles: function(xml, svg) {
+    let der = {};
+
     var getJson = new Promise(function(resolve, reject) {
       xml.async('string')
       .then(function(data) {
         var node = Utils.parseXml(data);
         var json = Utils.XML2jsobj(node.documentElement);
-        resolve(json);
+
+        der['filters'] = json.filters;
+        der['pois'] = json.pois;
+
+        resolve();
       }, function(error) {
         reject(error);
       });
@@ -115,15 +120,16 @@ var DerContainer = React.createClass({
     var getSvg = new Promise(function(resolve, reject) {
       svg.async('string')
       .then(function(data) {
-        resolve({svg: data});
+        der['svg'] = data;
+        resolve();
       }, function(error) {
         reject(error);
       });
     });
 
     return new Promise((resolve, reject) => {
-      Promise.all([getJson, getSvg]).then(function(values) {
-        resolve([values[0], values[1]]);
+      Promise.all([getJson, getSvg]).then(function() {
+        resolve(der);
       }, function() {
         reject('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
       });
@@ -132,9 +138,11 @@ var DerContainer = React.createClass({
 
   changeDocument: function() {
     const {selectedDocument} = this.props;
-    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument], (error, der) => {
+    this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument]).then(der => {
       this.props.setDer(der);
       this.loadDer(der);
+    }, err => {
+      this.props.message(err, 'error');
     });
   },
 
@@ -146,14 +154,13 @@ var DerContainer = React.createClass({
   * @param tts: {Function}
   */
   loadDer: function(der) {
-    if (der.svg !== undefined) {
+    if (der.svg && der.svg.length) {
       this.refs.container.innerHTML = der.svg
     } else {
       this.props.message('Aucun SVG trouvé', 'error');
     }
-
     if (der.pois.poi === undefined) {
-      this.props.message('Aucun JSON trouvé', 'error');
+      this.props.message('Ce document ne contient aucune interaction', 'error');
     } else {
       this.setDerActions();
     }
@@ -161,7 +168,7 @@ var DerContainer = React.createClass({
 
   setDerActions: function() {
     const {mode, der, tts, searchableElement, message} = this.props;
-    if (der.pois) {
+    if (der.pois && der.pois.poi) {
       switch(mode) {
       case 'explore':
         Explore.setExploreEvents(der.pois, this.readAudioFile, tts);

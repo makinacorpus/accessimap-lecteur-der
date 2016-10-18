@@ -1,10 +1,10 @@
-require('!style!css!sass!./FilesList.scss');
+require('!style!css!sass!./SelectDocument.scss');
 
 var React = require('react');
-var SelectableList = require('./../SelectableList/SelectableList.js');
-const Navigation = require('./../Menu/Navigation.js');
+var SelectableList = require('./../../../components/SelectableList/SelectableList.js');
+const Navigation = require('./../../../components/Navigation/Navigation.js');
 
-var FilesList = React.createClass({
+var SelectDocument = React.createClass({
   getInitialState: function() {
     return {
       index: this.props.options.selectedDocument
@@ -44,4 +44,4 @@ var FilesList = React.createClass({
   }
 });
 
-module.exports = FilesList;
+module.exports = SelectDocument;

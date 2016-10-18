@@ -1,6 +1,6 @@
-const SelectableList = require('./../SelectableList/SelectableList.js');
 const React = require('react');
-const Navigation = require('./../Menu/Navigation.js');
+const SelectableList = require('./../../components/SelectableList/SelectableList.js');
+const Navigation = require('./../../components/Navigation/Navigation.js');
 
 const Menu = React.createClass({
   contextTypes: {
