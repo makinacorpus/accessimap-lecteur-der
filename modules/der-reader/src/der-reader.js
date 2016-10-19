@@ -1,6 +1,7 @@
 require('!style!css!sass!./der-reader.scss');
 
 const Menu = require('./routes/Menu/Menu.js');
+const Filters = require('./routes/Filters/Filters.js');
 const SelectFile = require('./routes/Menu/SelectFile/SelectFile.js');
 const SwitchMode = require('./routes/Menu/SwitchMode/SwitchMode.js');
 const SelectDocument = require('./routes/Menu/SelectDocument/SelectDocument.js');
@@ -48,7 +49,7 @@ var DerReader = {
         },
         {
           path: 'filters',
-          component: Menu,
+          component: Filters,
           name: 'Filtres',
           childRoutes: [
             { path: 'name', component: SelectFile, name: 'Filtre par nom' }

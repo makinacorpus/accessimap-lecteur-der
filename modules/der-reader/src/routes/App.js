@@ -14,6 +14,7 @@ const App = React.createClass({
       der: [],
       files: [],
       searchableElement: null,
+      activeFilter: null,
       tts: this.props.route.config.tts,
       exit: this.props.route.config.exit
     }
@@ -28,11 +29,15 @@ const App = React.createClass({
   },
 
   setDer: function(der) {
-    this.setState({der: der});
+    this.setState({der: der}, () => {
+      if (this.state.activeFilter === null) {
+        this.changeFilter(der.filters.filter[0]);
+      }
+    });
   },
 
   changeDerFile: function(file) {
-    this.setState({derFile: file, selectedDocument: 0});
+    this.setState({derFile: file, selectedDocument: 1});
   },
 
   changeDocument: function(fileIndex) {
@@ -43,12 +48,16 @@ const App = React.createClass({
     this.setState({mode: mode});
   },
 
+  changeFilter: function(filter) {
+    this.setState({activeFilter: filter});
+  },
+
   setSearchableElement: function(searchableElement) {
     this.setState({searchableElement: searchableElement});
   },
 
   render: function() {
-    const {message, der, selectedDocument, mode, derFile, searchableElement} = this.state;
+    const {message, der, selectedDocument, mode, derFile, searchableElement, activeFilter} = this.state;
     var menuLabel = 'Menu';
     var filtresLabel = 'Filtres';
     var navigation
@@ -62,6 +71,7 @@ const App = React.createClass({
           changeDerFile: this.changeDerFile,
           changeDocument: this.changeDocument,
           changeMode: this.changeMode,
+          changeFilter: this.changeFilter,
           setSearchableElement: this.setSearchableElement
         }
       });
@@ -96,6 +106,7 @@ const App = React.createClass({
           message={this.showMessage}
           tts={this.state.tts}
           mode={mode}
+          filter={activeFilter}
           derFile={derFile} />
 
         { navigation || '' }

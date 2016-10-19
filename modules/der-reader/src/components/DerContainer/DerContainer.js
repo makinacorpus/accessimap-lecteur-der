@@ -23,12 +23,14 @@ var DerContainer = React.createClass({
       this.setDerFile();
     }
     if (oldProps.selectedDocument !== nextProps.selectedDocument) {
+      console.log('changement de doc');
       this.changeDocument();
     }
     this.setDerActions();
   },
 
   setDerFile: function() {
+    console.log('setDerFile');
     const {derFile} = this.props;
     if (typeof derFile === 'string') {
       Utils.getFileObject(derFile, file => {
@@ -169,9 +171,15 @@ var DerContainer = React.createClass({
   setDerActions: function() {
     const {mode, der, tts, searchableElement, message} = this.props;
     if (der.pois && der.pois.poi) {
+      let exploreParams = {
+        pois: der.pois.poi,
+        readFunction: this.readAudioFile,
+        tts: tts,
+        filter: this.props.filter
+      };
       switch(mode) {
       case 'explore':
-        Explore.setExploreEvents(der.pois, this.readAudioFile, tts);
+        Explore.setExploreEvents(exploreParams);
         Search.removeEventsListener(this.refs.container);
         break;
       case 'search':
