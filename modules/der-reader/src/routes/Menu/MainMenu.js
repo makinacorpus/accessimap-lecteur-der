@@ -16,7 +16,11 @@ const Menu = React.createClass({
   handleAction: function() {
     if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
       this.props.options.exit();
-    } else {
+    }
+    // if (this.props.route.childRoutes[this.state.activeMenu].path === 'file') {
+    //   console.log('file');
+    // }
+    else {
       this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
     }
   },
