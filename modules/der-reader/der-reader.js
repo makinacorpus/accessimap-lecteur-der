@@ -24421,6 +24421,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Button = __webpack_require__(114);
 	var React = __webpack_require__(3);
 
+	var Hammer = __webpack_require__(106);
+
 	var App = React.createClass({
 	  displayName: 'App',
 
@@ -24438,6 +24440,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	      tts: this.props.route.config.tts,
 	      exit: this.props.route.config.exit
 	    };
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    // Init menus navigation
+	    var buttons = document.getElementById('nav-buttons');
+	    var tts = this.state.tts;
+
+	    var mc = new Hammer.Manager(buttons);
+	    mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
+	    mc.add(new Hammer.Tap({ event: 'singletap' }));
+	    mc.get('doubletap').recognizeWith('singletap');
+	    mc.get('singletap').requireFailure('doubletap');
+
+	    mc.on('singletap', function (e) {
+	      tts.speak(e.target.innerText);
+	    });
+	    mc.on('doubletap', function (e) {
+	      _reactRouter.hashHistory.push(e.target.id);
+	    });
 	  },
 
 	  showMessage: function showMessage(text, type) {
@@ -24512,23 +24533,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      { className: 'container', ref: 'app' },
 	      React.createElement(
 	        'nav',
-	        { className: 'nav-buttons' },
+	        { className: 'nav-buttons', id: 'nav-buttons' },
 	        React.createElement(Button, {
-	          id: 'menuButton',
+	          id: 'menu',
 	          type: 'button',
 	          className: 'fill black open-menu',
-	          value: menuLabel,
-	          onDoubleClick: function onDoubleClick() {
-	            return _reactRouter.hashHistory.push('menu');
-	          } }),
+	          value: menuLabel
+	        }),
 	        React.createElement(Button, {
-	          id: 'menuButton',
+	          id: 'filters',
 	          type: 'button',
 	          className: 'fill black open-filters',
-	          value: filtresLabel,
-	          onDoubleClick: function onDoubleClick() {
-	            return _reactRouter.hashHistory.push('filters');
-	          } })
+	          value: filtresLabel })
 	      ),
 	      React.createElement(Message, { text: message.text, type: message.type }),
 	      React.createElement(DerContainer, {

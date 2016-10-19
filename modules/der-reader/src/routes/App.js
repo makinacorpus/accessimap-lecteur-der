@@ -3,6 +3,8 @@ const Message = require('./../components/Message/Message.js');
 const Button = require('./../components/Button/Button.js');
 const React = require('react');
 import { hashHistory } from 'react-router';
+const Hammer = require('hammerjs');
+
 const App = React.createClass({
 
   getInitialState: function() {
@@ -18,6 +20,25 @@ const App = React.createClass({
       tts: this.props.route.config.tts,
       exit: this.props.route.config.exit
     }
+  },
+
+  componentDidMount: function() {
+    // Init menus navigation
+    const buttons = document.getElementById('nav-buttons');
+    const tts = this.state.tts;
+
+    var mc = new Hammer.Manager(buttons);
+    mc.add( new Hammer.Tap({ event: 'doubletap', taps: 2 }) );
+    mc.add( new Hammer.Tap({ event: 'singletap' }) );
+    mc.get('doubletap').recognizeWith('singletap');
+    mc.get('singletap').requireFailure('doubletap');
+
+    mc.on('singletap', (e) => {
+      tts.speak(e.target.innerText);
+    });
+    mc.on('doubletap', (e) => {
+      hashHistory.push(e.target.id);
+    });
   },
 
   showMessage: function(text, type) {
@@ -79,20 +100,19 @@ const App = React.createClass({
 
     return (
       <div className="container" ref="app">
-        <nav className="nav-buttons">
+        <nav className="nav-buttons" id="nav-buttons">
           <Button
-            id="menuButton"
+            id="menu"
             type="button"
             className="fill black open-menu"
             value={menuLabel}
-            onDoubleClick={() => hashHistory.push('menu')} />
+            />
 
           <Button
-            id="menuButton"
+            id="filters"
             type="button"
             className="fill black open-filters"
-            value={filtresLabel}
-            onDoubleClick={() => hashHistory.push('filters')} />
+            value={filtresLabel} />
         </nav>
 
         <Message text={message.text} type={message.type} />
