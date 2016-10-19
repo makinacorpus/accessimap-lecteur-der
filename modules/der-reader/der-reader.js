@@ -10645,9 +10645,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  handleAction: function handleAction() {
 	    if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
 	      this.props.options.exit();
-	    } else {
-	      this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
 	    }
+	    // if (this.props.route.childRoutes[this.state.activeMenu].path === 'file') {
+	    //   console.log('file');
+	    // }
+	    else {
+	        this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
+	      }
 	  },
 
 	  changeActiveMenu: function changeActiveMenu(index) {
@@ -13641,60 +13645,37 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(112);
 	var React = __webpack_require__(3);
-	var Button = __webpack_require__(114);
-	var Navigation = __webpack_require__(107);
 
 	var SelectFile = React.createClass({
 	  displayName: 'SelectFile',
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      label: 'Choisir un fichier',
-	      labelClass: ''
+	      file: null
 	    };
 	  },
 
-	  loadNewDer: function loadNewDer(e) {
-	    e.preventDefault();
-	    var file = document.getElementById('file').files[0];
-	    if (file !== undefined) {
-	      this.props.actions.changeDerFile(file);
-	    } else {
-	      this.props.options.message('Aucun fichier seléctionné', 'error');
-	    }
+	  componentDidMount: function componentDidMount() {
+	    this.refs.inputfile.click();
 	  },
 
-	  changeInputState: function changeInputState(e) {
-	    var fileName = '';
-	    if (this.files && this.files.length > 1) {
-	      fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
-	    } else {
-	      fileName = e.target.value.split('\\').pop();
+	  changeFile: function changeFile() {
+	    if (this.refs.inputfile) {
+	      var file = this.refs.inputfile.files[0];
+	      if (file !== undefined) {
+	        this.props.actions.changeDerFile(file);
+	      } else {
+	        this.props.options.message('Aucun fichier seléctionné', 'error');
+	      }
 	    }
-
-	    this.setState({
-	      label: fileName ? fileName : 'Choisir un fichier',
-	      labelClass: fileName ? 'fill' : ''
-	    });
 	  },
 
 	  render: function render() {
-	    return React.createElement(Navigation, {
-	      content: React.createElement(
-	        'form',
-	        { id: 'fileform' },
-	        React.createElement('input', { type: 'file', className: 'inputfile', id: 'file', onChange: this.changeInputState }),
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'file', className: this.state.labelClass },
-	          React.createElement(
-	            'span',
-	            null,
-	            this.state.label
-	          )
-	        ),
-	        React.createElement(Button, { type: 'button', onDoubleClick: this.loadNewDer, className: 'fill', value: 'Envoyer' })
-	      ) });
+	    var _this = this;
+
+	    return React.createElement('input', { ref: 'inputfile', id: 'file', type: 'file', className: 'inputfile', onChange: function onChange(e) {
+	        return _this.changeFile(e);
+	      } });
 	  }
 	});
 
