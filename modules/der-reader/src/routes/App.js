@@ -29,11 +29,15 @@ const App = React.createClass({
   },
 
   setDer: function(der) {
-    this.setState({der: der});
+    this.setState({der: der}, () => {
+      if (this.state.activeFilter === null) {
+        this.changeFilter(der.filters.filter[0]);
+      }
+    });
   },
 
   changeDerFile: function(file) {
-    this.setState({derFile: file, selectedDocument: 0});
+    this.setState({derFile: file, selectedDocument: 1});
   },
 
   changeDocument: function(fileIndex) {
@@ -45,7 +49,6 @@ const App = React.createClass({
   },
 
   changeFilter: function(filter) {
-    console.log(filter);
     this.setState({activeFilter: filter});
   },
 
@@ -54,7 +57,7 @@ const App = React.createClass({
   },
 
   render: function() {
-    const {message, der, selectedDocument, mode, derFile, searchableElement} = this.state;
+    const {message, der, selectedDocument, mode, derFile, searchableElement, activeFilter} = this.state;
     var menuLabel = 'Menu';
     var filtresLabel = 'Filtres';
     var navigation
@@ -103,6 +106,7 @@ const App = React.createClass({
           message={this.showMessage}
           tts={this.state.tts}
           mode={mode}
+          filter={activeFilter}
           derFile={derFile} />
 
         { navigation || '' }

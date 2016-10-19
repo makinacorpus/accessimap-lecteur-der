@@ -5,10 +5,13 @@ const Navigation = require('./../../components/Navigation/Navigation.js');
 const Filters = React.createClass({
   getInitialState: function() {
     let index = 0;
-    let {der} = this.props.options;
-    if (der && der.filters && der.filters.filter) {
-      let indexTemp = der.filters.filter.indexOf(this.props.options.activeFilter) + 1; // +1 for 'no filter' item on top
-      index = indexTemp !== -1 ? indexTemp : 0;
+
+    if (this.props.options.der && this.props.options.der.filters) {
+      let filters = this.props.options.der.filters.filter;
+      let activeFilter = this.props.options.activeFilter;
+      index = filters.findIndex(filter => {
+        return filter.id === activeFilter.id;
+      });
     }
 
     return {
@@ -36,14 +39,14 @@ const Filters = React.createClass({
 
   changeFilter: function() {
     let {der} = this.props.options;
-    let newFilter = der.filters.filter[this.state.index-1] ? der.filters.filter[this.state.index-1] : null;
+    let newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
     this.props.actions.changeFilter(newFilter);
   },
 
   render: function() {
     let {der} = this.props.options;
 
-    let filters = [{name: 'Aucun Filtre'}];
+    let filters = [];
     if (der && der.filters && der.filters.filter) {
       der.filters.filter.map((filter) => {
         filters.push(filter);
