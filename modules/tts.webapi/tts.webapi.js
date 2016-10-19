@@ -12,9 +12,7 @@ const webspeechapi = {
     utterance.pitch = 1; //0 to 2
     utterance.lang = 'fr';
     utterance.text = text;
-    // utterance.onend = () => {
-    //   delete this.utterance;
-    // };
+
 
     return utterance;
   },
@@ -25,6 +23,13 @@ const webspeechapi = {
     setTimeout(() => {
       this.utterance = this.initUtterance(text);
       speechSynthesis.speak(this.utterance);
+
+      return new Promise(resolve => {
+        this.utterance.onend = () => {
+          resolve();
+        };
+      });
+
     }, 100);
   }
 };
