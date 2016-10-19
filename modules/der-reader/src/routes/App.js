@@ -34,7 +34,9 @@ const App = React.createClass({
     mc.get('singletap').requireFailure('doubletap');
 
     mc.on('singletap', (e) => {
-      tts.speak(e.target.innerText);
+      if (e.target.type === 'button') {
+        tts.speak(e.target.innerText);
+      }
     });
     mc.on('doubletap', (e) => {
       hashHistory.push(e.target.id);

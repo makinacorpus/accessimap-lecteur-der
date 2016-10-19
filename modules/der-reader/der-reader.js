@@ -24454,7 +24454,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    mc.get('singletap').requireFailure('doubletap');
 
 	    mc.on('singletap', function (e) {
-	      tts.speak(e.target.innerText);
+	      if (e.target.type === 'button') {
+	        tts.speak(e.target.innerText);
+	      }
 	    });
 	    mc.on('doubletap', function (e) {
 	      _reactRouter.hashHistory.push(e.target.id);
