@@ -1,7 +1,7 @@
 {
   "name": "accessimap-lecteur-der",
-  "version": "0.0.3",
-  "description": "Accessimap Lecteur DERi",
+  "version": "0.0.4",
+  "description": "Accessimap Lecteur DER",
   "main": "electron.js",
   "repository": "https://github.com/makinacorpus/accessimap-lecteur-der/",
   "homepage": "https://github.com/makinacorpus/accessimap-lecteur-der/",
