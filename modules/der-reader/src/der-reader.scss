@@ -31,18 +31,23 @@ body {
 
 svg {
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 // Layout
-
 .container {
-    display: flex;
-    height: 100%;
+  display: flex;
+  width: 100%;
+  max-width: 1350px;
+  height: auto;
+  float: right;
+  position: relative;
 }
 
 .der-container {
     flex: 1;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 }
 

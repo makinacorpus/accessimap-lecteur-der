@@ -78,7 +78,7 @@ const App = React.createClass({
     }
 
     return (
-      <div className="options.container" ref="app">
+      <div className="container" ref="app">
         <nav className="nav-buttons">
           <Button
             id="menuButton"
