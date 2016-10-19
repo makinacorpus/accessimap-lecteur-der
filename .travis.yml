@@ -31,9 +31,9 @@ cache:
 deploy:
   provider: releases
   api_key: "$GITHUB_API_TOKEN"
-  file: 
-    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-0.0.1-win.zip"
-    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-0.0.1-x86_64.AppImage"
+  file:
+    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-0.0.3-win.zip"
+    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-0.0.3-x86_64.AppImage"
   skip_cleanup: true
   on:
     all_branches: true
