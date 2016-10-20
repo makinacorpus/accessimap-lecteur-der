@@ -12,7 +12,7 @@ const App = React.createClass({
       message: '',
       mode: this.props.route.config.defaultMode,
       derFile: this.props.route.config.derFile,
-      selectedDocument: 1,
+      selectedDocument: 0,
       der: [],
       files: [],
       searchableElement: null,
@@ -60,7 +60,7 @@ const App = React.createClass({
   },
 
   changeDerFile: function(file) {
-    this.setState({derFile: file, selectedDocument: 1});
+    this.setState({derFile: file, selectedDocument: 0});
   },
 
   changeDocument: function(fileIndex) {

@@ -29,26 +29,28 @@ body {
     user-select: none;
 }
 
-svg {
-    width: 100%;
-    height: 100%;
-}
-
 // Layout
 .container {
-  display: flex;
-  width: 100%;
-  max-width: 1350px;
-  height: auto;
-  float: right;
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1350px;
+  height: 955px;
 }
 
 .der-container {
-    flex: 1;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  display: flex;
+  overflow: hidden;
+  svg {
+    width: 1350px;
+    height: 955px;
+  }
 }
 
 .nav-buttons {
