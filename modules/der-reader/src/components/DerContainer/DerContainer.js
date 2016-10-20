@@ -162,6 +162,10 @@ var DerContainer = React.createClass({
   * @param tts: {Function}
   */
   loadDer: function(der) {
+    let audio = new Audio('./static/c023.ogg');
+    audio.volume = .5;
+    audio.play();
+
     if (der.svg && der.svg.length) {
       this.refs.container.innerHTML = der.svg
     } else {
