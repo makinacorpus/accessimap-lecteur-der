@@ -1,4 +1,4 @@
-var DerSounds = require('./DerContainer-sounds.js');
+var DerSounds = require('./../Sound/Sound.js');
 var _ = require('lodash');
 
 var pressTimer,
