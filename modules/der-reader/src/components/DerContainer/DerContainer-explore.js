@@ -5,6 +5,8 @@ const GESTURES = {
 
 var Explore = {
 
+  currentElement: null,
+
   /**
   * add event listener to DER elements
   * @param {HTMLElement} element
@@ -50,9 +52,13 @@ var Explore = {
 
     if (action !== undefined) {
       Explore._onEventStarted(element);
-
       if (action.protocol === 'mp3') {
-        Explore.readFunction(action.value).then(function() {
+        if (Explore.currentElement) {
+          Explore._onEventEnded(Explore.currentElement);
+        }
+
+        Explore.currentElement = element;
+        Explore.readFunction(action.value).then(() => {
           Explore._onEventEnded(element);
         });
       }

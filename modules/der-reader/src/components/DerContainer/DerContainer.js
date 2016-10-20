@@ -64,11 +64,10 @@ var DerContainer = React.createClass({
   * @param name: {string} required
   */
   readAudioFile: function(name) {
-    if (this.state.currentSound) {
-      this.state.currentSound.pause();
-    }
-
     return new Promise((resolve, reject) => {
+      if (this.state.currentSound) {
+        this.state.currentSound.pause();
+      }
       this.state.filesByExt.audioFiles[name].async('base64')
       .then(base64string => {
         let sound = new Audio('data:audio/wav;base64,' + base64string);
@@ -76,9 +75,10 @@ var DerContainer = React.createClass({
           currentSound: sound
         });
         this.state.currentSound.play();
-        this.state.currentSound.onended = function() {
-          resolve();
+        this.state.currentSound.onended = () => {
+          resolve(this.state.currentSound);
         };
+
       }, function() {
         reject();
       });

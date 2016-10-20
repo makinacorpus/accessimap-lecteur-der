@@ -24645,11 +24645,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  readAudioFile: function readAudioFile(name) {
 	    var _this3 = this;
 
-	    if (this.state.currentSound) {
-	      this.state.currentSound.pause();
-	    }
-
 	    return new Promise(function (resolve, reject) {
+	      if (_this3.state.currentSound) {
+	        _this3.state.currentSound.pause();
+	      }
 	      _this3.state.filesByExt.audioFiles[name].async('base64').then(function (base64string) {
 	        var sound = new Audio('data:audio/wav;base64,' + base64string);
 	        _this3.setState({
@@ -24657,7 +24656,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        _this3.state.currentSound.play();
 	        _this3.state.currentSound.onended = function () {
-	          resolve();
+	          resolve(_this3.state.currentSound);
 	        };
 	      }, function () {
 	        reject();
@@ -24675,6 +24674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this4 = this;
 
 	    this.setState({ filesByExt: Utils.orderFilesByExt(files) });
+
 	    if (this.state.filesByExt.svg.length > 1) {
 	      this.props.setFilesList(this.state.filesByExt.svg);
 	    }
@@ -41629,6 +41629,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Explore = {
 
+	  currentElement: null,
+
 	  /**
 	  * add event listener to DER elements
 	  * @param {HTMLElement} element
@@ -41674,8 +41676,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (action !== undefined) {
 	      Explore._onEventStarted(element);
-
 	      if (action.protocol === 'mp3') {
+	        if (Explore.currentElement) {
+	          Explore._onEventEnded(Explore.currentElement);
+	        }
+
+	        Explore.currentElement = element;
 	        Explore.readFunction(action.value).then(function () {
 	          Explore._onEventEnded(element);
 	        });
