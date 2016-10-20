@@ -106,7 +106,7 @@ var Utils = {
       }
 
       if (ext === 'mp3') {
-        name = filesByExt.dirName ? files[file].name.replace(filesByExt.dirName, '') : files[file].name;
+        let name = filesByExt.dirName ? files[file].name.replace(filesByExt.dirName, '') : files[file].name;
         filesByExt.audioFiles[name] = files[file];
       }
     }

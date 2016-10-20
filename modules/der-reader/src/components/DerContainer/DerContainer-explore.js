@@ -48,7 +48,6 @@ var Explore = {
     let actions = Explore.actions[element.getAttribute('data-link')];
     let action = Explore._getAction(actions, event.type);
 
-    // console.log(e);
     if (action !== undefined) {
       Explore._onEventStarted(element);
 
@@ -72,11 +71,8 @@ var Explore = {
     } else {
       for (var i = 0; i < actions.length; i++) {
         let a = actions[i];
-        // console.log(a);
         if (this.filter) {
           if (a.filter === this.filter.id) {
-            console.log('filter : ', this.filter);
-            console.log(a);
             return a;
           }
         }

@@ -9,6 +9,7 @@ var React = require('react');
 var DerContainer = React.createClass({
   getInitialState: function() {
     return {
+      currentSound: null
     }
   },
 
@@ -23,14 +24,12 @@ var DerContainer = React.createClass({
       this.setDerFile();
     }
     if (oldProps.selectedDocument !== nextProps.selectedDocument) {
-      console.log('changement de doc');
       this.changeDocument();
     }
     this.setDerActions();
   },
 
   setDerFile: function() {
-    console.log('setDerFile');
     const {derFile} = this.props;
     if (typeof derFile === 'string') {
       Utils.getFileObject(derFile, file => {
@@ -65,12 +64,19 @@ var DerContainer = React.createClass({
   * @param name: {string} required
   */
   readAudioFile: function(name) {
+    if (this.state.currentSound) {
+      this.state.currentSound.pause();
+    }
+
     return new Promise((resolve, reject) => {
       this.state.filesByExt.audioFiles[name].async('base64')
-      .then(function(base64string) {
-        var sound = new Audio('data:audio/wav;base64,' + base64string);
-        sound.play();
-        sound.onended = function() {
+      .then(base64string => {
+        let sound = new Audio('data:audio/wav;base64,' + base64string);
+        this.setState({
+          currentSound: sound
+        });
+        this.state.currentSound.play();
+        this.state.currentSound.onended = function() {
           resolve();
         };
       }, function() {

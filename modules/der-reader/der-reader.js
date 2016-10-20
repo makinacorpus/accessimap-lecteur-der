@@ -63,7 +63,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Menu = __webpack_require__(101);
 	var Filters = __webpack_require__(110);
 	var SelectFile = __webpack_require__(111);
-	var SwitchMode = __webpack_require__(117);
+	var SwitchMode = __webpack_require__(114);
 	var SelectDocument = __webpack_require__(126);
 	var FastClick = __webpack_require__(129);
 	// const TouchEmulator = require('hammer-touchemulator');
@@ -13728,87 +13728,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	__webpack_require__(115);
-
+	var _ = __webpack_require__(117);
 	var React = __webpack_require__(3);
-
-	var FileInput = React.createClass({
-	  displayName: 'FileInput',
-
-	  getInitialState: function getInitialState() {
-	    return {};
-	  },
-
-	  render: function render() {
-	    var _props = this.props;
-	    var type = _props.type;
-	    var value = _props.value;
-
-	    var className = this.props.className || '';
-	    var id = this.props.id || '';
-	    var onClick = this.props.onClick || '';
-	    var onDoubleClick = this.props.onDoubleClick || '';
-	    var buttonClasses = 'button ' + className;
-
-	    return React.createElement(
-	      'button',
-	      { ref: 'button', id: id, type: type, className: buttonClasses, onClick: onClick, onDoubleClick: onDoubleClick },
-	      value
-	    );
-	  }
-	});
-
-	module.exports = FileInput;
-
-/***/ },
-/* 115 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(116);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(100)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Button.scss", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Button.scss");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 116 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(99)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .8em 1em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: white; }\n    .button.fill.black {\n      background-color: #000;\n      border-color: #000;\n      color: #fff; }\n      .button.fill.black:hover, .button.fill.black.active {\n        border-color: #000;\n        color: #000;\n        background-color: white; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 117 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	__webpack_require__(118);
-	var _ = __webpack_require__(120);
-	var React = __webpack_require__(3);
-	var SelectElementContainer = __webpack_require__(123);
+	var SelectElementContainer = __webpack_require__(120);
 	var SelectableList = __webpack_require__(103);
 	var Navigation = __webpack_require__(107);
 
@@ -13857,13 +13779,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = SwitchMode;
 
 /***/ },
-/* 118 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(119);
+	var content = __webpack_require__(116);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(100)(content, {});
@@ -13883,7 +13805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 119 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(99)();
@@ -13897,7 +13819,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 120 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj;};/**
@@ -23320,7 +23242,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	lodash.prototype.at=wrapperAt;lodash.prototype.chain=wrapperChain;lodash.prototype.commit=wrapperCommit;lodash.prototype.next=wrapperNext;lodash.prototype.plant=wrapperPlant;lodash.prototype.reverse=wrapperReverse;lodash.prototype.toJSON=lodash.prototype.valueOf=lodash.prototype.value=wrapperValue;// Add lazy aliases.
 	lodash.prototype.first=lodash.prototype.head;if(iteratorSymbol){lodash.prototype[iteratorSymbol]=wrapperToIterator;}return lodash;};/*--------------------------------------------------------------------------*/// Export lodash.
 	var _=runInContext();// Some AMD build optimizers, like r.js, check for condition patterns like:
-	if("function"=='function'&&_typeof(__webpack_require__(122))=='object'&&__webpack_require__(122)){// Expose Lodash on the global object to prevent errors when Lodash is
+	if("function"=='function'&&_typeof(__webpack_require__(119))=='object'&&__webpack_require__(119)){// Expose Lodash on the global object to prevent errors when Lodash is
 	// loaded by a script tag in the presence of an AMD loader.
 	// See http://requirejs.org/docs/errors.html#mismatch for more details.
 	// Use `_.noConflict` to remove Lodash from the global object.
@@ -23331,10 +23253,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	(freeModule.exports=_)._=_;// Export for CommonJS support.
 	freeExports._=_;}else{// Export to the global object.
 	root._=_;}}).call(undefined);
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(121)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(118)(module)))
 
 /***/ },
-/* 121 */
+/* 118 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -23351,7 +23273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 122 */
+/* 119 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -23359,16 +23281,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ },
-/* 123 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	__webpack_require__(124);
+	__webpack_require__(121);
 
 	var React = __webpack_require__(3);
 	var SelectableList = __webpack_require__(103);
-	var Button = __webpack_require__(114);
+	var Button = __webpack_require__(123);
 
 	var SelectElementContainer = React.createClass({
 	  displayName: 'SelectElementContainer',
@@ -23439,13 +23361,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = SelectElementContainer;
 
 /***/ },
-/* 124 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(125);
+	var content = __webpack_require__(122);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(100)(content, {});
@@ -23465,7 +23387,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 125 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(99)();
@@ -23474,6 +23396,84 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// module
 	exports.push([module.id, ".current-element {\n  text-align: center;\n  padding-top: 1em;\n  display: block;\n  color: #fff; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 123 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(124);
+
+	var React = __webpack_require__(3);
+
+	var FileInput = React.createClass({
+	  displayName: 'FileInput',
+
+	  getInitialState: function getInitialState() {
+	    return {};
+	  },
+
+	  render: function render() {
+	    var _props = this.props;
+	    var type = _props.type;
+	    var value = _props.value;
+
+	    var className = this.props.className || '';
+	    var id = this.props.id || '';
+	    var onClick = this.props.onClick || '';
+	    var onDoubleClick = this.props.onDoubleClick || '';
+	    var buttonClasses = 'button ' + className;
+
+	    return React.createElement(
+	      'button',
+	      { ref: 'button', id: id, type: type, className: buttonClasses, onClick: onClick, onDoubleClick: onDoubleClick },
+	      value
+	    );
+	  }
+	});
+
+	module.exports = FileInput;
+
+/***/ },
+/* 124 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(125);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(100)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Button.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Button.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 125 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(99)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .8em 1em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: white; }\n    .button.fill.black {\n      background-color: #000;\n      border-color: #000;\n      color: #fff; }\n      .button.fill.black:hover, .button.fill.black.active {\n        border-color: #000;\n        color: #000;\n        background-color: white; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
 
 	// exports
 
@@ -24394,7 +24394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			return new FastClick(layer, options);
 		};
 
-		if ("function" === 'function' && _typeof(__webpack_require__(122)) === 'object' && __webpack_require__(122)) {
+		if ("function" === 'function' && _typeof(__webpack_require__(119)) === 'object' && __webpack_require__(119)) {
 
 			// AMD. Register as an anonymous module.
 			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
@@ -24418,7 +24418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerContainer = __webpack_require__(131);
 	var Message = __webpack_require__(234);
-	var Button = __webpack_require__(114);
+	var Button = __webpack_require__(123);
 	var React = __webpack_require__(3);
 
 	var Hammer = __webpack_require__(106);
@@ -24585,7 +24585,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  displayName: 'DerContainer',
 
 	  getInitialState: function getInitialState() {
-	    return {};
+	    return {
+	      currentSound: null
+	    };
 	  },
 
 	  componentWillMount: function componentWillMount() {
@@ -24599,7 +24601,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.setDerFile();
 	    }
 	    if (oldProps.selectedDocument !== nextProps.selectedDocument) {
-	      console.log('changement de doc');
 	      this.changeDocument();
 	    }
 	    this.setDerActions();
@@ -24608,7 +24609,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  setDerFile: function setDerFile() {
 	    var _this = this;
 
-	    console.log('setDerFile');
 	    var derFile = this.props.derFile;
 
 	    if (typeof derFile === 'string') {
@@ -24645,11 +24645,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  readAudioFile: function readAudioFile(name) {
 	    var _this3 = this;
 
+	    if (this.state.currentSound) {
+	      this.state.currentSound.pause();
+	    }
+
 	    return new Promise(function (resolve, reject) {
 	      _this3.state.filesByExt.audioFiles[name].async('base64').then(function (base64string) {
 	        var sound = new Audio('data:audio/wav;base64,' + base64string);
-	        sound.play();
-	        sound.onended = function () {
+	        _this3.setState({
+	          currentSound: sound
+	        });
+	        _this3.state.currentSound.play();
+	        _this3.state.currentSound.onended = function () {
 	          resolve();
 	        };
 	      }, function () {
@@ -24894,7 +24901,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      if (ext === 'mp3') {
-	        name = filesByExt.dirName ? files[file].name.replace(filesByExt.dirName, '') : files[file].name;
+	        var name = filesByExt.dirName ? files[file].name.replace(filesByExt.dirName, '') : files[file].name;
 	        filesByExt.audioFiles[name] = files[file];
 	      }
 	    }
@@ -41666,7 +41673,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var actions = Explore.actions[element.getAttribute('data-link')];
 	    var action = Explore._getAction(actions, event.type);
 
-	    // console.log(e);
 	    if (action !== undefined) {
 	      Explore._onEventStarted(element);
 
@@ -41690,11 +41696,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	      for (var i = 0; i < actions.length; i++) {
 	        var a = actions[i];
-	        // console.log(a);
 	        if (this.filter) {
 	          if (a.filter === this.filter.id) {
-	            console.log('filter : ', this.filter);
-	            console.log(a);
 	            return a;
 	          }
 	        }
@@ -41726,7 +41729,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var DerSounds = __webpack_require__(233);
-	var _ = __webpack_require__(120);
+	var _ = __webpack_require__(117);
 
 	var pressTimer, lastPos;
 	var mouseDown = false;
