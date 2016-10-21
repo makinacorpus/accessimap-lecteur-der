@@ -9,7 +9,7 @@ const Navigation = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (this.props.read) {
+    if (this.props.read && this.props.index !== nextProps.index) {
       this.props.read(nextProps.items[nextProps.index].name);
     }
   },
@@ -20,6 +20,7 @@ const Navigation = React.createClass({
 
   componentDidMount: function() {
     const modal = document.getElementById('mainMenu');
+
     this.hammer = new Hammer(modal, {});
     this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
     this.hammer.on('swipeup', () => {
@@ -38,17 +39,22 @@ const Navigation = React.createClass({
     });
 
     const nav = document.getElementById('navigation');
-    this.hammer = new Hammer(nav, {});
-    this.hammer.get('tap').set({ taps: 2 });
+    var mc = new Hammer.Manager(nav);
+    mc.add( new Hammer.Tap({ event: 'doubletap', taps: 2 }) );
+    mc.add( new Hammer.Tap({ event: 'singletap' }) );
+    mc.get('doubletap').recognizeWith('singletap');
+    mc.get('singletap').requireFailure('doubletap');
+
+    mc.on('singletap', () => {
+      this.props.read(this.props.items[this.props.index].name);
+    });
 
     if (this.props.action) {
-      this.hammer.get('tap').set({ taps: 2 });
-      this.hammer.on('tap', () => {
+      mc.on('doubletap', () => {
         if (this.props.index === this.props.items.length-1) {
           this.context.router.goBack();
-        } else {
-          this.props.action();
         }
+        this.props.action();
       });
     }
   },

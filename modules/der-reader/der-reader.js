@@ -10624,6 +10624,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	var React = __webpack_require__(3);
 	var Navigation = __webpack_require__(103);
 
@@ -10641,9 +10643,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  handleAction: function handleAction() {
-	    console.log('Menu handleAction');
 	    if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
 	      this.props.options.exit();
+	    }
+	    if (this.props.route.childRoutes[this.state.activeMenu].path === 'back') {
+	      this.props.actions.toggleMenu('menu', 'Fermeture du menu');
 	    } else {
 	      this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
 	    }
@@ -10658,13 +10662,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  render: function render() {
-	    return React.createElement(Navigation, {
+	    return React.createElement(Navigation, _defineProperty({
 	      action: this.handleAction,
 	      read: this.read,
 	      index: this.state.activeMenu,
 	      items: this.props.route.childRoutes,
 	      changeIndex: this.changeActiveMenu
-	    });
+	    }, 'read', this.read));
 	  }
 	});
 
@@ -10689,7 +10693,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    if (this.props.read) {
+	    if (this.props.read && this.props.index !== nextProps.index) {
 	      this.props.read(nextProps.items[nextProps.index].name);
 	    }
 	  },
@@ -10702,6 +10706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this = this;
 
 	    var modal = document.getElementById('mainMenu');
+
 	    this.hammer = new Hammer(modal, {});
 	    this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 	    this.hammer.on('swipeup', function () {
@@ -10720,17 +10725,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    var nav = document.getElementById('navigation');
-	    this.hammer = new Hammer(nav, {});
-	    this.hammer.get('tap').set({ taps: 2 });
+	    var mc = new Hammer.Manager(nav);
+	    mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
+	    mc.add(new Hammer.Tap({ event: 'singletap' }));
+	    mc.get('doubletap').recognizeWith('singletap');
+	    mc.get('singletap').requireFailure('doubletap');
+
+	    mc.on('singletap', function () {
+	      _this.props.read(_this.props.items[_this.props.index].name);
+	    });
 
 	    if (this.props.action) {
-	      this.hammer.get('tap').set({ taps: 2 });
-	      this.hammer.on('tap', function () {
+	      mc.on('doubletap', function () {
 	        if (_this.props.index === _this.props.items.length - 1) {
 	          _this.context.router.goBack();
-	        } else {
-	          _this.props.action();
 	        }
+	        _this.props.action();
 	      });
 	    }
 	  },
@@ -13491,7 +13501,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var index = 0;
 
-	    if (this.props.options.der && this.props.options.der.filters) {
+	    if (this.props.options.der && this.props.options.der.filters && this.props.options.activeFilter) {
 	      (function () {
 	        var filters = _this.props.options.der.filters.filter;
 	        var activeFilter = _this.props.options.activeFilter;
@@ -13516,7 +13526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  handleAction: function handleAction(index) {
+	  changeFilter: function changeFilter(index) {
 	    this.setState({ index: index });
 	  },
 
@@ -13524,9 +13534,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.options.tts.speak(text);
 	  },
 
-	  changeFilter: function changeFilter() {
+	  handleAction: function handleAction() {
 	    var der = this.props.options.der;
 
+	    if (der.filters.filter[this.state.index].path === 'back') {
+	      this.props.actions.toggleMenu('filters', 'Fermeture des filtres');
+	    }
 	    var newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
 	    this.props.actions.changeFilter(newFilter);
 	  },
@@ -13543,11 +13556,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (der && der.filters && der.filters.filter) {
 	      filtersList = React.createElement(Navigation, {
-	        action: this.changeFilter,
+	        action: this.handleAction,
 	        read: this.read,
 	        index: this.state.index,
 	        items: der.filters.filter,
-	        changeIndex: this.handleAction });
+	        changeIndex: this.changeFilter });
 	    }
 
 	    return filtersList;
@@ -23304,34 +23317,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(122);
 
 	var React = __webpack_require__(3);
+	var Hammer = __webpack_require__(106);
 
-	var FileInput = React.createClass({
-	  displayName: 'FileInput',
+	var Button = React.createClass({
+	  displayName: 'Button',
+
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
 
 	  getInitialState: function getInitialState() {
-	    return {};
+	    return {
+	      label: ''
+	    };
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps() {
+	    this.setState({
+	      label: this.props.open ? 'Fermer' : this.props.labelClosed
+	    });
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    var buttons = document.getElementById(this.props.id);
+	    var tts = this.props.tts;
+
+	    var mc = new Hammer.Manager(buttons);
+	    mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
+	    mc.add(new Hammer.Tap({ event: 'singletap' }));
+	    mc.get('doubletap').recognizeWith('singletap');
+	    mc.get('singletap').requireFailure('doubletap');
+
+	    mc.on('singletap', function (e) {
+	      if (_this.props.open) {
+	        tts.speak(_this.props.labelOpened);
+	      } else {
+	        tts.speak(e.target.innerText);
+	      }
+	    });
+	    mc.on('doubletap', function () {
+	      _this.props.toggleMenu(_this.props.id, _this.props.labelOnClose, _this.props.labelOnOpen);
+	    });
 	  },
 
 	  render: function render() {
-	    var _props = this.props;
-	    var type = _props.type;
-	    var value = _props.value;
-
-	    var className = this.props.className || '';
-	    var id = this.props.id || '';
-	    var onClick = this.props.onClick || '';
-	    var onDoubleClick = this.props.onDoubleClick || '';
-	    var buttonClasses = 'button ' + className;
-
 	    return React.createElement(
 	      'button',
-	      { ref: 'button', id: id, type: type, className: buttonClasses, onClick: onClick, onDoubleClick: onDoubleClick },
-	      value
+	      { id: this.props.id, type: 'button', className: 'button fill black' },
+	      this.state.label
 	    );
 	  }
 	});
 
-	module.exports = FileInput;
+	module.exports = Button;
 
 /***/ },
 /* 122 */
@@ -24300,10 +24340,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _reactRouter = __webpack_require__(1);
+
 	var DerContainer = __webpack_require__(129);
 	var Message = __webpack_require__(232);
 	var ButtonsNavigation = __webpack_require__(374);
 	var React = __webpack_require__(3);
+
 
 	var App = React.createClass({
 	  displayName: 'App',
@@ -24323,8 +24366,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	      searchableElement: null,
 	      activeFilter: null,
 	      tts: this.props.route.config.tts,
-	      exit: this.props.route.config.exit
+	      exit: this.props.route.config.exit,
+	      openedMenu: ''
 	    };
+	  },
+
+	  toggleMenu: function toggleMenu(id, labelOnClose, labelOnOpen) {
+	    var _this = this;
+
+	    var open = this.state.openedMenu === id;
+	    this.setState({
+	      openedMenu: open ? '' : id
+	    }, function () {
+	      if (open) {
+	        _reactRouter.hashHistory.push('/');
+	        _this.state.tts.speak(labelOnClose);
+	      } else {
+	        _reactRouter.hashHistory.push(id);
+	        _this.state.tts.speak(labelOnOpen);
+	      }
+	    });
 	  },
 
 	  showMessage: function showMessage(text, type) {
@@ -24336,11 +24397,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  setDer: function setDer(der) {
-	    var _this = this;
+	    var _this2 = this;
 
 	    this.setState({ der: der }, function () {
-	      if (_this.state.activeFilter === null) {
-	        _this.changeFilter(der.filters.filter[0]);
+	      if (_this2.state.activeFilter === null) {
+	        _this2.changeFilter(der.filters.filter[0]);
 	      }
 	    });
 	  },
@@ -24381,6 +24442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      navigation = React.cloneElement(this.props.children, {
 	        options: this.state,
 	        actions: {
+	          toggleMenu: this.toggleMenu,
 	          showMessage: this.showMessage,
 	          setFilesList: this.setFilesList,
 	          setDer: this.setDer,
@@ -24396,7 +24458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return React.createElement(
 	      'div',
 	      { className: 'container', ref: 'app' },
-	      React.createElement(ButtonsNavigation, { tts: this.state.tts }),
+	      React.createElement(ButtonsNavigation, { openedMenu: this.state.openedMenu, tts: this.state.tts, toggleMenu: this.toggleMenu }),
 	      React.createElement(Message, { text: message.text, type: message.type }),
 	      React.createElement(DerContainer, {
 	        setFilesList: this.setFilesList,
@@ -59171,7 +59233,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 373 */
+/* 373 */,
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59179,123 +59242,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Button = __webpack_require__(121);
 	var React = __webpack_require__(3);
 
-	var Hammer = __webpack_require__(106);
-
-	var ButtonNavigation = React.createClass({
-	  displayName: 'ButtonNavigation',
-
-	  contextTypes: {
-	    router: React.PropTypes.object.isRequired
-	  },
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      label: ''
-	    };
-	  },
-
-	  componentWillReceiveProps: function componentWillReceiveProps() {
-	    this.setState({
-	      label: this.props.open ? 'Fermer' : this.props.labelClosed
-	    });
-	  },
-
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
-
-	    var buttons = document.getElementById(this.props.id);
-	    var tts = this.props.tts;
-
-	    var mc = new Hammer.Manager(buttons);
-	    mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
-	    mc.add(new Hammer.Tap({ event: 'singletap' }));
-	    mc.get('doubletap').recognizeWith('singletap');
-	    mc.get('singletap').requireFailure('doubletap');
-
-	    mc.on('singletap', function (e) {
-	      if (_this.props.open) {
-	        tts.speak(_this.props.labelOpened);
-	      } else {
-	        tts.speak(e.target.innerText);
-	      }
-	    });
-	    mc.on('doubletap', function () {
-	      _this.props.toggleMenu(_this.props.id, _this.props.labelOnClose, _this.props.labelOnOpen);
-	    });
-	  },
-
-	  render: function render() {
-	    return React.createElement(Button, {
-	      id: this.props.id,
-	      type: 'button',
-	      className: 'fill black',
-	      value: this.state.label });
-	  }
-	});
-
-	module.exports = ButtonNavigation;
-
-/***/ },
-/* 374 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _reactRouter = __webpack_require__(1);
-
-	var ButtonNavigation = __webpack_require__(373);
-	var React = __webpack_require__(3);
-
-
 	var ButtonsNavigation = React.createClass({
 	  displayName: 'ButtonsNavigation',
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      openedMenu: ''
-	    };
-	  },
-
-	  toggleMenu: function toggleMenu(id, labelOnClose, labelOnOpen) {
-	    var _this = this;
-
-	    var open = this.state.openedMenu === id;
-	    this.setState({
-	      openedMenu: open ? '' : id
-	    }, function () {
-	      if (open) {
-	        _reactRouter.hashHistory.push('/');
-	        _this.props.tts.speak(labelOnClose);
-	      } else {
-	        _reactRouter.hashHistory.push(id);
-	        _this.props.tts.speak(labelOnOpen);
-	      }
-	    });
-	  },
 
 	  render: function render() {
 	    return React.createElement(
 	      'nav',
 	      { className: 'nav-buttons', id: 'nav-buttons' },
-	      React.createElement(ButtonNavigation, {
+	      React.createElement(Button, {
 	        id: 'menu',
 	        tts: this.props.tts,
 	        labelClosed: 'Menu',
 	        labelOnClose: 'Fermeture du menu',
 	        labelOpened: 'Fermer le menu',
 	        labelOnOpen: 'Ouverture du menu',
-	        open: this.state.openedMenu === 'menu',
-	        toggleMenu: this.toggleMenu
+	        open: this.props.openedMenu === 'menu',
+	        toggleMenu: this.props.toggleMenu
 	      }),
-	      React.createElement(ButtonNavigation, {
+	      React.createElement(Button, {
 	        id: 'filters',
 	        tts: this.props.tts,
 	        labelClosed: 'Filtres',
 	        labelOnClose: 'Fermeture des filtres',
 	        labelOpened: 'Fermer les filtres',
 	        labelOnOpen: 'Ouverture des filtres',
-	        open: this.state.openedMenu === 'filters',
-	        toggleMenu: this.toggleMenu
+	        open: this.props.openedMenu === 'filters',
+	        toggleMenu: this.props.toggleMenu
 	      })
 	    );
 	  }

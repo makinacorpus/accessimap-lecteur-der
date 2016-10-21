@@ -5,7 +5,7 @@ const Filters = React.createClass({
   getInitialState: function() {
     let index = 0;
 
-    if (this.props.options.der && this.props.options.der.filters) {
+    if (this.props.options.der && this.props.options.der.filters && this.props.options.activeFilter) {
       let filters = this.props.options.der.filters.filter;
       let activeFilter = this.props.options.activeFilter;
       index = filters.findIndex(filter => {
@@ -28,7 +28,7 @@ const Filters = React.createClass({
     }
   },
 
-  handleAction: function(index) {
+  changeFilter: function(index) {
     this.setState({index});
   },
 
@@ -36,8 +36,11 @@ const Filters = React.createClass({
     this.props.options.tts.speak(text);
   },
 
-  changeFilter: function() {
+  handleAction: function() {
     let {der} = this.props.options;
+    if (der.filters.filter[this.state.index].path === 'back') {
+      this.props.actions.toggleMenu('filters', 'Fermeture des filtres');
+    }
     let newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
     this.props.actions.changeFilter(newFilter);
   },
@@ -50,11 +53,11 @@ const Filters = React.createClass({
     if (der && der.filters && der.filters.filter) {
       filtersList = (
         <Navigation
-          action={this.changeFilter}
+          action={this.handleAction}
           read={this.read}
           index={this.state.index}
           items={der.filters.filter}
-          changeIndex={this.handleAction}>
+          changeIndex={this.changeFilter}>
         </Navigation>
       )
     }

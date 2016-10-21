@@ -13,9 +13,11 @@ const Menu = React.createClass({
   },
 
   handleAction: function() {
-    console.log('Menu handleAction');
     if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
       this.props.options.exit();
+    }
+    if (this.props.route.childRoutes[this.state.activeMenu].path === 'back') {
+      this.props.actions.toggleMenu('menu', 'Fermeture du menu');
     }
     else {
       this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
@@ -38,6 +40,7 @@ const Menu = React.createClass({
         index={this.state.activeMenu}
         items={this.props.route.childRoutes}
         changeIndex={this.changeActiveMenu}
+        read={this.read}
         >
       </Navigation>
     );

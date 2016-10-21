@@ -2,6 +2,7 @@ const DerContainer = require('./../components/DerContainer/DerContainer.js');
 const Message = require('./../components/Message/Message.js');
 const ButtonsNavigation = require('./../components/Button/ButtonsNavigation.js');
 const React = require('react');
+import { hashHistory } from 'react-router';
 
 const App = React.createClass({
   contextTypes: {
@@ -19,8 +20,24 @@ const App = React.createClass({
       searchableElement: null,
       activeFilter: null,
       tts: this.props.route.config.tts,
-      exit: this.props.route.config.exit
+      exit: this.props.route.config.exit,
+      openedMenu: ''
     }
+  },
+
+  toggleMenu: function(id, labelOnClose, labelOnOpen) {
+    let open = this.state.openedMenu === id;
+    this.setState({
+      openedMenu: open ? '' : id
+    }, () => {
+      if (open) {
+        hashHistory.push('/');
+        this.state.tts.speak(labelOnClose);
+      } else {
+        hashHistory.push(id);
+        this.state.tts.speak(labelOnOpen);
+      }
+    });
   },
 
   showMessage: function(text, type) {
@@ -67,6 +84,7 @@ const App = React.createClass({
       navigation = React.cloneElement(this.props.children, {
         options: this.state,
         actions: {
+          toggleMenu: this.toggleMenu,
           showMessage: this.showMessage,
           setFilesList: this.setFilesList,
           setDer: this.setDer,
@@ -81,7 +99,7 @@ const App = React.createClass({
 
     return (
       <div className="container" ref="app">
-        <ButtonsNavigation tts={this.state.tts} />
+        <ButtonsNavigation openedMenu={this.state.openedMenu} tts={this.state.tts} toggleMenu={this.toggleMenu} />
         <Message text={message.text} type={message.type} />
 
         <DerContainer
