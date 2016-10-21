@@ -10705,14 +10705,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.hammer = new Hammer(modal, {});
 	    this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 	    this.hammer.on('swipeup', function () {
-	      if (_this.props.index !== 0) {
-	        _this.props.changeIndex(_this.props.index - 1);
+	      var newIndex = _this.props.index - 1;
+	      if (_this.props.index === 0) {
+	        newIndex = _this.props.items.length - 1;
 	      }
+	      _this.props.changeIndex(newIndex);
 	    });
 	    this.hammer.on('swipedown', function () {
-	      if (_this.props.index !== _this.props.items.length - 1) {
-	        _this.props.changeIndex(_this.props.index + 1);
+	      var newIndex = _this.props.index + 1;
+	      if (_this.props.index === _this.props.items.length - 1) {
+	        newIndex = 0;
 	      }
+	      _this.props.changeIndex(newIndex);
 	    });
 
 	    var nav = document.getElementById('navigation');

@@ -23,14 +23,18 @@ const Navigation = React.createClass({
     this.hammer = new Hammer(modal, {});
     this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
     this.hammer.on('swipeup', () => {
-      if (this.props.index !== 0) {
-        this.props.changeIndex(this.props.index-1);
+      let newIndex = this.props.index-1;
+      if (this.props.index === 0) {
+        newIndex = this.props.items.length-1;
       }
+      this.props.changeIndex(newIndex);
     });
     this.hammer.on('swipedown', () => {
-      if (this.props.index !== this.props.items.length-1) {
-        this.props.changeIndex(this.props.index+1);
+      let newIndex = this.props.index+1;
+      if (this.props.index === this.props.items.length-1) {
+        newIndex = 0;
       }
+      this.props.changeIndex(newIndex);
     });
 
     const nav = document.getElementById('navigation');
