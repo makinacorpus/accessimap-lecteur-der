@@ -41,7 +41,7 @@ var DerReader = {
           component: Menu,
           name: 'Menu principal',
           childRoutes: [
-            { path: 'file', component: SelectFile, name: 'Charger un nouveau document en relief (format zip)' },
+            { path: 'file', component: SelectFile, name: 'Charger un nouveau document en relief' },
             { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' },
             { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' },
             { path: 'quit', name: 'Quitter l\'application' }
