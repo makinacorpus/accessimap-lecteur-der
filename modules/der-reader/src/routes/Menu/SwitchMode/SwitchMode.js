@@ -2,7 +2,6 @@ require('!style!css!sass!./SwitchMode.scss');
 const _ = require('lodash');
 const React = require('react');
 const SelectElementContainer = require('./../../../components/SelectElement/SelectElement.js');
-const SelectableList = require('./../../../components/SelectableList/SelectableList.js');
 const Navigation = require('./../../../components/Navigation/Navigation.js');
 
 const modes = [
@@ -23,8 +22,8 @@ const SwitchMode = React.createClass({
     this.setState({index});
   },
 
-  changeMode: function(index) {
-    this.props.actions.changeMode({index});
+  changeMode: function() {
+    this.props.actions.changeMode(this.state.index);
   },
 
   render: function() {
@@ -37,16 +36,11 @@ const SwitchMode = React.createClass({
 
       <Navigation
         action={this.changeMode}
-        content={
-          <div>
-            <SelectableList
-              index={this.state.index}
-              items={modes}
-              changeIndex={this.handleAction}>
-            </SelectableList>
-            {explore}
-          </div>
-        }></Navigation>
+        index={this.state.index}
+        items={modes}
+        changeIndex={this.handleAction}
+        content={explore}>
+      ></Navigation>
     );
   }
 });

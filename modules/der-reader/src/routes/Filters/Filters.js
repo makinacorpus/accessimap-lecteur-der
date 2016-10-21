@@ -1,5 +1,4 @@
 const React = require('react');
-const SelectableList = require('./../../components/SelectableList/SelectableList.js');
 const Navigation = require('./../../components/Navigation/Navigation.js');
 
 const Filters = React.createClass({
@@ -46,30 +45,21 @@ const Filters = React.createClass({
   render: function() {
     let {der} = this.props.options;
 
-    let filters = [];
+    let filtersList = <h2>Ce document ne contient pas de filtre.</h2>;
+
     if (der && der.filters && der.filters.filter) {
-      der.filters.filter.map((filter) => {
-        filters.push(filter);
-      });
+      filtersList = (
+        <Navigation
+          action={this.changeFilter}
+          read={this.read}
+          index={this.state.index}
+          items={der.filters.filter}
+          changeIndex={this.handleAction}>
+        </Navigation>
+      )
     }
 
-    let filtersList = 'Ce document ne contient pas de filtre.';
-
-    if (filters.length > 0) {
-      filtersList = <SelectableList
-        read={this.read}
-        index={this.state.index}
-        items={filters}
-        changeIndex={this.handleAction}>
-      </SelectableList>
-    }
-
-    return (
-      <Navigation
-        action={this.changeFilter}
-        content={filtersList}>
-      </Navigation>
-    );
+    return filtersList;
   }
 });
 

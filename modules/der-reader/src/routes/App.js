@@ -6,6 +6,9 @@ import { hashHistory } from 'react-router';
 const Hammer = require('hammerjs');
 
 const App = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   getInitialState: function() {
     return {

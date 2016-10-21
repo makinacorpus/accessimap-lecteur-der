@@ -50,10 +50,7 @@ var DerReader = {
         {
           path: 'filters',
           component: Filters,
-          name: 'Filtres',
-          childRoutes: [
-            { path: 'name', component: SelectFile, name: 'Filtre par nom' }
-          ]
+          name: 'Filtres'
         }
       ]
     };

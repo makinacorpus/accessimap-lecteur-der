@@ -1,8 +1,7 @@
 require('!style!css!sass!./SelectElement.scss');
 
 const React = require('react');
-const SelectableList = require('./../SelectableList/SelectableList.js');
-const Button = require('./../Button/Button.js');
+const Navigation = require('./../Navigation/Navigation.js');
 
 const SelectElementContainer = React.createClass({
   getInitialState: function() {
@@ -38,19 +37,11 @@ const SelectElementContainer = React.createClass({
       : 'Aucun élément sélectionné' ;
 
     return (
-      <div>
-        <span className="current-element">{currentElement}</span>
-        <Button type="button" value="Choisir un élément à trouver" />
-        <div className="modal" ref="mainMenu" id="mainMenu">
-          <h2 className="modal--title">Menu principal</h2>
-          <div className="menu">
-            <SelectableList
-              items={pois.poi}
-              action={this.selectElement}
-              ></SelectableList>
-          </div>
-        </div>
-      </div>
+      <Navigation
+        title="Choisir un élément à trouver"
+        items={pois.poi}
+        action={this.selectElement}
+      ></Navigation>
     );
   }
 });

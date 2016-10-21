@@ -1,5 +1,4 @@
 const React = require('react');
-const SelectableList = require('./../../components/SelectableList/SelectableList.js');
 const Navigation = require('./../../components/Navigation/Navigation.js');
 
 const Menu = React.createClass({
@@ -14,12 +13,10 @@ const Menu = React.createClass({
   },
 
   handleAction: function() {
+    console.log('Menu handleAction');
     if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
       this.props.options.exit();
     }
-    // if (this.props.route.childRoutes[this.state.activeMenu].path === 'file') {
-    //   console.log('file');
-    // }
     else {
       this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
     }
@@ -37,14 +34,11 @@ const Menu = React.createClass({
     return (
       <Navigation
         action={this.handleAction}
-        content={
-          <SelectableList
-            read={this.read}
-            index={this.state.activeMenu}
-            items={this.props.route.childRoutes}
-            changeIndex={this.changeActiveMenu}
-            ></SelectableList>
-        }>
+        read={this.read}
+        index={this.state.activeMenu}
+        items={this.props.route.childRoutes}
+        changeIndex={this.changeActiveMenu}
+        >
       </Navigation>
     );
   }

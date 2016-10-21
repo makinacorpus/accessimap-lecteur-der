@@ -36,3 +36,32 @@ h1, h2 {
     top: 100vh;
   }
 }
+
+.selectable-list {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: $white;
+    border-radius: $base-border-radius;
+    border: solid 3px white;
+
+    &--item {
+        list-style-type: none;
+        font-size: 100%;
+        &:not(:last-child) {
+            border-bottom: solid 3px white;
+        }
+        a {
+          box-sizing: padding-box;
+          display: block;
+          font-weight: bold;
+          padding: 1em;
+
+          &.selected {
+            background: white;
+            color: $black;
+            cursor: normal;
+          }
+        }
+    }
+}
