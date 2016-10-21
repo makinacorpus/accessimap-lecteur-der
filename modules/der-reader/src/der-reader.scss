@@ -64,11 +64,11 @@ body {
     width: auto;
     border-radius: 0;
     margin: 0;
-    &.open-filters {
+    &#filters {
       float: left;
     }
 
-    &.open-menu {
+    &#menu {
       float: right;
     }
   }

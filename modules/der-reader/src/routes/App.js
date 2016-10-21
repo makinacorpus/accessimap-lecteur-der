@@ -1,9 +1,7 @@
 const DerContainer = require('./../components/DerContainer/DerContainer.js');
 const Message = require('./../components/Message/Message.js');
-const Button = require('./../components/Button/Button.js');
+const ButtonsNavigation = require('./../components/Button/ButtonsNavigation.js');
 const React = require('react');
-import { hashHistory } from 'react-router';
-const Hammer = require('hammerjs');
 
 const App = React.createClass({
   contextTypes: {
@@ -23,27 +21,6 @@ const App = React.createClass({
       tts: this.props.route.config.tts,
       exit: this.props.route.config.exit
     }
-  },
-
-  componentDidMount: function() {
-    // Init menus navigation
-    const buttons = document.getElementById('nav-buttons');
-    const tts = this.state.tts;
-
-    var mc = new Hammer.Manager(buttons);
-    mc.add( new Hammer.Tap({ event: 'doubletap', taps: 2 }) );
-    mc.add( new Hammer.Tap({ event: 'singletap' }) );
-    mc.get('doubletap').recognizeWith('singletap');
-    mc.get('singletap').requireFailure('doubletap');
-
-    mc.on('singletap', (e) => {
-      if (e.target.type === 'button') {
-        tts.speak(e.target.innerText);
-      }
-    });
-    mc.on('doubletap', (e) => {
-      hashHistory.push(e.target.id);
-    });
   },
 
   showMessage: function(text, type) {
@@ -84,9 +61,8 @@ const App = React.createClass({
 
   render: function() {
     const {message, der, selectedDocument, mode, derFile, searchableElement, activeFilter} = this.state;
-    var menuLabel = 'Menu';
-    var filtresLabel = 'Filtres';
-    var navigation
+    let navigation;
+
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
         options: this.state,
@@ -105,21 +81,7 @@ const App = React.createClass({
 
     return (
       <div className="container" ref="app">
-        <nav className="nav-buttons" id="nav-buttons">
-          <Button
-            id="menu"
-            type="button"
-            className="fill black open-menu"
-            value={menuLabel}
-            />
-
-          <Button
-            id="filters"
-            type="button"
-            className="fill black open-filters"
-            value={filtresLabel} />
-        </nav>
-
+        <ButtonsNavigation tts={this.state.tts} />
         <Message text={message.text} type={message.type} />
 
         <DerContainer

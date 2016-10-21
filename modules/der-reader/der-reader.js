@@ -10261,7 +10261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\n.container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 1350px;\n  height: 955px; }\n\n.der-container {\n  display: flex;\n  width: 100%;\n  height: 100%;\n  flex-direction: column;\n  justify-content: flex-end;\n  align-items: flex-end;\n  display: flex;\n  overflow: hidden; }\n  .der-container svg {\n    width: 1350px;\n    height: 955px; }\n\n.nav-buttons {\n  overflow: hidden;\n  position: absolute;\n  width: 100%;\n  z-index: 999;\n  padding: 2.5% 2.5% 0 2.5%; }\n  .nav-buttons .button {\n    padding: .2em .6em;\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button.open-filters {\n      float: left; }\n    .nav-buttons .button.open-menu {\n      float: right; }\n", ""]);
+	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\n.container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 1350px;\n  height: 955px; }\n\n.der-container {\n  display: flex;\n  width: 100%;\n  height: 100%;\n  flex-direction: column;\n  justify-content: flex-end;\n  align-items: flex-end;\n  display: flex;\n  overflow: hidden; }\n  .der-container svg {\n    width: 1350px;\n    height: 955px; }\n\n.nav-buttons {\n  overflow: hidden;\n  position: absolute;\n  width: 100%;\n  z-index: 999;\n  padding: 2.5% 2.5% 0 2.5%; }\n  .nav-buttons .button {\n    padding: .2em .6em;\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button#filters {\n      float: left; }\n    .nav-buttons .button#menu {\n      float: right; }\n", ""]);
 
 	// exports
 
@@ -24300,14 +24300,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _reactRouter = __webpack_require__(1);
-
 	var DerContainer = __webpack_require__(129);
 	var Message = __webpack_require__(232);
-	var Button = __webpack_require__(121);
+	var ButtonsNavigation = __webpack_require__(374);
 	var React = __webpack_require__(3);
-
-	var Hammer = __webpack_require__(106);
 
 	var App = React.createClass({
 	  displayName: 'App',
@@ -24329,27 +24325,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      tts: this.props.route.config.tts,
 	      exit: this.props.route.config.exit
 	    };
-	  },
-
-	  componentDidMount: function componentDidMount() {
-	    // Init menus navigation
-	    var buttons = document.getElementById('nav-buttons');
-	    var tts = this.state.tts;
-
-	    var mc = new Hammer.Manager(buttons);
-	    mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
-	    mc.add(new Hammer.Tap({ event: 'singletap' }));
-	    mc.get('doubletap').recognizeWith('singletap');
-	    mc.get('singletap').requireFailure('doubletap');
-
-	    mc.on('singletap', function (e) {
-	      if (e.target.type === 'button') {
-	        tts.speak(e.target.innerText);
-	      }
-	    });
-	    mc.on('doubletap', function (e) {
-	      _reactRouter.hashHistory.push(e.target.id);
-	    });
 	  },
 
 	  showMessage: function showMessage(text, type) {
@@ -24400,9 +24375,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var searchableElement = _state.searchableElement;
 	    var activeFilter = _state.activeFilter;
 
-	    var menuLabel = 'Menu';
-	    var filtresLabel = 'Filtres';
-	    var navigation;
+	    var navigation = void 0;
+
 	    if (this.props.children) {
 	      navigation = React.cloneElement(this.props.children, {
 	        options: this.state,
@@ -24422,21 +24396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return React.createElement(
 	      'div',
 	      { className: 'container', ref: 'app' },
-	      React.createElement(
-	        'nav',
-	        { className: 'nav-buttons', id: 'nav-buttons' },
-	        React.createElement(Button, {
-	          id: 'menu',
-	          type: 'button',
-	          className: 'fill black open-menu',
-	          value: menuLabel
-	        }),
-	        React.createElement(Button, {
-	          id: 'filters',
-	          type: 'button',
-	          className: 'fill black open-filters',
-	          value: filtresLabel })
-	      ),
+	      React.createElement(ButtonsNavigation, { tts: this.state.tts }),
 	      React.createElement(Message, { text: message.text, type: message.type }),
 	      React.createElement(DerContainer, {
 	        setFilesList: this.setFilesList,
@@ -59209,6 +59169,139 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = ReactDOMNullInputValuePropHook;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ },
+/* 373 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Button = __webpack_require__(121);
+	var React = __webpack_require__(3);
+
+	var Hammer = __webpack_require__(106);
+
+	var ButtonNavigation = React.createClass({
+	  displayName: 'ButtonNavigation',
+
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      label: ''
+	    };
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps() {
+	    this.setState({
+	      label: this.props.open ? 'Fermer' : this.props.labelClosed
+	    });
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
+	    var buttons = document.getElementById(this.props.id);
+	    var tts = this.props.tts;
+
+	    var mc = new Hammer.Manager(buttons);
+	    mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
+	    mc.add(new Hammer.Tap({ event: 'singletap' }));
+	    mc.get('doubletap').recognizeWith('singletap');
+	    mc.get('singletap').requireFailure('doubletap');
+
+	    mc.on('singletap', function (e) {
+	      if (_this.props.open) {
+	        tts.speak(_this.props.labelOpened);
+	      } else {
+	        tts.speak(e.target.innerText);
+	      }
+	    });
+	    mc.on('doubletap', function () {
+	      _this.props.toggleMenu(_this.props.id, _this.props.labelOnClose, _this.props.labelOnOpen);
+	    });
+	  },
+
+	  render: function render() {
+	    return React.createElement(Button, {
+	      id: this.props.id,
+	      type: 'button',
+	      className: 'fill black',
+	      value: this.state.label });
+	  }
+	});
+
+	module.exports = ButtonNavigation;
+
+/***/ },
+/* 374 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _reactRouter = __webpack_require__(1);
+
+	var ButtonNavigation = __webpack_require__(373);
+	var React = __webpack_require__(3);
+
+
+	var ButtonsNavigation = React.createClass({
+	  displayName: 'ButtonsNavigation',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      openedMenu: ''
+	    };
+	  },
+
+	  toggleMenu: function toggleMenu(id, labelOnClose, labelOnOpen) {
+	    var _this = this;
+
+	    var open = this.state.openedMenu === id;
+	    this.setState({
+	      openedMenu: open ? '' : id
+	    }, function () {
+	      if (open) {
+	        _reactRouter.hashHistory.push('/');
+	        _this.props.tts.speak(labelOnClose);
+	      } else {
+	        _reactRouter.hashHistory.push(id);
+	        _this.props.tts.speak(labelOnOpen);
+	      }
+	    });
+	  },
+
+	  render: function render() {
+	    return React.createElement(
+	      'nav',
+	      { className: 'nav-buttons', id: 'nav-buttons' },
+	      React.createElement(ButtonNavigation, {
+	        id: 'menu',
+	        tts: this.props.tts,
+	        labelClosed: 'Menu',
+	        labelOnClose: 'Fermeture du menu',
+	        labelOpened: 'Fermer le menu',
+	        labelOnOpen: 'Ouverture du menu',
+	        open: this.state.openedMenu === 'menu',
+	        toggleMenu: this.toggleMenu
+	      }),
+	      React.createElement(ButtonNavigation, {
+	        id: 'filters',
+	        tts: this.props.tts,
+	        labelClosed: 'Filtres',
+	        labelOnClose: 'Fermeture des filtres',
+	        labelOpened: 'Fermer les filtres',
+	        labelOnOpen: 'Ouverture des filtres',
+	        open: this.state.openedMenu === 'filters',
+	        toggleMenu: this.toggleMenu
+	      })
+	    );
+	  }
+	});
+
+	module.exports = ButtonsNavigation;
 
 /***/ }
 /******/ ])
