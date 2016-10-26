@@ -13540,8 +13540,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  handleAction: function handleAction() {
 	    var der = this.props.options.der;
 
-	    var newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
-	    this.props.actions.changeFilter(newFilter);
+	    if (der.filters.filter[this.state.index].path !== 'back') {
+	      var newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
+	      this.props.actions.changeFilter(newFilter);
+	    }
 	    this.props.actions.toggleMenu('filters', 'Fermeture des filtres');
 	  },
 

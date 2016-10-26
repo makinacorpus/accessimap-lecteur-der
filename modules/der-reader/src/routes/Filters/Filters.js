@@ -38,8 +38,10 @@ const Filters = React.createClass({
 
   handleAction: function() {
     let {der} = this.props.options;
-    let newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
-    this.props.actions.changeFilter(newFilter);
+    if (der.filters.filter[this.state.index].path !== 'back') {
+      let newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
+      this.props.actions.changeFilter(newFilter);
+    }
     this.props.actions.toggleMenu('filters', 'Fermeture des filtres');
   },
 
