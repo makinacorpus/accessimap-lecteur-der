@@ -16,20 +16,6 @@ Pour contribuer, merci de chercher si une issue github n'a pas déjà été ouve
 
 Dans le cas contraire, ouvrez une issue et/ou proposez une PR.
 
-## Expérimentations réalisées
-
-Plusieurs expérimentations ont été réalisées afin de trouver la meilleure
-stack de développement.
-
-Ces expérimentations sont désormais dans le répertoire 'archives'.
-
-* 01 - ELECTRON_voices_gestures
-* 02 - CHROME-APP
-* 03 - CORDOVA
-* 04 - ELECTRON_svg
-* 05 - ELECTRON_canvas
-* 06 - CCA (Chrome Cordova App)
-* 07 - MENU
 
 ## Détails du projet
 
@@ -38,22 +24,32 @@ Le Lecteur de Document En Relief (DER Reader) est un module pouvant fonctionner 
 Il se décline ici avec Cordova et Electron.
 Chacun de ces projets utilisent des services spécifiques pour le TTS (Talk To Speech) qui doivent être fournis à l'utilisation du module der-reader.
 
-### Utilisation du module der-reader et des services TTS
 
-#### der-reader
+Pour pouvoir utiliser une base commune entre la version windows et la version mobile, le coeur du projet se trouve dans un module appelé der-reader.
 
-En JS, si on a accès à require
+## Développement
 
-```js
-var DerReader = require('der-reader');
+Lancer le script du module der-reader
+
 ```
-Ou dans le HTML
-
-```html
-<script type="text/javascript" src="node_modules/der-reader/der-reader.js"></script>
+cd modules/der-reader
+npm install
+npm start
 ```
 
-Puis on initialise le module avec la configuration adéquate
+Dans une console différente, lancer le script pour démarrer electron
+
+```
+cd electron
+npm install
+npm start
+```
+
+## Explications techniques
+
+### modules/der-reader
+
+Le module est utilisé dans electron et cordova pour initialiser le module der-reader avec la configuration adéquate :
 
 ```jsx
 DerReader.init({
@@ -65,32 +61,14 @@ DerReader.init({
 
 ```
 
-Pour modifier der-reader
 
-```
-npm install
-npm run start  # Webpack with --watch option
-npm run build  # Build project
-```
-
-
-#### Services tts
+### modules/*.tts
 
 Selon les plateformes, cordova a besoin du plugin [cordova-tts](https://github.com/vilic/cordova-plugin-tts) alors que electron sait gérer l'[API HTML Web Speech](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API).
 
 Chaque implémentation de ces services se trouve dans un module intépendant de der-reader, il faut donc les charger, et indiquer le service tts à utiliser en paramètre de l'initialisation de der-reader.
 
 On charge de la même manière que der-reader le module souhaité, soit pour Electron :
-
-```js
-var webspeechapi = require('tts.webspeechapi');
-```
-
-Et pour Cordova :
-
-```html
-<script type="text/javascript" src="node_modules/tts.cordova/tts.cordova.js"></script>
-```
 
 
 ```jsx
@@ -104,17 +82,7 @@ DerReader.init({
 ```
 
 
-### Comment lancer et compiler les prototypes ?
-
-#### Electron
-
-Lancer l'app (développement)
-
-```
-cd electron
-npm install
-npm run start
-```
+### electron
 
 Lors du développement de der-reader, changer le chemin des modules pour éviter de devoir effectuer un npm install pour mettre à jour le module à chaque modification.
 Ne pas oublier de remettre le bon chemin lors du build.
@@ -129,15 +97,16 @@ var DerReader = require('./../der-reader/der-reader.js');
 // var DerReader = require('der-reader');
 ```
 
-Builder l'application (pour Windows x64, cf. script npm pour d'autres paramètres/os)
+
+Builder l'application (pour Windows x64, cf. script npm pour d'autres paramètres/os). Nécéssice wine, cf. .travis.yml pour installer les dépendances.
 
 ```
-npm install der-reader
+npm install der-reader # mettre à jour le module
 npm run build
 ```
 
 
-#### Cordova
+### cordova
 
 ```
 cd cordova/www
@@ -155,3 +124,19 @@ A chaque nouveau commit, travis vérifiera que le build pour electron se constru
 Pour ajouter ces builds aux releases, il faut créer une nouvelle release en respectant le [Semantic Versioning](http://semver.org/).
 
 Travis déclenchera à nouveau un build electron, et attachera les résultats (zip pour windows, AppImage pour Linux) à la dernière release créée.
+
+
+## [/archives] Expérimentations réalisées
+
+Plusieurs expérimentations ont été réalisées afin de trouver la meilleure
+stack de développement.
+
+Ces expérimentations sont désormais dans le répertoire 'archives'.
+
+* 01 - ELECTRON_voices_gestures
+* 02 - CHROME-APP
+* 03 - CORDOVA
+* 04 - ELECTRON_svg
+* 05 - ELECTRON_canvas
+* 06 - CCA (Chrome Cordova App)
+* 07 - MENU
