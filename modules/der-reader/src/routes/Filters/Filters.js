@@ -38,9 +38,6 @@ const Filters = React.createClass({
 
   handleAction: function() {
     let {der} = this.props.options;
-    if (der.filters.filter[this.state.index].path === 'back') {
-      this.props.actions.toggleMenu('filters', 'Fermeture des filtres');
-    }
     let newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
     this.props.actions.changeFilter(newFilter);
     this.props.actions.toggleMenu('filters', 'Fermeture des filtres');

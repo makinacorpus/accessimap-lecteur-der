@@ -13540,9 +13540,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  handleAction: function handleAction() {
 	    var der = this.props.options.der;
 
-	    if (der.filters.filter[this.state.index].path === 'back') {
-	      this.props.actions.toggleMenu('filters', 'Fermeture des filtres');
-	    }
 	    var newFilter = der.filters.filter[this.state.index] ? der.filters.filter[this.state.index] : null;
 	    this.props.actions.changeFilter(newFilter);
 	    this.props.actions.toggleMenu('filters', 'Fermeture des filtres');
@@ -24285,10 +24282,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({
 	      openedMenu: open ? '' : id
 	    }, function () {
-	      if (open) {
+	      if (open && labelOnClose) {
 	        _reactRouter.hashHistory.push('/');
 	        _this.state.tts.speak(labelOnClose);
-	      } else {
+	      } else if (labelOnOpen) {
 	        _reactRouter.hashHistory.push(id);
 	        _this.state.tts.speak(labelOnOpen);
 	      }

@@ -30,10 +30,10 @@ const App = React.createClass({
     this.setState({
       openedMenu: open ? '' : id
     }, () => {
-      if (open) {
+      if (open && labelOnClose) {
         hashHistory.push('/');
         this.state.tts.speak(labelOnClose);
-      } else {
+      } else if (labelOnOpen) {
         hashHistory.push(id);
         this.state.tts.speak(labelOnOpen);
       }
