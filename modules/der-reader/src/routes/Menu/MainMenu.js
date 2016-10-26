@@ -13,14 +13,15 @@ const Menu = React.createClass({
   },
 
   handleAction: function() {
-    if (this.props.route.childRoutes[this.state.activeMenu].path === 'quit') {
+    let path = this.props.route.childRoutes[this.state.activeMenu].path;
+    if (path === 'quit') {
       this.props.options.exit();
     }
-    if (this.props.route.childRoutes[this.state.activeMenu].path === 'back') {
+    if (path === 'back') {
       this.props.actions.toggleMenu('menu', 'Fermeture du menu');
     }
     else {
-      this.context.router.push('menu/' + this.props.route.childRoutes[this.state.activeMenu].path);
+      this.context.router.push('menu/' + path);
     }
   },
 

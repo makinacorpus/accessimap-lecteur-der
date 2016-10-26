@@ -9,6 +9,11 @@ var SelectFile = React.createClass({
   },
 
   componentDidMount: function() {
+    document.body.onfocus = () => {
+      if (this.state.file === null) {
+        this.props.actions.toggleMenu('menu', 'Fermeture du menu');
+      }
+    }
     this.refs.inputfile.click();
   },
 

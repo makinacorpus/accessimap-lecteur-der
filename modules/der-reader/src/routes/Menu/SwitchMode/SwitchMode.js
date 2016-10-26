@@ -24,6 +24,7 @@ const SwitchMode = React.createClass({
 
   changeMode: function() {
     this.props.actions.changeMode(this.state.index);
+    this.props.actions.toggleMenu('menu', 'Fermeture du menu');
   },
 
   render: function() {

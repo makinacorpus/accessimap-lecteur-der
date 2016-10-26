@@ -16,6 +16,7 @@ const SelectDocument = React.createClass({
 
   changeDocument: function() {
     this.props.actions.changeDocument(this.state.index);
+    this.props.actions.toggleMenu('menu', 'Fermeture du menu');
   },
 
   read: function(text) {
