@@ -13606,6 +13606,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var file = this.refs.inputfile.files[0];
 	      if (file !== undefined) {
 	        this.props.actions.changeDerFile(file);
+	        this.props.actions.changeFilter(null);
 	      } else {
 	        this.props.options.message('Aucun fichier seléctionné', 'error');
 	      }
