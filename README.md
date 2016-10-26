@@ -18,7 +18,7 @@ Dans le cas contraire, ouvrez une issue et/ou proposez une PR.
 
 ## Expérimentations réalisées
 
-Plusieurs expérimentations ont été réalisées afin de trouver la meilleure 
+Plusieurs expérimentations ont été réalisées afin de trouver la meilleure
 stack de développement.
 
 Ces expérimentations sont désormais dans le répertoire 'archives'.
@@ -44,18 +44,18 @@ Chacun de ces projets utilisent des services spécifiques pour le TTS (Talk To S
 
 En JS, si on a accès à require
 
-```
+```js
 var DerReader = require('der-reader');
 ```
 Ou dans le HTML
 
-```
+```html
 <script type="text/javascript" src="node_modules/der-reader/der-reader.js"></script>
 ```
 
 Puis on initialise le module avec la configuration adéquate
 
-```
+```jsx
 DerReader.init({
     der: {
         svgFile: './der/carte_avec_source.svg',
@@ -82,18 +82,18 @@ Chaque implémentation de ces services se trouve dans un module intépendant de 
 
 On charge de la même manière que der-reader le module souhaité, soit pour Electron :
 
-```
+```js
 var webspeechapi = require('tts.webspeechapi');
 ```
 
 Et pour Cordova :
 
-```
+```html
 <script type="text/javascript" src="node_modules/tts.cordova/tts.cordova.js"></script>
 ```
 
 
-```
+```jsx
 DerReader.init({
     der: {
         svgFile: './der/carte_avec_source.svg',
@@ -119,7 +119,7 @@ npm run start
 Lors du développement de der-reader, changer le chemin des modules pour éviter de devoir effectuer un npm install pour mettre à jour le module à chaque modification.
 Ne pas oublier de remettre le bon chemin lors du build.
 
-```
+```js
 // Dev
 var webspeechapi = require('./../tts.webspeechapi/tts.webspeechapi.js');
 var DerReader = require('./../der-reader/der-reader.js');
@@ -155,4 +155,3 @@ A chaque nouveau commit, travis vérifiera que le build pour electron se constru
 Pour ajouter ces builds aux releases, il faut créer une nouvelle release en respectant le [Semantic Versioning](http://semver.org/).
 
 Travis déclenchera à nouveau un build electron, et attachera les résultats (zip pour windows, AppImage pour Linux) à la dernière release créée.
-
