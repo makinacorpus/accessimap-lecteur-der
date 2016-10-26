@@ -53,23 +53,15 @@ body {
   }
 }
 
-.nav-buttons {
-  overflow: hidden;
+.button {
   position: absolute;
-  width: 100%;
-  z-index: 999;
-  padding: 2.5% 2.5% 0 2.5%;
-  .button {
-    padding: .2em .6em;
-    width: auto;
-    border-radius: 0;
-    margin: 0;
-    &#filters {
-      float: left;
-    }
+  z-index: 900;
+  top: 2.5%;
+  &#filters {
+    left: 2.5%;
+  }
 
-    &#menu {
-      float: right;
-    }
+  &#menu {
+    right: 2.5%;
   }
 }

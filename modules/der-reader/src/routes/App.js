@@ -1,6 +1,6 @@
 const DerContainer = require('./../components/DerContainer/DerContainer.js');
 const Message = require('./../components/Message/Message.js');
-const ButtonsNavigation = require('./../components/Button/ButtonsNavigation.js');
+const Button = require('./../components/Button/Button.js');
 const React = require('react');
 import { hashHistory } from 'react-router';
 
@@ -99,7 +99,26 @@ const App = React.createClass({
 
     return (
       <div className="container" ref="app">
-        <ButtonsNavigation openedMenu={this.state.openedMenu} tts={this.state.tts} toggleMenu={this.toggleMenu} />
+        <Button
+          id="menu"
+          tts={this.state.tts}
+          labelClosed="Menu"
+          labelOnClose="Fermeture du menu"
+          labelOpened="Fermer le menu"
+          labelOnOpen="Ouverture du menu"
+          open={this.state.openedMenu === 'menu'}
+          toggleMenu={this.toggleMenu}
+           />
+        <Button
+          id="filters"
+          tts={this.state.tts}
+          labelClosed="Filtres"
+          labelOnClose="Fermeture des filtres"
+          labelOpened="Fermer les filtres"
+          labelOnOpen="Ouverture des filtres"
+          open={this.state.openedMenu === 'filters'}
+          toggleMenu={this.toggleMenu}
+          />
         <Message text={message.text} type={message.type} />
 
         <DerContainer

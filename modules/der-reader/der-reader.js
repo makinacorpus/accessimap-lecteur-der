@@ -10263,7 +10263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\n.container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 1350px;\n  height: 955px; }\n\n.der-container {\n  display: flex;\n  width: 100%;\n  height: 100%;\n  flex-direction: column;\n  justify-content: flex-end;\n  align-items: flex-end;\n  display: flex;\n  overflow: hidden; }\n  .der-container svg {\n    width: 1350px;\n    height: 955px; }\n\n.nav-buttons {\n  overflow: hidden;\n  position: absolute;\n  width: 100%;\n  z-index: 999;\n  padding: 2.5% 2.5% 0 2.5%; }\n  .nav-buttons .button {\n    padding: .2em .6em;\n    width: auto;\n    border-radius: 0;\n    margin: 0; }\n    .nav-buttons .button#filters {\n      float: left; }\n    .nav-buttons .button#menu {\n      float: right; }\n", ""]);
+	exports.push([module.id, "*, *:after, *:before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-size: 100%;\n  font-size: 22pt; }\n\nbody {\n  background-color: white;\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n  overflow: hidden;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\n.container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 1350px;\n  height: 955px; }\n\n.der-container {\n  display: flex;\n  width: 100%;\n  height: 100%;\n  flex-direction: column;\n  justify-content: flex-end;\n  align-items: flex-end;\n  display: flex;\n  overflow: hidden; }\n  .der-container svg {\n    width: 1350px;\n    height: 955px; }\n\n.button {\n  position: absolute;\n  z-index: 900;\n  top: 2.5%; }\n  .button#filters {\n    left: 2.5%; }\n  .button#menu {\n    right: 2.5%; }\n", ""]);
 
 	// exports
 
@@ -10844,7 +10844,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".menu {\n  width: 100%;\n  height: 100%;\n  background: #000;\n  padding: 2.5%; }\n  @media (min-width: 1600px) {\n    .menu {\n      width: auto;\n      margin-left: 1350px; } }\n\nh1, h2 {\n  color: white;\n  text-align: center; }\n\n.modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    transition-delay: .3s;\n    top: 100vh; }\n\n.selectable-list {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 3px white; }\n  .selectable-list--item {\n    list-style-type: none;\n    font-size: 100%; }\n    .selectable-list--item:not(:last-child) {\n      border-bottom: solid 3px white; }\n    .selectable-list--item a {\n      box-sizing: padding-box;\n      display: block;\n      font-weight: bold;\n      padding: 1em; }\n      .selectable-list--item a.selected {\n        background: white;\n        color: #000;\n        cursor: normal; }\n", ""]);
+	exports.push([module.id, ".menu {\n  width: 100%;\n  height: 100%;\n  background: #000;\n  padding: 120px 2.5% 2.5% 2.5%; }\n  @media (min-width: 1600px) {\n    .menu {\n      width: auto;\n      margin-left: 1350px;\n      padding: 2.5%; } }\n\nh1, h2 {\n  color: white;\n  text-align: center; }\n\n.modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 1350px;\n  height: 955px;\n  z-index: 100;\n  transition: .3s ease-out all;\n  overflow: auto; }\n  @media (min-width: 1600px) {\n    .modal {\n      width: 100%;\n      height: 100%; } }\n  .modal--title {\n    color: #fff;\n    text-align: center; }\n  .modal--close-button {\n    color: #fff; }\n  .modal.hidden {\n    transition-delay: .3s;\n    top: 100vh; }\n\n.selectable-list {\n  margin: 0;\n  padding: 0;\n  text-align: center;\n  color: #fff;\n  border-radius: 3px;\n  border: solid 3px white; }\n  .selectable-list--item {\n    list-style-type: none;\n    font-size: 100%; }\n    .selectable-list--item:not(:last-child) {\n      border-bottom: solid 3px white; }\n    .selectable-list--item a {\n      box-sizing: padding-box;\n      display: block;\n      font-weight: bold;\n      padding: 1em; }\n      .selectable-list--item a.selected {\n        background: white;\n        color: #000;\n        cursor: normal; }\n", ""]);
 
 	// exports
 
@@ -13611,7 +13611,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.props.options.message('Aucun fichier seléctionné', 'error');
 	      }
 	    }
-	    console.log('change');
 	  },
 
 	  render: function render() {
@@ -24252,7 +24251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DerContainer = __webpack_require__(125);
 	var Message = __webpack_require__(228);
-	var ButtonsNavigation = __webpack_require__(231);
+	var Button = __webpack_require__(232);
 	var React = __webpack_require__(3);
 
 
@@ -24366,7 +24365,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return React.createElement(
 	      'div',
 	      { className: 'container', ref: 'app' },
-	      React.createElement(ButtonsNavigation, { openedMenu: this.state.openedMenu, tts: this.state.tts, toggleMenu: this.toggleMenu }),
+	      React.createElement(Button, {
+	        id: 'menu',
+	        tts: this.state.tts,
+	        labelClosed: 'Menu',
+	        labelOnClose: 'Fermeture du menu',
+	        labelOpened: 'Fermer le menu',
+	        labelOnOpen: 'Ouverture du menu',
+	        open: this.state.openedMenu === 'menu',
+	        toggleMenu: this.toggleMenu
+	      }),
+	      React.createElement(Button, {
+	        id: 'filters',
+	        tts: this.state.tts,
+	        labelClosed: 'Filtres',
+	        labelOnClose: 'Fermeture des filtres',
+	        labelOpened: 'Fermer les filtres',
+	        labelOnOpen: 'Ouverture des filtres',
+	        open: this.state.openedMenu === 'filters',
+	        toggleMenu: this.toggleMenu
+	      }),
 	      React.createElement(Message, { text: message.text, type: message.type }),
 	      React.createElement(DerContainer, {
 	        setFilesList: this.setFilesList,
@@ -41928,48 +41946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Button = __webpack_require__(232);
-	var React = __webpack_require__(3);
-
-	var ButtonsNavigation = React.createClass({
-	  displayName: 'ButtonsNavigation',
-
-	  render: function render() {
-	    return React.createElement(
-	      'nav',
-	      { className: 'nav-buttons', id: 'nav-buttons' },
-	      React.createElement(Button, {
-	        id: 'menu',
-	        tts: this.props.tts,
-	        labelClosed: 'Menu',
-	        labelOnClose: 'Fermeture du menu',
-	        labelOpened: 'Fermer le menu',
-	        labelOnOpen: 'Ouverture du menu',
-	        open: this.props.openedMenu === 'menu',
-	        toggleMenu: this.props.toggleMenu
-	      }),
-	      React.createElement(Button, {
-	        id: 'filters',
-	        tts: this.props.tts,
-	        labelClosed: 'Filtres',
-	        labelOnClose: 'Fermeture des filtres',
-	        labelOpened: 'Fermer les filtres',
-	        labelOnOpen: 'Ouverture des filtres',
-	        open: this.props.openedMenu === 'filters',
-	        toggleMenu: this.props.toggleMenu
-	      })
-	    );
-	  }
-	});
-
-	module.exports = ButtonsNavigation;
-
-/***/ },
+/* 231 */,
 /* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -42069,7 +42046,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .8em 1em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  width: 100%;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: white; }\n    .button.fill.black {\n      background-color: #000;\n      border-color: #000;\n      color: #fff; }\n      .button.fill.black:hover, .button.fill.black.active {\n        border-color: #000;\n        color: #000;\n        background-color: white; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
+	exports.push([module.id, ".button {\n  margin-top: 10px;\n  padding: .4em .8em;\n  color: #fff;\n  background-color: transparent;\n  border: 3px solid #fff;\n  min-height: 2em;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  vertical-align: top;\n  text-align: center;\n  font-weight: 700;\n  display: block;\n  cursor: pointer;\n  border-radius: 3px;\n  font-size: 100%; }\n  .button:hover, .button.active {\n    background-color: #fff;\n    color: #000; }\n  .button.fill {\n    background-color: #fff;\n    color: #000; }\n    .button.fill:hover {\n      border-color: #5BC0EB;\n      background-color: #5BC0EB; }\n    .button.fill.red {\n      background-color: #F91818;\n      border-color: #F91818;\n      color: #fff; }\n      .button.fill.red:hover, .button.fill.red.active {\n        border-color: #F91818;\n        color: #F91818;\n        background-color: white; }\n    .button.fill.black {\n      background-color: #000;\n      border-color: #000;\n      color: #fff; }\n      .button.fill.black:hover, .button.fill.black.active {\n        border-color: #000;\n        color: #000;\n        background-color: white; }\n  .button.width-auto {\n    width: auto; }\n", ""]);
 
 	// exports
 
