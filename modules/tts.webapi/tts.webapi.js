@@ -18,19 +18,18 @@ const webspeechapi = {
   },
 
   speak: function(text) {
+
     speechSynthesis.cancel();
 
-    setTimeout(() => {
-      this.utterance = this.initUtterance(text);
-      speechSynthesis.speak(this.utterance);
+    return new Promise((resolve, reject) => {
+        this.utterance = this.initUtterance(text);
+        speechSynthesis.speak(this.utterance);
 
-      return new Promise(resolve => {
         this.utterance.onend = () => {
-          resolve();
+            resolve();
         };
-      });
-
-    }, 100);
+    });
+    
   }
 };
 
