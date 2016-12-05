@@ -1,6 +1,6 @@
 {
     "name": "vibrate.cordova",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "main": "vibrate.cordova.js",
     "author": "Alexandra JANIN",
     "license": "MIT",

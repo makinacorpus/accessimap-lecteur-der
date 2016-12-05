@@ -1,6 +1,6 @@
 {
   "name": "accessimap-lecteur-der",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Accessimap Lecteur DER",
   "main": "electron.js",
   "repository": "https://github.com/makinacorpus/accessimap-lecteur-der/",
@@ -10,9 +10,9 @@
     "build": "build --win --linux --x64"
   },
   "author": {
-    "name" : "Makina Corpus",
-    "email" : "contact@makina-corpus.com",
-    "url" : "http://makina-corpus.com/"
+    "name": "Makina Corpus",
+    "email": "contact@makina-corpus.com",
+    "url": "http://makina-corpus.com/"
   },
   "license": "MIT",
   "devDependencies": {
