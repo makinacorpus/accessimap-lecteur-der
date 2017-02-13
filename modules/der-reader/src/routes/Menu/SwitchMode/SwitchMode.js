@@ -5,16 +5,14 @@ const SelectElementContainer = require('./../../../components/SelectElement/Sele
 const Navigation = require('./../../../components/Navigation/Navigation.js');
 
 const modes = [
-  {id: 'explore', name: 'Exploration'},
-  {id: 'search', name: 'Recherche'}
+  {id: 1, name: 'Exploration'},
+  {id: 2, name: 'Recherche'}
 ];
 
 const SwitchMode = React.createClass({
   getInitialState: function() {
-    var i = parseInt(_.findKey(modes, {id: this.props.options.mode}));
-
     return {
-      index: i
+      index: this.props.options.mode
     };
   },
 
@@ -26,11 +24,15 @@ const SwitchMode = React.createClass({
     this.props.actions.changeMode(this.state.index);
     this.props.actions.toggleMenu('menu', 'Fermeture du menu');
   },
+  
+  read: function(text) {
+    this.props.options.tts.speak(text);
+  },
 
   render: function() {
     const {pois} = this.props.options;
     const {setSearchableElement, searchableElement} = this.props.actions;
-    const explore = this.state.index === 'search' ?
+    const explore = this.state.index === 2 ?
       <SelectElementContainer pois={pois} setSearchableElement={setSearchableElement} searchableElement={searchableElement}></SelectElementContainer>
     : '';
     return (
@@ -38,6 +40,7 @@ const SwitchMode = React.createClass({
       <Navigation
         action={this.changeMode}
         index={this.state.index}
+        read={this.read}
         items={modes}
         changeIndex={this.handleAction}
         content={explore}>
