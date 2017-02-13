@@ -71,7 +71,7 @@ var Explore = {
   },
 
   _getAction: function(actions, type) {
-    if (actions.length === undefined) {
+    if (!Array.isArray(actions)) {
       return actions;
     } else {
       for (var i = 0; i < actions.length; i++) {
