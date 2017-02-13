@@ -188,11 +188,13 @@ var DerContainer = React.createClass({
         filter: this.props.filter
       };
       switch(mode) {
-      case 'explore':
+      case 1:
+        // Explore
         Explore.setExploreEvents(exploreParams);
         Search.removeEventsListener(this.refs.container);
         break;
-      case 'search':
+      case 2:
+        // Search
         Search.setSearchEvents(searchableElement, this.refs.container, der.pois, message);
         Explore.removeExploreEvents();
       }
