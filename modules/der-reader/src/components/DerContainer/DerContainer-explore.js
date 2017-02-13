@@ -49,8 +49,7 @@ var Explore = {
     let element = event.target;
     let actions = Explore.actions[element.getAttribute('data-link')];
     let action = Explore._getAction(actions, event.type);
-
-    if (action !== undefined) {
+    if (action !== undefined && GESTURES[event.type] === action.gesture) {
       Explore._onEventStarted(element);
       if (action.protocol === 'mp3') {
         if (Explore.currentElement) {
