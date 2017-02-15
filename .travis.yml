@@ -17,12 +17,17 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install --no-install-recommends -y mono-devel ca-certificates-mono
 
-  - 'cd electron'
+
 
 script:
+  - 'cd electron'
   - 'npm install'
   - 'npm run build'
   - 'ls $TRAVIS_BUILD_DIR/electron/dist'
+  - 'cd ../cordova/www'
+  - 'npm install'
+  - 'cordova build android'  
+  - 'ls $TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/'
 
 cache:
   directories:
@@ -34,6 +39,7 @@ deploy:
   file:
     - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-0.0.8-win.zip"
     - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-0.0.8-x86_64.AppImage"
+    - "$TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/android-debug.apk"
   skip_cleanup: true
   on:
     all_branches: true
