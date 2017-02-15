@@ -1,27 +1,21 @@
 var cordovaTTS = {
-  initUtterance: function() {
-    const utterance = {};
+  initUtterance: function(text) {
+    const utterance = {locale: "", rate: 0, text: ""};
     utterance.locale = 'fr-FR';
     utterance.rate = 1;
+    utterance.text = text;
 
     return utterance;
   },
 
   speak: function(text, pendingFunction) {
-    this.utterance = this.utterance || this.initUtterance();
 
-    return new Promise(function(resolve, reject) {
-      if (text !== this.utterance.text) {
-        this.utterance.text = text;
-        pendingFunction;
-        var _this = this;
-
-        window.TTS.speak(_this.utterance, function() {
-          resolve();
-        });
-      } else {
-        reject();
-      }
+    return new Promise((resolve, reject) => {
+      this.utterance = this.initUtterance(text);
+      pendingFunction;
+      window.TTS.speak(this.utterance, () => {
+        resolve();
+      });
     });
   }
 };
