@@ -47,7 +47,7 @@ var Explore = {
 
   initAction: function(event) {
     let element = event.target;
-    let actions = Explore.actions[element.getAttribute('data-link')];
+    let actions = Explore.actions[element.getAttribute('data-link')]; 
     let action = Explore._getAction(actions, event.type);
     if (action !== undefined && GESTURES[event.type] === action.gesture) {
       Explore._onEventStarted(element);
@@ -72,7 +72,9 @@ var Explore = {
 
   _getAction: function(actions, type) {
     if (!Array.isArray(actions)) {
-      return actions;
+      if (actions.filter === this.filter.id) {
+        return actions;
+      }
     } else {
       for (var i = 0; i < actions.length; i++) {
         let a = actions[i];
@@ -81,9 +83,6 @@ var Explore = {
             return a;
           }
         }
-        // if (GESTURES[type] === a.gesture && a.protocol !== undefined) {
-        //   return a;
-        // }
       }
     }
     return;

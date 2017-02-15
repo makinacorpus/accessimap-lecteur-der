@@ -41863,7 +41863,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _getAction: function _getAction(actions, type) {
 	    if (!Array.isArray(actions)) {
-	      return actions;
+	      if (actions.filter === this.filter.id) {
+	        return actions;
+	      }
 	    } else {
 	      for (var i = 0; i < actions.length; i++) {
 	        var a = actions[i];
@@ -41872,9 +41874,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return a;
 	          }
 	        }
-	        // if (GESTURES[type] === a.gesture && a.protocol !== undefined) {
-	        //   return a;
-	        // }
 	      }
 	    }
 	    return;
