@@ -90,7 +90,7 @@ const Navigation = React.createClass({
                 const isSelected = (key === index) ? 'selected' : '';
                 return (
                   <li key={key} className="selectable-list--item">
-                    <a key={key} className={isSelected}>{item.name}</a>
+                    <a className={isSelected}>{item.name}</a>
                   </li>
                 );
               }.bind(this))}

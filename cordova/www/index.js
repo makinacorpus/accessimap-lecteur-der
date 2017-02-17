@@ -20,7 +20,7 @@ var app = {
           derFile: './der/Londres.zip',
           tts: window.cordovaTTS,
           vibrate: window.vibrateCordova,
-          defaultMode: 1
+          defaultMode: 0
         });
 
     }

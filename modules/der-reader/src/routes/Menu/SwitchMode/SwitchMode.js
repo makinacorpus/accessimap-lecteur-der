@@ -1,12 +1,12 @@
 require('!style!css!sass!./SwitchMode.scss');
 const _ = require('lodash');
 const React = require('react');
-const SelectElementContainer = require('./../../../components/SelectElement/SelectElement.js');
+// const SelectElementContainer = require('./../../../components/SelectElement/SelectElement.js');
 const Navigation = require('./../../../components/Navigation/Navigation.js');
 
 const modes = [
-  {id: 1, name: 'Exploration'},
-  {id: 2, name: 'Recherche'}
+  {id: 0, name: 'Exploration'},
+  {id: 1, name: 'Recherche'}
 ];
 
 const SwitchMode = React.createClass({
@@ -31,10 +31,11 @@ const SwitchMode = React.createClass({
 
   render: function() {
     const {pois} = this.props.options;
-    const {setSearchableElement, searchableElement} = this.props.actions;
-    const explore = this.state.index === 2 ?
-      <SelectElementContainer pois={pois} setSearchableElement={setSearchableElement} searchableElement={searchableElement}></SelectElementContainer>
-    : '';
+    // const {setSearchableElement, searchableElement} = this.props.actions;
+    // const explore = this.state.index === 1 ?
+    //   <SelectElementContainer pois={pois} setSearchableElement={setSearchableElement} searchableElement={searchableElement}></SelectElementContainer>
+    // : '';
+    const explore = '';
     return (
 
       <Navigation

@@ -27,6 +27,6 @@ DerReader.init({
   derFile: './der/Londres.zip',
   tts: webspeechapi,
   vibrate: vibrateWebApi,
-  defaultMode: 1,
+  defaultMode: 0,
   exit: exit
 });
