@@ -5,7 +5,7 @@ const GESTURES = {
 
 var Explore = {
 
-  currentElement: null,
+  currentLinksElement: [],
 
   /**
   * add event listener to DER elements
@@ -50,21 +50,31 @@ var Explore = {
     let actions = Explore.actions[element.getAttribute('data-link')]; 
     let action = Explore._getAction(actions, event.type);
     if (action !== undefined && GESTURES[event.type] === action.gesture) {
-      Explore._onEventStarted(element);
-      if (action.protocol === 'mp3') {
-        if (Explore.currentElement) {
-          Explore._onEventEnded(Explore.currentElement);
-        }
-
-        Explore.currentElement = element;
-        Explore.readFunction(action.value).then(() => {
+      if (Explore.currentLinksElement) {
+        Explore.currentLinksElement.forEach(function(element) {
           Explore._onEventEnded(element);
+        });
+      }
+
+      Explore.currentLinksElement = [].slice.call(document.querySelectorAll('[data-link="' + element.getAttribute('data-link') + '"]'));
+
+      Explore.currentLinksElement.forEach(function(element) {
+        Explore._onEventStarted(element);
+      });
+            
+      if (action.protocol === 'mp3') {
+        Explore.readFunction(action.value).then(() => {
+          Explore.currentLinksElement.forEach(function(element) {
+            Explore._onEventEnded(element);
+          });
         });
       }
 
       if (action.protocol === 'tts') {
         Explore.tts.speak(action.value).then(function() {
-          Explore._onEventEnded(element);
+          Explore.currentLinksElement.forEach(function(element) {
+            Explore._onEventEnded(element);
+          });
         });
       }
     }
@@ -89,12 +99,12 @@ var Explore = {
   },
 
   _onEventStarted: function(element) {
-    this.initialColor = element.style.fill;
+    element.initialColor = element.style.fill;
     element.style.fill = 'red';
   },
 
   _onEventEnded: function(element) {
-    element.style.fill = this.initialColor;
+    element.style.fill = element.initialColor;
   }
 
 };
