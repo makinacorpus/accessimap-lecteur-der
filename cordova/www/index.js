@@ -1,3 +1,7 @@
+function exit() {
+    navigator.app.exitApp()
+}
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -10,6 +14,7 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
+
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
@@ -20,7 +25,8 @@ var app = {
           derFile: './der/Londres.zip',
           tts: window.cordovaTTS,
           vibrate: window.vibrateCordova,
-          defaultMode: 0
+          defaultMode: 0,
+          exit: exit
         });
 
     }
