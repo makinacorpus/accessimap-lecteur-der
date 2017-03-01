@@ -1,0 +1,75 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'v', 'der-reader', 'version' ]
+2 info using npm@4.1.1
+3 info using node@v7.4.0
+4 silly mapToRegistry name der-reader
+5 silly mapToRegistry using default registry
+6 silly mapToRegistry registry https://registry.npmjs.org/
+7 silly mapToRegistry data Result {
+7 silly mapToRegistry   raw: 'der-reader',
+7 silly mapToRegistry   scope: null,
+7 silly mapToRegistry   escapedName: 'der-reader',
+7 silly mapToRegistry   name: 'der-reader',
+7 silly mapToRegistry   rawSpec: '',
+7 silly mapToRegistry   spec: 'latest',
+7 silly mapToRegistry   type: 'tag' }
+8 silly mapToRegistry uri https://registry.npmjs.org/der-reader
+9 verbose request uri https://registry.npmjs.org/der-reader
+10 verbose request no auth needed
+11 info attempt registry request try #1 at 17:51:47
+12 verbose request id 95504c27e2482362
+13 http request GET https://registry.npmjs.org/der-reader
+14 http 404 https://registry.npmjs.org/der-reader
+15 verbose headers { 'content-type': 'application/json',
+15 verbose headers   'cache-control': 'max-age=0',
+15 verbose headers   'content-length': '2',
+15 verbose headers   'accept-ranges': 'bytes',
+15 verbose headers   date: 'Tue, 28 Feb 2017 16:51:48 GMT',
+15 verbose headers   via: '1.1 varnish',
+15 verbose headers   age: '0',
+15 verbose headers   connection: 'keep-alive',
+15 verbose headers   'x-served-by': 'cache-lcy1140-LCY',
+15 verbose headers   'x-cache': 'MISS',
+15 verbose headers   'x-cache-hits': '0',
+15 verbose headers   'x-timer': 'S1488300708.044619,VS0,VE355',
+15 verbose headers   vary: 'Accept-Encoding' }
+16 silly get cb [ 404,
+16 silly get   { 'content-type': 'application/json',
+16 silly get     'cache-control': 'max-age=0',
+16 silly get     'content-length': '2',
+16 silly get     'accept-ranges': 'bytes',
+16 silly get     date: 'Tue, 28 Feb 2017 16:51:48 GMT',
+16 silly get     via: '1.1 varnish',
+16 silly get     age: '0',
+16 silly get     connection: 'keep-alive',
+16 silly get     'x-served-by': 'cache-lcy1140-LCY',
+16 silly get     'x-cache': 'MISS',
+16 silly get     'x-cache-hits': '0',
+16 silly get     'x-timer': 'S1488300708.044619,VS0,VE355',
+16 silly get     vary: 'Accept-Encoding' } ]
+17 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/der-reader
+17 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:304:12)
+17 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:282:14)
+17 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:212:14)
+17 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:186:22)
+17 verbose stack     at emitTwo (events.js:106:13)
+17 verbose stack     at Request.emit (events.js:191:7)
+17 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1081:10)
+17 verbose stack     at emitOne (events.js:96:13)
+17 verbose stack     at Request.emit (events.js:188:7)
+17 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1001:12)
+18 verbose statusCode 404
+19 verbose pkgid der-reader
+20 verbose cwd /home/lellex/Projets/accessimap-lecteur-der/modules/der-reader
+21 error Linux 4.8.13-1-ARCH
+22 error argv "/usr/bin/node" "/usr/bin/npm" "v" "der-reader" "version"
+23 error node v7.4.0
+24 error npm  v4.1.1
+25 error code E404
+26 error 404 Registry returned 404 for GET on https://registry.npmjs.org/der-reader
+27 error 404
+28 error 404 'der-reader' is not in the npm registry.
+29 error 404 You should bug the author to publish it (or use the name yourself!)
+30 error 404 Note that you can also install from a
+31 error 404 tarball, folder, http url, or git url.
+32 verbose exit [ 1, true ]
