@@ -1,6 +1,6 @@
 {
   "name": "accessimap-lecteur-der",
-  "version": "0.0.15-dev",
+  "version": "0.0.15",
   "description": "Accessimap Lecteur DER",
   "main": "electron.js",
   "repository": "https://github.com/makinacorpus/accessimap-lecteur-der/",
