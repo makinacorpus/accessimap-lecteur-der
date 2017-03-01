@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd ../../modules/der-reader && npm run build && cd ../../cordova/www && cordova prepare && cordova build android"
+    "build": "cordova prepare && cordova build android"
   },
   "author": "Alexandra JANIN",
   "license": "MIT",

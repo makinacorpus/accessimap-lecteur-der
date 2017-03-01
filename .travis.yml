@@ -45,7 +45,10 @@ before_script:
   - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
 
 script:
-  - 'cd electron'
+  - 'cd modules/der-reader'
+  - 'npm install'
+  - 'npm run build'
+  - 'cd ../../electron'
   - 'npm install'
   - 'npm run build'
   - 'ls $TRAVIS_BUILD_DIR/electron/dist'
