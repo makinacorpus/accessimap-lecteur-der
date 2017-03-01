@@ -120,7 +120,7 @@ var DerContainer = React.createClass({
           der.filters.filter = [der.filters.filter];
         }
         der['pois'] = Array.isArray(json.pois.poi) ? json.pois : {poi: [ json.pois.poi ]} ;
-
+        
         resolve();
       }, function(error) {
         reject(error);
