@@ -1,5 +1,5 @@
 'use strict';
-const env = process.env.NODE_ENV !== 'prod' ? 'dev' : 'prod';
+const env = process.env.NODE_ENV;
 
 if (env === 'prod') {
   // Bundle
@@ -36,5 +36,6 @@ DerReader.init({
 });
 
 window.app = {
-  env: env
+  env: env,
+  version: process.env.npm_package_version
 };
