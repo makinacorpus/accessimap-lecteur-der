@@ -1,14 +1,17 @@
 'use strict';
+const env = process.env.NODE_ENV !== 'prod' ? 'dev' : 'prod';
 
-// Dev
-// var webspeechapi = require('./../modules/tts.webapi/tts.webapi.js');
-// var vibrateWebApi = require('./../modules/vibrate.webapi/vibrate.webapi.js');
-// var DerReader = require('./../modules/der-reader/der-reader.js');
-
-// Bundle
-var webspeechapi = require('tts.webapi');
-var vibrateWebApi = require('vibrate.webapi');
-var DerReader = require('der-reader');
+if (env === 'prod') {
+  // Bundle
+  var webspeechapi = require('tts.webapi');
+  var vibrateWebApi = require('vibrate.webapi');
+  var DerReader = require('der-reader');
+} else {
+  // Dev
+  var webspeechapi = require('./../modules/tts.webapi/tts.webapi.js');
+  var vibrateWebApi = require('./../modules/vibrate.webapi/vibrate.webapi.js');
+  var DerReader = require('./../modules/der-reader/der-reader.js');
+}
 
 var remote = require('electron').remote;
 
@@ -16,6 +19,7 @@ window.nodeRequire = require;
 delete window.require;
 delete window.exports;
 delete window.module;
+
 
 function exit() {
   var window = remote.getCurrentWindow();
@@ -30,3 +34,7 @@ DerReader.init({
   defaultMode: 0,
   exit: exit
 });
+
+window.app = {
+  env: env
+};
