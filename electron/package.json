@@ -6,8 +6,11 @@
   "repository": "https://github.com/makinacorpus/accessimap-lecteur-der/",
   "homepage": "https://github.com/makinacorpus/accessimap-lecteur-der/",
   "scripts": {
-    "start": "electron electron.js",
-    "build": "cd ../modules/der-reader && npm run build && cd ../electron && build --win --linux --x64"
+    "env-dev": "cp env/env-dev.json env/env.json",
+    "env-prod": "cp env/env-prod.json env/env.json",
+    "start": "npm run env-dev && electron electron.js",
+    "build": "npm run env-prod cd ../modules/der-reader && npm run build && cd ../../electron && build --win --linux --x64",
+    "build-linux": "npm run env-prod && build --linux --x64"
   },
   "author": {
     "name": "Makina Corpus",
@@ -16,8 +19,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron-builder": "~7.11.4",
-    "electron-prebuilt": "^0.37.8"
+    "electron-builder": "^14.5.3",
+    "electron-prebuilt": "^1.4.13"
   },
   "dependencies": {
     "der-reader": "../modules/der-reader",
@@ -27,12 +30,8 @@
   "build": {
     "appId": "accessimap.lecteur",
     "productName": "accessimap-lecteur-der",
-    "win": {
-      "target": "zip"
-    },
     "linux": {
-      "category": "Education",
-      "target": "AppImage"
+      "category": "Education"
     }
   }
 }
