@@ -51,8 +51,7 @@ script:
   - 'ls $TRAVIS_BUILD_DIR/electron/dist'
   - 'cd ../cordova/www'
   - 'npm install'
-  - 'cordova prepare'  
-  - 'cordova build android'  
+  - 'npm run build'
   - 'ls $TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/'
 
 cache:
