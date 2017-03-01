@@ -115,8 +115,10 @@ var DerContainer = React.createClass({
       .then(function(data) {
         var node = Utils.parseXml(data);
         var json = Utils.XML2jsobj(node.documentElement);
-
         der['filters'] = json.filters;
+        if (!Array.isArray(der.filters.filter)) {
+          der.filters.filter = [der.filters.filter];
+        }
         der['pois'] = Array.isArray(json.pois.poi) ? json.pois : {poi: [ json.pois.poi ]} ;
         
         resolve();
