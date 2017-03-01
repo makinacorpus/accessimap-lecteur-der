@@ -6,8 +6,8 @@
   "repository": "https://github.com/makinacorpus/accessimap-lecteur-der/",
   "homepage": "https://github.com/makinacorpus/accessimap-lecteur-der/",
   "scripts": {
-    "start": "export NODE_ENV=dev && electron electron.js",
-    "build": "export NODE_ENV=prod && build --win --linux --x64"
+    "start": "electron electron.js",
+    "build": "build --win --linux --x64"
   },
   "author": {
     "name": "Makina Corpus",
