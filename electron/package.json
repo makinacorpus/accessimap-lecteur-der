@@ -30,8 +30,12 @@
   "build": {
     "appId": "accessimap.lecteur",
     "productName": "accessimap-lecteur-der",
+    "win": {
+      "target": "zip"
+    },
     "linux": {
-      "category": "Education"
+      "category": "Education",
+      "target": "AppImage"
     }
   }
 }
