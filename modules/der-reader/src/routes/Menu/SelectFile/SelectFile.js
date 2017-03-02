@@ -12,6 +12,7 @@ var SelectFile = React.createClass({
     document.body.onfocus = () => {
       if (this.state.file === null) {
         this.props.options.tts.speak('Aucun fichier sélectionné, retour au menu');
+        this.props.actions.changeDerFile(null);
       }
     }
     this.refs.inputfile.click();
@@ -21,8 +22,11 @@ var SelectFile = React.createClass({
     if (this.refs.inputfile) {
       let file = this.refs.inputfile.files[0];
       if (file !== undefined) {
-        this.props.actions.changeDerFile(file);
-        this.props.actions.changeFilter(null);
+        this.setState({file: file}, () => {
+          this.props.actions.changeDerFile(file);
+          this.props.actions.changeFilter(null);
+        });
+
       } else {
         this.props.options.message('Aucun fichier seléctionné', 'error');
       }
