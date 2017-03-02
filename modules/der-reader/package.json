@@ -1,6 +1,6 @@
 {
   "name": "der-reader",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "main": "der-reader.js",
   "author": "Alexandra JANIN",
   "license": "MIT",
