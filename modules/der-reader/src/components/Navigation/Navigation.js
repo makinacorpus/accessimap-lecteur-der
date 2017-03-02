@@ -3,6 +3,17 @@ require('!style!css!sass!./Navigation.scss');
 const Hammer = require('hammerjs');
 const React = require('react');
 
+function debounce(fn, delay) {
+  var timer = null;
+  return function () {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      fn.apply(context, args);
+    }, delay);
+  };
+}
+
 const Navigation = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
@@ -10,7 +21,7 @@ const Navigation = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if (this.props.read && this.props.index !== nextProps.index) {
-      this.props.read(nextProps.items[nextProps.index].name);
+      this.props.read(nextProps.items[nextProps.index].name); 
     }
   },
 
@@ -23,20 +34,21 @@ const Navigation = React.createClass({
 
     this.hammer = new Hammer(modal, {});
     this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-    this.hammer.on('swipeup', () => {
+    this.hammer.on('swipeup', debounce(() => {
       let newIndex = this.props.index-1;
       if (this.props.index === 0) {
         newIndex = this.props.items.length-1;
       }
       this.props.changeIndex(newIndex);
-    });
-    this.hammer.on('swipedown', () => {
+    }, 250));
+
+    this.hammer.on('swipedown', debounce(() => {
       let newIndex = this.props.index+1;
       if (this.props.index === this.props.items.length-1) {
         newIndex = 0;
       }
       this.props.changeIndex(newIndex);
-    });
+    }, 250));
 
     const nav = document.getElementById('navigation');
     var mc = new Hammer.Manager(nav);
