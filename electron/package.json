@@ -19,8 +19,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron-builder": "^14.5.3",
-    "electron-prebuilt": "^1.4.13"
+    "electron-builder": "^7.26.0",
+    "electron-prebuilt": "^0.37.8"
   },
   "dependencies": {
     "der-reader": "../modules/der-reader",
