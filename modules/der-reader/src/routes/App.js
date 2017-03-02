@@ -25,6 +25,12 @@ const App = React.createClass({
     }
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.routes[nextProps.routes.length-1].path === 'file') {
+      this.context.router.push('/menu');
+    }
+  },
+
   toggleMenu: function(id, labelOnClose, labelOnOpen) {
     let open = this.state.openedMenu === id;
     this.setState({
@@ -59,10 +65,11 @@ const App = React.createClass({
   changeDerFile: function(file) {
     if (file !== null) {
       this.setState({derFile: file, selectedDocument: 0}, () => {
-        // this.context.router.push('/');
-        this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu')
+        this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu');
+        this.context.router.push('/menu');
       });
     } else {
+      this.state.tts.speak('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
     }
   },
@@ -86,7 +93,6 @@ const App = React.createClass({
   render: function() {
     const {message, der, selectedDocument, mode, derFile, searchableElement, activeFilter} = this.state;
     let navigation;
-
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
         options: this.state,
