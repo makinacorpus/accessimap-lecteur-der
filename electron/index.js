@@ -1,16 +1,17 @@
 'use strict';
-const env = process.env.NODE_ENV;
 
-if (env === 'prod') {
-  // Bundle
-  var webspeechapi = require('tts.webapi');
-  var vibrateWebApi = require('vibrate.webapi');
-  var DerReader = require('der-reader');
+var webspeechapi, vibrateWebApi, DerReader;
+
+const env = require('./env/env.json').env;
+
+if (env === 'dev') {
+  webspeechapi = require('./../modules/tts.webapi/tts.webapi.js');
+  vibrateWebApi = require('./../modules/vibrate.webapi/vibrate.webapi.js');
+  DerReader = require('./../modules/der-reader/der-reader.js');
 } else {
-  // Dev
-  var webspeechapi = require('./../modules/tts.webapi/tts.webapi.js');
-  var vibrateWebApi = require('./../modules/vibrate.webapi/vibrate.webapi.js');
-  var DerReader = require('./../modules/der-reader/der-reader.js');
+  webspeechapi = require('tts.webapi');
+  vibrateWebApi = require('vibrate.webapi');
+  DerReader = require('der-reader');
 }
 
 var remote = require('electron').remote;
