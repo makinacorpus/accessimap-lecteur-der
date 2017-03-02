@@ -19,7 +19,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron-builder": "^7.26.0",
+    "electron-builder": "^8.7.0",
     "electron-prebuilt": "^0.37.8"
   },
   "dependencies": {
