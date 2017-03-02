@@ -57,7 +57,14 @@ const App = React.createClass({
   },
 
   changeDerFile: function(file) {
-    this.setState({derFile: file, selectedDocument: 0});
+    if (file !== null) {
+      this.setState({derFile: file, selectedDocument: 0}, () => {
+        // this.context.router.push('/');
+        this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu')
+      });
+    } else {
+      this.context.router.push('/menu');
+    }
   },
 
   changeDocument: function(fileIndex) {

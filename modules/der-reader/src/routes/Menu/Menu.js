@@ -7,9 +7,13 @@ const Menu = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (nextProps.options !== this.props.options) {
-      this.context.router.push('/');
-    }
+    // if (nextProps.options !== this.props.options) {
+    //   this.context.router.push('/');
+    // } else {
+    //   if (nextProps.routes[nextProps.routes.length-1].path === 'file') {
+    //     this.context.router.push('/menu');
+    //   }
+    // }
   },
 
   render: function() {
