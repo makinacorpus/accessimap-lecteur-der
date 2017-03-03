@@ -42,8 +42,13 @@ var DerContainer = React.createClass({
   },
 
   openDerFile: function(file) {
+    if (!file) {
+      this.props.message('Aucun fichier à charger', 'error');
+      return;
+    } 
     if (file.type.split('.').pop() !== 'application/zip') {
       this.props.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
+      return;
     }
     var new_zip = new JSZip();
     new_zip.loadAsync(file)
