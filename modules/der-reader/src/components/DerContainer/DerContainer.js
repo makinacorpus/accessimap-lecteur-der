@@ -46,21 +46,32 @@ var DerContainer = React.createClass({
       this.props.message('Aucun fichier à charger, merci de charger un document en relief', 'error');
       return;
     } 
-    if (file.type.split('.').pop() !== 'application/zip') {
-      this.props.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
-      return;
+    const fileType = file.type.split('.').pop();
+    console.log(fileType + ' detected');
+    switch(fileType) {
+      case 'application/zip':
+      case 'application/x-zip-compressed':
+      case 'application/x-zip':
+      case 'application/octet-stream':
+        var new_zip = new JSZip();
+        new_zip.loadAsync(file)
+        .then(zip => {
+          this._extractFiles(zip.files).then((der) => {
+            this.props.message('');
+            this.props.setDer(der);
+            this.loadDer(der);
+          }, (error) => {
+            this.props.message(error, 'error');
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          this.props.message('Erreur lors de l\'ouverture du fichier ZIP', 'error');
+        });
+        break;
+      default:
+        this.props.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
     }
-    var new_zip = new JSZip();
-    new_zip.loadAsync(file)
-    .then(zip => {
-      this._extractFiles(zip.files).then((der) => {
-        this.props.message('');
-        this.props.setDer(der);
-        this.loadDer(der);
-      }, (error) => {
-        this.props.message(error, 'error');
-      });
-    });
   },
 
 
