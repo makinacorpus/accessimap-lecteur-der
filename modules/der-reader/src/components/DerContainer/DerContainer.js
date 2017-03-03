@@ -43,7 +43,7 @@ var DerContainer = React.createClass({
 
   openDerFile: function(file) {
     if (!file) {
-      this.props.message('Aucun fichier à charger', 'error');
+      this.props.message('Aucun fichier à charger, merci de charger un document en relief', 'error');
       return;
     } 
     if (file.type.split('.').pop() !== 'application/zip') {
