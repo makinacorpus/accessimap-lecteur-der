@@ -23,19 +23,20 @@ var SelectFile = React.createClass({
   },
 
   componentDidMount: function() {
-    document.body.onfocus = (e) => {
-      if (this.isMounted()) {
-        this.setState({
-          file: null
-        }, () => {
-          this.handleChange();
-        });
-      }
-    }
+    // document.body.onfocus = (e) => {
+    //   if (this.isMounted()) {
+    //     this.setState({
+    //       file: null
+    //     }, () => {
+    //       this.handleChange();
+    //     });
+    //   }
+    // }
     this.refs.inputfile.click();
   },
 
   changeFile: function() {
+    console.log('changeFile');
     if (this.refs.inputfile) {
       let file = this.refs.inputfile.files[0];
       if (file !== undefined) {
