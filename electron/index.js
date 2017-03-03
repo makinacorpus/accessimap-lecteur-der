@@ -29,7 +29,7 @@ function exit() {
 
 DerReader.init({
   container: 'der-reader',
-  derFile: './der/Londres.zip',
+  derFile: null,
   tts: webspeechapi,
   vibrate: vibrateWebApi,
   defaultMode: 0,
