@@ -48,6 +48,7 @@ const App = React.createClass({
 
   showMessage: function(text, type) {
     this.setState({ message: {text: text, type: type} });
+    this.state.tts.speak(text);
   },
 
   setFilesList: function(files) {

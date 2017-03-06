@@ -1,7 +1,9 @@
 @import './../../der-reader-variables.scss';
 
 .message {
-    color: white;
+    color: $red;
+    font-size: 42px;
+    line-height: 1.42;
     position: absolute;
     z-index: 10;
     width: 100%;
@@ -10,8 +12,9 @@
         display: block;
         font-weight: bold;
         padding: 10px;
+        margin-top: 20%;
         &.error {
-            background-color: $red;
+            // background-color: $red;
         }
         &.info {
             background-color: $green;

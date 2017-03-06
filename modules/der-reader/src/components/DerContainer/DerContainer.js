@@ -43,7 +43,7 @@ var DerContainer = React.createClass({
 
   openDerFile: function(file) {
     if (!file) {
-      this.props.message('Aucun fichier à charger, merci de charger un document en relief', 'error');
+      this.props.message('Aucun fichier chargé. Veuillez sélectionner un document\xa0en\xa0relief à l\'aide du menu.', 'error');
       return;
     } 
     const fileType = file.type.split('.').pop();
