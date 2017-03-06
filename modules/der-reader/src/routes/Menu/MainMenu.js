@@ -37,7 +37,6 @@ const Menu = React.createClass({
     return (
       <Navigation
         action={this.handleAction}
-        read={this.read}
         index={this.state.activeMenu}
         items={this.props.route.childRoutes}
         changeIndex={this.changeActiveMenu}
