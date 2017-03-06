@@ -22,7 +22,7 @@ var app = {
     onDeviceReady: function() {
         window.DerReader.init({
           container: 'der-reader',
-          derFile: './der/Londres.zip',
+          derFile: null,
           tts: window.cordovaTTS,
           vibrate: window.vibrateCordova,
           defaultMode: 0,
