@@ -4,13 +4,26 @@ const Menu = require('./routes/Menu/Menu.js');
 const Filters = require('./routes/Filters/Filters.js');
 const SelectFile = require('./routes/Menu/SelectFile/SelectFile.js');
 const SwitchMode = require('./routes/Menu/SwitchMode/SwitchMode.js');
+const CalibrateMenu = require('./routes/Menu/Calibrate/CalibrateMenu.js');
 const SelectDocument = require('./routes/Menu/SelectDocument/SelectDocument.js');
 const FastClick = require('fastclick');
 // const TouchEmulator = require('hammer-touchemulator');
-const App = require('./routes/App');
 const React = require('react');
 const ReactDOM = require('react-dom');
-import { Router, hashHistory } from 'react-router';
+
+import { combineReducers } from 'redux';
+import App from './routes/App.container';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';  
+import { Router, Route, hashHistory } from 'react-router';
+import appReducer from './store/reducers';
+
+const store = createStore(
+  combineReducers({appReducer}),
+  // applyMiddleware(combineReducers({appReducer})),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
 let config = null;
 
 var DerReader = {
@@ -43,6 +56,16 @@ var DerReader = {
           childRoutes: [
             { path: 'menu', component: SelectFile, name: 'Charger un nouveau document en relief' },
             { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' },
+            { 
+              path: 'calibrate', 
+              component: CalibrateMenu,
+              name: 'Calibrer l\'écran',
+              childRoutes: [
+                { format: 'a3', name: 'Format A3' },
+                { format: 'a4', name: 'Format A4' },
+                { format: 'a5', name: 'Format A5' },
+              ]
+             },
             // { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' },
             { path: 'quit', name: 'Quitter l\'application' }
           ]
@@ -56,7 +79,9 @@ var DerReader = {
     };
 
     ReactDOM.render(
-      <Router routes={routes} history={hashHistory} />,
+      <Provider store={store}>    
+        <Router routes={routes} history={hashHistory} />
+      </Provider>,
       document.getElementById(config.container)
     );
   }
