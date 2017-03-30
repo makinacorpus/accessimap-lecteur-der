@@ -40,9 +40,12 @@ const appReducer = (state = defaultState, action) => {
         files: action.files
       };
     case SET_DER:
+      console.log(action)
+      let filters = state.activeFilter === null ? action.der.filters.filter[0] : state.activeFilter;
       return {
         ...state,
-        der: action.der
+        der: action.der,
+        activeFilter: filters
       };
     default:
       return state;

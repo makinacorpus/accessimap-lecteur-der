@@ -10,7 +10,7 @@ const Button = require('./../components/Button/Button.js');
 class App extends Component{
   constructor(props) {
     super(props);
-
+    console.log(this.props.route.config)
     this.state = {
       mode: this.props.route.config.defaultMode,
       searchableElement: null,
@@ -46,25 +46,11 @@ class App extends Component{
     this.state.tts.speak(text);
   }
 
-  setDer(der) {
-    this.setState({der: der}, () => {
-      if (this.state.activeFilter === null) {
-        this.props.setFilter(der.files.filter[0]);
-      }
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.derFile !== nextProps.derFile) {
-      this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu');
-      this.context.router.push('/menu');
-    }
-  }
-
   changeDerFile(file) {
     if (file !== null) {
       this.props.setDerFile(file);
-
+      this.context.router.push('/');
+      // this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu');      
     } else {
       this.state.tts.speak('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
