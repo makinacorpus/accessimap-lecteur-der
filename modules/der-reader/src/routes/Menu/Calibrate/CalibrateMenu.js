@@ -1,6 +1,7 @@
 require('!style!css!sass!./Calibrate.scss');
-var React = require('react');
-const Navigation = require('../../../components/Navigation/Navigation.js');
+import React from 'react';
+import Navigation from '../../../components/Navigation/Navigation.js';
+import { drawRuler, clearRuler, clampDpi } from './Calibrate';
 
 var CalibrateMenu = React.createClass({
   contextTypes: {
@@ -10,14 +11,35 @@ var CalibrateMenu = React.createClass({
   getInitialState: function() {
     return {
       activeMenu: 0,
-      calibrateMode: false
+      calibrateMode: false,
+      /** @type {{w: number, h: (number|undefined)}} */
+      totemMarker: null,
+      currentTransform: {
+        x: 0,
+        y: 0,
+        angle: 0
+      },
+      options: {
+        dpi: 96,
+        drawMetric: 2,
+        drawInches: 1,
+        flipped: false
+      }
     };
   },
 
+  setTotem: function(o) {
+    var canvas = document.getElementById('canvas');
+    var c = canvas.getContext('2d');
+    clearRuler(c, canvas, this.state.options);
+    this.setState({totemMarker: o});
+    drawRuler(c, canvas, this.state.totemMarker, this.state.options);
+  },
+
   componentDidUpdate: function() {
-    console.log(this.state)
     if (this.state.calibrateMode) {
       var canvas = document.getElementById('canvas');
+      var c = canvas.getContext('2d');
       if (!canvas.getContext) {
           canvas.style.display = 'none';
           document.write(
@@ -25,63 +47,54 @@ var CalibrateMenu = React.createClass({
               'Come back with Chrome, Firefox, Opera,' +
               '<a href="http://www.google.com/chromeframe">Chrome Frame</a>, etc.</h1>');
       }
-      canvas.addEventListener('mousedown', function (e) {
+
+      var screenInfo = {
+        screenWidthPx: screen.width,
+        screenHeightPx: screen.height
+      };
+
+      canvas.width = canvas.offsetWidth; //document.documentElement.clientWidth;
+      canvas.height = canvas.offsetHeight; // document.documentElement.clientHeight;
+      c.translate(this.state.currentTransform.x, this.state.currentTransform.y);
+      c.rotate(this.state.currentTransform.angle);
+      drawRuler(c, canvas, this.state.totemMarker, this.state.options);
+
+      canvas.addEventListener('mousedown', (e) => {
           // clientX is position relative to viewport in CSS pixels.
           var dragStartX = e.clientX,
               dragStartY = e.clientY;
           var lastClientX = dragStartX,
               lastClientY = dragStartY;
-          var lastMouseAngle = Math.atan2(e.clientY - currentTransform.y,
-              e.clientX - currentTransform.x);
-          var mode = MouseDownModes.MOVING;
-          var resizeToTotem = function (e) {
+          var lastMouseAngle = Math.atan2(e.clientY - this.state.currentTransform.y,
+              e.clientX - this.state.currentTransform.x);
+          // var mode = MouseDownModes.MOVING;
+
+          var resizeToTotem = (e) => {
               // project the click point onto the ruler vector, which is
-              var a = e.clientX - currentTransform.x;
-              var b = e.clientY - currentTransform.y;
+              var a = e.clientX - this.state.currentTransform.x;
+              var b = e.clientY - this.state.currentTransform.y;
               var r = Math.sqrt(a * a + b * b);
               var theta = Math.atan2(b, a);
-              var projection = r * Math.cos(theta - currentTransform.angle);
-              if (options.flipped) {
+              var projection = r * Math.cos(theta - this.state.currentTransform.angle);
+              if (this.state.options.flipped) {
                   projection = -projection;
               }
-              var newDpi = projection / totemMarker.w;
+              var newDpi = projection / this.state.totemMarker.w;
               newDpi = clampDpi(newDpi);
-              options.dpi = newDpi;
+              this.setState({options: { ...this.state.options, dpi: newDpi }});
           };
-          if (totemMarker) {
-              mode = MouseDownModes.CALIBRATING;
-          }
-          if (e.shiftKey) mode = MouseDownModes.MOVING; // even while calibrating, you can move
-          else if (e.ctrlKey) mode = MouseDownModes.ROTATING;
-          if (mode === MouseDownModes.CALIBRATING) {
-              clearRuler();
-              resizeToTotem(e);
-              drawRuler();
-          }
-          var onmousemove = function (e) {
+
+          clearRuler(c, canvas, this.state.options);
+          resizeToTotem(e);
+          drawRuler(c, canvas, this.state.totemMarker, this.state.options);
+
+          var onmousemove = (e) => {
               e.preventDefault(); // prevent text selection
               e.stopPropagation();
-              // canvas.width = canvas.width;  // clear the canvas and also the transform
-              clearRuler();
-              if (mode === MouseDownModes.MOVING) {
-                  var dx = e.clientX - lastClientX;
-                  var dy = e.clientY - lastClientY;
-                  c.rotate(-currentTransform.angle)
-                  c.translate(dx, dy);
-                  c.rotate(currentTransform.angle)
-                  currentTransform.x += dx;
-                  currentTransform.y += dy;
-              } else if (mode === MouseDownModes.CALIBRATING) {
-                  resizeToTotem(e);
-              } else if (mode === MouseDownModes.ROTATING) {
-                  var currentMouseAngle = Math.atan2(e.clientY - currentTransform.y,
-                      e.clientX - currentTransform.x);
-                  var angleChange = currentMouseAngle - lastMouseAngle;
-                  currentTransform.angle += angleChange;
-                  c.rotate(angleChange);
-                  lastMouseAngle = currentMouseAngle;
-              }
-              drawRuler();
+              clearRuler(c, canvas, this.state.options);
+              resizeToTotem(e);
+
+              drawRuler(c, canvas, this.state.totemMarker, this.state.options);
               lastClientX = e.clientX;
               lastClientY = e.clientY;
           };
@@ -109,8 +122,10 @@ var CalibrateMenu = React.createClass({
       this.setState({calibrateMode: true});
       switch(format) {
         case 'a3':
+          this.setTotem({w:21.0/2.54,h:29.7/2.54,name:'a4 paper'});
           break;
         case 'a4':
+          this.setTotem({w:21.0/2.54,h:29.7/2.54,name:'a4 paper'});
           break;
         case 'a5':
           break;

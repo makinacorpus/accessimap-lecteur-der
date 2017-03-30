@@ -143,8 +143,9 @@ export const clampDpi = function (dpi) {
     return dpi;
 };
 
-var c = canvas.getContext('2d');
-var clearRuler = function () {
+// var c = canvas.getContext('2d');
+export const clearRuler = function (c, canvas, options) {
+    console.log(options)
     var rulerLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     if (options.flipped) {
         c.clearRect(10, -65, -rulerLength - 20, 130);
@@ -201,7 +202,8 @@ function drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine) {
         }
     }
 }
-var drawRuler = function () {
+export const drawRuler = function (c, canvas, totemMarker, options) {
+    console.log('drawRuler')
     var dpi = options.dpi;
     c.strokeStyle = 'black';
     c.beginPath();
@@ -272,14 +274,14 @@ var screenInfo = {
     screenWidthPx: screen.width,
     screenHeightPx: screen.height
 };
-window.onresize = function () {
-    // TODO: set resolution-dependent width
-    canvas.width = canvas.offsetWidth; //document.documentElement.clientWidth;
-    canvas.height = canvas.offsetHeight; // document.documentElement.clientHeight;
-    c.translate(currentTransform.x, currentTransform.y);
-    c.rotate(currentTransform.angle);
-    drawRuler();
-};
+// window.onresize = function () {
+//     // TODO: set resolution-dependent width
+//     canvas.width = canvas.offsetWidth; //document.documentElement.clientWidth;
+//     canvas.height = canvas.offsetHeight; // document.documentElement.clientHeight;
+//     c.translate(currentTransform.x, currentTransform.y);
+//     c.rotate(currentTransform.angle);
+//     drawRuler();
+// };
 // TODO: save this before so we don't have to do it on unload
 onunload = function () {
     // store cookie for 30 days
@@ -317,11 +319,11 @@ export const parseCookie = function () {
     }
 };
 parseCookie();
-var MouseDownModes = {
-    MOVING: 0,
-    CALIBRATING: 1,
-    ROTATING: 2
-};
+// var MouseDownModes = {
+//     MOVING: 0,
+//     CALIBRATING: 1,
+//     ROTATING: 2
+// };
 
 
 export const setTotem = function (o) {
@@ -329,4 +331,4 @@ export const setTotem = function (o) {
     totemMarker = o;
     drawRuler();
 };
-window.onresize();
+// window.onresize();
