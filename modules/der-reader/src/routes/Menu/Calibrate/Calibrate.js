@@ -159,23 +159,18 @@ var CalibrateCanvas = React.createClass({
       },
       options: {
         dpi: 96,
-        drawMetric: 2,
-        drawInches: 1,
         flipped: false
       }
     };
   },
 
-  setTotem: function (o) {
-    var canvas = document.getElementById('canvas');
-    var c = canvas.getContext('2d');
-    this.clearRuler();
-    this.drawRuler();
+  componentWillReceiveProps: function(nextProps) {
+    if (this.props.totemMarker !== nextProps.totemMarker) {
+      this.drawRuler(nextProps.totemMarker);
+    }
   },
 
   componentDidMount: function () {
-    console.log('componentDidMount')
-    
     var canvas = document.getElementById('canvas');
     var c = canvas.getContext('2d');
     
@@ -197,7 +192,6 @@ var CalibrateCanvas = React.createClass({
     c.translate(this.state.currentTransform.x, this.state.currentTransform.y);
     c.rotate(this.state.currentTransform.angle);
     
-    console.log('setState', canvas, c)
     this.setState({ canvas, c }, () => {
       this.drawRuler();
       canvas.addEventListener('mousedown', this.onMouseDown, false);
@@ -315,11 +309,9 @@ var CalibrateCanvas = React.createClass({
     }
   },
 
-  drawRuler: function () {
+  drawRuler: function (newTotemMarker) {
     const { c, canvas, options } = this.state;
-    const { totemMarker } = this.props;
-
-    console.log('drawRuler', this.state);
+    const totemMarker = this.props.totemMarker || newTotemMarker;
     var dpi = options.dpi;
     c.strokeStyle = 'black';
     c.beginPath();
@@ -327,24 +319,9 @@ var CalibrateCanvas = React.createClass({
     var rulerLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     if (options.flipped) c.lineTo(-rulerLength, 0);
     else c.lineTo(rulerLength, 0);
-    if (options.drawInches) {
-      // 1 tick = 1/16 in = dpi/16 px.
-      var tickDistance = dpi / 16,
-        isAboveLine = options.drawInches === 1,
-        ticks = [];
-      for (var i = 0; i < 16; i++) {
-        var y = i % 16 == 0 ? 50 : i % 8 === 0 ? 30 : i % 4 === 0 ? 20 : i % 2 === 0 ? 15 : 10;
-        ticks.push(y);
-      }
-      this.drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine);
-    }
-    if (options.drawMetric) {
-      // 1 tick = 1 mm = 1/25.4 in = dpi/25.4px
-      var tickDistance = dpi / 25.4,
-        isAboveLine = options.drawMetric === 1,
-        ticks = [30, 10, 10, 10, 10, 20, 10, 10, 10, 10];
-      this.drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine);
-    }
+    var tickDistance = dpi / 25.4,
+      ticks = [30, 10, 10, 10, 10, 20, 10, 10, 10, 10];
+    this.drawRulerHelper(c, ticks, tickDistance, rulerLength, true);
     c.stroke();
     c.beginPath();
     if (totemMarker) {
@@ -377,11 +354,7 @@ var CalibrateCanvas = React.createClass({
 
   render: function () {
     return ( 
-      <canvas 
-        id="canvas"
-        width="919"
-        height="1014">
-      </canvas>
+      <canvas id="canvas" width="919" height="1014"></canvas>
     );
   }
 });
