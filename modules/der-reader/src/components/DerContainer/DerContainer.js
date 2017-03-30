@@ -47,7 +47,6 @@ var DerContainer = React.createClass({
       return;
     } 
     const fileType = file.type.split('.').pop();
-    console.log(fileType + ' detected');
     switch(fileType) {
       case 'application/zip':
       case 'application/x-zip-compressed':

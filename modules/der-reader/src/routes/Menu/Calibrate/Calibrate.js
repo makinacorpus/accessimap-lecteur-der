@@ -198,6 +198,10 @@ var CalibrateCanvas = React.createClass({
     });
   },
 
+  componentWillUnmount: function() {
+    canvas.removeEventListener('mousedown', this.onMouseDown, false);
+  },
+
   onMouseDown: function(e) {
     // clientX is position relative to viewport in CSS pixels.
     var dragStartX = e.clientX,

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { hashHistory } from 'react-router';
-import { setMessage } from '../store/actions';
+import { setMessage, setDerFile, setFilter, setFilesList, setDer } from '../store/actions';
 
 const DerContainer = require('./../components/DerContainer/DerContainer.js');
 const Message = require('./../components/Message/Message.js');
@@ -13,12 +13,7 @@ class App extends Component{
 
     this.state = {
       mode: this.props.route.config.defaultMode,
-      derFile: this.props.route.config.derFile,
-      selectedDocument: 0,
-      der: [],
-      files: [],
       searchableElement: null,
-      activeFilter: null,
       tts: this.props.route.config.tts,
       exit: this.props.route.config.exit,
       openedMenu: ''
@@ -51,40 +46,33 @@ class App extends Component{
     this.state.tts.speak(text);
   }
 
-  setFilesList(files) {
-    this.setState({files: files});
-  }
-
   setDer(der) {
     this.setState({der: der}, () => {
       if (this.state.activeFilter === null) {
-        this.changeFilter(der.filters.filter[0]);
+        this.props.setFilter(der.files.filter[0]);
       }
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.derFile !== nextProps.derFile) {
+      this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu');
+      this.context.router.push('/menu');
+    }
+  }
+
   changeDerFile(file) {
     if (file !== null) {
-      this.setState({derFile: file, selectedDocument: 0}, () => {
-        this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu');
-        this.context.router.push('/menu');
-      });
+      this.props.setDerFile(file);
+
     } else {
       this.state.tts.speak('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
     }
   }
 
-  changeDocument(fileIndex) {
-    this.setState({selectedDocument: fileIndex});
-  }
-
   changeMode(mode) {
     this.setState({mode: mode});
-  }
-
-  changeFilter(filter) {
-    this.setState({activeFilter: filter});
   }
 
   setSearchableElement(searchableElement) {
@@ -99,20 +87,25 @@ class App extends Component{
   }
 
   render() {
-    const {der, selectedDocument, mode, derFile, searchableElement, activeFilter} = this.state;
+    // console.log(this.props)
+    const { mode, searchableElement } = this.state;
+    const { der, selectedDocument, derFile, activeFilter } = this.props;
     let navigation;
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
-        options: this.state,
+        options: {
+          tts: this.state.tts, 
+          der, selectedDocument, derFile, activeFilter
+        },
         actions: {
           toggleMenu: this.toggleMenu.bind(this),
           showMessage: (text, type) => this.showMessage(text, type),
-          setFilesList: this.setFilesList,
-          setDer: this.setDer,
-          changeDerFile: this.changeDerFile,
+          setFilesList: files => this.props.setFilesList(files),
+          setDer: der => this.props.setDer(der),
+          changeDerFile: file => this.changeDerFile(file),
           changeDocument: this.changeDocument,
           changeMode: this.changeMode,
-          changeFilter: this.changeFilter,
+          changeFilter: filter => this.props.setFilter(filter),
           setSearchableElement: this.setSearchableElement
         }
       });
@@ -143,8 +136,8 @@ class App extends Component{
         {this.getMessage()}
 
         <DerContainer
-          setFilesList={this.setFilesList}
-          setDer={this.setDer}
+          setFilesList={files => this.props.setFilesList(files)}
+          setDer={der => this.props.setDer(der)}
           der={der}
           selectedDocument={selectedDocument}
           searchableElement={searchableElement}
@@ -166,14 +159,16 @@ App.contextTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    message: state.appReducer.message
-  }
+  return state.appReducer
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setMessage: message => dispatch(setMessage(message))
+    setMessage: message => dispatch(setMessage(message)),
+    setDerFile: file => dispatch(setDerFile(file)),
+    setFilter: filter => dispatch(setFilter(filter)),
+    setFilesList: files => dispatch(setFilesList(files)),
+    setDer: files => dispatch(setDer(files))
   }
 };
 

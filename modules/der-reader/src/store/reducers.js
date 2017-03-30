@@ -1,7 +1,12 @@
-import { SET_MESSAGE } from './actions';
+import { SET_MESSAGE, SET_DER_FILE, SET_FILTER, SET_FILES_LIST, SET_DER } from './actions';
 
 const defaultState = {
   config: {},
+  derFile: null,
+  der: [],
+  files: [],
+  selectedDocument: 0,
+  activeFilter: null,
   message: {
     messageType: '',
     text: ''
@@ -17,6 +22,27 @@ const appReducer = (state = defaultState, action) => {
           messageType: action.messageType,
           text: action.text
         }
+      };
+    case SET_DER_FILE:
+      return {
+        ...state,
+        derFile: action.derFile,
+        selectedDocument: 0
+      };
+    case SET_FILTER:
+      return {
+        ...state,
+        activeFilter: action.filter
+      };
+    case SET_FILES_LIST:
+      return {
+        ...state,
+        files: action.files
+      };
+    case SET_DER:
+      return {
+        ...state,
+        der: action.der
       };
     default:
       return state;

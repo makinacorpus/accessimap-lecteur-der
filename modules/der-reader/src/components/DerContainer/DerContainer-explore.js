@@ -81,7 +81,7 @@ var Explore = {
   },
 
   _getAction: function(actions, type) {
-    if (!Array.isArray(actions)) {
+    if (!Array.isArray(actions) && this.filter !== null) {
       if (actions.filter === this.filter.id) {
         return actions;
       }
