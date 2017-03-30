@@ -127,54 +127,166 @@
  * So it's just more silliness. See
  * http://msdn.microsoft.com/en-us/library/cc849094(v=vs.85).aspx
  */
-export const cssDpi = function () {
-    var d = document.createElement('div');
-    d.style.width = '10in';
-    d.style.height = '10px';
-    document.body.appendChild(d);
-    var dpi = d.offsetWidth / 10;
-    document.body.removeChild(d);
-    return dpi;
+const cssDpi = function () {
+  var d = document.createElement('div');
+  d.style.width = '10in';
+  d.style.height = '10px';
+  document.body.appendChild(d);
+  var dpi = d.offsetWidth / 10;
+  document.body.removeChild(d);
+  return dpi;
 };
 
-export const clampDpi = function (dpi) {
-    if (dpi < 5) dpi = 5;
-    if (dpi > 1000) dpi = 1000;
-    return dpi;
+const clampDpi = function (dpi) {
+  if (dpi < 5) dpi = 5;
+  if (dpi > 1000) dpi = 1000;
+  return dpi;
 };
 
-// var c = canvas.getContext('2d');
-export const clearRuler = function (c, canvas, options) {
-    console.log(options)
+require('!style!css!sass!./Calibrate.scss');
+import React from 'react';
+
+var CalibrateCanvas = React.createClass({
+
+  getInitialState: function () {
+    return {
+      canvas: null,
+      c: null,
+      currentTransform: {
+        x: 0,
+        y: 0,
+        angle: 0
+      },
+      options: {
+        dpi: 96,
+        drawMetric: 2,
+        drawInches: 1,
+        flipped: false
+      }
+    };
+  },
+
+  setTotem: function (o) {
+    var canvas = document.getElementById('canvas');
+    var c = canvas.getContext('2d');
+    this.clearRuler();
+    this.drawRuler();
+  },
+
+  componentDidMount: function () {
+    console.log('componentDidMount')
+    
+    var canvas = document.getElementById('canvas');
+    var c = canvas.getContext('2d');
+    
+    if (!canvas.getContext) {
+      canvas.style.display = 'none';
+      document.write(
+        '<h1>Sorry, you\u2019re using an obsolete browser. ' +
+        'Come back with Chrome, Firefox, Opera,' +
+        '<a href="http://www.google.com/chromeframe">Chrome Frame</a>, etc.</h1>');
+    }
+
+    var screenInfo = {
+      screenWidthPx: screen.width,
+      screenHeightPx: screen.height
+    };
+
+    canvas.width = canvas.offsetWidth; //document.documentElement.clientWidth;
+    canvas.height = canvas.offsetHeight; // document.documentElement.clientHeight;
+    c.translate(this.state.currentTransform.x, this.state.currentTransform.y);
+    c.rotate(this.state.currentTransform.angle);
+    
+    console.log('setState', canvas, c)
+    this.setState({ canvas, c }, () => {
+      this.drawRuler();
+      canvas.addEventListener('mousedown', this.onMouseDown, false);
+    });
+  },
+
+  onMouseDown: function(e) {
+    // clientX is position relative to viewport in CSS pixels.
+    var dragStartX = e.clientX,
+      dragStartY = e.clientY;
+    var lastClientX = dragStartX,
+      lastClientY = dragStartY;
+    var lastMouseAngle = Math.atan2(e.clientY - this.state.currentTransform.y,
+      e.clientX - this.state.currentTransform.x);
+
+    var resizeToTotem = (e) => {
+      // project the click point onto the ruler vector, which is
+      var a = e.clientX - this.state.currentTransform.x;
+      var b = e.clientY - this.state.currentTransform.y;
+      var r = Math.sqrt(a * a + b * b);
+      var theta = Math.atan2(b, a);
+      var projection = r * Math.cos(theta - this.state.currentTransform.angle);
+      if (this.state.options.flipped) {
+        projection = -projection;
+      }
+      var newDpi = projection / this.props.totemMarker.w;
+      newDpi = clampDpi(newDpi);
+      this.setState({
+        options: { ...this.state.options,
+          dpi: newDpi
+        }
+      });
+    };
+
+    this.clearRuler();
+    resizeToTotem(e);
+    this.drawRuler();
+
+    var onmousemove = (e) => {
+      e.preventDefault(); // prevent text selection
+      e.stopPropagation();
+      this.clearRuler();
+      resizeToTotem(e);
+
+      this.drawRuler();
+      lastClientX = e.clientX;
+      lastClientY = e.clientY;
+    };
+    var onmouseup = function (e) {
+      document.removeEventListener('mousemove', onmousemove, true);
+      document.removeEventListener('mouseup', onmouseup, false);
+      window.onblur = null;
+    };
+    document.addEventListener('mousemove', onmousemove, true);
+    document.addEventListener('mouseup', onmouseup, false);
+    window.onblur = onmouseup;
+  },
+
+  clearRuler: function () {
+    const { c, canvas, options } = this.state;
+    const { totemMarker } = this.props;
     var rulerLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     if (options.flipped) {
-        c.clearRect(10, -65, -rulerLength - 20, 130);
+      c.clearRect(10, -65, -rulerLength - 20, 130);
     } else {
-        c.clearRect(-2, -65, rulerLength + 20, 130);
+      c.clearRect(-2, -65, rulerLength + 20, 130);
     }
     if (!totemMarker || !totemMarker.h) return;
     var edgeX = totemMarker.w * options.dpi + 8;
     if (options.flipped) {
-        c.clearRect(4, -4, -edgeX, totemMarker.h * options.dpi + 8);
+      c.clearRect(4, -4, -edgeX, totemMarker.h * options.dpi + 8);
     } else {
-        c.clearRect(-4, -4, edgeX, totemMarker.h * options.dpi + 8);
+      c.clearRect(-4, -4, edgeX, totemMarker.h * options.dpi + 8);
     }
-};
-/** @type {{w: number, h: (number|undefined)}} */
-var totemMarker = null;
+  },
 
-/**
- * Draws the ticks and numbers. The tick lengths are given in an array.
- *
- * Caller is responsible for calling stroke(); beginPath() after this function.
- *
- * @param {!CanvasRenderingContext2D} c
- * @param {!Array.<number>} array of heights of ticks (px)
- * @param {number} tickDistance horizontal distance between each tick (px)
- * @param {number} rulerLength horizontal length of ruler (px)
- * @param {boolean} isAboveLine true if we should draw above the line.
- */
-function drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine) {
+  /**
+   * Draws the ticks and numbers. The tick lengths are given in an array.
+   *
+   * Caller is responsible for calling stroke(); beginPath() after this function.
+   *
+   * @param {!CanvasRenderingContext2D} c
+   * @param {!Array.<number>} array of heights of ticks (px)
+   * @param {number} tickDistance horizontal distance between each tick (px)
+   * @param {number} rulerLength horizontal length of ruler (px)
+   * @param {boolean} isAboveLine true if we should draw above the line.
+   */
+  drawRulerHelper: function (c, ticks, tickDistance, rulerLength, isAboveLine) {
+    const { options } = this.state;
     var i = 0;
     c.textBaseline = isAboveLine ? 'bottom' : 'top';
     var numTicks = rulerLength / tickDistance;
@@ -191,19 +303,23 @@ function drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine) {
     c.beginPath();
 
     for (var i = 0; i < numTicks; ++i) {
-        var x = i * tickDistance;
-        if (options.flipped) x = -x;
-        var y = ticks[i % ticks.length];
-        if (!isAboveLine) y = -y;
-        c.moveTo(x, 0);
-        c.lineTo(x, y);
-        if (i % ticks.length == 0) {
-            c.fillText(i / ticks.length, x + 3, y);
-        }
+      var x = i * tickDistance;
+      if (options.flipped) x = -x;
+      var y = ticks[i % ticks.length];
+      if (!isAboveLine) y = -y;
+      c.moveTo(x, 0);
+      c.lineTo(x, y);
+      if (i % ticks.length == 0) {
+        c.fillText(i / ticks.length, x + 3, y);
+      }
     }
-}
-export const drawRuler = function (c, canvas, totemMarker, options) {
-    console.log('drawRuler')
+  },
+
+  drawRuler: function () {
+    const { c, canvas, options } = this.state;
+    const { totemMarker } = this.props;
+
+    console.log('drawRuler', this.state);
     var dpi = options.dpi;
     c.strokeStyle = 'black';
     c.beginPath();
@@ -212,123 +328,62 @@ export const drawRuler = function (c, canvas, totemMarker, options) {
     if (options.flipped) c.lineTo(-rulerLength, 0);
     else c.lineTo(rulerLength, 0);
     if (options.drawInches) {
-        // 1 tick = 1/16 in = dpi/16 px.
-        var tickDistance = dpi / 16,
-            isAboveLine = options.drawInches === 1,
-            ticks = [];
-        for (var i = 0; i < 16; i++) {
-            var y = i % 16 == 0 ? 50 : i % 8 === 0 ? 30 : i % 4 === 0 ? 20 : i % 2 === 0 ? 15 : 10;
-            ticks.push(y);
-        }
-        drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine);
+      // 1 tick = 1/16 in = dpi/16 px.
+      var tickDistance = dpi / 16,
+        isAboveLine = options.drawInches === 1,
+        ticks = [];
+      for (var i = 0; i < 16; i++) {
+        var y = i % 16 == 0 ? 50 : i % 8 === 0 ? 30 : i % 4 === 0 ? 20 : i % 2 === 0 ? 15 : 10;
+        ticks.push(y);
+      }
+      this.drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine);
     }
     if (options.drawMetric) {
-        // 1 tick = 1 mm = 1/25.4 in = dpi/25.4px
-        var tickDistance = dpi / 25.4,
-            isAboveLine = options.drawMetric === 1,
-            ticks = [30, 10, 10, 10, 10, 20, 10, 10, 10, 10];
-        drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine);
+      // 1 tick = 1 mm = 1/25.4 in = dpi/25.4px
+      var tickDistance = dpi / 25.4,
+        isAboveLine = options.drawMetric === 1,
+        ticks = [30, 10, 10, 10, 10, 20, 10, 10, 10, 10];
+      this.drawRulerHelper(c, ticks, tickDistance, rulerLength, isAboveLine);
     }
     c.stroke();
     c.beginPath();
     if (totemMarker) {
-        c.strokeStyle = 'green';
-        var marker = totemMarker;
-        var edgeX = marker.w * dpi;
-        if (options.flipped) edgeX = -edgeX;
-        c.moveTo(edgeX, -60);
-        c.lineTo(edgeX, 60);
-        if (marker.h) {
-            // Workaround for http://crbug.com/87097 : draw the leftmost vertical line
-            // twice, by itself, so that it doesn't get cut off in Chrome.
-            c.stroke();
-            c.beginPath();
-            c.moveTo(0, 0);
-            c.lineTo(0, marker.h * dpi);
-            c.stroke();
-            c.beginPath();
-
-            c.moveTo(0, 0);
-            c.lineTo(edgeX, 0);
-            c.lineTo(edgeX, marker.h * dpi);
-            c.lineTo(0, marker.h * dpi);
-            c.lineTo(0, 0);
-        }
+      c.strokeStyle = 'green';
+      var marker = totemMarker;
+      var edgeX = marker.w * dpi;
+      if (options.flipped) edgeX = -edgeX;
+      c.moveTo(edgeX, -60);
+      c.lineTo(edgeX, 60);
+      if (marker.h) {
+        // Workaround for http://crbug.com/87097 : draw the leftmost vertical line
+        // twice, by itself, so that it doesn't get cut off in Chrome.
         c.stroke();
         c.beginPath();
-    }
-};
-var dpiCalibrated = false;
-var currentTransform = {
-    x: 20,
-    y: 50,
-    angle: 0
-};
-var options = {
-    dpi: 96,
-    drawMetric: 2,
-    drawInches: 1,
-    flipped: false
-};
-var screenInfo = {
-    screenWidthPx: screen.width,
-    screenHeightPx: screen.height
-};
-// window.onresize = function () {
-//     // TODO: set resolution-dependent width
-//     canvas.width = canvas.offsetWidth; //document.documentElement.clientWidth;
-//     canvas.height = canvas.offsetHeight; // document.documentElement.clientHeight;
-//     c.translate(currentTransform.x, currentTransform.y);
-//     c.rotate(currentTransform.angle);
-//     drawRuler();
-// };
-// TODO: save this before so we don't have to do it on unload
-onunload = function () {
-    // store cookie for 30 days
-    var c = 'ruleroptions='
-    if (dpiCalibrated) c += 'dpi=' + options.dpi + '&';
-    c += 'm=' + options.drawMetric + '&i=' + options.drawInches + '; Max-Age=2592000;';
-    document.cookie = c;
-};
-export const parseCookie = function () {
-    var cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; ++i) {
-        var idx = cookies[i].indexOf('=');
-        var name = cookies[i].substr(0, idx).replace(/^\s+|\s+$/g, '');
-        if (name != 'ruleroptions') continue;
-        var value = cookies[i].substr(idx + 1).replace(/^\s+|\s+$/g, '');
-        var cookieParts = value.split('&');
-        for (var j = 0; j < cookieParts.length; ++j) {
-            var eq = cookieParts[j].indexOf('=');
-            var k = cookieParts[j].substr(0, eq);
-            var v = cookieParts[j].substr(eq + 1);
-            if (k == 'dpi') {
-                options.dpi = clampDpi(parseFloat(v) || 96);
-                dpiCalibrated = true;
-            } else if (k == 'm') {
-                options.drawMetric = '1' == v ? 1 : v == '0' ? 0 : 2;
-            } else if (k == 'i') {
-                options.drawInches = '1' == v ? 1 : v == '0' ? 0 : 2;
-            }
-        }
-    }
-    if (options.drawInches == 1 && options.drawMetric == 1) {
-        options.drawMetric = 2;
-    } else if (options.drawInches == 2 && options.drawMetric == 2) {
-        options.drawMetric = 1;
-    }
-};
-parseCookie();
-// var MouseDownModes = {
-//     MOVING: 0,
-//     CALIBRATING: 1,
-//     ROTATING: 2
-// };
+        c.moveTo(0, 0);
+        c.lineTo(0, marker.h * dpi);
+        c.stroke();
+        c.beginPath();
 
+        c.moveTo(0, 0);
+        c.lineTo(edgeX, 0);
+        c.lineTo(edgeX, marker.h * dpi);
+        c.lineTo(0, marker.h * dpi);
+        c.lineTo(0, 0);
+      }
+      c.stroke();
+      c.beginPath();
+    }
+  },
 
-export const setTotem = function (o) {
-    clearRuler();
-    totemMarker = o;
-    drawRuler();
-};
-// window.onresize();
+  render: function () {
+    return ( 
+      <canvas 
+        id="canvas"
+        width="919"
+        height="1014">
+      </canvas>
+    );
+  }
+});
+
+module.exports = CalibrateCanvas;
