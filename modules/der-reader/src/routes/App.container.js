@@ -79,9 +79,10 @@ class App extends Component{
     let navigation;
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
+        config: config,
         options: {
           tts: this.state.tts, 
-          config, der, selectedDocument, derFile, activeFilter
+          der, selectedDocument, derFile, activeFilter
         },
         actions: {
           toggleMenu: this.toggleMenu.bind(this),

@@ -10,7 +10,7 @@ import {
 
 const defaultState = {
   config: {
-    formatIndex: 0,
+    format: 'A3',
     dpi: 96
   },
   derFile: null,
@@ -25,7 +25,6 @@ const defaultState = {
 };
 
 const appReducer = (state = defaultState, action) => {
-  console.log(action)
   switch(action.type) {
     case SET_MESSAGE:
       return {

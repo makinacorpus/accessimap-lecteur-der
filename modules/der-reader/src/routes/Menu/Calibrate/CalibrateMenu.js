@@ -2,6 +2,8 @@ import React from 'react';
 import Navigation from '../../../components/Navigation/Navigation.js';
 import CalibrateCanvas from './Calibrate';
 
+const formats = ['A3', 'A4', 'A5', undefined]; // Last item is undefined for return button
+
 var CalibrateMenu = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
@@ -9,9 +11,7 @@ var CalibrateMenu = React.createClass({
 
   getInitialState: function() {
     return {
-      activeMenu: 0,
       calibrateMode: false,
-      /** @type {{w: number, h: (number|undefined)}} */
       totemMarker: null
     };
   },
@@ -21,8 +21,9 @@ var CalibrateMenu = React.createClass({
   },
 
   handleAction: function() {
-    let path = this.props.route.childRoutes[this.state.activeMenu].path;
-    let format = this.props.route.childRoutes[this.state.activeMenu].format;
+    const format = this.props.config.format;
+    const index = formats.indexOf(format);
+    let path = this.props.route.childRoutes[index].path;
 
     if (path === 'back') {
       this.props.actions.toggleMenu('menu', 'Fermeture du menu');
@@ -48,8 +49,9 @@ var CalibrateMenu = React.createClass({
   },
 
   changeActiveMenu: function(index) {
-    this.props.actions.setOptionFormat(this.props.route.childRoutes[index].format);
-    this.setState({activeMenu: index});
+    const format = this.props.route.childRoutes[index].format;
+    this.props.actions.setOptionFormat(format);
+    document.getElementById('der-reader').className = format;
   },
 
   read: function(text) {
@@ -57,6 +59,7 @@ var CalibrateMenu = React.createClass({
   },
 
   render: function() {
+    const index = formats.indexOf(this.props.config.format);
     if (this.state.calibrateMode) {
       return (
         <CalibrateCanvas totemMarker={this.state.totemMarker}></CalibrateCanvas>
@@ -65,7 +68,7 @@ var CalibrateMenu = React.createClass({
     return (
       <Navigation
         action={this.handleAction}
-        index={this.state.activeMenu}
+        index={index}
         items={this.props.route.childRoutes}
         changeIndex={this.changeActiveMenu}
         read={this.read}
