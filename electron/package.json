@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "der-reader": "../modules/der-reader",
+    "electron-json-storage": "^3.0.4",
     "tts.webapi": "../modules/tts.webapi",
     "vibrate.webapi": "../modules/vibrate.webapi"
   },
