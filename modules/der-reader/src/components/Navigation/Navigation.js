@@ -26,10 +26,7 @@ const Navigation = React.createClass({
   },
 
   componentWillMount: function() {
-    console.log(this.props)
-    if (this.props.items) {
-      this.props.items.push({path: 'back', name: 'Retour'});
-    }
+    this.props.items.push({path: 'back', name: 'Retour'});
   },
 
   componentDidMount: function() {
@@ -101,14 +98,14 @@ const Navigation = React.createClass({
         <div className="modal" ref="mainMenu" id="mainMenu">
           <div className="menu">
             <ul className="selectable-list">
-              {items.map(function(item, key) {
+              {items ? items.map(function(item, key) {
                 const isSelected = (key === index) ? 'selected' : '';
                 return (
                   <li key={key} className="selectable-list--item">
                     <a className={isSelected}>{item.name}</a>
                   </li>
                 );
-              }.bind(this))}
+              }.bind(this)) : null}
             </ul>
 
             {content}

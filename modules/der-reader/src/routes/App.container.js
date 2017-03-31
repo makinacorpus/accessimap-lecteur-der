@@ -10,7 +10,6 @@ const Button = require('./../components/Button/Button.js');
 class App extends Component{
   constructor(props) {
     super(props);
-    console.log(this.props.route.config)
     this.state = {
       mode: this.props.route.config.defaultMode,
       searchableElement: null,

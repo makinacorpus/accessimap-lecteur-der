@@ -44,10 +44,10 @@ var DerReader = {
     FastClick.attach(document.body, {});
     // TouchEmulator();
 
-    const routes = {
+    let routes = {
       path: '/',
       component: App,
-      config: config,
+      config,
       childRoutes: [
         {
           path: 'menu',
@@ -55,7 +55,6 @@ var DerReader = {
           name: 'Menu principal',
           childRoutes: [
             { path: 'menu', component: SelectFile, name: 'Charger un nouveau document en relief' },
-            { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' },
             { 
               path: 'calibrate', 
               component: CalibrateMenu,
@@ -77,6 +76,10 @@ var DerReader = {
         }
       ]
     };
+
+    if (config.derFile) {
+      routes.splice(2, 0, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' });
+    }
 
     ReactDOM.render(
       <Provider store={store}>    
