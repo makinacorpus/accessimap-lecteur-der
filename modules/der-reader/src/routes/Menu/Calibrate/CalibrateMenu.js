@@ -31,12 +31,13 @@ var CalibrateMenu = React.createClass({
       this.setState({calibrateMode: true});
       switch(format) {
         case 'a3':
-          this.setTotem({w:42.0/2.54,h:29.7/2.54,name:'a4 paper'});
+          this.setTotem({w:42.0/2.54,h:29.7/2.54,name:'a3 paper'});
           break;
         case 'a4':
           this.setTotem({w:29.7/2.54,h:21.0/2.54,name:'a4 paper'});
           break;
         case 'a5':
+          this.setTotem({w:21.0/2.54,h:14.8/2.54,name:'a4 paper'});
           break;
         default:
           break;

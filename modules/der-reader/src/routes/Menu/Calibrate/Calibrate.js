@@ -367,6 +367,7 @@ var CalibrateCanvas = React.createClass({
   },
 
   render: function () {
+    console.log(this.props.totemMarker, this.state.options);
     return ( 
       <canvas id="canvas" width="919" height="1014"></canvas>
     );

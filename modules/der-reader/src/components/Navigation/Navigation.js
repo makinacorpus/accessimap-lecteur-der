@@ -26,7 +26,10 @@ const Navigation = React.createClass({
   },
 
   componentWillMount: function() {
-    this.props.items.push({path: 'back', name: 'Retour'});
+    console.log(this.props)
+    if (this.props.items) {
+      this.props.items.push({path: 'back', name: 'Retour'});
+    }
   },
 
   componentDidMount: function() {
