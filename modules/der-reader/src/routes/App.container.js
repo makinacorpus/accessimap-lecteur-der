@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
-import { setMessage, setDerFile, setFilter, setFilesList, setDer } from '../store/actions';
+import { setMessage, setDerFile, setFilter, setFilesList, setDer, setOptionFormat } from '../store/actions';
 
 const DerContainer = require('./../components/DerContainer/DerContainer.js');
 const Message = require('./../components/Message/Message.js');
@@ -75,13 +75,13 @@ class App extends Component{
 
   render() {
     const { mode, searchableElement } = this.state;
-    const { der, selectedDocument, derFile, activeFilter } = this.props;
+    const { config, der, selectedDocument, derFile, activeFilter } = this.props;
     let navigation;
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
         options: {
           tts: this.state.tts, 
-          der, selectedDocument, derFile, activeFilter
+          config, der, selectedDocument, derFile, activeFilter
         },
         actions: {
           toggleMenu: this.toggleMenu.bind(this),
@@ -92,7 +92,8 @@ class App extends Component{
           changeDocument: this.changeDocument,
           changeMode: this.changeMode,
           changeFilter: filter => this.props.setFilter(filter),
-          setSearchableElement: this.setSearchableElement
+          setSearchableElement: this.setSearchableElement,
+          setOptionFormat: (format) => this.props.setOptionFormat(format)
         }
       });
     }
@@ -154,7 +155,8 @@ const mapDispatchToProps = dispatch => {
     setDerFile: file => dispatch(setDerFile(file)),
     setFilter: filter => dispatch(setFilter(filter)),
     setFilesList: files => dispatch(setFilesList(files)),
-    setDer: files => dispatch(setDer(files))
+    setDer: files => dispatch(setDer(files)),
+    setOptionFormat: message => dispatch(setOptionFormat(message))
   }
 };
 

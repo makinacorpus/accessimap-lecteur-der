@@ -60,9 +60,9 @@ var DerReader = {
               component: CalibrateMenu,
               name: 'Calibrer l\'écran',
               childRoutes: [
-                { format: 'a3', name: 'Format A3' },
-                { format: 'a4', name: 'Format A4' },
-                { format: 'a5', name: 'Format A5' },
+                { format: 'A3', name: 'Format A3' },
+                { format: 'A4', name: 'Format A4' },
+                { format: 'A5', name: 'Format A5' },
               ]
              },
             // { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' },

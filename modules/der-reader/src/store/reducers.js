@@ -1,7 +1,18 @@
-import { SET_MESSAGE, SET_DER_FILE, SET_FILTER, SET_FILES_LIST, SET_DER } from './actions';
+import { 
+  SET_MESSAGE, 
+  SET_DER_FILE, 
+  SET_FILTER, 
+  SET_FILES_LIST, 
+  SET_DER, 
+  SET_OPTION_FORMAT,
+  SET_OPTION_DPI
+} from './actions';
 
 const defaultState = {
-  config: {},
+  config: {
+    formatIndex: 0,
+    dpi: 96
+  },
   derFile: null,
   der: [],
   files: [],
@@ -14,6 +25,7 @@ const defaultState = {
 };
 
 const appReducer = (state = defaultState, action) => {
+  console.log(action)
   switch(action.type) {
     case SET_MESSAGE:
       return {
@@ -46,6 +58,22 @@ const appReducer = (state = defaultState, action) => {
         der: action.der,
         activeFilter: filters
       };
+    case SET_OPTION_FORMAT:
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          format: action.format
+        }
+      }
+    case SET_OPTION_DPI:
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          dpi: action.dpi
+        }
+      }
     default:
       return state;
   }

@@ -23,21 +23,21 @@ var CalibrateMenu = React.createClass({
   handleAction: function() {
     let path = this.props.route.childRoutes[this.state.activeMenu].path;
     let format = this.props.route.childRoutes[this.state.activeMenu].format;
+
     if (path === 'back') {
       this.props.actions.toggleMenu('menu', 'Fermeture du menu');
     }
-
     else if (format) {
       this.setState({calibrateMode: true});
       switch(format) {
-        case 'a3':
-          this.setTotem({w:42.0/2.54,h:29.7/2.54,name:'a3 paper'});
+        case 'A3':
+          this.setTotem({w:42.0/2.54,h:29.7/2.54, name: 'A3'});
           break;
-        case 'a4':
-          this.setTotem({w:29.7/2.54,h:21.0/2.54,name:'a4 paper'});
+        case 'A4':
+          this.setTotem({w:29.7/2.54,h:21.0/2.54, name: 'A4'});
           break;
-        case 'a5':
-          this.setTotem({w:21.0/2.54,h:14.8/2.54,name:'a4 paper'});
+        case 'A5':
+          this.setTotem({w:21.0/2.54,h:14.8/2.54, name: 'A5'});
           break;
         default:
           break;
@@ -48,6 +48,7 @@ var CalibrateMenu = React.createClass({
   },
 
   changeActiveMenu: function(index) {
+    this.props.actions.setOptionFormat(this.props.route.childRoutes[index].format);
     this.setState({activeMenu: index});
   },
 

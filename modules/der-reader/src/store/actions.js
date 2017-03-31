@@ -3,6 +3,8 @@ export const SET_DER_FILE = 'SET_DER_FILE';
 export const SET_FILTER = 'SET_FILTER';
 export const SET_FILES_LIST = 'SET_FILES_LIST';
 export const SET_DER = 'SET_DER';
+export const SET_OPTION_FORMAT = 'SET_OPTION_FORMAT';
+export const SET_OPTION_DPI = 'SET_OPTION_DPI';
 
 export const setMessage = message => ({
   type: SET_MESSAGE,
@@ -28,4 +30,14 @@ export const setFilesList = files => ({
 export const setDer = der => ({
   type: SET_DER,
   der: der
+});
+
+export const setOptionFormat = format => ({
+  type: SET_OPTION_FORMAT,
+  format: format
+});
+
+export const setOptionDpi = dpi => ({
+  type: SET_OPTION_DPI,
+  dpi: dpi
 });
