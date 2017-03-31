@@ -19,6 +19,10 @@ class App extends Component{
     }
   }
 
+  componentWillMount() {
+    this.props.setOptionFormat(this.props.config.format);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.routes[nextProps.routes.length-1].path === 'file') {
       this.context.router.push('/menu');

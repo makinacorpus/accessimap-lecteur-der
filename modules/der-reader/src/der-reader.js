@@ -17,11 +17,18 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';  
 import { Router, Route, hashHistory } from 'react-router';
 import appReducer from './store/reducers';
+import screenCalibrate from './store/middlewares';
+
+const composeEnhancers =
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+    }) : compose;
 
 const store = createStore(
   combineReducers({appReducer}),
-  // applyMiddleware(combineReducers({appReducer})),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(applyMiddleware(screenCalibrate))
 );
 
 let config = null;

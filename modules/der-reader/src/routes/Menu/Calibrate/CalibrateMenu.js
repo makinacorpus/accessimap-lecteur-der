@@ -51,7 +51,6 @@ var CalibrateMenu = React.createClass({
   changeActiveMenu: function(index) {
     const format = this.props.route.childRoutes[index].format;
     this.props.actions.setOptionFormat(format);
-    document.getElementById('der-reader').className = format;
   },
 
   read: function(text) {

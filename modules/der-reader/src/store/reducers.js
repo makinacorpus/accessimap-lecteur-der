@@ -21,7 +21,7 @@ const defaultState = {
   message: {
     messageType: '',
     text: ''
-  },
+  }
 };
 
 const appReducer = (state = defaultState, action) => {
