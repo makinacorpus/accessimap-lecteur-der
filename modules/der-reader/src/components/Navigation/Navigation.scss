@@ -60,6 +60,9 @@ h1, h2 {
         }
         a {
           font-size: 1rem;
+          .A5 & {
+            font-size: .85rem;
+          }
           box-sizing: padding-box;
           display: block;
           font-weight: bold;
