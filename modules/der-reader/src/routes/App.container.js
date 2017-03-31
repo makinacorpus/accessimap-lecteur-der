@@ -48,9 +48,11 @@ class App extends Component{
 
   changeDerFile(file) {
     if (file !== null) {
-      this.props.setDerFile(file);
       this.context.router.push('/');
-      // this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu');      
+      this.state.tts.speak('Nouveau document sélectionné, fermeture du menu').then(() => {
+        this.toggleMenu('menu');
+        this.props.setDerFile(file);
+      });
     } else {
       this.state.tts.speak('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
@@ -73,7 +75,6 @@ class App extends Component{
   }
 
   render() {
-    // console.log(this.props)
     const { mode, searchableElement } = this.state;
     const { der, selectedDocument, derFile, activeFilter } = this.props;
     let navigation;

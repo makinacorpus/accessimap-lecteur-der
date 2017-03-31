@@ -272,6 +272,37 @@ var CalibrateCanvas = React.createClass({
     }
   },
 
+  drawTotem: function(totemMarker) {
+    const { c, options } = this.state;
+    c.strokeStyle = 'green';
+    c.fillStyle = 'white';
+    var marker = totemMarker;
+    var edgeX = marker.w * options.dpi;
+    if (options.flipped) edgeX = -edgeX;
+    c.moveTo(edgeX, -60);
+    c.lineTo(edgeX, 60);
+    if (marker.h) {
+      // Workaround for http://crbug.com/87097 : draw the leftmost vertical line
+      // twice, by itself, so that it doesn't get cut off in Chrome.
+      c.stroke();
+      c.beginPath();
+      c.moveTo(0, 0);
+      c.lineTo(0, marker.h * options.dpi);
+      c.stroke();
+      c.fill();
+      c.beginPath();
+
+      c.moveTo(0, 0);
+      c.lineTo(edgeX, 0);
+      c.lineTo(edgeX, marker.h * options.dpi);
+      c.lineTo(0, marker.h * options.dpi);
+      c.lineTo(0, 0);
+    }
+    c.stroke();
+    c.fill();
+    c.beginPath();
+  },
+
   /**
    * Draws the ticks and numbers. The tick lengths are given in an array.
    *
@@ -316,8 +347,12 @@ var CalibrateCanvas = React.createClass({
   drawRuler: function (newTotemMarker) {
     const { c, canvas, options } = this.state;
     const totemMarker = this.props.totemMarker || newTotemMarker;
+    if (totemMarker) {
+      this.drawTotem(totemMarker);
+    }
     var dpi = options.dpi;
     c.strokeStyle = 'black';
+    c.fillStyle = 'black';
     c.beginPath();
     c.moveTo(0, 0);
     var rulerLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
@@ -328,32 +363,7 @@ var CalibrateCanvas = React.createClass({
     this.drawRulerHelper(c, ticks, tickDistance, rulerLength, true);
     c.stroke();
     c.beginPath();
-    if (totemMarker) {
-      c.strokeStyle = 'green';
-      var marker = totemMarker;
-      var edgeX = marker.w * dpi;
-      if (options.flipped) edgeX = -edgeX;
-      c.moveTo(edgeX, -60);
-      c.lineTo(edgeX, 60);
-      if (marker.h) {
-        // Workaround for http://crbug.com/87097 : draw the leftmost vertical line
-        // twice, by itself, so that it doesn't get cut off in Chrome.
-        c.stroke();
-        c.beginPath();
-        c.moveTo(0, 0);
-        c.lineTo(0, marker.h * dpi);
-        c.stroke();
-        c.beginPath();
-
-        c.moveTo(0, 0);
-        c.lineTo(edgeX, 0);
-        c.lineTo(edgeX, marker.h * dpi);
-        c.lineTo(0, marker.h * dpi);
-        c.lineTo(0, 0);
-      }
-      c.stroke();
-      c.beginPath();
-    }
+    
   },
 
   render: function () {
