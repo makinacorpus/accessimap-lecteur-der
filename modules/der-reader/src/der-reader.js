@@ -13,7 +13,7 @@ const ReactDOM = require('react-dom');
 
 import { combineReducers } from 'redux';
 import App from './routes/App.container';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';  
 import { Router, Route, hashHistory } from 'react-router';
 import appReducer from './store/reducers';
