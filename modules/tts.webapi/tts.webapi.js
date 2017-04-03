@@ -1,6 +1,8 @@
 const voices = speechSynthesis.getVoices(),
   frVoice = voices.filter((currentVoice) => currentVoice.lang === 'fr-FR')[0];
 
+( ! frVoice ) && console.error('No voice detected !!! Speech synthesis will not work.');
+
 const webspeechapi = {
   utterance: null,
 
@@ -19,16 +21,19 @@ const webspeechapi = {
   },
 
   speak: function(text) {
-
     speechSynthesis.cancel();
-
     return new Promise((resolve, reject) => {
+      // we set a timeout to make work cancel/speak 
+      // in electron+chromium, tts doesn't work when we 'swipe' quickly
+      // see https://github.com/makinacorpus/accessimap-lecteur-der/issues/21
+      // we set to 50ms the timeout before speaking
+      window.setTimeout(() => {
         this.utterance = this.initUtterance(text);
         speechSynthesis.speak(this.utterance);
-
         this.utterance.onend = () => {
-            resolve();
+          resolve();
         };
+      }, 50);
     });
     
   }
