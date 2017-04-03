@@ -12,7 +12,9 @@ var CalibrateMenu = React.createClass({
   getInitialState: function() {
     return {
       calibrateMode: false,
-      totemMarker: null
+      totemMarker: null,
+      defaultFormat: this.props.config.format,
+      index: formats.indexOf(this.props.config.format)
     };
   },
 
@@ -54,7 +56,12 @@ var CalibrateMenu = React.createClass({
 
   changeActiveMenu: function(index) {
     const format = this.props.route.childRoutes[index].format;
-    this.props.actions.setOptionFormat(format);
+    if (format) {
+      this.props.actions.setOptionFormat(format);
+    } else {
+      this.props.actions.setOptionFormat(this.state.defaultFormat);
+    }
+    this.setState({index: index});
   },
 
   read: function(text) {
@@ -62,7 +69,6 @@ var CalibrateMenu = React.createClass({
   },
 
   render: function() {
-    const index = formats.indexOf(this.props.config.format);
     if (this.state.calibrateMode) {
       return (
         <CalibrateCanvas totemMarker={this.state.totemMarker}></CalibrateCanvas>
@@ -71,7 +77,7 @@ var CalibrateMenu = React.createClass({
     return (
       <Navigation
         action={this.handleAction}
-        index={index}
+        index={this.state.index}
         items={this.props.route.childRoutes}
         changeIndex={this.changeActiveMenu}
         read={this.read}

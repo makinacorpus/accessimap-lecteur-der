@@ -36,14 +36,12 @@ var CalibrateCanvas = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if (this.props.totemMarker !== nextProps.totemMarker) {
-      console.log(this.props, nextProps);
       this.props.tts.speak(`Redimmentionnez la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${nextProps.format})`);
       this.drawRuler(nextProps.totemMarker);
     }
   },
 
   componentDidMount: function () {
-    console.log(this.props);
     this.props.tts.speak(`Redimmentionnez la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${this.props.format})`);
     var canvas = document.getElementById('canvas');
     var c = canvas.getContext('2d');
