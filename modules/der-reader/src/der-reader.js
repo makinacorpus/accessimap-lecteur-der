@@ -1,15 +1,15 @@
 require('!style!css!sass!./der-reader.scss');
 
-const Menu = require('./routes/Menu/Menu.js');
-const Filters = require('./routes/Filters/Filters.js');
-const SelectFile = require('./routes/Menu/SelectFile/SelectFile.js');
-const SwitchMode = require('./routes/Menu/SwitchMode/SwitchMode.js');
-const CalibrateMenu = require('./routes/Menu/Calibrate/CalibrateMenu.js');
-const SelectDocument = require('./routes/Menu/SelectDocument/SelectDocument.js');
-const FastClick = require('fastclick');
-// const TouchEmulator = require('hammer-touchemulator');
-const React = require('react');
-const ReactDOM = require('react-dom');
+import Menu from './routes/Menu/Menu.js';
+import Filters from './routes/Filters/Filters.js';
+import SelectFile from './routes/Menu/SelectFile/SelectFile';
+import SwitchMode from './routes/Menu/SwitchMode/SwitchMode';
+import FormatMenu from './routes/Menu/Calibrate/FormatMenu';
+import SelectDocument from './routes/Menu/SelectDocument/SelectDocument';
+import FastClick from 'fastclick';
+// import TouchEmulat from 'hammer-touchemulator';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import { combineReducers } from 'redux';
 import App from './routes/App.container';
@@ -17,7 +17,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';  
 import { Router, Route, hashHistory } from 'react-router';
 import appReducer from './store/reducers';
-import screenCalibrate from './store/middlewares';
+import { screenCalibrate, localstorage } from './store/middlewares';
 
 const composeEnhancers =
   typeof window === 'object' &&
@@ -28,7 +28,7 @@ const composeEnhancers =
 
 const store = createStore(
   combineReducers({appReducer}),
-  composeEnhancers(applyMiddleware(screenCalibrate))
+  composeEnhancers(applyMiddleware(localstorage, screenCalibrate))
 );
 
 let config = null;
@@ -64,7 +64,7 @@ var DerReader = {
             { path: 'menu', component: SelectFile, name: 'Charger un nouveau document en relief' },
             { 
               path: 'calibrate', 
-              component: CalibrateMenu,
+              component: FormatMenu,
               name: 'Calibrer l\'écran',
               childRoutes: [
                 { format: 'A3', name: 'Format A3' },

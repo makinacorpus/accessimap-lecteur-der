@@ -3,13 +3,15 @@ import {
   SET_DER_FILE, 
   SET_FILTER, 
   SET_FILES_LIST, 
-  SET_DER, 
-  SET_OPTION_FORMAT,
-  SET_OPTION_DPI
+  SET_DER,
+  SET_OPTION,
+  INIT_CONFIG
 } from './actions';
 
-const defaultState = {
+export const defaultState = {
   config: {
+    ttsSpeak: null,
+    exit: null,
     format: 'A3',
     dpi: 96
   },
@@ -57,20 +59,21 @@ const appReducer = (state = defaultState, action) => {
         der: action.der,
         activeFilter: filters
       };
-    case SET_OPTION_FORMAT:
+    case SET_OPTION:
       return {
         ...state,
         config: {
           ...state.config,
-          format: action.format
+          [action.name]: action.value
         }
       }
-    case SET_OPTION_DPI:
+    case INIT_CONFIG:
       return {
         ...state,
         config: {
           ...state.config,
-          dpi: action.dpi
+          format: action.value.format ? action.value.format : defaultState.config.format,
+          dpi: action.value.dpi ? action.value.dpi : defaultState.config.dpi
         }
       }
     default:

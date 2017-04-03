@@ -16,6 +16,10 @@ var CalibrateMenu = React.createClass({
     };
   },
 
+  componentDidMount: function() {
+    this.read(`Veuillez sélectionner le format utilisé pour calibrer l\'écran. Format ${this.props.config.format}`);
+  },
+
   setTotem: function(o) {
     this.setState({totemMarker: o});
   },

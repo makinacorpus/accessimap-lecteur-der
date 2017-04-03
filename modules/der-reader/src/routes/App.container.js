@@ -1,7 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
-import { setMessage, setDerFile, setFilter, setFilesList, setDer, setOptionFormat } from '../store/actions';
+import { 
+  setMessage, 
+  setDerFile, 
+  setFilter, 
+  setFilesList, 
+  setDer, 
+  setOption,
+  setOptionStorage,
+  initConfig
+} from '../store/actions';
 
 const DerContainer = require('./../components/DerContainer/DerContainer.js');
 const Message = require('./../components/Message/Message.js');
@@ -11,16 +20,19 @@ class App extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      mode: this.props.route.config.defaultMode,
-      searchableElement: null,
       tts: this.props.route.config.tts,
       exit: this.props.route.config.exit,
+      mode: this.props.route.config.defaultMode,
+      searchableElement: null,
       openedMenu: ''
     }
   }
 
   componentWillMount() {
-    this.props.setOptionFormat(this.props.config.format);
+    // console.log(this.props.route.config.tts);
+    this.props.setOption('tts', this.props.route.config.tts);
+    this.props.setOption('exit', this.props.route.config.exit);
+    this.props.initConfig();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -36,28 +48,28 @@ class App extends Component{
     }, () => {
       if (open && labelOnClose) {
         hashHistory.push('/');
-        this.state.tts.speak(labelOnClose);
+        this.read(labelOnClose);
       } else if (labelOnOpen) {
         hashHistory.push(id);
-        this.state.tts.speak(labelOnOpen);
+        this.read(labelOnOpen);
       }
     });
   }
 
   showMessage(text, type) {
     this.props.setMessage({text: text, type: type});
-    this.state.tts.speak(text);
+    this.read(text);
   }
 
   changeDerFile(file) {
     if (file !== null) {
       this.context.router.push('/');
-      this.state.tts.speak('Nouveau document sélectionné, fermeture du menu').then(() => {
+      this.read('Nouveau document sélectionné, fermeture du menu').then(() => {
         this.toggleMenu('menu');
         this.props.setDerFile(file);
       });
     } else {
-      this.state.tts.speak('Aucun fichier sélectionné, retour au menu');
+      this.read('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
     }
   }
@@ -74,6 +86,12 @@ class App extends Component{
     const {message} = this.props;
     if (message) {
       return <Message text={message.text} type={message.messageType} />
+    }
+  }
+
+  read(text) {
+    if (this.props.config.tts) {
+      this.props.config.tts.speak(text)
     }
   }
 
@@ -151,7 +169,9 @@ App.contextTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  return state.appReducer
+  return {
+    ...state.appReducer
+  }
 };
 
 const mapDispatchToProps = dispatch => {
@@ -161,7 +181,9 @@ const mapDispatchToProps = dispatch => {
     setFilter: filter => dispatch(setFilter(filter)),
     setFilesList: files => dispatch(setFilesList(files)),
     setDer: files => dispatch(setDer(files)),
-    setOptionFormat: message => dispatch(setOptionFormat(message))
+    setOption: (name, value) => dispatch(setOption(name, value)),
+    setOptionFormat: value => dispatch(setOptionStorage('format', value)),
+    initConfig: () => dispatch(initConfig())
   }
 };
 

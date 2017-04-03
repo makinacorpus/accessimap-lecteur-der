@@ -1,10 +1,7 @@
 require('!style!css!sass!./Calibrate.scss');
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  setOptionDpi,
-  setOptionFormat
-} from '../../../store/actions';
+import { setOptionStorage } from '../../../store/actions';
 
 const cssDpi = function () {
   var d = document.createElement('div');
@@ -39,22 +36,18 @@ var CalibrateCanvas = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if (this.props.totemMarker !== nextProps.totemMarker) {
+      console.log(this.props, nextProps);
+      this.props.tts.speak(`Redimmentionnez la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${nextProps.format})`);
       this.drawRuler(nextProps.totemMarker);
     }
   },
 
   componentDidMount: function () {
+    console.log(this.props);
+    this.props.tts.speak(`Redimmentionnez la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${this.props.format})`);
     var canvas = document.getElementById('canvas');
     var c = canvas.getContext('2d');
     
-    if (!canvas.getContext) {
-      canvas.style.display = 'none';
-      document.write(
-        '<h1>Sorry, you\u2019re using an obsolete browser. ' +
-        'Come back with Chrome, Firefox, Opera,' +
-        '<a href="http://www.google.com/chromeframe">Chrome Frame</a>, etc.</h1>');
-    }
-
     var screenInfo = {
       screenWidthPx: screen.width,
       screenHeightPx: screen.height
@@ -125,7 +118,7 @@ var CalibrateCanvas = React.createClass({
 
   clearRuler: function () {
     const { c, canvas, flipped } = this.state;
-    const { totemMarker, dpi } = this.props;
+    const { dpi, totemMarker } = this.props;
     var rulerLength = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     if (flipped) {
       c.clearRect(10, -65, -rulerLength - 20, 130);
@@ -173,17 +166,17 @@ var CalibrateCanvas = React.createClass({
     c.beginPath();
   },
 
-  /**
-   * Draws the ticks and numbers. The tick lengths are given in an array.
-   *
-   * Caller is responsible for calling stroke(); beginPath() after this function.
-   *
-   * @param {!CanvasRenderingContext2D} c
-   * @param {!Array.<number>} array of heights of ticks (px)
-   * @param {number} tickDistance horizontal distance between each tick (px)
-   * @param {number} rulerLength horizontal length of ruler (px)
-   * @param {boolean} isAboveLine true if we should draw above the line.
-   */
+  // /**
+  //  * Draws the ticks and numbers. The tick lengths are given in an array.
+  //  *
+  //  * Caller is responsible for calling stroke(); beginPath() after this function.
+  //  *
+  //  * @param {!CanvasRenderingContext2D} c
+  //  * @param {!Array.<number>} array of heights of ticks (px)
+  //  * @param {number} tickDistance horizontal distance between each tick (px)
+  //  * @param {number} rulerLength horizontal length of ruler (px)
+  //  * @param {boolean} isAboveLine true if we should draw above the line.
+  //  */
   drawRulerHelper: function (c, ticks, tickDistance, rulerLength, isAboveLine) {
     const { flipped } = this.state;
     var i = 0;
@@ -236,7 +229,7 @@ var CalibrateCanvas = React.createClass({
   },
 
   render: function () {
-    return ( 
+    return (
       <canvas id="canvas" width="919" height="1014"></canvas>
     );
   }
@@ -248,8 +241,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setOptionFormat: message => dispatch(setOptionFormat(message)),
-    setOptionDpi: file => dispatch(setOptionDpi(file))
+    setOptionDpi: value => dispatch(setOptionStorage('dpi', value))
   }
 };
 
