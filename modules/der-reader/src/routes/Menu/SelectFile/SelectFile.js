@@ -24,15 +24,16 @@ var SelectFile = React.createClass({
   },
 
   componentDidMount: function() {
-    // document.body.onfocus = (e) => {
-    //   if (this.isMounted()) {
-    //     this.setState({
-    //       file: null
-    //     }, () => {
-    //       this.handleChange();
-    //     });
-    //   }
-    // }
+    document.body.onfocus = () => {
+      if (this.isMounted()) {
+        this.context.router.push('/menu');
+        // this.setState({
+        //   file: null
+        // }, () => {
+        //   this.handleChange();
+        // });
+      }
+    }
     this.refs.inputfile.click();
   },
 
