@@ -13,7 +13,6 @@ var SelectFile = React.createClass({
   },
 
   handleChange: function(file) {
-    console.log('handleChange')
     if (file) {
       this.props.actions.changeDerFile(file);
       this.props.actions.changeFilter(null);
