@@ -91,7 +91,7 @@ class App extends Component{
 
   read(text) {
     if (this.props.config.tts) {
-      this.props.config.tts.speak(text)
+      return this.props.config.tts.speak(text)
     }
   }
 
