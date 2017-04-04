@@ -21,7 +21,8 @@ const Menu = React.createClass({
     if (this.props.children) {
       childrenWithProps = React.cloneElement(this.props.children, {
         options: this.props.options,
-        actions: this.props.actions
+        actions: this.props.actions,
+        config: this.props.config
       });
     }
 

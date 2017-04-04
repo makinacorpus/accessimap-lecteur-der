@@ -8,11 +8,13 @@
     box-sizing: border-box;
 }
 
+html {
+    font-size: 32px; // Base size for fonts
+}
+
 html, body {
     width: 100%;
     height: 100%;
-    font-size: 100%;
-    font-size: 22pt;
 }
 
 body {
@@ -23,10 +25,8 @@ body {
     overflow: hidden;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
+    font-size: 96px; // Base size for layout
 }
 
 // Layout
@@ -34,8 +34,6 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 1350px;
-  height: 955px;
 }
 
 .der-container {
@@ -47,10 +45,6 @@ body {
   align-items: flex-end;
   display: flex;
   overflow: hidden;
-  svg {
-    width: 1350px;
-    height: 955px;
-  }
 }
 
 .button {
@@ -64,4 +58,19 @@ body {
   &#menu {
     right: 2.5%;
   }
+}
+
+.A3 .container, .A3 .der-container svg, .A3 .modal {
+  width: 16.5354331em;
+  height: 11.6929134em;
+}
+
+.A4 .container, .A4 .der-container svg, .A4 .modal {
+  width: 11.6929134em;
+  height: 8.26771654em;
+}
+
+.A5 .container, .A5 .der-container svg, .A5 .modal {
+  width: 8.26771654em;
+  height: 5.82677165em;
 }

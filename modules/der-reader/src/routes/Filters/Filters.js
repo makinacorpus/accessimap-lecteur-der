@@ -23,9 +23,9 @@ const Filters = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (nextProps.options !== this.props.options) {
-      this.context.router.push('/');
-    }
+    // if (nextProps.options !== this.props.options) {
+    //   this.context.router.push('/');
+    // }
   },
 
   changeFilter: function(index) {

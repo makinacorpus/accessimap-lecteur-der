@@ -40,7 +40,7 @@ const Menu = React.createClass({
       <Navigation
         action={this.handleAction}
         index={this.state.activeMenu}
-        items={this.props.route.childRoutes}
+        items={this.props.route.childRoutes || []}
         changeIndex={this.changeActiveMenu}
         read={this.read}
         >

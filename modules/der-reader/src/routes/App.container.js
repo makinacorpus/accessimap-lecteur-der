@@ -1,7 +1,16 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
-import { setMessage } from '../store/actions';
+import { 
+  setMessage, 
+  setDerFile, 
+  setFilter, 
+  setFilesList, 
+  setDer, 
+  setOption,
+  setOptionStorage,
+  initConfig
+} from '../store/actions';
 
 const DerContainer = require('./../components/DerContainer/DerContainer.js');
 const Message = require('./../components/Message/Message.js');
@@ -10,19 +19,20 @@ const Button = require('./../components/Button/Button.js');
 class App extends Component{
   constructor(props) {
     super(props);
-
     this.state = {
-      mode: this.props.route.config.defaultMode,
-      derFile: this.props.route.config.derFile,
-      selectedDocument: 0,
-      der: [],
-      files: [],
-      searchableElement: null,
-      activeFilter: null,
       tts: this.props.route.config.tts,
       exit: this.props.route.config.exit,
+      mode: this.props.route.config.defaultMode,
+      searchableElement: null,
       openedMenu: ''
     }
+  }
+
+  componentWillMount() {
+    // console.log(this.props.route.config.tts);
+    this.props.setOption('tts', this.props.route.config.tts);
+    this.props.setOption('exit', this.props.route.config.exit);
+    this.props.initConfig();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,53 +48,34 @@ class App extends Component{
     }, () => {
       if (open && labelOnClose) {
         hashHistory.push('/');
-        this.state.tts.speak(labelOnClose);
+        this.read(labelOnClose);
       } else if (labelOnOpen) {
         hashHistory.push(id);
-        this.state.tts.speak(labelOnOpen);
+        this.read(labelOnOpen);
       }
     });
   }
 
   showMessage(text, type) {
     this.props.setMessage({text: text, type: type});
-    this.state.tts.speak(text);
-  }
-
-  setFilesList(files) {
-    this.setState({files: files});
-  }
-
-  setDer(der) {
-    this.setState({der: der}, () => {
-      if (this.state.activeFilter === null) {
-        this.changeFilter(der.filters.filter[0]);
-      }
-    });
+    this.read(text);
   }
 
   changeDerFile(file) {
     if (file !== null) {
-      this.setState({derFile: file, selectedDocument: 0}, () => {
-        this.toggleMenu('menu', 'Nouveau document sélectionné, fermeture du menu');
-        this.context.router.push('/menu');
+      this.context.router.push('/');
+      this.read('Nouveau document sélectionné, fermeture du menu').then(() => {
+        this.toggleMenu('menu');
+        this.props.setDerFile(file);
       });
     } else {
-      this.state.tts.speak('Aucun fichier sélectionné, retour au menu');
+      this.read('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
     }
   }
 
-  changeDocument(fileIndex) {
-    this.setState({selectedDocument: fileIndex});
-  }
-
   changeMode(mode) {
     this.setState({mode: mode});
-  }
-
-  changeFilter(filter) {
-    this.setState({activeFilter: filter});
   }
 
   setSearchableElement(searchableElement) {
@@ -98,22 +89,34 @@ class App extends Component{
     }
   }
 
+  read(text) {
+    if (this.props.config.tts) {
+      return this.props.config.tts.speak(text)
+    }
+  }
+
   render() {
-    const {der, selectedDocument, mode, derFile, searchableElement, activeFilter} = this.state;
+    const { mode, searchableElement } = this.state;
+    const { config, der, selectedDocument, derFile, activeFilter } = this.props;
     let navigation;
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
-        options: this.state,
+        config: config,
+        options: {
+          tts: this.state.tts, 
+          der, selectedDocument, derFile, activeFilter
+        },
         actions: {
           toggleMenu: this.toggleMenu.bind(this),
           showMessage: (text, type) => this.showMessage(text, type),
-          setFilesList: this.setFilesList,
-          setDer: this.setDer,
-          changeDerFile: this.changeDerFile,
+          setFilesList: files => this.props.setFilesList(files),
+          setDer: der => this.props.setDer(der),
+          changeDerFile: file => this.changeDerFile(file),
           changeDocument: this.changeDocument,
           changeMode: this.changeMode,
-          changeFilter: this.changeFilter,
-          setSearchableElement: this.setSearchableElement
+          changeFilter: filter => this.props.setFilter(filter),
+          setSearchableElement: this.setSearchableElement,
+          setOptionFormat: (format) => this.props.setOptionFormat(format)
         }
       });
     }
@@ -143,8 +146,8 @@ class App extends Component{
         {this.getMessage()}
 
         <DerContainer
-          setFilesList={this.setFilesList}
-          setDer={this.setDer}
+          setFilesList={files => this.props.setFilesList(files)}
+          setDer={der => this.props.setDer(der)}
           der={der}
           selectedDocument={selectedDocument}
           searchableElement={searchableElement}
@@ -167,13 +170,20 @@ App.contextTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    message: state.appReducer.message
+    ...state.appReducer
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setMessage: message => dispatch(setMessage(message))
+    setMessage: message => dispatch(setMessage(message)),
+    setDerFile: file => dispatch(setDerFile(file)),
+    setFilter: filter => dispatch(setFilter(filter)),
+    setFilesList: files => dispatch(setFilesList(files)),
+    setDer: files => dispatch(setDer(files)),
+    setOption: (name, value) => dispatch(setOption(name, value)),
+    setOptionFormat: value => dispatch(setOptionStorage('format', value)),
+    initConfig: () => dispatch(initConfig())
   }
 };
 
