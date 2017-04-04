@@ -9,10 +9,6 @@ import {
 
 /**
  * Middleware for resize application container to fit with DER.
- * 
- * @param {Object} timer - Options for action timer
- * @param {Number} timer.duration - Duration for setTimeout
- * @param {Object} timer.action - Action to dispatch after timeout
  */
 export const screenCalibrate = () => next => action => {
   switch (action.type) {
