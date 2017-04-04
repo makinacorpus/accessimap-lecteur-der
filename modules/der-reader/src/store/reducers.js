@@ -5,7 +5,8 @@ import {
   SET_FILES_LIST, 
   SET_DER,
   SET_OPTION,
-  INIT_CONFIG
+  INIT_CONFIG,
+  IS_LOADING
 } from './actions';
 
 export const defaultState = {
@@ -15,8 +16,9 @@ export const defaultState = {
     format: 'A3',
     dpi: 96
   },
+  loading: false,
   derFile: null,
-  der: [],
+  der: null,
   files: [],
   selectedDocument: 0,
   activeFilter: null,
@@ -28,6 +30,11 @@ export const defaultState = {
 
 const appReducer = (state = defaultState, action) => {
   switch(action.type) {
+    case IS_LOADING:
+      return {
+        ...state,
+        loading: action.value
+      };
     case SET_MESSAGE:
       return {
         ...state,

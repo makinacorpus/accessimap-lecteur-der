@@ -9,7 +9,8 @@ import {
   setDer, 
   setOption,
   setOptionStorage,
-  initConfig
+  initConfig,
+  isLoading
 } from '../store/actions';
 import App from './App';
 
@@ -28,7 +29,8 @@ const mapDispatchToProps = dispatch => {
     setDer: files => dispatch(setDer(files)),
     setOption: (name, value) => dispatch(setOption(name, value)),
     setOptionFormat: value => dispatch(setOptionStorage('format', value)),
-    initConfig: () => dispatch(initConfig())
+    initConfig: () => dispatch(initConfig()),
+    isLoading: bool => dispatch(isLoading(bool))
   }
 };
 

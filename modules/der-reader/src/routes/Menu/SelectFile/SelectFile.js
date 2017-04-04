@@ -13,11 +13,12 @@ var SelectFile = React.createClass({
   },
 
   handleChange: function(file) {
+    console.log('handleChange')
     if (file) {
       this.props.actions.changeDerFile(file);
       this.props.actions.changeFilter(null);
     } else {
-      this.props.options.tts.speak('Aucun fichier sélectionné, retour au menu');
+      this.props.config.tts.speak('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
     }
   },

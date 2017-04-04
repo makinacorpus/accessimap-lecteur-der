@@ -26,7 +26,7 @@ const SwitchMode = React.createClass({
   },
   
   read: function(text) {
-    this.props.options.tts.speak(text);
+    this.props.config.tts.speak(text);
   },
 
   render: function() {

@@ -22,7 +22,7 @@ const Button = React.createClass({
 
   componentDidMount: function() {
     const buttons = document.getElementById(this.props.id);
-    const tts = this.props.tts;
+    const {config} = this.props;
 
     var mc = new Hammer.Manager(buttons);
     mc.add( new Hammer.Tap({ event: 'doubletap', taps: 2 }) );
@@ -32,10 +32,10 @@ const Button = React.createClass({
 
     mc.on('singletap', (e) => {
       if (this.props.open) {
-        tts.speak(this.props.labelOpened);
+        config.tts.speak(this.props.labelOpened);
       }
       else {
-        tts.speak(e.target.innerText);
+        config.tts.speak(e.target.innerText);
       }
     });
     mc.on('doubletap', () => {

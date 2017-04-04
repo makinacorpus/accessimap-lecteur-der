@@ -5,6 +5,12 @@ export const SET_FILES_LIST = 'SET_FILES_LIST';
 export const SET_DER = 'SET_DER';
 export const SET_OPTION = 'SET_OPTION';
 export const INIT_CONFIG = 'INIT_CONFIG';
+export const IS_LOADING = 'IS_LOADING';
+
+export const isLoading = boolean => ({
+  type: IS_LOADING,
+  value: boolean
+})
 
 export const setMessage = message => ({
   type: SET_MESSAGE,

@@ -48,28 +48,28 @@ var DerContainer = React.createClass({
     } 
     const fileType = file.type.split('.').pop();
     switch(fileType) {
-      case 'application/zip':
-      case 'application/x-zip-compressed':
-      case 'application/x-zip':
-      case 'application/octet-stream':
-        var new_zip = new JSZip();
-        new_zip.loadAsync(file)
-        .then(zip => {
-          this._extractFiles(zip.files).then((der) => {
-            this.props.message('');
-            this.props.setDer(der);
-            this.loadDer(der);
-          }, (error) => {
-            this.props.message(error, 'error');
-          });
-        })
-        .catch(err => {
-          console.error(err);
-          this.props.message('Erreur lors de l\'ouverture du fichier ZIP', 'error');
+    case 'application/zip':
+    case 'application/x-zip-compressed':
+    case 'application/x-zip':
+    case 'application/octet-stream':
+      var new_zip = new JSZip();
+      new_zip.loadAsync(file)
+      .then(zip => {
+        this._extractFiles(zip.files).then((der) => {
+          this.props.message('');
+          this.props.setDer(der);
+          this.loadDer(der);
+        }, (error) => {
+          this.props.message(error, 'error');
         });
-        break;
-      default:
-        this.props.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
+      })
+      .catch(err => {
+        console.error(err);
+        this.props.message('Erreur lors de l\'ouverture du fichier ZIP', 'error');
+      });
+      break;
+    default:
+      this.props.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
     }
   },
 
@@ -197,7 +197,7 @@ var DerContainer = React.createClass({
 
   setDerActions: function() {
     const {mode, der, tts, searchableElement, message} = this.props;
-    if (der.pois && der.pois.poi) {
+    if (der && der.pois && der.pois.poi) {
       let exploreParams = {
         pois: der.pois.poi,
         readFunction: this.readAudioFile,

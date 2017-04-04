@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 
-const DerContainer = require('./../components/DerContainer/DerContainer.js');
-const Message = require('./../components/Message/Message.js');
-const Button = require('./../components/Button/Button.js');
+import DerContainer from './../components/DerContainer/DerContainer.js';
+import Message from './../components/Message/Message.js';
+import Button from './../components/Button/Button.js';
+import Loader from './../components/Loader/Loader.js';
 
 class App extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      tts: this.props.route.config.tts,
-      exit: this.props.route.config.exit,
       mode: this.props.route.config.defaultMode,
       searchableElement: null,
       openedMenu: ''
@@ -51,10 +50,12 @@ class App extends Component{
 
   changeDerFile(file) {
     if (file !== null) {
+      this.props.isLoading(true);
       this.context.router.push('/');
-      this.read('Nouveau document sélectionné, fermeture du menu').then(() => {
+      this.read('Chargement du document').then(() => {
         this.toggleMenu('menu');
         this.props.setDerFile(file);
+        this.props.isLoading(false);
       });
     } else {
       this.read('Aucun fichier sélectionné, retour au menu');
@@ -107,11 +108,15 @@ class App extends Component{
         }
       });
     }
+
+    if (this.props.loading || !this.props.config.tts) {
+      return <Loader/>;
+    }
     return (
       <div className="container" ref="app">
         <Button
           id="menu"
-          tts={this.state.tts}
+          config={config}
           labelClosed="Menu"
           labelOnClose="Fermeture du menu"
           labelOpened="Fermer le menu"
@@ -121,7 +126,7 @@ class App extends Component{
            />
         <Button
           id="filters"
-          tts={this.state.tts}
+          config={config}
           labelClosed="Filtres"
           labelOnClose="Fermeture des filtres"
           labelOpened="Fermer les filtres"
@@ -139,7 +144,7 @@ class App extends Component{
           selectedDocument={selectedDocument}
           searchableElement={searchableElement}
           message={(text, type) => this.showMessage(text, type)}
-          tts={this.state.tts}
+          tts={config.tts}
           mode={mode}
           filter={activeFilter}
           derFile={derFile} />
