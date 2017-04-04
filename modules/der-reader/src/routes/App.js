@@ -19,7 +19,7 @@ class App extends Component{
 
   componentWillMount() {
     this.props.setOption('tts', this.props.route.config.tts);
-    this.props.setOption('exit', this.props.route.config.exit);
+    this.props.setOption('exit', {fn: this.props.route.config.exit});
     this.props.initConfig();
   }
 
@@ -91,7 +91,6 @@ class App extends Component{
       navigation = React.cloneElement(this.props.children, {
         config: config,
         options: {
-          tts: this.state.tts, 
           der, selectedDocument, derFile, activeFilter
         },
         actions: {

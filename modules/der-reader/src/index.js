@@ -7,10 +7,10 @@ vibrateWebApi = require('./../../vibrate.webapi/vibrate.webapi.js');
 DerReader = require('./der-reader.js');
 
 DerReader.init({
-    container: 'der-reader',
-    derFile: null,
-    tts: webspeechapi,
-    vibrate: vibrateWebApi,
-    defaultMode: 0,
-    exit: function() {}
+  container: 'der-reader',
+  derFile: null,
+  tts: webspeechapi,
+  vibrate: vibrateWebApi,
+  defaultMode: 0,
+  exit: function() {}
 });

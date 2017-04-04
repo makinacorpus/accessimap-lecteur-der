@@ -23,6 +23,7 @@ const Menu = React.createClass({
             route={this.props.route}
             options={this.props.options}
             actions={this.props.actions}
+            config={this.props.config}
             >
           </MainMenu>
         }

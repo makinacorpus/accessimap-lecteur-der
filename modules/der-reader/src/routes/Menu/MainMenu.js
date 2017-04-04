@@ -16,7 +16,7 @@ const Menu = React.createClass({
     let path = this.props.route.childRoutes[this.state.activeMenu].path;
 
     if (path === 'quit') {
-      this.props.options.exit();
+      this.props.config.exit.fn();
     }
     if (path === 'back') {
       this.props.actions.toggleMenu('menu', 'Fermeture du menu');
@@ -32,7 +32,7 @@ const Menu = React.createClass({
   },
 
   read: function(text) {
-    this.props.options.tts.speak(text);
+    this.props.config.tts.speak(text);
   },
 
   render: function() {

@@ -22,11 +22,11 @@ const Filters = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    // if (nextProps.options !== this.props.options) {
-    //   this.context.router.push('/');
-    // }
-  },
+  // componentWillReceiveProps: function(nextProps) {
+  //   if (nextProps.options !== this.props.options) {
+  //     this.context.router.push('/');
+  //   }
+  // },
 
   changeFilter: function(index) {
     this.setState({index});

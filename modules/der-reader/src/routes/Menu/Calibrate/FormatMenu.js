@@ -37,17 +37,17 @@ var CalibrateMenu = React.createClass({
     else if (format) {
       this.setState({calibrateMode: true});
       switch(format) {
-        case 'A3':
-          this.setTotem({w:42.0/2.54,h:29.7/2.54, name: 'A3'});
-          break;
-        case 'A4':
-          this.setTotem({w:29.7/2.54,h:21.0/2.54, name: 'A4'});
-          break;
-        case 'A5':
-          this.setTotem({w:21.0/2.54,h:14.8/2.54, name: 'A5'});
-          break;
-        default:
-          break;
+      case 'A3':
+        this.setTotem({w:42.0/2.54,h:29.7/2.54, name: 'A3'});
+        break;
+      case 'A4':
+        this.setTotem({w:29.7/2.54,h:21.0/2.54, name: 'A4'});
+        break;
+      case 'A5':
+        this.setTotem({w:21.0/2.54,h:14.8/2.54, name: 'A5'});
+        break;
+      default:
+        break;
       }
     } else {
       this.context.router.push('menu/calibrate/' + path);
@@ -65,7 +65,7 @@ var CalibrateMenu = React.createClass({
   },
 
   read: function(text) {
-    this.props.options.tts.speak(text);
+    this.props.config.tts.speak(text);
   },
 
   render: function() {

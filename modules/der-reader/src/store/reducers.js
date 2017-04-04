@@ -10,7 +10,7 @@ import {
 
 export const defaultState = {
   config: {
-    ttsSpeak: null,
+    tts: null,
     exit: null,
     format: 'A3',
     dpi: 96

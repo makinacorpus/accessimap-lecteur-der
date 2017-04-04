@@ -3,7 +3,7 @@ require('!style!css!sass!./der-reader.scss');
 import Menu from './routes/Menu/Menu.js';
 import Filters from './routes/Filters/Filters.js';
 import SelectFile from './routes/Menu/SelectFile/SelectFile';
-import SwitchMode from './routes/Menu/SwitchMode/SwitchMode';
+// import SwitchMode from './routes/Menu/SwitchMode/SwitchMode';
 import FormatMenu from './routes/Menu/Calibrate/FormatMenu';
 import SelectDocument from './routes/Menu/SelectDocument/SelectDocument';
 import FastClick from 'fastclick';
@@ -15,7 +15,7 @@ import { combineReducers } from 'redux';
 import App from './routes/App.container';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';  
-import { Router, Route, hashHistory } from 'react-router';
+import { Router, hashHistory } from 'react-router';
 import appReducer from './store/reducers';
 import { screenCalibrate, localstorage } from './store/middlewares';
 
@@ -71,7 +71,7 @@ var DerReader = {
                 { format: 'A4', name: 'Format A4' },
                 { format: 'A5', name: 'Format A5' },
               ]
-             },
+            },
             // { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' },
             { path: 'quit', name: 'Quitter l\'application' }
           ]
