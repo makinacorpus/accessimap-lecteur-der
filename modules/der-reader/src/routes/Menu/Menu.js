@@ -6,16 +6,6 @@ const Menu = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    // if (nextProps.options !== this.props.options) {
-    //   this.context.router.push('/');
-    // } else {
-    //   if (nextProps.routes[nextProps.routes.length-1].path === 'file') {
-    //     this.context.router.push('/menu');
-    //   }
-    // }
-  },
-
   render: function() {
     var childrenWithProps;
     if (this.props.children) {
