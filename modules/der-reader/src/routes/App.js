@@ -19,7 +19,7 @@ class App extends Component{
   componentWillMount() {
     this.props.setOption('tts', this.props.route.config.tts);
     this.props.setOption('exit', {fn: this.props.route.config.exit});
-    this.props.initConfig();
+    this.props.initConfig({format: this.props.route.config.format || this.props.config.format});
   }
 
   componentWillReceiveProps(nextProps) {

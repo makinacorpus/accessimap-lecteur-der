@@ -12,5 +12,6 @@ DerReader.init({
   tts: webspeechapi,
   vibrate: vibrateWebApi,
   defaultMode: 0,
+  format: 'A4',
   exit: function() {}
 });

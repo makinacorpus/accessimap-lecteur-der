@@ -55,8 +55,9 @@ export const setOptionStorage = (name, value) => ({
   }
 });
 
-export const initConfig = () => ({
+export const initConfig = defaultFormat => ({
   type: INIT_CONFIG,
+  default: defaultFormat,
   localStorage: {
     type: 'getItem',
     names: ['format', 'dpi']

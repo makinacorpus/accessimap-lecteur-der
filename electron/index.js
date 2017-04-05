@@ -33,6 +33,7 @@ DerReader.init({
   tts: webspeechapi,
   vibrate: vibrateWebApi,
   defaultMode: 0,
+  format: 'A3',
   exit: exit
 });
 

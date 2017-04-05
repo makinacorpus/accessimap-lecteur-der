@@ -29,7 +29,7 @@ const mapDispatchToProps = dispatch => {
     setDer: files => dispatch(setDer(files)),
     setOption: (name, value) => dispatch(setOption(name, value)),
     setOptionFormat: value => dispatch(setOptionStorage('format', value)),
-    initConfig: () => dispatch(initConfig()),
+    initConfig: config => dispatch(initConfig(config)),
     isLoading: bool => dispatch(isLoading(bool))
   }
 };

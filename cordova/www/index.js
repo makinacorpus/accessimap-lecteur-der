@@ -26,6 +26,7 @@ var app = {
           tts: window.cordovaTTS,
           vibrate: window.vibrateCordova,
           defaultMode: 0,
+          format: 'A5',
           exit: exit
         });
 
