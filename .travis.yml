@@ -51,11 +51,11 @@ script:
   - 'cd ../../electron'
   - 'npm install'
   - 'npm run build'
-  - 'ls $TRAVIS_BUILD_DIR/electron/dist'
+  - 'ls $TRAVIS_BUILD_DIR/electron/dist/accessimap*'
   - 'cd ../cordova/www'
   - 'npm install'
   - 'npm run build'
-  - 'ls $TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/'
+  - 'ls $TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/*.apk'
 
 cache:
   directories:
@@ -64,9 +64,10 @@ cache:
 deploy:
   provider: releases
   api_key: "$GITHUB_API_TOKEN"
+  file_glob: true
   file:
-    - "$TRAVIS_BUILD_DIR/electron/dist/*"
-    - "$TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/*"
+    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap*"
+    - "$TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/*.apk"
   skip_cleanup: true
   on:
     all_branches: true
