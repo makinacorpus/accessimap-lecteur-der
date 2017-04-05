@@ -65,9 +65,8 @@ deploy:
   provider: releases
   api_key: "$GITHUB_API_TOKEN"
   file:
-    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-$TRAVIS_TAG-win.zip"
-    - "$TRAVIS_BUILD_DIR/electron/dist/accessimap-lecteur-der-$TRAVIS_TAG-x86_64.AppImage"
-    - "$TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/android-debug.apk"
+    - "$TRAVIS_BUILD_DIR/electron/dist/*"
+    - "$TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/*"
   skip_cleanup: true
   on:
     all_branches: true
