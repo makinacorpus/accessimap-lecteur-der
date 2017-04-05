@@ -24,7 +24,7 @@ export const screenCalibrate = () => next => action => {
   case INIT_CONFIG:
     var { format, dpi } = action.value;
     document.getElementById('der-reader').className = format ? format : action.default.format;
-    document.body.style.fontSize = dpi ? dpi + 'px' : action.default.dpi + 'px';
+    document.body.style.fontSize = dpi ? dpi + 'px' : defaultState.config.dpi + 'px';
     break;
   default:
     break;

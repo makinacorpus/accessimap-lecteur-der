@@ -7,7 +7,7 @@ import SelectFile from './routes/Menu/SelectFile/SelectFile';
 import FormatMenu from './routes/Menu/Calibrate/FormatMenu';
 import SelectDocument from './routes/Menu/SelectDocument/SelectDocument';
 import FastClick from 'fastclick';
-import TouchEmulator from 'hammer-touchemulator';
+// import TouchEmulator from 'hammer-touchemulator';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -49,7 +49,7 @@ var DerReader = {
   init: function(env_config) {
     config = env_config;
     FastClick.attach(document.body, {});
-    TouchEmulator();
+    // TouchEmulator();
 
     let routes = {
       path: '/',
