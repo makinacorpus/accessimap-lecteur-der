@@ -26,4 +26,7 @@
     <plugin name="cordova-plugin-tts" spec="~0.2.3" />
     <engine name="android" spec="~5.1.1" />
     <plugin name="cordova-plugin-vibration" spec="~2.1.1" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <plugin name="cordova-plugin-splashscreen" spec="~4.0.2" />
 </widget>
