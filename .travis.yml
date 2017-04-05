@@ -65,7 +65,7 @@ deploy:
   provider: releases
   api_key: "$GITHUB_API_TOKEN"
   file:
-    - "$TRAVIS_BUILD_DIR/electron/dist/*""
+    - "$TRAVIS_BUILD_DIR/electron/dist/*"
     - "$TRAVIS_BUILD_DIR/cordova/platforms/android/build/outputs/apk/*"
   skip_cleanup: true
   on:
