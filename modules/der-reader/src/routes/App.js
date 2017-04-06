@@ -29,18 +29,16 @@ class App extends Component{
   }
 
   toggleMenu(id, labelOnClose, labelOnOpen) {
-    let open = this.state.openedMenu === id;
-    this.setState({
-      openedMenu: open ? '' : id
-    }, () => {
-      if (open && labelOnClose) {
-        hashHistory.push('/');
-        this.read(labelOnClose);
-      } else if (labelOnOpen) {
-        hashHistory.push(id);
-        this.read(labelOnOpen);
-      }
-    });
+    console.log('toggleMenu')
+    const route = this.props.routes[this.props.routes.length-1].path;
+    let open = route === id;
+    if (open && labelOnClose) {
+      hashHistory.push('/');
+      this.read(labelOnClose);
+    } else if (labelOnOpen) {
+      hashHistory.push(id);
+      this.read(labelOnOpen);
+    }
   }
 
   showMessage(text, type) {
@@ -58,8 +56,8 @@ class App extends Component{
         this.props.isLoading(false);
       });
     } else {
-      this.read('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
+      this.read('Aucun fichier sélectionné, retour au menu');
     }
   }
 
@@ -87,6 +85,7 @@ class App extends Component{
   render() {
     const { mode, searchableElement } = this.state;
     const { config, der, selectedDocument, derFile, activeFilter } = this.props;
+    const route = this.props.routes[this.props.routes.length-1].path;
     let navigation;
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
@@ -121,7 +120,7 @@ class App extends Component{
           labelOnClose="Fermeture du menu"
           labelOpened="Fermer le menu"
           labelOnOpen="Ouverture du menu"
-          open={this.state.openedMenu === 'menu'}
+          open={route === 'menu'}
           toggleMenu={this.toggleMenu.bind(this)}
            />
         <Button
@@ -131,13 +130,13 @@ class App extends Component{
           labelOnClose="Fermeture des filtres"
           labelOpened="Fermer les filtres"
           labelOnOpen="Ouverture des filtres"
-          open={this.state.openedMenu === 'filters'}
+          open={route === 'filters'}
           toggleMenu={this.toggleMenu.bind(this)}
           />
           
         {this.getMessage()}
 
-        <DerContainer
+        {route === '/' ? <DerContainer
           setFilesList={files => this.props.setFilesList(files)}
           setDer={der => this.props.setDer(der)}
           der={der}
@@ -147,7 +146,7 @@ class App extends Component{
           tts={config.tts}
           mode={mode}
           filter={activeFilter}
-          derFile={derFile} />
+          derFile={derFile} /> : null}
 
         { navigation || '' }
 
