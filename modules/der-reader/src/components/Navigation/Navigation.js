@@ -51,30 +51,17 @@ const Navigation = React.createClass({
     }, 250));
 
     const nav = document.getElementById('navigation');
-    var mc = new Hammer.Manager(nav);
-    mc.add( new Hammer.Tap({ event: 'doubletap', taps: 2 }) );
-    mc.add( new Hammer.Tap({ event: 'singletap' }) );
-    mc.get('doubletap').recognizeWith('singletap');
-    mc.get('singletap').requireFailure('doubletap');
-
-    mc.on('singletap', () => {
-      this.props.read(this.props.items[this.props.index].name);
-    });
+    nav.addEventListener('click', this.read);
 
     if (this.props.action) {
-      mc.on('doubletap', () => {
-        if (this.props.index === this.props.items.length-1) {
-          this.context.router.goBack();
-        }
-        this.props.action();
-      });
+      nav.addEventListener('dblclick', this.handleAction);
     }
   },
 
   componentWillUnmount: function() {
-    this.hammer.off('tap', () => {
-      this.props.action();
-    });
+    const nav = document.getElementById('navigation');
+    nav.removeEventListener('dblclick', this.handleAction);
+    nav.removeEventListener('click', this.read);
 
     this.props.items.pop();
     this.hammer.off('swipeup', () => {
@@ -87,6 +74,17 @@ const Navigation = React.createClass({
         this.props.changeIndex(this.props.index+1);
       }
     });
+  },
+
+  handleAction: function() {
+    if (this.props.index === this.props.items.length-1) {
+      this.context.router.goBack();
+    }
+    this.props.action();  
+  },
+
+  read: function() {
+    this.props.read(this.props.items[this.props.index].name);
   },
 
   render: function() {
