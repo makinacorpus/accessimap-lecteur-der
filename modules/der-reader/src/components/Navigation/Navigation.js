@@ -33,7 +33,7 @@ const Navigation = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if (this.props.read && this.props.index !== nextProps.index) {
-      this.read();
+      this.props.read(nextProps.items[nextProps.index].name); 
     }
   },
 
@@ -42,8 +42,8 @@ const Navigation = React.createClass({
   },
 
   componentDidMount: function() {
+    this.read();
     const modal = document.getElementById('mainMenu');
-
     this.hammer = new Hammer(modal, {});
     this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
     this.hammer.on('swipeup', debounce(() => {

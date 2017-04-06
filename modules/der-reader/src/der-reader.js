@@ -17,9 +17,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';  
 import { Router, hashHistory } from 'react-router';
 import appReducer from './store/reducers';
-import screenCalibrate from './middlewares/screen';
+import { screenCalibrate, screenReader } from './middlewares/screen';
 import localstorage from './middlewares/localstorage';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 
 
 const composeEnhancers =
@@ -34,7 +34,11 @@ const store = createStore(
     appReducer,
     routing: routerReducer
   }),
-  composeEnhancers(applyMiddleware(localstorage, screenCalibrate))
+  composeEnhancers(applyMiddleware(
+    localstorage, 
+    screenCalibrate,
+    screenReader
+  ))
 );
 
 // Create an enhanced history that syncs navigation events with the store

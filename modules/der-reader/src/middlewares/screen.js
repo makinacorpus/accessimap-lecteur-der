@@ -1,3 +1,4 @@
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   SET_OPTION,
   INIT_CONFIG
@@ -6,10 +7,13 @@ import {
   defaultState
 } from '../store/reducers';
 
+let Reader = null;
+
 /**
  * Middleware for resize application container to fit with DER.
  */
-const screenCalibrate = () => next => action => {
+export const screenCalibrate = () => next => action => {
+  console.log(action)
   switch (action.type) {
   case SET_OPTION:
     if (action.name === 'format') {
@@ -18,6 +22,10 @@ const screenCalibrate = () => next => action => {
 
     if (action.name === 'dpi') {
       document.body.style.fontSize = action.value + 'px';
+    }
+
+    if (action.name === 'tts') {
+      Reader = action.value;
     }
     break;
   case INIT_CONFIG:
@@ -31,4 +39,21 @@ const screenCalibrate = () => next => action => {
   next(action);
 };
 
-export default screenCalibrate;
+/**
+ * Middleware for resize application container to fit with DER.
+ */
+export const screenReader = () => next => action => {
+  if (action.type === LOCATION_CHANGE && Reader) {
+    switch (action.payload.pathname) {
+    case 'menu':
+      Reader.speak('Ouverture du menu');
+      break;
+    case '/filters':
+      Reader.speak('Ouverture des filtres');
+      break;
+    default:
+      break;
+    }
+  }
+  next(action);
+};

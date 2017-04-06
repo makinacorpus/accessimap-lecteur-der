@@ -28,15 +28,12 @@ class App extends Component{
     }
   }
 
-  toggleMenu(id, labelOnClose, labelOnOpen) {
+  toggleMenu(id) {
     const route = this.props.routes[this.props.routes.length-1].path;
-    let open = route === id;
-    if (open && labelOnClose) {
+    if (route === id) {
       hashHistory.push('/');
-      this.read(labelOnClose);
-    } else if (labelOnOpen) {
+    } else {
       hashHistory.push(id);
-      this.read(labelOnOpen);
     }
   }
 
@@ -50,13 +47,12 @@ class App extends Component{
       this.props.isLoading(true);
       this.context.router.push('/');
       this.read('Chargement du document').then(() => {
-        this.toggleMenu('menu');
         this.props.setDerFile(file);
         this.props.isLoading(false);
+        this.context.router.push('/');
       });
     } else {
       this.context.router.push('/menu');
-      this.read('Aucun fichier sélectionné, retour au menu');
     }
   }
 
@@ -118,7 +114,6 @@ class App extends Component{
           labelClosed="Menu"
           labelOnClose="Fermeture du menu"
           labelOpened="Fermer le menu"
-          labelOnOpen="Ouverture du menu"
           open={route === 'menu'}
           toggleMenu={this.toggleMenu.bind(this)}
            />
@@ -128,7 +123,6 @@ class App extends Component{
           labelClosed="Filtres"
           labelOnClose="Fermeture des filtres"
           labelOpened="Fermer les filtres"
-          labelOnOpen="Ouverture des filtres"
           open={route === 'filters'}
           toggleMenu={this.toggleMenu.bind(this)}
           />

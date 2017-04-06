@@ -41,7 +41,7 @@ const Button = React.createClass({
   },
 
   handleDoubleClick: function() {
-    this.props.toggleMenu(this.props.id, this.props.labelOnClose, this.props.labelOnOpen);
+    this.props.toggleMenu(this.props.id);
   },
 
   render: function() {
