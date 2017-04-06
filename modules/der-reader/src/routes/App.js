@@ -29,7 +29,6 @@ class App extends Component{
   }
 
   toggleMenu(id, labelOnClose, labelOnOpen) {
-    console.log('toggleMenu')
     const route = this.props.routes[this.props.routes.length-1].path;
     let open = route === id;
     if (open && labelOnClose) {
