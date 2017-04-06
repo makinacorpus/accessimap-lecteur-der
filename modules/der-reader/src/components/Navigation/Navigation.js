@@ -19,6 +19,18 @@ const Navigation = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
+
+  handleAction: function() {
+    if (this.props.index === this.props.items.length-1) {
+      this.context.router.goBack();
+    }
+    this.props.action();  
+  },
+
+  read: function() {
+    this.props.read(this.props.items[this.props.index].name);
+  },
+
   componentWillReceiveProps: function(nextProps) {
     if (this.props.read && this.props.index !== nextProps.index) {
       this.props.read(nextProps.items[nextProps.index].name); 
@@ -30,8 +42,8 @@ const Navigation = React.createClass({
   },
 
   componentDidMount: function() {
+    this.read();
     const modal = document.getElementById('mainMenu');
-
     this.hammer = new Hammer(modal, {});
     this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
     this.hammer.on('swipeup', debounce(() => {
@@ -74,17 +86,6 @@ const Navigation = React.createClass({
         this.props.changeIndex(this.props.index+1);
       }
     });
-  },
-
-  handleAction: function() {
-    if (this.props.index === this.props.items.length-1) {
-      this.context.router.goBack();
-    }
-    this.props.action();  
-  },
-
-  read: function() {
-    this.props.read(this.props.items[this.props.index].name);
   },
 
   render: function() {

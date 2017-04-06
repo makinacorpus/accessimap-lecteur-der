@@ -123,6 +123,11 @@ A chaque nouveau commit, travis vérifiera que le build pour electron se constru
 
 Pour ajouter ces builds aux releases, il faut créer une nouvelle release en respectant le [Semantic Versioning](http://semver.org/).
 
+Au préalable, il nous paraît utile et important de mettre à jour les versions
+des `package.json` des modules `der-reader` (et les autres s'ils ont changé),
+des répertoires `electron` et `cordova/www`.
+Les builds produits par `electron` disposent de la version npm.
+
 Travis déclenchera à nouveau un build electron, et attachera les résultats (zip pour windows, AppImage pour Linux) à la dernière release créée.
 
 

@@ -28,19 +28,13 @@ class App extends Component{
     }
   }
 
-  toggleMenu(id, labelOnClose, labelOnOpen) {
-    let open = this.state.openedMenu === id;
-    this.setState({
-      openedMenu: open ? '' : id
-    }, () => {
-      if (open && labelOnClose) {
-        hashHistory.push('/');
-        this.read(labelOnClose);
-      } else if (labelOnOpen) {
-        hashHistory.push(id);
-        this.read(labelOnOpen);
-      }
-    });
+  toggleMenu(id) {
+    const route = this.props.routes[this.props.routes.length-1].path;
+    if (route === id) {
+      hashHistory.push('/');
+    } else {
+      hashHistory.push(id);
+    }
   }
 
   showMessage(text, type) {
@@ -52,13 +46,12 @@ class App extends Component{
     if (file !== null) {
       this.props.isLoading(true);
       this.context.router.push('/');
+      this.props.setDerFile(file);
       this.read('Chargement du document').then(() => {
-        this.toggleMenu('menu');
-        this.props.setDerFile(file);
         this.props.isLoading(false);
+        this.context.router.push('/');
       });
     } else {
-      this.read('Aucun fichier sélectionné, retour au menu');
       this.context.router.push('/menu');
     }
   }
@@ -87,6 +80,9 @@ class App extends Component{
   render() {
     const { mode, searchableElement } = this.state;
     const { config, der, selectedDocument, derFile, activeFilter } = this.props;
+    // const route = this.props.routes[this.props.routes.length-1].path;
+    const pathname = this.props.routing.locationBeforeTransitions.pathname;
+
     let navigation;
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
@@ -109,6 +105,9 @@ class App extends Component{
       });
     }
 
+    // console.log(this.props)
+    // console.log(route, route.includes('menu'))
+
     if (this.props.loading || !this.props.config.tts) {
       return <Loader/>;
     }
@@ -120,8 +119,7 @@ class App extends Component{
           labelClosed="Menu"
           labelOnClose="Fermeture du menu"
           labelOpened="Fermer le menu"
-          labelOnOpen="Ouverture du menu"
-          open={this.state.openedMenu === 'menu'}
+          open={pathname.includes('menu')}
           toggleMenu={this.toggleMenu.bind(this)}
            />
         <Button
@@ -130,14 +128,13 @@ class App extends Component{
           labelClosed="Filtres"
           labelOnClose="Fermeture des filtres"
           labelOpened="Fermer les filtres"
-          labelOnOpen="Ouverture des filtres"
-          open={this.state.openedMenu === 'filters'}
+          open={pathname.includes('filters')}
           toggleMenu={this.toggleMenu.bind(this)}
           />
           
         {this.getMessage()}
 
-        <DerContainer
+        {pathname === '/' ? <DerContainer
           setFilesList={files => this.props.setFilesList(files)}
           setDer={der => this.props.setDer(der)}
           der={der}
@@ -147,7 +144,7 @@ class App extends Component{
           tts={config.tts}
           mode={mode}
           filter={activeFilter}
-          derFile={derFile} />
+          derFile={derFile} /> : null}
 
         { navigation || '' }
 

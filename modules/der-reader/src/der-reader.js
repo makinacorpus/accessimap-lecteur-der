@@ -17,7 +17,10 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';  
 import { Router, hashHistory } from 'react-router';
 import appReducer from './store/reducers';
-import { screenCalibrate, localstorage } from './store/middlewares';
+import { screenCalibrate, screenReader } from './middlewares/screen';
+import localstorage from './middlewares/localstorage';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+
 
 const composeEnhancers =
   typeof window === 'object' &&
@@ -27,9 +30,19 @@ const composeEnhancers =
     }) : compose;
 
 const store = createStore(
-  combineReducers({appReducer}),
-  composeEnhancers(applyMiddleware(localstorage, screenCalibrate))
+  combineReducers({
+    appReducer,
+    routing: routerReducer
+  }),
+  composeEnhancers(applyMiddleware(
+    localstorage, 
+    screenCalibrate,
+    screenReader
+  ))
 );
+
+// Create an enhanced history that syncs navigation events with the store
+const history = syncHistoryWithStore(hashHistory, store)
 
 let config = null;
 
@@ -90,7 +103,7 @@ var DerReader = {
 
     ReactDOM.render(
       <Provider store={store}>    
-        <Router routes={routes} history={hashHistory} />
+        <Router routes={routes} history={history} />
       </Provider>,
       document.getElementById(config.container)
     );

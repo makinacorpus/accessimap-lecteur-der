@@ -1,36 +1,4 @@
 import _ from 'lodash';
-import {
-  SET_OPTION,
-  INIT_CONFIG
-} from './actions';
-import {
-  defaultState
-} from './reducers';
-
-/**
- * Middleware for resize application container to fit with DER.
- */
-export const screenCalibrate = () => next => action => {
-  switch (action.type) {
-  case SET_OPTION:
-    if (action.name === 'format') {
-      document.getElementById('der-reader').className = action.value;
-    }
-
-    if (action.name === 'dpi') {
-      document.body.style.fontSize = action.value + 'px';
-    }
-    break;
-  case INIT_CONFIG:
-    var { format, dpi } = action.value;
-    document.getElementById('der-reader').className = format ? format : action.default.format;
-    document.body.style.fontSize = dpi ? dpi + 'px' : defaultState.config.dpi + 'px';
-    break;
-  default:
-    break;
-  }
-  next(action);
-};
 
 /**
  * Middleware to manage localStorage on actions
@@ -42,7 +10,7 @@ export const screenCalibrate = () => next => action => {
  * @param {array} localStorage.names - Items names for storage, only for getItem type
  * @param {(string|Number|Object)} localStorage.value - Item value (if localStorage.type is 'setItem')
  */
-export const localstorage = () => next => action => {
+const localstorage = () => next => action => {
   const getItem = (name) => {
     let item;
     try {
@@ -120,3 +88,5 @@ export const localstorage = () => next => action => {
   }
   next(action);
 };
+
+export default localstorage;
