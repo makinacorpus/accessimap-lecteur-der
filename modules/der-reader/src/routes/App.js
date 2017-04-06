@@ -80,7 +80,9 @@ class App extends Component{
   render() {
     const { mode, searchableElement } = this.state;
     const { config, der, selectedDocument, derFile, activeFilter } = this.props;
-    const route = this.props.routes[this.props.routes.length-1].path;
+    // const route = this.props.routes[this.props.routes.length-1].path;
+    const pathname = this.props.routing.locationBeforeTransitions.pathname;
+
     let navigation;
     if (this.props.children) {
       navigation = React.cloneElement(this.props.children, {
@@ -103,6 +105,9 @@ class App extends Component{
       });
     }
 
+    // console.log(this.props)
+    // console.log(route, route.includes('menu'))
+
     if (this.props.loading || !this.props.config.tts) {
       return <Loader/>;
     }
@@ -114,7 +119,7 @@ class App extends Component{
           labelClosed="Menu"
           labelOnClose="Fermeture du menu"
           labelOpened="Fermer le menu"
-          open={route === 'menu'}
+          open={pathname.includes('menu')}
           toggleMenu={this.toggleMenu.bind(this)}
            />
         <Button
@@ -123,13 +128,13 @@ class App extends Component{
           labelClosed="Filtres"
           labelOnClose="Fermeture des filtres"
           labelOpened="Fermer les filtres"
-          open={route === 'filters'}
+          open={pathname.includes('filters')}
           toggleMenu={this.toggleMenu.bind(this)}
           />
           
         {this.getMessage()}
 
-        {route === '/' ? <DerContainer
+        {pathname === '/' ? <DerContainer
           setFilesList={files => this.props.setFilesList(files)}
           setDer={der => this.props.setDer(der)}
           der={der}

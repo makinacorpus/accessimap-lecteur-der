@@ -36,7 +36,7 @@ var CalibrateCanvas = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if (this.props.totemMarker !== nextProps.totemMarker) {
-      this.props.tts.speak(`Redimmentionnez la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${nextProps.format})`);
+      // this.props.tts.speak(`Redimmentionnez la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${nextProps.format})`);
       this.drawRuler(nextProps.totemMarker);
     }
   },
@@ -45,12 +45,7 @@ var CalibrateCanvas = React.createClass({
     this.props.tts.speak(`Redimmentionnez la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${this.props.format})`);
     var canvas = document.getElementById('canvas');
     var c = canvas.getContext('2d');
-    
-    var screenInfo = {
-      screenWidthPx: screen.width,
-      screenHeightPx: screen.height
-    };
-
+  
     canvas.width = canvas.offsetWidth; //document.documentElement.clientWidth;
     canvas.height = canvas.offsetHeight; // document.documentElement.clientHeight;
     c.translate(this.state.currentTransform.x, this.state.currentTransform.y);
@@ -63,18 +58,10 @@ var CalibrateCanvas = React.createClass({
   },
 
   componentWillUnmount: function() {
-    canvas.removeEventListener('mousedown', this.onMouseDown, false);
+    this.state.canvas.removeEventListener('mousedown', this.onMouseDown, false);
   },
 
   onMouseDown: function(e) {
-    // clientX is position relative to viewport in CSS pixels.
-    var dragStartX = e.clientX,
-      dragStartY = e.clientY;
-    var lastClientX = dragStartX,
-      lastClientY = dragStartY;
-    var lastMouseAngle = Math.atan2(e.clientY - this.state.currentTransform.y,
-      e.clientX - this.state.currentTransform.x);
-
     var resizeToTotem = (e) => {
       // project the click point onto the ruler vector, which is
       var a = e.clientX - this.state.currentTransform.x;
@@ -101,10 +88,8 @@ var CalibrateCanvas = React.createClass({
       resizeToTotem(e);
 
       this.drawRuler();
-      lastClientX = e.clientX;
-      lastClientY = e.clientY;
     };
-    var onmouseup = function (e) {
+    var onmouseup = function () {
       document.removeEventListener('mousemove', onmousemove, true);
       document.removeEventListener('mouseup', onmouseup, false);
       window.onblur = null;
@@ -233,7 +218,7 @@ var CalibrateCanvas = React.createClass({
   }
 });
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return state.appReducer.config
 };
 

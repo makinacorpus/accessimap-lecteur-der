@@ -13,7 +13,6 @@ let Reader = null;
  * Middleware for resize application container to fit with DER.
  */
 export const screenCalibrate = () => next => action => {
-  console.log(action)
   switch (action.type) {
   case SET_OPTION:
     if (action.name === 'format') {
@@ -48,7 +47,7 @@ export const screenReader = () => next => action => {
     case 'menu':
       Reader.speak('Ouverture du menu');
       break;
-    case '/filters':
+    case 'filters':
       Reader.speak('Ouverture des filtres');
       break;
     default:
