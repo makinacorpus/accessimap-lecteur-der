@@ -1,7 +1,5 @@
 require('!style!css!sass!./Button.scss');
-
 const React = require('react');
-const Hammer = require('hammerjs');
 
 const Button = React.createClass({
   contextTypes: {
