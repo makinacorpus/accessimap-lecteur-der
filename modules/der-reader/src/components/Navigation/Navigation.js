@@ -27,9 +27,9 @@ const Navigation = React.createClass({
     this.props.action();  
   },
 
-  read: function(cancel) {
-    let reader;
-    if (!cancel) {
+  read: function(e) {
+    let reader; 
+    if (e && e.type === 'click') {
       reader = setTimeout(() => {
         this.props.read(this.props.items[this.props.index].name);
       }, 300);
@@ -49,12 +49,12 @@ const Navigation = React.createClass({
   },
 
   componentDidMount: function() {
-    this.read();
+    this.props.read(this.props.items[this.props.index].name);
     const modal = document.getElementById('mainMenu');
     this.hammer = new Hammer(modal, {});
     this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
     this.hammer.on('swipeup', debounce(() => {
-      this.read(true);
+      this.read(false);
       let newIndex = this.props.index-1;
       if (this.props.index === 0) {
         newIndex = this.props.items.length-1;
@@ -63,7 +63,7 @@ const Navigation = React.createClass({
     }, 250));
 
     this.hammer.on('swipedown', debounce(() => {
-      this.read(true);
+      this.read(false);
       let newIndex = this.props.index+1;
       if (this.props.index === this.props.items.length-1) {
         newIndex = 0;

@@ -18,26 +18,10 @@ const Button = React.createClass({
     });
   },
 
-  componentDidMount: function() {
-    const buttons = document.getElementById(this.props.id);
-    buttons.addEventListener('click', this.handleClick);
-    buttons.addEventListener('dblclick', this.handleDoubleClick);
-  },
-
-  componentWillUnmount: function() {
-    const buttons = document.getElementById(this.props.id);
-    buttons.removeEventListener('click', this.handleClick);
-    buttons.removeEventListener('dblclick', this.handleDoubleClick);
-  },
-
   handleClick: function(e) {
     const {config} = this.props;
-    if (this.props.open) {
-      config.tts.speak(this.props.labelOpened);
-    }
-    else {
-      config.tts.speak(e.target.innerText);
-    }
+    let text = this.props.open ? this.props.labelOpened : e.target.innerText;
+    config.tts.speak(text);
   },
 
   handleDoubleClick: function() {
@@ -46,7 +30,7 @@ const Button = React.createClass({
 
   render: function() {
     return (
-      <button id={this.props.id} type="button" className="button fill black">
+      <button id={this.props.id} type="button" className="button fill black" onClick={this.handleClick} onDoubleClick={this.handleDoubleClick}>
         {this.state.label}
       </button>
     );
