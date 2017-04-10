@@ -6,12 +6,6 @@ var SelectFile = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
-  getInitialState: function() {
-    return {
-      newFile: null
-    };
-  },
-
   handleChange: function(file) {
     if (file) {
       this.props.actions.changeDerFile(file);
@@ -23,27 +17,14 @@ var SelectFile = React.createClass({
   },
 
   componentDidMount: function() {
-    document.body.onfocus = () => {
-      if (this.isMounted()) {
-        this.context.router.push('/menu');
-        // this.setState({
-        //   file: null
-        // }, () => {
-        //   this.handleChange();
-        // });
-      }
-    }
     this.refs.inputfile.click();
   },
 
   changeFile: function() {
-    console.log('changeFile');
     if (this.refs.inputfile) {
       let file = this.refs.inputfile.files[0];
       if (file !== undefined) {
-        this.setState({file: file}, () => {
-          this.handleChange(file);
-        });
+        this.handleChange(file);
       } else {
         this.props.options.message('Aucun fichier seléctionné', 'error');
       }
