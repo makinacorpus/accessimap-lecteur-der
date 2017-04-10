@@ -66,7 +66,7 @@ class App extends Component{
 
   getMessage() {
     const {message} = this.props;
-    if (message) {
+    if (message && !!message.text) {
       return <Message text={message.text} type={message.messageType} />
     }
   }
