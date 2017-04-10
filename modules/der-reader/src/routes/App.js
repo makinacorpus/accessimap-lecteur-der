@@ -117,20 +117,18 @@ class App extends Component{
           id="menu"
           config={config}
           labelClosed="Menu"
-          labelOnClose="Fermeture du menu"
           labelOpened="Fermer le menu"
           open={pathname.includes('menu')}
           toggleMenu={this.toggleMenu.bind(this)}
            />
-        <Button
+        {this.props.der !== null ? <Button
           id="filters"
           config={config}
           labelClosed="Filtres"
-          labelOnClose="Fermeture des filtres"
           labelOpened="Fermer les filtres"
           open={pathname.includes('filters')}
           toggleMenu={this.toggleMenu.bind(this)}
-          />
+          /> : null}
           
         {this.getMessage()}
 
