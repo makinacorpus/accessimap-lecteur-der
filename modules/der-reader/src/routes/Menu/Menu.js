@@ -1,12 +1,8 @@
-const React = require('react');
-const MainMenu = require('./MainMenu.js');
+import React, { Component } from 'react';
+import MainMenu from './MainMenu.js';
 
-const Menu = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-
-  render: function() {
+class Menu extends Component {
+  render() {
     var childrenWithProps;
     if (this.props.children) {
       childrenWithProps = React.cloneElement(this.props.children, {
@@ -30,6 +26,10 @@ const Menu = React.createClass({
       </div>
     );
   }
-});
+}
 
-module.exports = Menu;
+Menu.contextTypes = {
+  router: React.PropTypes.object.isRequired
+}
+
+export default Menu
