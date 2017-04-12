@@ -1,12 +1,14 @@
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: [
-    './src/der-reader.js'
-  ],
+  entry: {
+    'der-reader': ['./src/der-reader.js'],
+    'index': './src/index.js'
+  },
   output: {
-    path: __dirname + '/../',
-    filename: 'der-reader.js',
+    path: __dirname + '/../dist/',
+    filename: '[name].js',
     library: 'DerReader',
     libraryTarget: 'umd'
   },
@@ -21,4 +23,8 @@ module.exports = {
       },
     ]
   },
+  plugins: [new HtmlWebpackPlugin({
+    template: 'src/index.ejs',
+    filename: 'index.html'
+  })]
 }

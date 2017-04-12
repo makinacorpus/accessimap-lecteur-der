@@ -23,7 +23,7 @@
     "electron-prebuilt": "^1.4.13"
   },
   "dependencies": {
-    "der-reader": "../modules/der-reader",
+    "der-reader": "../modules/dist/der-reader",
     "electron-json-storage": "^3.0.4",
     "tts.webapi": "../modules/tts.webapi",
     "vibrate.webapi": "../modules/vibrate.webapi"
