@@ -67,17 +67,17 @@ class Navigation extends Component {
     }, 250));
 
     const nav = document.getElementById('navigation');
-    nav.addEventListener('click', this.read);
+    nav.addEventListener('click', this.read.bind(this));
 
     if (this.props.action) {
-      nav.addEventListener('dblclick', this.handleAction);
+      nav.addEventListener('dblclick', this.handleAction.bind(this));
     }
   }
 
   componentWillUnmount() {
     const nav = document.getElementById('navigation');
-    nav.removeEventListener('dblclick', this.handleAction);
-    nav.removeEventListener('click', this.read);
+    nav.removeEventListener('dblclick', this.handleAction.bind(this));
+    nav.removeEventListener('click', this.read.bind(this));
 
     this.props.items.pop();
     this.hammer.off('swipeup', () => {
