@@ -4,7 +4,7 @@ import Menu from './routes/Menu/Menu.js';
 import Filters from './routes/Filters/Filters.js';
 import SelectFile from './routes/Menu/SelectFile/SelectFile';
 // import SwitchMode from './routes/Menu/SwitchMode/SwitchMode';
-import FormatMenu from './routes/Menu/Calibrate/FormatMenu';
+import CalibrateMenu from './routes/Menu/Calibrate/CalibrateMenu';
 import SelectDocument from './routes/Menu/SelectDocument/SelectDocument';
 import FastClick from 'fastclick';
 // import TouchEmulator from 'hammer-touchemulator';
@@ -77,7 +77,7 @@ var DerReader = {
             { path: 'menu', component: SelectFile, name: 'Charger un nouveau document en relief' },
             { 
               path: 'calibrate', 
-              component: FormatMenu,
+              component: CalibrateMenu,
               name: 'Calibrer l\'écran',
               childRoutes: [
                 { format: 'A3', name: 'Format A3' },
