@@ -48,6 +48,7 @@ script:
   - 'cd modules/der-reader'
   - 'npm install'
   - 'npm run build'
+  - 'bash ./deploy.sh'
   - 'cd ../../electron'
   - 'npm install'
   - 'npm run build'
