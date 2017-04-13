@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Navigation from '../../components/Navigation/Navigation.js'
 
 class MainMenu extends Component {
@@ -47,7 +48,7 @@ class MainMenu extends Component {
 }
 
 MainMenu.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 export default MainMenu

@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import Navigation from '../../components/Navigation/Navigation.js';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Navigation from '../../components/Navigation/Navigation.js'
 
 class Filters extends Component {
   constructor(props) {
@@ -70,7 +71,7 @@ class Filters extends Component {
 }
 
 Filters.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 export default Filters

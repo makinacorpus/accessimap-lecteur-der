@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Navigation from '../../../components/Navigation/Navigation.js'
 import CalibrateCanvas from './Calibrate'
 
@@ -85,7 +86,7 @@ class CalibrateMenu extends Component {
 }
 
 CalibrateMenu.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 export default CalibrateMenu

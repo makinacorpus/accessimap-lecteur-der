@@ -1,7 +1,8 @@
-require('!style!css!sass!./Navigation.scss');
+require('!style!css!sass!./Navigation.scss')
 
-import React, { Component } from 'react';
-import Hammer from 'hammerjs';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Hammer from 'hammerjs'
 
 function debounce(fn, delay) {
   var timer = null;
@@ -120,7 +121,7 @@ class Navigation extends Component {
 }
 
 Navigation.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 export default Navigation

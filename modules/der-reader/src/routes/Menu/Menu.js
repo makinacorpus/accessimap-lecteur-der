@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import MainMenu from './MainMenu.js';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import MainMenu from './MainMenu.js'
 
 class Menu extends Component {
   render() {
@@ -29,7 +30,7 @@ class Menu extends Component {
 }
 
 Menu.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 export default Menu

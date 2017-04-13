@@ -1,5 +1,6 @@
 require('!style!css!sass!./Button.scss')
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class Button extends Component{
   constructor(props) {
@@ -35,7 +36,7 @@ class Button extends Component{
 }
 
 Button.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 export default Button

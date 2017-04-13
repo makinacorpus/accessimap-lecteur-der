@@ -1,5 +1,7 @@
-import React, { Component } from 'react'
 require('!style!css!sass!./SelectFile.scss')
+
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class SelectFile extends Component {
   handleChange(file) {
@@ -35,7 +37,7 @@ class SelectFile extends Component {
 }
 
 SelectFile.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 }
 
 export default SelectFile
