@@ -3,16 +3,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setOptionStorage } from '../../../store/actions'
 
-const cssDpi = function () {
-  var d = document.createElement('div')
-  d.style.width = '10in'
-  d.style.height = '10px'
-  document.body.appendChild(d)
-  var dpi = d.offsetWidth / 10
-  document.body.removeChild(d)
-  return dpi
-}
-
 const clampDpi = function (dpi) {
   if (dpi < 5) dpi = 5
   if (dpi > 1000) dpi = 1000
