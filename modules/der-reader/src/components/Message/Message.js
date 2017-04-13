@@ -1,9 +1,8 @@
 require('!style!css!sass!./Message.scss');
+import React, { Component } from 'react'
 
-const React = require('react');
-
-const Message = React.createClass({
-  render: function() {
+class Message extends Component {
+  render() {
     return (
       <div className="message">
         <span className={this.props.type}>
@@ -12,6 +11,6 @@ const Message = React.createClass({
       </div>
     );
   }
-});
+}
 
-module.exports = Message;
+export default Message

@@ -53,12 +53,12 @@ class CalibrateCanvas extends Component {
     
     this.setState({ canvas, c }, () => {
       this.drawRuler()
-      canvas.addEventListener('mousedown', this.onMouseDown, false)
+      canvas.addEventListener('mousedown', this.onMouseDown.bind(this), false)
     })
   }
 
   componentWillUnmount() {
-    this.state.canvas.removeEventListener('mousedown', this.onMouseDown, false)
+    this.state.canvas.removeEventListener('mousedown', this.onMouseDown.bind(this), false)
   }
 
   onMouseDown(e) {

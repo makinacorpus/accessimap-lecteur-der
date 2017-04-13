@@ -10,8 +10,8 @@ class CalibrateMenu extends Component {
     this.state = {
       calibrateMode: false,
       totemMarker: null,
-      defaultFormat: this.props.config.format,
-      index: formats.indexOf(this.props.config.format)
+      defaultFormat: props.config.format,
+      index: formats.indexOf(props.config.format)
     }
   }
 
@@ -73,11 +73,11 @@ class CalibrateMenu extends Component {
     }
     return (
       <Navigation
-        action={this.handleAction}
+        action={() => this.handleAction()}
         index={this.state.index}
         items={this.props.route.childRoutes}
-        changeIndex={this.changeActiveMenu}
-        read={this.read}
+        changeIndex={index => this.changeActiveMenu(index)}
+        read={text => this.read(text)}
         >
       </Navigation>
     )
