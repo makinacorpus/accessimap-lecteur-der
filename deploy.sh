@@ -7,7 +7,7 @@ git config --global user.email "travis@nobody.org"
 git config --global user.name "Travis CI"
 
 # deploy
-cd dist
+cd modules/der-reader/dist
 git init
 git add .
 git commit -m "Deploy to Github Pages"
