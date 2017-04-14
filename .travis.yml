@@ -72,4 +72,3 @@ deploy:
   on:
     all_branches: true
     tags: true
-0
