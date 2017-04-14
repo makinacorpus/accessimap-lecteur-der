@@ -1,105 +1,103 @@
-var Utils = require('./Utils.js');
-var JSZip = require('jszip');
+import React, { Component } from 'react'
+import Utils from './Utils.js'
+import JSZip from 'jszip'
 
-var Explore = require('./DerContainer-explore.js');
-var Search = require('./DerContainer-search.js');
+import Explore from './DerContainer-explore.js'
+import Search from './DerContainer-search.js'
 
-var React = require('react');
 
-var DerContainer = React.createClass({
-  getInitialState: function() {
-    return {
+class DerContainer extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
       currentSound: null
     }
-  },
+  }
 
-  componentWillMount: function() {
-    this.setDerFile();
-  },
+  componentWillMount() {
+    this.setDerFile()
+  }
 
-  componentWillReceiveProps: function(nextProps) {
-    const oldProps = this.props;
-    this.props = nextProps;
+  componentWillReceiveProps(nextProps) {
+    const oldProps = this.props
+    this.props = nextProps
     if (oldProps.derFile !== nextProps.derFile) {
-      this.setDerFile();
+      this.setDerFile()
     }
     if (oldProps.selectedDocument !== nextProps.selectedDocument) {
-      this.changeDocument();
+      this.changeDocument()
     }
-    this.setDerActions();
-  },
+    this.setDerActions()
+  }
 
-  setDerFile: function() {
-    const {derFile} = this.props;
+  setDerFile() {
+    const {derFile} = this.props
     if (typeof derFile === 'string') {
       Utils.getFileObject(derFile, file => {
-        this.openDerFile(file);
-      });
+        this.openDerFile(file)
+      })
     } else {
-      this.openDerFile(derFile);
+      this.openDerFile(derFile)
     }
+  }
 
-  },
-
-  openDerFile: function(file) {
+  openDerFile(file) {
     if (!file) {
-      this.props.message('Aucun fichier chargé. Veuillez sélectionner un document\xa0en\xa0relief à l\'aide du menu.', 'error');
-      return;
+      this.props.message('Aucun fichier chargé. Veuillez sélectionner un document\xa0en\xa0relief à l\'aide du menu.', 'error')
+      return
     } 
-    const fileType = file.type.split('.').pop();
+    const fileType = file.type.split('.').pop()
     switch(fileType) {
     case 'application/zip':
     case 'application/x-zip-compressed':
     case 'application/x-zip':
     case 'application/octet-stream':
-      var new_zip = new JSZip();
+      var new_zip = new JSZip()
       new_zip.loadAsync(file)
       .then(zip => {
         this._extractFiles(zip.files).then((der) => {
-          this.props.message('');
-          this.props.setDer(der);
-          this.loadDer(der);
+          this.props.message('')
+          this.props.setDer(der)
+          this.loadDer(der)
         }, (error) => {
-          this.props.message(error, 'error');
-        });
+          this.props.message(error, 'error')
+        })
       })
       .catch(err => {
-        console.error(err);
-        this.props.message('Erreur lors de l\'ouverture du fichier ZIP', 'error');
-      });
-      break;
+        console.error(err)
+        this.props.message('Erreur lors de l\'ouverture du fichier ZIP', 'error')
+      })
+      break
     default:
-      this.props.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error');
+      this.props.message('Fichier non valide, le fichier envoyé doit être au format ZIP', 'error')
     }
-  },
-
+  }
 
   /**
   * Read MP3 contained in ZIP file
   * @param name: {string} required
   */
-  readAudioFile: function(name) {
+  readAudioFile(name) {
     return new Promise((resolve, reject) => {
       if (this.state.currentSound) {
-        this.state.currentSound.pause();
+        this.state.currentSound.pause()
       }
       this.state.filesByExt.audioFiles[name].async('base64')
       .then(base64string => {
-        let sound = new Audio('data:audio/wav;base64,' + base64string);
+        let sound = new Audio('data:audio/mpeg;base64,' + base64string)
         this.setState({
           currentSound: sound
-        });
-        this.state.currentSound.play();
+        })
+        this.state.currentSound.play()
         this.state.currentSound.onended = () => {
-          resolve(this.state.currentSound);
-        };
+          resolve(this.state.currentSound)
+        }
 
       }, function() {
-        reject();
-      });
-    });
-  },
-
+        reject()
+      })
+    })
+  }
 
   /**
   * Extract files contained in ZIP file
@@ -107,70 +105,69 @@ var DerContainer = React.createClass({
   * @param listContainer: {HTMLElement} required
   * @param callback: {Function}
   */
-  _extractFiles: function(files) {
-    this.setState({filesByExt: Utils.orderFilesByExt(files)});
+  _extractFiles(files) {
+    this.setState({filesByExt: Utils.orderFilesByExt(files)})
 
     if (this.state.filesByExt.svg.length > 1) {
-      this.props.setFilesList(this.state.filesByExt.svg);
+      this.props.setFilesList(this.state.filesByExt.svg)
     }
     return new Promise((resolve, reject) => {
       this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument]).then(der => {
-        resolve(der);
+        resolve(der)
       }, (err) => {
-        reject(err);
-      });
-    });
-  },
+        reject(err)
+      })
+    })
+  }
 
-  readFiles: function(xml, svg) {
-    let der = {};
+  readFiles(xml, svg) {
+    let der = {}
 
     var getJson = new Promise(function(resolve, reject) {
       xml.async('string')
       .then(function(data) {
-        var node = Utils.parseXml(data);
-        var json = Utils.XML2jsobj(node.documentElement);
-        der['filters'] = json.filters;
+        var node = Utils.parseXml(data)
+        var json = Utils.XML2jsobj(node.documentElement)
+        der['filters'] = json.filters
         if (!Array.isArray(der.filters.filter)) {
-          der.filters.filter = [der.filters.filter];
+          der.filters.filter = [der.filters.filter]
         }
-        der['pois'] = Array.isArray(json.pois.poi) ? json.pois : {poi: [ json.pois.poi ]} ;
+        der['pois'] = Array.isArray(json.pois.poi) ? json.pois : {poi: [ json.pois.poi ]} 
         
-        resolve();
+        resolve()
       }, function(error) {
-        reject(error);
-      });
-    });
+        reject(error)
+      })
+    })
 
     var getSvg = new Promise(function(resolve, reject) {
       svg.async('string')
       .then(function(data) {
-        der['svg'] = data;
-        resolve();
+        der['svg'] = data
+        resolve()
       }, function(error) {
-        reject(error);
-      });
-    });
+        reject(error)
+      })
+    })
 
     return new Promise((resolve, reject) => {
       Promise.all([getJson, getSvg]).then(function() {
-        resolve(der);
+        resolve(der)
       }, function() {
-        reject('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP');
-      });
-    });
-  },
+        reject('Fichier non valide, aucun document en relief n\'a été trouvé dans le ZIP')
+      })
+    })
+  }
 
-  changeDocument: function() {
-    const {selectedDocument} = this.props;
+  changeDocument() {
+    const {selectedDocument} = this.props
     this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[selectedDocument]).then(der => {
-      this.props.setDer(der);
-      this.loadDer(der);
+      this.props.setDer(der)
+      this.loadDer(der)
     }, err => {
-      this.props.message(err, 'error');
-    });
-  },
-
+      this.props.message(err, 'error')
+    })
+  }
 
   /**
   * Once all files are ready, load DER on DOM
@@ -178,52 +175,52 @@ var DerContainer = React.createClass({
   * @param container: {HTMLElement} required
   * @param tts: {Function}
   */
-  loadDer: function(der) {
-    let audio = new Audio('./static/c023.ogg');
-    audio.volume = .5;
-    audio.play();
+  loadDer(der) {
+    let audio = new Audio('./static/c023.ogg')
+    audio.volume = .5
+    audio.play()
 
     if (der.svg && der.svg.length) {
       this.refs.container.innerHTML = der.svg
     } else {
-      this.props.message('Aucun SVG trouvé', 'error');
+      this.props.message('Aucun SVG trouvé', 'error')
     }
     if (der.pois.poi === undefined) {
-      this.props.message('Ce document ne contient aucune interaction', 'error');
+      this.props.message('Ce document ne contient aucune interaction', 'error')
     } else {
-      this.setDerActions();
+      this.setDerActions()
     }
-  },
+  }
 
-  setDerActions: function() {
-    const {mode, der, tts, searchableElement, message} = this.props;
+  setDerActions() {
+    const {mode, der, tts, searchableElement, message} = this.props
     if (der && der.pois && der.pois.poi) {
       let exploreParams = {
         pois: der.pois.poi,
-        readFunction: this.readAudioFile,
+        readFunction: name => this.readAudioFile(name),
         tts: tts,
         filter: this.props.filter
-      };
+      }
       switch(mode) {
       case 0:
         // Explore
-        Explore.setExploreEvents(exploreParams);
-        Search.removeEventsListener(this.refs.container);
-        break;
+        Explore.setExploreEvents(exploreParams)
+        Search.removeEventsListener(this.refs.container)
+        break
       case 1:
         // Search
-        Search.setSearchEvents(searchableElement, this.refs.container, der.pois, message);
-        Explore.removeExploreEvents();
+        Search.setSearchEvents(searchableElement, this.refs.container, der.pois, message)
+        Explore.removeExploreEvents()
       }
     }
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <div className="der-container" ref="container">
       </div>
-    );
+    )
   }
-});
+}
 
-module.exports = DerContainer;
+export default DerContainer

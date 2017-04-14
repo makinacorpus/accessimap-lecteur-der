@@ -7,7 +7,7 @@ import {
   SET_OPTION,
   INIT_CONFIG,
   IS_LOADING
-} from './actions';
+} from './actions'
 
 export const defaultState = {
   config: {
@@ -26,7 +26,7 @@ export const defaultState = {
     messageType: '',
     text: ''
   }
-};
+}
 
 const appReducer = (state = defaultState, action) => {
   switch(action.type) {
@@ -34,7 +34,7 @@ const appReducer = (state = defaultState, action) => {
       return {
         ...state,
         loading: action.value
-      };
+      }
     case SET_MESSAGE:
       return {
         ...state,
@@ -42,30 +42,30 @@ const appReducer = (state = defaultState, action) => {
           messageType: action.messageType,
           text: action.text
         }
-      };
+      }
     case SET_DER_FILE:
       return {
         ...state,
         derFile: action.derFile,
         selectedDocument: 0
-      };
+      }
     case SET_FILTER:
       return {
         ...state,
         activeFilter: action.filter
-      };
+      }
     case SET_FILES_LIST:
       return {
         ...state,
         files: action.files
-      };
+      }
     case SET_DER:
-      let filters = state.activeFilter === null ? action.der.filters.filter[0] : state.activeFilter;
+      let filters = state.activeFilter === null ? action.der.filters.filter[0] : state.activeFilter
       return {
         ...state,
         der: action.der,
         activeFilter: filters
-      };
+      }
     case SET_OPTION:
       return {
         ...state,
@@ -84,8 +84,8 @@ const appReducer = (state = defaultState, action) => {
         }
       }
     default:
-      return state;
+      return state
   }
 }
 
-export default appReducer;
+export default appReducer

@@ -1,25 +1,25 @@
-require('!style!css!sass!./der-reader.scss');
+require('!style!css!sass!./der-reader.scss')
 
-import Menu from './routes/Menu/Menu.js';
-import Filters from './routes/Filters/Filters.js';
-import SelectFile from './routes/Menu/SelectFile/SelectFile';
-// import SwitchMode from './routes/Menu/SwitchMode/SwitchMode';
-import FormatMenu from './routes/Menu/Calibrate/FormatMenu';
-import SelectDocument from './routes/Menu/SelectDocument/SelectDocument';
-import FastClick from 'fastclick';
-// import TouchEmulator from 'hammer-touchemulator';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import Menu from './routes/Menu/Menu.js'
+import Filters from './routes/Filters/Filters.js'
+import SelectFile from './routes/Menu/SelectFile/SelectFile'
+// import SwitchMode from './routes/Menu/SwitchMode/SwitchMode'
+import CalibrateMenu from './routes/Menu/Calibrate/CalibrateMenu'
+import SelectDocument from './routes/Menu/SelectDocument/SelectDocument'
+import FastClick from 'fastclick'
+// import TouchEmulator from 'hammer-touchemulator'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-import { combineReducers } from 'redux';
-import App from './routes/App.container';
-import { createStore, applyMiddleware, compose } from 'redux';
-import { Provider } from 'react-redux';  
-import { Router, hashHistory } from 'react-router';
-import appReducer from './store/reducers';
-import { screenCalibrate, screenReader } from './middlewares/screen';
-import localstorage from './middlewares/localstorage';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { combineReducers } from 'redux'
+import App from './routes/App.container'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { Provider } from 'react-redux'
+import { Router, hashHistory } from 'react-router'
+import appReducer from './store/reducers'
+import { screenCalibrate, screenReader } from './middlewares/screen'
+import localstorage from './middlewares/localstorage'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 
 const composeEnhancers =
@@ -27,7 +27,7 @@ const composeEnhancers =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-    }) : compose;
+    }) : compose
 
 const store = createStore(
   combineReducers({
@@ -39,12 +39,12 @@ const store = createStore(
     screenCalibrate,
     screenReader
   ))
-);
+)
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store)
 
-let config = null;
+let config = null
 
 var DerReader = {
   /**
@@ -60,9 +60,9 @@ var DerReader = {
   * }
   */
   init: function(env_config) {
-    config = env_config;
-    FastClick.attach(document.body, {});
-    // TouchEmulator();
+    config = env_config
+    FastClick.attach(document.body, {})
+    // TouchEmulator()
 
     let routes = {
       path: '/',
@@ -77,7 +77,7 @@ var DerReader = {
             { path: 'menu', component: SelectFile, name: 'Charger un nouveau document en relief' },
             { 
               path: 'calibrate', 
-              component: FormatMenu,
+              component: CalibrateMenu,
               name: 'Calibrer l\'écran',
               childRoutes: [
                 { format: 'A3', name: 'Format A3' },
@@ -95,10 +95,10 @@ var DerReader = {
           name: 'Filtres'
         }
       ]
-    };
+    }
 
     if (config.derFile) {
-      routes.splice(2, 0, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' });
+      routes.splice(2, 0, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' })
     }
 
     ReactDOM.render(
@@ -106,8 +106,8 @@ var DerReader = {
         <Router routes={routes} history={history} />
       </Provider>,
       document.getElementById(config.container)
-    );
+    )
   }
-};
+}
 
-module.exports = DerReader;
+module.exports = DerReader

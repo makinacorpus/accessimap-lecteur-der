@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -7,13 +8,13 @@ module.exports = {
     './src/index.js'
   ],
   output: {
-    path: __dirname + '/public/',
+    path: __dirname + '/dist/',
     filename: 'index.js',
   },
   devtool: 'source-map',
   devServer: {
     inline: true,
-    contentBase: './public',
+    contentBase: './dist',
     port: 8080,
     hot: true,
     hotOnly: true,
@@ -33,5 +34,9 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      template: 'src/index.ejs',
+      filename: 'index.html'
+    })
   ]
 }

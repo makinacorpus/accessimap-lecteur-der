@@ -1,52 +1,54 @@
-const React = require('react');
-const Navigation = require('./../../components/Navigation/Navigation.js');
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Navigation from '../../components/Navigation/Navigation.js'
 
-const Menu = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-
-  getInitialState: function() {
-    return {
+class MainMenu extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
       activeMenu: 0
-    };
-  },
+    }
+  }
 
-  handleAction: function() {
-    let path = this.props.route.childRoutes[this.state.activeMenu].path;
+  handleAction() {
+    let path = this.props.route.childRoutes[this.state.activeMenu].path
 
     if (path === 'quit') {
-      this.props.config.exit.fn();
+      this.props.config.exit.fn()
     }
     if (path === 'back') {
-      this.props.actions.toggleMenu('menu', 'Fermeture du menu');
+      this.props.actions.toggleMenu('menu', 'Fermeture du menu')
     }
 
     else {
-      this.context.router.push('menu/' + path);
+      this.context.router.push('menu/' + path)
     }
-  },
+  }
 
-  changeActiveMenu: function(index) {
-    this.setState({activeMenu: index});
-  },
+  changeActiveMenu(index) {
+    this.setState({activeMenu: index})
+  }
 
-  read: function(text) {
-    this.props.config.tts.speak(text);
-  },
+  read(text) {
+    this.props.config.tts.speak(text)
+  }
 
-  render: function() {
+  render() {
     return (
       <Navigation
-        action={this.handleAction}
+        action={() => this.handleAction()}
         index={this.state.activeMenu}
         items={this.props.route.childRoutes || []}
-        changeIndex={this.changeActiveMenu}
-        read={this.read}
+        changeIndex={index => this.changeActiveMenu(index)}
+        read={text => this.read(text)}
         >
       </Navigation>
-    );
+    )
   }
-});
+}
 
-module.exports = Menu;
+MainMenu.contextTypes = {
+  router: PropTypes.object.isRequired
+}
+
+export default MainMenu

@@ -1,41 +1,43 @@
-require('!style!css!sass!./SelectFile.scss');
-var React = require('react');
+require('!style!css!sass!./SelectFile.scss')
 
-var SelectFile = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
-  handleChange: function(file) {
+class SelectFile extends Component {
+  handleChange(file) {
     if (file) {
       this.props.actions.changeDerFile(file);
       this.props.actions.changeFilter(null);
     } else {
-      this.props.config.tts.speak('Aucun fichier sélectionné, retour au menu');
-      this.context.router.push('/menu');
+      this.props.config.tts.speak('Aucun fichier sélectionné, retour au menu')
+      this.context.router.push('/menu')
     }
-  },
+  }
 
-  componentDidMount: function() {
-    this.refs.inputfile.click();
-  },
+  componentDidMount() {
+    this.refs.inputfile.click()
+  }
 
-  changeFile: function() {
+  changeFile() {
     if (this.refs.inputfile) {
-      let file = this.refs.inputfile.files[0];
+      let file = this.refs.inputfile.files[0]
       if (file !== undefined) {
-        this.handleChange(file);
+        this.handleChange(file)
       } else {
-        this.props.options.message('Aucun fichier seléctionné', 'error');
+        this.props.options.message('Aucun fichier seléctionné', 'error')
       }
     }
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <input ref="inputfile" id="file" type="file" className="inputfile" onChange={e => this.changeFile(e)} />
-    );
+    )
   }
-});
+}
 
-module.exports = SelectFile;
+SelectFile.contextTypes = {
+  router: PropTypes.object.isRequired
+}
+
+export default SelectFile

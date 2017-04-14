@@ -1,7 +1,8 @@
-require('!style!css!sass!./Navigation.scss');
+require('!style!css!sass!./Navigation.scss')
 
-const Hammer = require('hammerjs');
-const React = require('react');
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Hammer from 'hammerjs'
 
 function debounce(fn, delay) {
   var timer = null;
@@ -14,20 +15,15 @@ function debounce(fn, delay) {
   };
 }
 
-const Navigation = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-
-
-  handleAction: function() {
+class Navigation extends Component {
+  handleAction() {
     if (this.props.index === this.props.items.length-1) {
       this.context.router.goBack();
     }
     this.props.action();  
-  },
+  }
 
-  read: function(e) {
+  read(e) {
     let reader; 
     if (e && e.type === 'click') {
       reader = setTimeout(() => {
@@ -36,19 +32,19 @@ const Navigation = React.createClass({
     } else {
       clearTimeout(reader);
     }
-  },
+  }
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.read && this.props.index !== nextProps.index) {
       this.props.read(nextProps.items[nextProps.index].name); 
     }
-  },
+  }
 
-  componentWillMount: function() {
+  componentWillMount() {
     this.props.items.push({path: 'back', name: 'Retour'});
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.props.read(this.props.items[this.props.index].name);
     const modal = document.getElementById('mainMenu');
     this.hammer = new Hammer(modal, {});
@@ -72,17 +68,17 @@ const Navigation = React.createClass({
     }, 250));
 
     const nav = document.getElementById('navigation');
-    nav.addEventListener('click', this.read);
+    nav.addEventListener('click', this.read.bind(this));
 
     if (this.props.action) {
-      nav.addEventListener('dblclick', this.handleAction);
+      nav.addEventListener('dblclick', this.handleAction.bind(this));
     }
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     const nav = document.getElementById('navigation');
-    nav.removeEventListener('dblclick', this.handleAction);
-    nav.removeEventListener('click', this.read);
+    nav.removeEventListener('dblclick', this.handleAction.bind(this));
+    nav.removeEventListener('click', this.read.bind(this));
 
     this.props.items.pop();
     this.hammer.off('swipeup', () => {
@@ -95,9 +91,9 @@ const Navigation = React.createClass({
         this.props.changeIndex(this.props.index+1);
       }
     });
-  },
+  }
 
-  render: function() {
+  render() {
     const {items, index} = this.props;
     const content = this.props.content || '';
 
@@ -122,6 +118,10 @@ const Navigation = React.createClass({
       </div>
     );
   }
-});
+}
 
-module.exports = Navigation;
+Navigation.contextTypes = {
+  router: PropTypes.object.isRequired
+}
+
+export default Navigation

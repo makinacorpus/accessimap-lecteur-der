@@ -1,30 +1,31 @@
-require('!style!css!sass!./SelectDocument.scss');
+require('!style!css!sass!./SelectDocument.scss')
 
-const React = require('react');
-const Navigation = require('./../../../components/Navigation/Navigation.js');
+import React, { Component } from 'react'
+import Navigation from '../../../components/Navigation/Navigation.js'
 
-const SelectDocument = React.createClass({
-  getInitialState: function() {
-    return {
+class SelectDocument extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
       index: this.props.options.selectedDocument
-    };
-  },
+    }
+  }
 
-  handleAction: function(index) {
-    this.setState({index});
-  },
+  handleAction(index) {
+    this.setState({index})
+  }
 
-  changeDocument: function() {
-    this.props.actions.changeDocument(this.state.index);
-    this.props.actions.toggleMenu('menu', 'Fermeture du menu');
-  },
+  changeDocument() {
+    this.props.actions.changeDocument(this.state.index)
+    this.props.actions.toggleMenu('menu', 'Fermeture du menu')
+  }
 
-  read: function(text) {
-    this.props.config.tts.speak(text);
-  },
+  read(text) {
+    this.props.config.tts.speak(text)
+  }
 
-  render: function() {
-    const {files} = this.props.options;
+  render() {
+    const {files} = this.props.options
 
     return (
       <Navigation
@@ -35,8 +36,8 @@ const SelectDocument = React.createClass({
         items={files}
         changeIndex={this.handleAction}
       ></Navigation>
-    );
+    )
   }
-});
+}
 
-module.exports = SelectDocument;
+export default SelectDocument
