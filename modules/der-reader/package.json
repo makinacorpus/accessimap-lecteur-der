@@ -35,7 +35,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.config.js --progress --colors --watch",
-    "build": "webpack --config config/webpack.config.build.js && cp -r src/static dist"
+    "build": "webpack --config config/webpack.config.build.js && cp -r src/static dist",
+    "deploy": "gh-pages -d modules/der-reader/dist"
   },
   "dependencies": {
     "prop-types": "^15.5.8",
