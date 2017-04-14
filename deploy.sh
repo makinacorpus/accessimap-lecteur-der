@@ -8,6 +8,7 @@ git config --global user.name "Travis CI"
 # deploy
 cd modules/der-reader/dist
 ls
+git status
 git init
 git add .
 git commit -m "Deploy to Github Pages"
