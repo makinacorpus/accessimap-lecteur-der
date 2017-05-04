@@ -17,7 +17,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { Router, hashHistory } from 'react-router'
 import appReducer from './store/reducers'
-import { screenCalibrate, screenReader } from './middlewares/screen'
+import { screenCalibrate } from './middlewares/screen'
 import localstorage from './middlewares/localstorage'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
@@ -36,8 +36,7 @@ const store = createStore(
   }),
   composeEnhancers(applyMiddleware(
     localstorage, 
-    screenCalibrate,
-    screenReader
+    screenCalibrate
   ))
 )
 

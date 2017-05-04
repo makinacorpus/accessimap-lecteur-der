@@ -37,22 +37,3 @@ export const screenCalibrate = () => next => action => {
   }
   next(action);
 };
-
-/**
- * Middleware for resize application container to fit with DER.
- */
-export const screenReader = () => next => action => {
-  if (action.type === LOCATION_CHANGE && Reader) {
-    switch (action.payload.pathname) {
-    case 'menu':
-      Reader.speak('Ouverture du menu');
-      break;
-    case 'filters':
-      Reader.speak('Ouverture des filtres');
-      break;
-    default:
-      break;
-    }
-  }
-  next(action);
-};
