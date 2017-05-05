@@ -5,6 +5,7 @@ const voices = speechSynthesis.getVoices(),
 
 const webspeechapi = {
   utterance: null,
+  intervalId: null,
 
   initUtterance: function(text) {
     let utterance = new SpeechSynthesisUtterance();
@@ -20,20 +21,25 @@ const webspeechapi = {
     return utterance;
   },
 
-  speak: function(text) {
+  cancel: function() {
     speechSynthesis.cancel();
+    if (this.intervalId) window.clearInterval(this.intervalId);
+  },
+
+  speak: function(text) {
+    this.cancel();
     return new Promise((resolve, reject) => {
       // we set a timeout to make work cancel/speak 
       // in electron+chromium, tts doesn't work when we 'swipe' quickly
       // see https://github.com/makinacorpus/accessimap-lecteur-der/issues/21
-      // we set to 50ms the timeout before speaking
-      window.setTimeout(() => {
+      // we set to 150ms the timeout before speaking
+      this.intervalId = window.setTimeout(() => {
         this.utterance = this.initUtterance(text);
         speechSynthesis.speak(this.utterance);
         this.utterance.onend = () => {
           resolve();
         };
-      }, 50);
+      }, 150);
     });
     
   }

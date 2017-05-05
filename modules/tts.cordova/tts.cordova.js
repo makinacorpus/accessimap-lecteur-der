@@ -8,6 +8,15 @@ var cordovaTTS = {
     return utterance;
   },
 
+  cancel: function() {
+    return new Promise((resolve, reject) => {
+      this.utterance = this.initUtterance('');
+      window.TTS.speak(this.utterance, () => {
+        resolve();
+      });
+    });
+  },
+
   speak: function(text, pendingFunction) {
 
     return new Promise((resolve, reject) => {
