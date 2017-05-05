@@ -18,13 +18,11 @@ class Filters extends Component {
     this.state = {
       index
     }
-  }
 
-  // componentWillReceiveProps: function(nextProps) {
-  //   if (nextProps.options !== this.props.options) {
-  //     this.context.router.push('/');
-  //   }
-  // },
+    this.read = this.read.bind(this);
+    this.changeFilter = this.changeFilter.bind(this);
+    this.handleAction = this.handleAction.bind(this);
+  }
 
   changeFilter(index) {
     this.setState({index})
