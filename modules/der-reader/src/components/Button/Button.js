@@ -23,12 +23,20 @@ class Button extends Component{
   }
 
   handleDoubleClick() {
+    const {config} = this.props
+    config.tts.cancel()
     this.props.toggleMenu(this.props.id)
   }
 
   render() {
     return (
-      <button id={this.props.id} type="button" className="button fill black" onClick={e => this.handleClick(e)} onDoubleClick={() => this.handleDoubleClick()}>
+      <button 
+        id={this.props.id} 
+        type="button" 
+        className="button fill black" 
+        onClick={e => this.handleClick(e)} 
+        onDoubleClick={() => this.handleDoubleClick()}
+      >
         {this.state.label}
       </button>
     )
