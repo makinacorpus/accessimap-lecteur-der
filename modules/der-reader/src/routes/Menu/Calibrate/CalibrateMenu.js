@@ -16,10 +16,6 @@ class CalibrateMenu extends Component {
     }
   }
 
-  componentDidMount() {
-    this.read(`Veuillez sélectionner le format utilisé pour calibrer l\'écran. Format ${this.props.config.format}`)
-  }
-
   setTotem(o) {
     this.setState({totemMarker: o})
   }
