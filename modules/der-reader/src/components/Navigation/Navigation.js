@@ -24,13 +24,9 @@ class Navigation extends Component {
   }
 
   read(e) {
-    let reader; 
     if (e && e.type === 'click') {
-      reader = setTimeout(() => {
-        this.props.read(this.props.items[this.props.index].name);
-      }, 300);
-    } else {
-      clearTimeout(reader);
+      let text = this.props.items[this.props.index].name;
+      this.props.read(text);
     }
   }
 
@@ -51,6 +47,7 @@ class Navigation extends Component {
     this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
     this.hammer.on('swipeup', debounce(() => {
       this.read(false);
+      // this.props.read('');
       let newIndex = this.props.index-1;
       if (this.props.index === 0) {
         newIndex = this.props.items.length-1;
@@ -60,6 +57,7 @@ class Navigation extends Component {
 
     this.hammer.on('swipedown', debounce(() => {
       this.read(false);
+      // this.props.read('');
       let newIndex = this.props.index+1;
       if (this.props.index === this.props.items.length-1) {
         newIndex = 0;
