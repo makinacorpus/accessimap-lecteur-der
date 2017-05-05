@@ -176,10 +176,7 @@ class DerContainer extends Component {
   * @param tts: {Function}
   */
   loadDer(der) {
-    let audio = new Audio('./static/c023.ogg')
-    audio.volume = .5
-    audio.play()
-
+    this.playBeep()
     if (der.svg && der.svg.length) {
       this.refs.container.innerHTML = der.svg
     } else {
@@ -190,6 +187,12 @@ class DerContainer extends Component {
     } else {
       this.setDerActions()
     }
+  }
+
+  playBeep() {
+    let audio = new Audio('./static/c023.ogg')
+    audio.volume = .5
+    audio.play()
   }
 
   setDerActions() {
