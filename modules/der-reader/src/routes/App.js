@@ -122,28 +122,37 @@ class App extends Component{
           open={pathname.includes('menu')}
           toggleMenu={this.toggleMenu.bind(this)}
            />
-        {this.props.der !== null ? <Button
-          id="filters"
-          config={config}
-          labelClosed="Filtres"
-          labelOpened="Fermer les filtres"
-          open={pathname.includes('filters')}
-          toggleMenu={this.toggleMenu.bind(this)}
-          /> : null}
+        {
+          this.props.der !== null 
+          ? <Button
+              id="filters"
+              config={config}
+              labelClosed="Filtres"
+              labelOpened="Fermer les filtres"
+              open={pathname.includes('filters')}
+              toggleMenu={this.toggleMenu.bind(this)}
+            /> 
+          : null
+        }
           
         {this.getMessage()}
 
-        {pathname === '/' ? <DerContainer
-          setFilesList={files => this.props.setFilesList(files)}
-          setDer={der => this.props.setDer(der)}
-          der={der}
-          selectedDocument={selectedDocument}
-          searchableElement={searchableElement}
-          message={(text, type) => this.showMessage(text, type)}
-          tts={config.tts}
-          mode={mode}
-          filter={activeFilter}
-          derFile={derFile} /> : null}
+        {
+          pathname === '/' 
+          ? <DerContainer
+              setFilesList={files => this.props.setFilesList(files)}
+              setDer={der => this.props.setDer(der)}
+              der={der}
+              selectedDocument={selectedDocument}
+              searchableElement={searchableElement}
+              message={(text, type) => this.showMessage(text, type)}
+              tts={config.tts}
+              mode={mode}
+              filter={activeFilter}
+              derFile={derFile} 
+            /> 
+          : null
+        }
 
         { navigation || '' }
 
