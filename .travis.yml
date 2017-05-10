@@ -47,7 +47,7 @@ before_script:
 script:
   - 'cd modules/der-reader'
   - 'npm install'
-  - 'npm run build'
+  - 'npm run deploy'
   - 'cd ../../electron'
   - 'npm install'
   - 'npm run build'
