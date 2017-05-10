@@ -82,6 +82,7 @@ var DerReader = {
                 { format: 'A3', name: 'Format A3' },
                 { format: 'A4', name: 'Format A4' },
                 { format: 'A5', name: 'Format A5' },
+                { format: 'format19x13', name: 'Format 19x13' },
               ]
             },
             // { path: 'mode', component: SwitchMode, name: 'Changer le mode de lecture' },

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Navigation from '../../../components/Navigation/Navigation.js'
 import CalibrateCanvas from './Calibrate'
 
-const formats = ['A3', 'A4', 'A5', undefined] // Last item is undefined for return button
+const formats = ['A3', 'A4', 'A5', 'format19x13', undefined] // Last item is undefined for return button
 
 class CalibrateMenu extends Component {
   constructor(props) {
@@ -39,6 +39,9 @@ class CalibrateMenu extends Component {
         break
       case 'A5':
         this.setTotem({w:21.0/2.54,h:14.8/2.54, name: 'A5'})
+        break
+      case 'format19x13':
+        this.setTotem({w:19.0/2.54,h:13.0/2.54, name: 'format19x13'})
         break
       default:
         break
