@@ -19,7 +19,8 @@ module.exports = {
     hot: true,
     hotOnly: true,
     host: '0.0.0.0',
-    historyApiFallback: true
+    historyApiFallback: true,
+    disableHostCheck: true
   },
   module: {
     loaders: [
