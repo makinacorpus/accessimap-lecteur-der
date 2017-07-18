@@ -30,6 +30,7 @@ class App extends Component{
   }
 
   toggleMenu(id) {
+    console.log('toggleMenu')
     const route = this.props.routes[this.props.routes.length-1].path
     if (route === id) {
       hashHistory.push('/')

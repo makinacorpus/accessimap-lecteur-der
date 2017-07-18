@@ -1,4 +1,4 @@
-require('!style!css!sass!./SwitchMode.scss');
+require('!style!css!./SwitchMode.css');
 const _ = require('lodash');
 const React = require('react');
 // const SelectElementContainer = require('./../../../components/SelectElement/SelectElement.js');

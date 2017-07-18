@@ -1,0 +1,22 @@
+@import '../../der-reader-variables.css';
+
+.message {
+  color: var(--red);
+  font-size: 42px;
+  line-height: 1.42;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+}
+
+.message span {
+  text-align: center;
+  display: block;
+  font-weight: bold;
+  padding: 10px;
+  margin-top: 20%;
+}
+
+.message.info {
+  background-color: var(--green);
+}

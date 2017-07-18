@@ -1,4 +1,4 @@
-require('!style!css!sass!./Button.scss')
+require('!style!css!./Button.css')
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
@@ -17,12 +17,14 @@ class Button extends Component{
   }
 
   handleClick(e) {
+    console.log('menu: handleClick')
     const {config} = this.props
     let text = this.props.open ? this.props.labelOpened : e.target.innerText
     config.tts.speak(text)
   }
 
   handleDoubleClick() {
+    console.log('menu: handleDoubleClick')
     const {config} = this.props
     config.tts.cancel()
     this.props.toggleMenu(this.props.id)

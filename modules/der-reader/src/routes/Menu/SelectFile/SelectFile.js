@@ -1,4 +1,4 @@
-require('!style!css!sass!./SelectFile.scss')
+require('!style!css!./SelectFile.css')
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'

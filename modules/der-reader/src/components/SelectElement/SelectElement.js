@@ -1,4 +1,4 @@
-require('!style!css!sass!./SelectElement.scss');
+require('!style!css!./SelectElement.css');
 
 const React = require('react');
 const Navigation = require('./../Navigation/Navigation.js');

@@ -1,0 +1,65 @@
+@import '../../../der-reader-variables.css';
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile+label {
+  color: var(--white);
+  background-color: var(--black);
+  border: 2px solid var(--white);
+  padding: 0;
+}
+.inputfile+label.fill {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+.inputfile+label span {
+  width: 100%;
+  min-height: 2em;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
+}
+.inputfile+label strong {
+  height: 100%;
+  color: var(--white);
+  background-color: var(--black);
+  display: block;
+}
+
+.inputfile:focus+label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile+label {
+  text-align: center;
+  font-weight: 700;
+  display: block;
+  cursor: pointer;
+  border-radius: var(--base-border-radius);
+}
+
+.inputfile+label:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.inputfile+label span,
+.inputfile+label strong {
+  padding: .8em 1em;
+  /* 10px 20px */
+}
+
+.inputfile:focus+label strong,
+.inputfile.has-focus+label strong,
+.inputfile+label:hover strong {
+  background-color: var(--blue);
+}

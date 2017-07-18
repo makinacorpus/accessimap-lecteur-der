@@ -1,4 +1,4 @@
-require('!style!css!sass!./SelectDocument.scss')
+require('!style!css!./SelectDocument.css')
 
 import React, { Component } from 'react'
 import Navigation from '../../../components/Navigation/Navigation.js'

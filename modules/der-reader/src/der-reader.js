@@ -1,4 +1,4 @@
-require('!style!css!sass!./der-reader.scss')
+require('!style!css!./der-reader.css')
 
 import Menu from './routes/Menu/Menu.js'
 import Filters from './routes/Filters/Filters.js'

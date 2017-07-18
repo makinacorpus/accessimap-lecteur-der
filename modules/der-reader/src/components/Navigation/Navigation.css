@@ -1,0 +1,86 @@
+@import '../../der-reader-variables.css';
+
+.menu {
+  width: 100%;
+  height: 100%;
+  background: var(--black);
+  padding: 120px 2.5% 2.5% 2.5%;
+}
+
+@media (min-width: 1600px) {
+  .menu {
+    width: auto;
+    margin-left: 1350px;
+    padding: 2.5%;
+  }
+}
+
+h1,
+h2 {
+  color: white;
+  text-align: center;
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  transition: .3s ease-out all;
+  overflow: auto;
+}
+
+@media (min-width: 1600px) {
+  .modal {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.modal--title {
+  color: var(--white);
+  text-align: center;
+}
+
+.modal--close-button {
+  color: var(--white);
+}
+
+.modal.hidden {
+  transition-delay: .3s;
+  top: 100vh;
+}
+
+.selectable-list {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: var(--white);
+  border-radius: var(--base-border-radius);
+  border: solid 3px white;
+}
+
+.selectable-list--item {
+  list-style-type: none;
+  font-size: 100%;
+}
+.selectable-list--item:not(:last-child) {
+  border-bottom: solid 3px white;
+}
+.selectable-list--item a {
+  font-size: 1rem;
+  box-sizing: padding-box;
+  display: block;
+  font-weight: bold;
+  padding: 1em;
+}
+.A5 .selectable-list--item a {
+  font-size: .85rem;
+}
+.selectable-list--item a.selected {
+  background: white;
+  color: var(--black);
+  cursor: normal;
+}

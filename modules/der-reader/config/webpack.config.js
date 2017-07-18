@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+/* import postcss config array */
+var postCSSConfig = require('./postcss.config')
 
 module.exports = {
   entry: [
@@ -32,6 +34,9 @@ module.exports = {
         ],
       },
     ]
+  },
+  postcss: function() {
+    return postCSSConfig;
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

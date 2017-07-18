@@ -1,4 +1,4 @@
-require('!style!css!sass!./Navigation.scss')
+require('!style!css!./Navigation.css')
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -17,6 +17,7 @@ function debounce(fn, delay) {
 
 class Navigation extends Component {
   handleAction() {
+    console.log('hammer: handleAction')
     if (this.props.index === this.props.items.length-1) {
       this.context.router.goBack();
     }
@@ -24,6 +25,7 @@ class Navigation extends Component {
   }
 
   read(e) {
+    console.log('hammer: read')
     if (e && e.type === 'click') {
       let text = this.props.items[this.props.index].name;
       this.props.read(text);
