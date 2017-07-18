@@ -21,6 +21,9 @@ class App extends Component{
     this.props.setOption('tts', this.props.route.config.tts)
     this.props.setOption('exit', {fn: this.props.route.config.exit})
     this.props.initConfig({format: this.props.route.config.format || this.props.config.format})
+    if (this.props.derFile === null && this.props.route.config.derFile !== null) {
+      this.props.setDerFile(this.props.route.config.derFile)
+    }
   }
 
   componentWillReceiveProps(nextProps) {

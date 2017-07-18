@@ -59,6 +59,7 @@ var DerReader = {
   * }
   */
   init: function(env_config) {
+    console.log(env_config)
     config = env_config
     FastClick.attach(document.body, {})
     // TouchEmulator()
@@ -98,7 +99,7 @@ var DerReader = {
     }
 
     if (config.derFile) {
-      routes.splice(2, 0, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' })
+      // routes.splice(2, 0, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' })
     }
 
     ReactDOM.render(

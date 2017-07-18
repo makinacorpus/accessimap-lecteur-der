@@ -4,19 +4,21 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var postCSSConfig = require('./postcss.config')
 
 module.exports = {
+  context: __dirname,
   entry: [
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
-    './src/index.js'
+    '../src/index.js'
   ],
   output: {
-    path: __dirname + '/dist/',
+    path: __dirname + '/public',
+    publicPath: '',
     filename: 'index.js',
   },
   devtool: 'source-map',
   devServer: {
     inline: true,
-    contentBase: './dist',
+    contentBase: './public',
     port: 8080,
     hot: true,
     hotOnly: true,
@@ -41,7 +43,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: 'src/index.ejs',
+      template: '../src/index.ejs',
       filename: 'index.html'
     })
   ]
