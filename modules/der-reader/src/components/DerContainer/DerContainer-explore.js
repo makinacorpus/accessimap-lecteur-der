@@ -5,6 +5,7 @@ const GESTURES = {
 
 // Touch Point cache
 var tpCache = new Array();
+var mylatesttap;
 
 // This is a very basic 2-touch move/pinch/zoom handler that does not include
 // error handling, only handles horizontal moves, etc.
@@ -46,14 +47,17 @@ function start_handler(ev) {
       tpCache.push(ev.targetTouches[i]);
     }
   }
+  log("touchStart", ev, true);
   // if (logEvents) log("touchStart", ev, true);
   // update_background(ev);
 }
 
 function move_handler(ev) {
   ev.preventDefault();
+  ev.target.style.border = "dashed";
+  log("touchMove", ev, false);
   // Check this event for 2-touch Move/Pinch/Zoom gesture
-  // handle_pinch_zoom(ev);
+  handle_pinch_zoom(ev);
 }
 
 
@@ -67,6 +71,14 @@ function end_handler(ev) {
   }
 }
 
+function log(name, ev, printTargetIds) {
+  var s = name + ": touches = " + ev.touches.length + 
+                " ; targetTouches = " + ev.targetTouches.length +
+                " ; changedTouches = " + ev.changedTouches.length;
+
+  console.log(tpCache, ev.type)
+  Explore.initAction(ev)
+} 
 
 var Explore = {
 
@@ -119,8 +131,25 @@ var Explore = {
   initAction: function(event) {
     let element = event.target;
     let actions = Explore.actions[element.getAttribute('data-link')]; 
-    let action = Explore._getAction(actions, event.type);
-    if (action !== undefined && GESTURES[event.type] === action.gesture) {
+    let eventType = event.type;
+
+    if (event.type === 'touchstart') {
+      var now = new Date().getTime();
+      var timesince = now - mylatesttap;
+      if ((timesince < 300) && (timesince > 0)) {
+      // double tap   
+        eventType = 'dblclick';
+      }
+      else {
+        // single tap
+        eventType = 'click';
+      }
+      mylatesttap = new Date().getTime();
+    }
+
+    let action = Explore._getAction(actions, eventType);
+
+    if (action !== undefined && GESTURES[eventType] === action.gesture) {
       if (Explore.currentLinksElement) {
         Explore.currentLinksElement.forEach(function(element) {
           Explore._onEventEnded(element);
