@@ -25,7 +25,7 @@ function move_handler(ev) {
 function end_handler(ev) {
   ev.preventDefault();
   if (ev.targetTouches.length == 0) {
-    // aRestore background and border to original values
+    // Restore background and border to original values
     ev.target.style.background = 'white';
     ev.target.style.border = '1px solid black';
   }
