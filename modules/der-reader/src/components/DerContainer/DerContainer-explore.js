@@ -69,9 +69,8 @@ class exploreDer {
           this.pois.push(elements[index]);
           this.actions[id] = poi.actions.action;
           Object.keys(GESTURES).map((gesture) => {
-            elements[index].addEventListener(gesture, this.initAction);
-
-            elements[index].ontouchstart = e => touchStartHandler(e, this.initAction);
+            elements[index].addEventListener(gesture, this.initAction); // For click (mouse)
+            elements[index].ontouchstart = e => touchStartHandler(e, this.initAction); // For touch events (touch screen)
           });
         }
       });
@@ -86,13 +85,13 @@ class exploreDer {
     });
   }
 
-  initAction = event => {
-    let element = event.target;
+  initAction = e => {
+    let element = e.target;
     let actions = this.actions[element.getAttribute('data-link')]; 
-    let eventType = event.type;
+    let eventType = e.type;
 
-    if (event.type === 'touchstart') {
-      eventType = touchEvent.getType()
+    if (e.type === 'touchstart') {
+      eventType = touchEvent.getType(e)
     }
 
     let action = this._getAction(actions, eventType);

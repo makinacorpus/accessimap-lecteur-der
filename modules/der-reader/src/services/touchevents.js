@@ -3,7 +3,8 @@ class touch {
     this.mylatesttap;
   }
 
-  getType() {
+  getType(e) {
+    e.preventDefault();
     let eventType;
     var now = new Date().getTime();
     var timesince = now - this.mylatesttap;
@@ -26,15 +27,15 @@ export const touchEvent = new touch()
 // Touch Point cache
 var tpCache = new Array();
 
-export const touchStartHandler = (ev, cb) => {
-  if (ev.targetTouches.length == 2) {
-    for (var i = 0; i < ev.targetTouches.length; i++) {
-      tpCache.push(ev.targetTouches[i]);
+export const touchStartHandler = (e, cb) => {
+  if (e.targetTouches.length == 2) {
+    for (var i = 0; i < e.targetTouches.length; i++) {
+      tpCache.push(e.targetTouches[i]);
     }
   }
-  cb(ev)
+  cb(e)
 }
 
-export function move_handler(ev) {
-  ev.preventDefault();
+export function move_handler(e) {
+  e.preventDefault();
 }
