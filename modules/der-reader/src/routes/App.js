@@ -7,7 +7,7 @@ import Message from './../components/Message/Message.js'
 import Button from './../components/Button/Button.js'
 import Loader from './../components/Loader/Loader.js'
 
-class App extends Component{
+class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -116,6 +116,7 @@ class App extends Component{
     if (this.props.loading || !this.props.config.tts) {
       return <Loader/>
     }
+    console.log(this)
     return (
       <div className="container" ref="app">
         <Button
