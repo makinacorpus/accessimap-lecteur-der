@@ -2,8 +2,7 @@ require('!style!css!./Button.css')
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
-  touchEvent,
-  touchStartHandler
+  Touch
 } from '../../services/touchevents.js'
 
 
@@ -18,19 +17,14 @@ class Button extends Component{
   componentDidMount() {
     const element = document.getElementById(this.props.id);
 
-    // For touch events (touch screen)
-    const dispatchEvents = e => {
-      let eventType = touchEvent.getType(e)
-      if (eventType === 'click') {
-        this.handleClick(e)
-      }
-      if (eventType === 'dblclick') {
-        this.handleDoubleClick(e)
-      }
-    }
-    
-    element.ontouchstart = dispatchEvents
-    element.onclick = dispatchEvents
+    this.touchEvent = new Touch(element);
+    this.touchEvent.onTap(this.handleClick);
+    this.touchEvent.onDoubleTap(this.handleDoubleClick);
+    this.touchEvent.run();
+  }
+
+  componentWillUnmount() {
+    this.touchEvent.destroy();
   }
 
   componentWillReceiveProps() {

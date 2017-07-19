@@ -1,6 +1,5 @@
 import {
-  touchEvent,
-  touchStartHandler
+  Touch
 } from '../../services/touchevents.js'
 
 const GESTURES = {
@@ -70,7 +69,10 @@ class exploreDer {
           this.actions[id] = poi.actions.action;
           Object.keys(GESTURES).map((gesture) => {
             elements[index].addEventListener(gesture, this.initAction); // For click (mouse)
-            elements[index].ontouchstart = e => touchStartHandler(e, this.initAction); // For touch events (touch screen)
+            this.touchEvent = new Touch(elements[index])
+            this.touchEvent.onTap(this.initAction)
+            this.touchEvent.onDoubleTap(this.initAction)
+            this.touchEvent.run()
           });
         }
       });
@@ -91,7 +93,7 @@ class exploreDer {
     let eventType = e.type;
 
     if (e.type === 'touchstart') {
-      eventType = touchEvent.getType(e)
+      eventType = this.touchEvent.getType(e)
     }
 
     let action = this._getAction(actions, eventType);
@@ -124,6 +126,12 @@ class exploreDer {
           });
         });
       }
+    }
+  }
+
+  destroyActions() {
+    if (this.touchEvent) {
+      this.touchEvent.destroy();
     }
   }
 }

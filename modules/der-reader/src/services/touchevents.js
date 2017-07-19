@@ -1,6 +1,9 @@
-class touch {
-  constructor() {
+export class Touch {
+  constructor(element) {
     this.mylatesttap;
+    // Touch Point cache
+    this.tpCache = new Array();
+    this.element = typeof (element) === 'string' ? document.querySelector(element) : element;
   }
 
   getType(e) {
@@ -19,22 +22,50 @@ class touch {
     this.mylatesttap = new Date().getTime();
     return eventType;
   }
-}
-
-export const touchEvent = new touch()
-
-
-// Touch Point cache
-var tpCache = new Array();
-
-export const touchStartHandler = (e, cb) => {
-  if (e.targetTouches.length == 2) {
-    for (var i = 0; i < e.targetTouches.length; i++) {
-      tpCache.push(e.targetTouches[i]);
+  
+  startHandler = (e, cb) => {
+    if (e.targetTouches.length == 2) {
+      for (var i = 0; i < e.targetTouches.length; i++) {
+        tpCache.push(e.targetTouches[i]);
+      }
     }
+    cb(e)
   }
-  cb(e)
+
+  onTap = callback => {
+    this.onTap = callback;
+    return this;
+  }
+
+  onDoubleTap = callback => {
+    this.onDoubleTap = callback;
+    return this;
+  }
+
+  handleTap = e => {
+    e.preventDefault();
+    var now = new Date().getTime();
+    var timesince = now - this.mylatesttap;
+    if ((timesince < 300) && (timesince > 0)) {
+      this.onDoubleTap(e);
+    }
+    else {
+      this.onTap(e);
+    }
+    this.mylatesttap = new Date().getTime();
+  }
+
+  run() {
+    this.element.addEventListener('touchstart', this.handleTap);
+    this.element.addEventListener('click', this.handleTap);
+  }
+
+  destroy() {
+    this.element.removeEventListener('touchstart', this.handleTap);
+    this.element.removeEventListener('click', this.handleTap);
+  }
 }
+
 
 export function move_handler(e) {
   e.preventDefault();
@@ -91,7 +122,6 @@ export class Swipe {
   }
 
   destroy() {
-    console.log('destroy')
     this.element.removeEventListener('touchmove', this.handleTouchMove);
   }
 }

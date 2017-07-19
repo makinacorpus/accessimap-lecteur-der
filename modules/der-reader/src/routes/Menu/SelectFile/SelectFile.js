@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 
 class SelectFile extends Component {
   handleChange(file) {
+    console.log('handleChange')
     if (file) {
       this.props.actions.changeDerFile(file);
       this.props.actions.changeFilter(null);
@@ -19,6 +20,7 @@ class SelectFile extends Component {
   }
 
   changeFile() {
+    console.log('changeFile')
     if (this.refs.inputfile) {
       let file = this.refs.inputfile.files[0]
       if (file !== undefined) {

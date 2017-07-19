@@ -47,6 +47,7 @@ class App extends Component{
   }
 
   changeDerFile(file) {
+    console.log('changeDerFile')
     if (file !== null) {
       this.props.isLoading(true)
       this.context.router.push('/')

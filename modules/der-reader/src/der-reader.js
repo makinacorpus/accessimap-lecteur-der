@@ -59,7 +59,6 @@ var DerReader = {
   * }
   */
   init: function(env_config) {
-    console.log(env_config)
     config = env_config
     FastClick.attach(document.body, {})
     // TouchEmulator()

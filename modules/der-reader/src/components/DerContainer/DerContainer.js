@@ -181,6 +181,7 @@ class DerContainer extends Component {
   * @param tts: {Function}
   */
   loadDer(der) {
+    // Explore.destroyActions()
     this.playBeep()
     if (der.svg && der.svg.length) {
       this.refs.container.innerHTML = der.svg
