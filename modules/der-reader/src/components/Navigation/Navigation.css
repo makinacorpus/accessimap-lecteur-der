@@ -7,14 +7,6 @@
   padding: 120px 2.5% 2.5% 2.5%;
 }
 
-@media (min-width: 1600px) {
-  .menu {
-    width: auto;
-    margin-left: 1350px;
-    padding: 2.5%;
-  }
-}
-
 h1,
 h2 {
   color: white;
