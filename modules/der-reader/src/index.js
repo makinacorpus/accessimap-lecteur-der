@@ -9,7 +9,7 @@ DerReader = require('./der-reader.js')
 
 DerReader.init({
   container: 'der-reader',
-  derFile: './Android.zip',
+  derFile: null,
   tts: webspeechapi,
   vibrate: vibrateWebApi,
   defaultMode: 0,
