@@ -5,9 +5,9 @@ var webspeechapi, vibrateWebApi, DerReader;
 const env = require('./env/env.json').env;
 
 if (env === 'dev') {
-  webspeechapi = require('./../modules/tts.webapi/tts.webapi.js');
-  vibrateWebApi = require('./../modules/vibrate.webapi/vibrate.webapi.js');
-  DerReader = require('./../modules/der-reader/der-reader.js');
+  webspeechapi = require('../modules/tts.webapi/tts.webapi.js');
+  vibrateWebApi = require('../modules/vibrate.webapi/vibrate.webapi.js');
+  DerReader = require('../modules/der-reader/dist/der-reader.js');
 } else {
   webspeechapi = require('tts.webapi');
   vibrateWebApi = require('vibrate.webapi');
