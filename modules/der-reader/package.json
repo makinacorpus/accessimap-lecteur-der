@@ -41,7 +41,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.config.js --progress --colors --watch",
-    "build": "webpack --config config/webpack.config.build.js && cp -r src/static dist",
+    "build": "webpack --config config/webpack.config.build.js && cp -r public/static dist",
     "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
