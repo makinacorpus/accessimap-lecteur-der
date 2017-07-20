@@ -76,12 +76,23 @@ export class Swipe {
     this.xDown = null;
     this.yDown = null;
     this.element = typeof (element) === 'string' ? document.querySelector(element) : element;
+    this.mousedown = false;
 
-    this.element.addEventListener('touchstart', function (evt) {
-      evt.preventDefault();
-      this.xDown = evt.targetTouches[evt.targetTouches.length -1].clientX;
-      this.yDown = evt.targetTouches[evt.targetTouches.length -1].clientY;
-    }.bind(this), false);
+
+    this.element.addEventListener('touchstart', this.start);
+    this.element.addEventListener('mousedown', this.start);
+
+    this.element.addEventListener('touchend', this.stop);
+    this.element.addEventListener('mouseup', this.stop);
+  }
+
+  start = (evt) => {  
+    this.mousedown = true;
+    this.yDown = evt.targetTouches ? evt.targetTouches[evt.targetTouches.length -1].clientY : evt.y;
+  }
+
+  stop = (evt) => {
+    this.mousedown = false;
   }
 
   onUp = callback => {
@@ -95,34 +106,43 @@ export class Swipe {
   }
 
   handleTouchMove = e => {
-    if (!this.xDown || !this.yDown) {
-      return;
-    }
-
-    var xUp = e.targetTouches[e.targetTouches.length -1].clientX;
-    var yUp = e.targetTouches[e.targetTouches.length -1].clientY;
-
-    this.xDiff = this.xDown - xUp;
-    this.yDiff = this.yDown - yUp;
-
-    if (Math.abs(this.xDiff) < Math.abs(this.yDiff)) { // Most significant.
-      if (this.yDiff > 0) {
-        this.onUp(e);
-      } else {
-        this.onDown(e);
+    setTimeout(() => {
+      if (!this.yDown) {
+        return;
       }
-    }
 
-    // Reset values.
-    this.xDown = null;
-    this.yDown = null;
+      var yUp;
+      if (e.targetTouches) {
+        yUp = e.targetTouches[e.targetTouches.length -1].clientY;
+        this.yDiff = this.yDown - yUp;
+      } else {
+        yUp = e.y;
+        this.yDiff = yUp - this.yDown;
+      }
+      if (this.mousedown && Math.abs(this.yDiff)) { // Most significant.
+        if (this.yDiff > 0) {
+          this.onUp(e);
+        } else {
+          this.onDown(e);
+        }
+      }
+
+      // Reset values.
+      this.yDown = null;
+    }, 50);
   }
 
   run() {
     this.element.addEventListener('touchmove', this.handleTouchMove);
+    this.element.addEventListener('mousemove', this.handleTouchMove);
   }
 
   destroy() {
     this.element.removeEventListener('touchmove', this.handleTouchMove);
+    this.element.removeEventListener('mousemove', this.handleTouchMove);
+    this.element.removeEventListener('touchstart', this.start);
+    this.element.removeEventListener('mousedown', this.start);
+    this.element.removeEventListener('touchend', this.stop);
+    this.element.removeEventListener('mouseup', this.stop);
   }
 }

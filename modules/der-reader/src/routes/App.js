@@ -109,13 +109,10 @@ class App extends Component {
       })
     }
 
-    // console.log(this.props)
-    // console.log(route, route.includes('menu'))
-
     if (this.props.loading || !this.props.config.tts) {
       return <Loader/>
     }
-    console.log(this)
+
     return (
       <div className="container" ref="app">
         <Button
