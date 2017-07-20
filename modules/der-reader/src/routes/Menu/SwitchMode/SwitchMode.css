@@ -1,0 +1,61 @@
+.switch-title {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.switch-button {
+  height: 50px;
+  text-align: center;
+  will-change: transform;
+  z-index: 197 !important;
+  cursor: pointer;
+  transition: .3s ease all;
+  border-radius: var(--base-border-radius);
+  border: 3px solid white;
+}
+
+.switch-button-case {
+  font-size: 100%;
+  display: inline-block;
+  background: none;
+  width: 50%;
+  height: 100%;
+  color: white;
+  position: relative;
+  border: none;
+  transition: .3s ease all;
+  font-weight: bold;
+}
+.switch-button-case:hover{
+  background: darken(white, 10%);
+  color: black;
+  cursor: pointer;
+}
+.switch-button-case:focus {
+  outline: none;
+}
+
+.switch-button.active {
+  color: #151515;
+  background-color: white;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  z-index: -1;
+  transition: .3s ease-out all;
+}
+.switch-button.active-case{
+  color: #151515;
+}
+
+.switch-button.active.left {
+  left: 0;
+}
+
+.switch-button.active.right {
+  left: 50%;
+}

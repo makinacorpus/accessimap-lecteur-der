@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import Utils from './Utils.js'
+import {
+  getFileObject,
+  orderFilesByExt,
+  parseXml,
+  XML2jsobj
+} from '../../services/load-der.js'
 import JSZip from 'jszip'
 
 import Explore from './DerContainer-explore.js'
@@ -33,7 +38,7 @@ class DerContainer extends Component {
   setDerFile() {
     const {derFile} = this.props
     if (typeof derFile === 'string') {
-      Utils.getFileObject(derFile, file => {
+      getFileObject(derFile, file => {
         this.openDerFile(file)
       })
     } else {
@@ -106,7 +111,7 @@ class DerContainer extends Component {
   * @param callback: {Function}
   */
   _extractFiles(files) {
-    this.setState({filesByExt: Utils.orderFilesByExt(files)})
+    this.setState({filesByExt: orderFilesByExt(files)})
 
     if (this.state.filesByExt.svg.length > 1) {
       this.props.setFilesList(this.state.filesByExt.svg)
@@ -126,8 +131,8 @@ class DerContainer extends Component {
     var getJson = new Promise(function(resolve, reject) {
       xml.async('string')
       .then(function(data) {
-        var node = Utils.parseXml(data)
-        var json = Utils.XML2jsobj(node.documentElement)
+        var node = parseXml(data)
+        var json = XML2jsobj(node.documentElement)
         der['filters'] = json.filters
         if (!Array.isArray(der.filters.filter)) {
           der.filters.filter = [der.filters.filter]
@@ -176,6 +181,7 @@ class DerContainer extends Component {
   * @param tts: {Function}
   */
   loadDer(der) {
+    // Explore.destroyActions()
     this.playBeep()
     if (der.svg && der.svg.length) {
       this.refs.container.innerHTML = der.svg

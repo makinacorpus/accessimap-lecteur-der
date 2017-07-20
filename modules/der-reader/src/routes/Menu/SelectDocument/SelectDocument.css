@@ -1,0 +1,10 @@
+@import '../../../der-reader-variables.css';
+
+.files-list h2 {
+  padding: 1em 0 0;
+  color: var(--white);
+  font-size: 24px;
+  line-height: 150%;
+  font-weight: normal;
+  text-align: center;
+}

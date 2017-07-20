@@ -1,4 +1,4 @@
-require('!style!css!sass!./der-reader.scss')
+require('!style!css!./der-reader.css')
 
 import Menu from './routes/Menu/Menu.js'
 import Filters from './routes/Filters/Filters.js'
@@ -7,7 +7,6 @@ import SelectFile from './routes/Menu/SelectFile/SelectFile'
 import CalibrateMenu from './routes/Menu/Calibrate/CalibrateMenu'
 import SelectDocument from './routes/Menu/SelectDocument/SelectDocument'
 import FastClick from 'fastclick'
-// import TouchEmulator from 'hammer-touchemulator'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -61,7 +60,6 @@ var DerReader = {
   init: function(env_config) {
     config = env_config
     FastClick.attach(document.body, {})
-    // TouchEmulator()
 
     let routes = {
       path: '/',
@@ -98,7 +96,7 @@ var DerReader = {
     }
 
     if (config.derFile) {
-      routes.splice(2, 0, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' })
+      // routes.splice(2, 0, { path: 'doc', component: SelectDocument, name: 'Définir le document à visualiser' })
     }
 
     ReactDOM.render(

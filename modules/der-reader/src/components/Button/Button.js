@@ -1,6 +1,10 @@
-require('!style!css!sass!./Button.scss')
+require('!style!css!./Button.css')
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {
+  Touch
+} from '../../services/touchevents.js'
+
 
 class Button extends Component{
   constructor(props) {
@@ -10,19 +14,32 @@ class Button extends Component{
     }
   }
 
+  componentDidMount() {
+    const element = document.getElementById(this.props.id);
+
+    this.touchEvent = new Touch(element);
+    this.touchEvent.onTap(this.handleClick);
+    this.touchEvent.onDoubleTap(this.handleDoubleClick);
+    this.touchEvent.run();
+  }
+
+  componentWillUnmount() {
+    this.touchEvent.destroy();
+  }
+
   componentWillReceiveProps() {
     this.setState({
       label: this.props.open ? 'Fermer' : this.props.labelClosed
     })
   }
 
-  handleClick(e) {
+  handleClick = e => {
     const {config} = this.props
     let text = this.props.open ? this.props.labelOpened : e.target.innerText
     config.tts.speak(text)
   }
 
-  handleDoubleClick() {
+  handleDoubleClick = () => {
     const {config} = this.props
     config.tts.cancel()
     this.props.toggleMenu(this.props.id)
@@ -33,9 +50,7 @@ class Button extends Component{
       <button 
         id={this.props.id} 
         type="button" 
-        className="button fill black" 
-        onClick={e => this.handleClick(e)} 
-        onDoubleClick={() => this.handleDoubleClick()}
+        className="button fill black"
       >
         {this.state.label}
       </button>

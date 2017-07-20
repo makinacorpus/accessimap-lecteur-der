@@ -7,7 +7,7 @@ import Message from './../components/Message/Message.js'
 import Button from './../components/Button/Button.js'
 import Loader from './../components/Loader/Loader.js'
 
-class App extends Component{
+class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -21,6 +21,9 @@ class App extends Component{
     this.props.setOption('tts', this.props.route.config.tts)
     this.props.setOption('exit', {fn: this.props.route.config.exit})
     this.props.initConfig({format: this.props.route.config.format || this.props.config.format})
+    if (this.props.derFile === null && this.props.route.config.derFile !== null) {
+      this.props.setDerFile(this.props.route.config.derFile)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -106,12 +109,10 @@ class App extends Component{
       })
     }
 
-    // console.log(this.props)
-    // console.log(route, route.includes('menu'))
-
     if (this.props.loading || !this.props.config.tts) {
       return <Loader/>
     }
+
     return (
       <div className="container" ref="app">
         <Button

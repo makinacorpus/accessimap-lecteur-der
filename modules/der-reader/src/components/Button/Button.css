@@ -1,0 +1,64 @@
+@import '../../der-reader-variables.css';
+
+.button {
+  margin-top: 10px;
+  padding: .2em .4em;
+  color: var(--white);
+  background-color: transparent;
+  border: 3px solid var(--white);
+  min-height: 2em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
+  text-align: center;
+  font-weight: 700;
+  display: block;
+  cursor: pointer;
+  border-radius: var(--base-border-radius);
+  font-size: 1rem;
+}
+
+.button.width-auto {
+  width: auto;
+}
+
+.A5 .button {
+  font-size: .85rem;
+}
+
+.button:hover, .button.active {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.button.fill {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.button.fill:hover {
+  border-color: var(--blue);
+  background-color: var(--blue);
+}
+button.fill.red {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+}
+button.fill.red:hover, button.fill.red.active {
+  border-color: var(--red);
+  color: var(--red);
+  background-color: white;
+}
+
+button.fill.black {
+  background-color: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+button.fill.red:hover, button.fill.red.active {
+  border-color: var(--black);
+  color: var(--black);
+  background-color: white;
+}

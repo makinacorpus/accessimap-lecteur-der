@@ -1,8 +1,8 @@
-@import './../../der-reader-variables.scss';
+@import '../../der-reader-variables.css';
 
 .current-element {
   text-align: center;
   padding-top: 1em;
   display: block;
-  color: $white;
+  color: var(--white);
 }

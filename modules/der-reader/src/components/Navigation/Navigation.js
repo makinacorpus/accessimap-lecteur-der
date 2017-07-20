@@ -1,8 +1,10 @@
-require('!style!css!sass!./Navigation.scss')
+require('!style!css!./Navigation.css')
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Hammer from 'hammerjs'
+import {
+  Swipe
+} from '../../services/touchevents'
 
 function debounce(fn, delay) {
   var timer = null;
@@ -42,10 +44,8 @@ class Navigation extends Component {
 
   componentDidMount() {
     this.props.read(this.props.items[this.props.index].name);
-    const modal = document.getElementById('mainMenu');
-    this.hammer = new Hammer(modal, {});
-    this.hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-    this.hammer.on('swipeup', debounce(() => {
+    this.swiper = new Swipe(document.body);
+    this.swiper.onUp(debounce(() => {
       this.read(false);
       // this.props.read('');
       let newIndex = this.props.index-1;
@@ -54,8 +54,7 @@ class Navigation extends Component {
       }
       this.props.changeIndex(newIndex);
     }, 250));
-
-    this.hammer.on('swipedown', debounce(() => {
+    this.swiper.onDown(debounce(() => {
       this.read(false);
       // this.props.read('');
       let newIndex = this.props.index+1;
@@ -64,6 +63,7 @@ class Navigation extends Component {
       }
       this.props.changeIndex(newIndex);
     }, 250));
+    this.swiper.run();
 
     const nav = document.getElementById('navigation');
     nav.addEventListener('click', this.read.bind(this));
@@ -79,16 +79,7 @@ class Navigation extends Component {
     nav.removeEventListener('click', this.read.bind(this));
 
     this.props.items.pop();
-    this.hammer.off('swipeup', () => {
-      if (this.props.index !== 0) {
-        this.props.changeIndex(this.props.index-1);
-      }
-    });
-    this.hammer.off('swipedown', () => {
-      if (this.props.index !== this.props.items.length-1) {
-        this.props.changeIndex(this.props.index+1);
-      }
-    });
+    this.swiper.destroy();
   }
 
   render() {

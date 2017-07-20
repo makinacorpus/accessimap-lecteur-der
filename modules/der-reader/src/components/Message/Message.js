@@ -1,4 +1,4 @@
-require('!style!css!sass!./Message.scss');
+require('!style!css!./Message.css');
 import React, { Component } from 'react'
 
 class Message extends Component {

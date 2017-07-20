@@ -1,4 +1,4 @@
-require('!style!css!sass!./Calibrate.scss')
+require('!style!css!./Calibrate.css')
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setOptionStorage } from '../../../store/actions'
