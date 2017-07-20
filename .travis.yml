@@ -16,7 +16,7 @@ script:
   - git add .
   - git commit -m "Deploy to Github Pages"
   - git status
-  - git push --force --quiet "https://${GITHUB_API_TOKEN}@$github.com/makinacorpus/accessimap-lecteur-der.git" master:gh-pages > /dev/null 2>&1
+  - git push --force --quiet "https://${GITHUB_API_TOKEN}@github.com/makinacorpus/accessimap-lecteur-der.git" master:gh-pages > /dev/null 2>&1
 cache:
   directories:
     - node_modules
