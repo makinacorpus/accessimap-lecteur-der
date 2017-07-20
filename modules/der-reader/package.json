@@ -37,7 +37,7 @@
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.config.js --progress --colors --watch",
     "build": "webpack --config config/webpack.config.build.js && cp -r src/static dist",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages  --repo https://$GITHUB_TOKEN@github.com/makinacorpus/accessimap-lecteur-der.git -d dist"
   },
   "dependencies": {
     "prop-types": "^15.5.8",
