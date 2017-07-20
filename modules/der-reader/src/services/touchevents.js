@@ -78,8 +78,9 @@ export class Swipe {
     this.element = typeof (element) === 'string' ? document.querySelector(element) : element;
 
     this.element.addEventListener('touchstart', function (evt) {
-      this.xDown = evt.touches[0].clientX;
-      this.yDown = evt.touches[0].clientY;
+      evt.preventDefault();
+      this.xDown = evt.targetTouches[evt.targetTouches.length -1].clientX;
+      this.yDown = evt.targetTouches[evt.targetTouches.length -1].clientY;
     }.bind(this), false);
   }
 
@@ -98,8 +99,8 @@ export class Swipe {
       return;
     }
 
-    var xUp = e.touches[0].clientX;
-    var yUp = e.touches[0].clientY;
+    var xUp = e.targetTouches[e.targetTouches.length -1].clientX;
+    var yUp = e.targetTouches[e.targetTouches.length -1].clientY;
 
     this.xDiff = this.xDown - xUp;
     this.yDiff = this.yDown - yUp;
