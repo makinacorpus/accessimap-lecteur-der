@@ -4,6 +4,8 @@ node_js:
   - '4.4.2'
 
 script:
+  - git config --global user.email "build@travis-ci.org"
+  - git config --global user.name "Travis gh pages"
   - 'cd modules/der-reader'
   - 'npm install'
   - 'npm run deploy'
