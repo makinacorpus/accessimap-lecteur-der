@@ -1,8 +1,6 @@
 export class Touch {
   constructor(element) {
     this.mylatesttap;
-    // Touch Point cache
-    this.tpCache = new Array();
     this.element = typeof (element) === 'string' ? document.querySelector(element) : element;
   }
 
@@ -21,15 +19,6 @@ export class Touch {
     }
     this.mylatesttap = new Date().getTime();
     return eventType;
-  }
-  
-  startHandler = (e, cb) => {
-    if (e.targetTouches.length == 2) {
-      for (var i = 0; i < e.targetTouches.length; i++) {
-        tpCache.push(e.targetTouches[i]);
-      }
-    }
-    cb(e)
   }
 
   onTap = callback => {
