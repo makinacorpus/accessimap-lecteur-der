@@ -43,7 +43,7 @@ class Filters extends Component {
     if (newFilter && newFilter.path !== 'back') {
       this.props.actions.toggleMenu('filters', 'Filtre' + newFilter.name + 'sélectionné')
     } else {
-      this.props.actions.toggleMenu('filters', 'Fermeture des filtres')
+      this.props.actions.toggleMenu('filters')
     }
   }
 

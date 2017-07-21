@@ -26,7 +26,7 @@ class CalibrateMenu extends Component {
     let path = this.props.route.childRoutes[index].path
 
     if (path === 'back') {
-      this.props.actions.toggleMenu('menu', 'Fermeture du menu')
+      this.props.actions.toggleMenu('menu')
     }
     else if (format) {
       this.setState({calibrateMode: true})

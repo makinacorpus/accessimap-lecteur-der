@@ -36,9 +36,12 @@ class App extends Component {
     const route = this.props.routes[this.props.routes.length-1].path
     if (route === id) {
       hashHistory.push('/')
+      this.read('Fermeture du menu')
     } else {
       hashHistory.push(id)
+      this.read('Ouverture du menu')
     }
+
   }
 
   showMessage(text, type) {

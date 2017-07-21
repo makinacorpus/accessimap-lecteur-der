@@ -17,7 +17,7 @@ class SelectDocument extends Component {
 
   changeDocument() {
     this.props.actions.changeDocument(this.state.index)
-    this.props.actions.toggleMenu('menu', 'Fermeture du menu')
+    this.props.actions.toggleMenu('menu')
   }
 
   read(text) {

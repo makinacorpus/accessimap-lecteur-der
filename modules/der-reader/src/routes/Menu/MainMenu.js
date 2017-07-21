@@ -17,7 +17,7 @@ class MainMenu extends Component {
       this.props.config.exit.fn()
     }
     if (path === 'back') {
-      this.props.actions.toggleMenu('menu', 'Fermeture du menu')
+      this.props.actions.toggleMenu('menu')
     }
 
     else {
