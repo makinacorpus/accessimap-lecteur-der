@@ -8,7 +8,7 @@
   "scripts": {
     "env-dev": "cp env/env-dev.json env/env.json",
     "env-prod": "cp env/env-prod.json env/env.json",
-    "start": "npm run env-dev && electron electron.js",
+    "start": "npm run env-dev && electron.cmd electron.js",
     "build": "npm run env-prod && build --win --linux --x64 --ia32",
     "build-linux": "npm run env-prod && build --linux --x64"
   },
@@ -19,7 +19,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron-builder": "^16.6.1",
+    "electron": "^1.6.11",
     "electron-prebuilt": "^1.4.13"
   },
   "dependencies": {
