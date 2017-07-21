@@ -4,6 +4,10 @@ var webspeechapi, vibrateWebApi, DerReader;
 
 const env = require('./env/env.json').env;
 
+var webFrame = require('electron').webFrame;
+webFrame.setVisualZoomLevelLimits(1, 1);
+webFrame.setLayoutZoomLevelLimits(0, 0);
+
 if (env === 'dev') {
   webspeechapi = require('../modules/tts.webapi/tts.webapi.js');
   vibrateWebApi = require('../modules/vibrate.webapi/vibrate.webapi.js');
