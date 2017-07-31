@@ -3,6 +3,7 @@ require('!style!css!./Navigation.css')
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
+  Touch,
   Swipe
 } from '../../services/touchevents'
 
@@ -30,7 +31,7 @@ class Navigation extends Component {
   }
 
   read(e) {
-    if (e && e.type === 'click') {
+    if (e && e.type === 'click' && this.props.items[this.props.index]) {
       let text = this.props.items[this.props.index].name;
       this.props.read(text);
     }
@@ -71,18 +72,15 @@ class Navigation extends Component {
     }, 250));
     this.swiper.run();
 
-    const nav = document.getElementById('navigation');
-    nav.addEventListener('click', this.read.bind(this));
-
-    if (this.props.action) {
-      nav.addEventListener('dblclick', this.handleAction.bind(this));
-    }
+    document.body.addEventListener('click', this.read.bind(this)); // For click (mouse)
+    this.touchEvent = new Touch(document.body)
+    this.touchEvent.onTap(this.read.bind(this))
+    this.touchEvent.onDoubleTap(this.handleAction.bind(this))
+    this.touchEvent.run()
   }
 
   componentWillUnmount() {
-    const nav = document.getElementById('navigation');
-    nav.removeEventListener('dblclick', this.handleAction.bind(this));
-    nav.removeEventListener('click', this.read.bind(this));
+    this.touchEvent.destroy()
 
     this.props.items.pop();
     this.swiper.destroy();

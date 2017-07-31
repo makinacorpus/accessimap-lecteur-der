@@ -34,12 +34,16 @@ class Button extends Component{
   }
 
   handleClick = e => {
+    e.stopPropagation();
+    
     const {config} = this.props
     let text = this.props.open ? this.props.labelOpened : e.target.innerText
-    config.tts.speak(text)
+    config.tts.speak(text);
   }
 
-  handleDoubleClick = () => {
+  handleDoubleClick = (e) => {
+    e.stopPropagation();
+
     const {config} = this.props
     config.tts.cancel()
     this.props.toggleMenu(this.props.id)

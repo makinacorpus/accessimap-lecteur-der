@@ -11,14 +11,16 @@ class MainMenu extends Component {
   }
 
   handleAction() {
-    let path = this.props.route.childRoutes[this.state.activeMenu].path
+    if (this.props.route.childRoutes[this.state.activeMenu]) {
+      let path = this.props.route.childRoutes[this.state.activeMenu].path
 
-    if (path === 'quit') {
-      this.props.config.exit.fn()
-    }
+      if (path === 'quit') {
+        this.props.config.exit.fn()
+      }
 
-    else {
-      this.context.router.push('menu/' + path)
+      else {
+        this.context.router.push('menu/' + path)
+      }
     }
   }
 
