@@ -35,7 +35,7 @@ export class Touch {
     e.preventDefault();
     var now = new Date().getTime();
     var timesince = now - this.mylatesttap;
-    if ((timesince < 300) && (timesince > 0)) {
+    if ((!isNaN(timesince)) && (timesince < 300) && (timesince > 0)) {
       this.onDoubleTap(e);
     }
     else {
