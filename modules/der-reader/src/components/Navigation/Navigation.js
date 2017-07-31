@@ -49,7 +49,9 @@ class Navigation extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      this.props.read(this.props.items[this.props.index].name);
+      if (this.props.items[this.props.index] && this.context.router.location.pathname !== '/') {
+        this.props.read(this.props.items[this.props.index].name);
+      }
     }, 1800)
     this.swiper = new Swipe(document.body);
     this.swiper.onUp(debounce(() => {
