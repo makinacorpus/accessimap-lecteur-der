@@ -18,10 +18,9 @@ import { screenCalibrate } from './middlewares/screen'
 import localstorage from './middlewares/localstorage'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
-import version from 'version'
-
-document.addEventListener('contextmenu', event => event.preventDefault())
+// import version from 'version'
 window.version = version
+document.addEventListener('contextmenu', event => event.preventDefault())
 
 const composeEnhancers =
   typeof window === 'object' &&

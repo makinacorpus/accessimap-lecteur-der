@@ -31,8 +31,13 @@ module.exports = {
   externals: {
     version: JSON.stringify(require('./../package.json').version)
   },
-  plugins: [new HtmlWebpackPlugin({
-    template: 'src/index.ejs',
-    filename: 'index.html'
-  })]
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/index.ejs',
+      filename: 'index.html'
+    }),
+    new webpack.DefinePlugin({
+      version: JSON.stringify(require('../package.json').version)
+    })
+  ]
 }
