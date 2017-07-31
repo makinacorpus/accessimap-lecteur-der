@@ -16,9 +16,6 @@ class MainMenu extends Component {
     if (path === 'quit') {
       this.props.config.exit.fn()
     }
-    if (path === 'back') {
-      this.props.actions.toggleMenu('menu')
-    }
 
     else {
       this.context.router.push('menu/' + path)

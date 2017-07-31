@@ -20,7 +20,11 @@ function debounce(fn, delay) {
 class Navigation extends Component {
   handleAction() {
     if (this.props.index === this.props.items.length-1) {
-      this.context.router.goBack();
+      if (this.context.router.routes[this.context.router.routes.length -1].path === 'menu') {
+        this.context.router.push('/');
+      } else {
+        this.context.router.goBack();
+      }
     }
     this.props.action();  
   }

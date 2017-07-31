@@ -25,10 +25,7 @@ class CalibrateMenu extends Component {
     const index = formats.indexOf(format)
     let path = this.props.route.childRoutes[index].path
 
-    if (path === 'back') {
-      this.props.actions.toggleMenu('menu')
-    }
-    else if (format) {
+    if (format) {
       this.setState({calibrateMode: true})
       switch(format) {
       case 'A3':
