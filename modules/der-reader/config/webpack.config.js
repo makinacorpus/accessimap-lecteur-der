@@ -40,6 +40,9 @@ module.exports = {
   postcss: function() {
     return postCSSConfig;
   },
+  externals: {
+    version: JSON.stringify(require('../package.json').version)
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
