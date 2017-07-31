@@ -32,27 +32,26 @@ export class Touch {
   }
 
   handleTap = e => {
-    e.preventDefault();
+    e.preventDefault(false);
     var now = new Date().getTime();
     var timesince = now - this.mylatesttap;
-    this.mylatesttap = new Date().getTime();
-    if ((timesince < 300) && (timesince > 0)) {
+    if ((!isNaN(timesince)) && (timesince < 300) && (timesince > 0)) {
+      console.log('double tap', timesince)
       this.onDoubleTap(e);
     }
     else {
+      console.log('tap', timesince)
       this.onTap(e);
-      return false;
     }
+    this.mylatesttap = new Date().getTime();
   }
 
   run() {
     this.element.addEventListener('touchstart', this.handleTap);
-    this.element.addEventListener('mousedown', this.handleTap);
   }
 
   destroy() {
     this.element.removeEventListener('touchstart', this.handleTap);
-    this.element.removeEventListener('mousedown', this.handleTap);
   }
 }
 
