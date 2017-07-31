@@ -22,6 +22,10 @@ const webspeechapi = {
   },
 
   cancel: function() {
+    if (this.promise) {
+      console.log(this.promise)
+      this.promise.resolve();
+    }
     speechSynthesis.cancel();
     if (this.intervalId) window.clearInterval(this.intervalId);
   },
@@ -39,9 +43,14 @@ const webspeechapi = {
         this.utterance.onend = () => {
           resolve();
         };
+        this.utterance.onpause = () => {
+          resolve();
+        };
+        this.utterance.onresume = () => {
+          resolve();
+        };
       }, 150);
     });
-    
   }
 };
 
