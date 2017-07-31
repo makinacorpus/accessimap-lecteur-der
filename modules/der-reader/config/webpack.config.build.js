@@ -29,7 +29,7 @@ module.exports = {
     return postCSSConfig;
   },
   externals: {
-    version: JSON.stringify(require('../package.json').version)
+    version: JSON.stringify(require('./../package.json').version)
   },
   plugins: [new HtmlWebpackPlugin({
     template: 'src/index.ejs',
