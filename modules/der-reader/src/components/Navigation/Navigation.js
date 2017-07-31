@@ -19,7 +19,7 @@ function debounce(fn, delay) {
 }
 
 class Navigation extends Component {
-  handleAction() {
+  handleAction = () => {
     if (this.props.index === this.props.items.length-1) {
       if (this.context.router.routes[this.context.router.routes.length -1].path === 'menu') {
         this.context.router.push('/');
@@ -56,7 +56,6 @@ class Navigation extends Component {
     this.swiper = new Swipe(document.body);
     this.swiper.onUp(debounce(() => {
       this.read(false);
-      // this.props.read('');
       let newIndex = this.props.index-1;
       if (this.props.index === 0) {
         newIndex = this.props.items.length-1;
@@ -65,7 +64,6 @@ class Navigation extends Component {
     }, 250));
     this.swiper.onDown(debounce(() => {
       this.read(false);
-      // this.props.read('');
       let newIndex = this.props.index+1;
       if (this.props.index === this.props.items.length-1) {
         newIndex = 0;
@@ -74,10 +72,9 @@ class Navigation extends Component {
     }, 250));
     this.swiper.run();
 
-    document.body.addEventListener('click', this.read.bind(this)); // For click (mouse)
     this.touchEvent = new Touch(document.body)
     this.touchEvent.onTap(this.read.bind(this))
-    this.touchEvent.onDoubleTap(this.handleAction.bind(this))
+    this.touchEvent.onDoubleTap(this.handleAction)
     this.touchEvent.run()
   }
 

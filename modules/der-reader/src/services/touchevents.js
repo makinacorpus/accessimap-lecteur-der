@@ -21,12 +21,12 @@ export class Touch {
     return eventType;
   }
 
-  onTap = callback => {
+  onTap = (callback) => {
     this.onTap = callback;
     return this;
   }
 
-  onDoubleTap = callback => {
+  onDoubleTap = (callback) => {
     this.onDoubleTap = callback;
     return this;
   }
@@ -35,23 +35,24 @@ export class Touch {
     e.preventDefault();
     var now = new Date().getTime();
     var timesince = now - this.mylatesttap;
-    if ((!isNaN(timesince)) && (timesince < 300) && (timesince > 0)) {
+    this.mylatesttap = new Date().getTime();
+    if ((timesince < 300) && (timesince > 0)) {
       this.onDoubleTap(e);
     }
     else {
       this.onTap(e);
+      return false;
     }
-    this.mylatesttap = new Date().getTime();
   }
 
   run() {
     this.element.addEventListener('touchstart', this.handleTap);
-    this.element.addEventListener('click', this.handleTap);
+    this.element.addEventListener('mousedown', this.handleTap);
   }
 
   destroy() {
     this.element.removeEventListener('touchstart', this.handleTap);
-    this.element.removeEventListener('click', this.handleTap);
+    this.element.removeEventListener('mousedown', this.handleTap);
   }
 }
 
