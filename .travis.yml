@@ -1,7 +1,19 @@
+sudo: required
+dist: trusty
 language: node_js
 
 node_js:
   - '4.4.2'
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+    - openjdk-7-jdk
+    - lib32stdc++6
+    - lib32z1
 
 env:
   CXX=g++-4.8
