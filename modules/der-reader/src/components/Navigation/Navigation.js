@@ -94,14 +94,27 @@ class Navigation extends Component {
         <div className="modal" ref="mainMenu" id="mainMenu">
           <div className="menu">
             <ul className="selectable-list">
-              {items ? items.map(function(item, key) {
-                const isSelected = (key === index) ? 'selected' : '';
-                return (
-                  <li key={key} className="selectable-list--item">
-                    <a className={isSelected}>{item.name}</a>
-                  </li>
-                );
-              }.bind(this)) : null}
+              {
+                items &&
+                items.map((item, key) => {
+                  const isSelected = (key === index) ? 'selected' : '';
+                  return (
+                    <li key={key} className="selectable-list--item">
+                      {
+                        item.type === 'file' &&
+                        <label className={isSelected} ref="labelfile">
+                          <input ref="inputfile" id="file" type="file" />
+                          {item.name}
+                        </label>
+                      }
+                      {
+                        item.type !== 'file' &&
+                        <a className={isSelected}>{item.name}</a>
+                      }
+                    </li>
+                  );
+                })
+              }
             </ul>
 
             {content}

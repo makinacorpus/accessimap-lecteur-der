@@ -61,17 +61,22 @@ h2 {
 .selectable-list--item:not(:last-child) {
   border-bottom: solid 3px white;
 }
-.selectable-list--item a {
+.selectable-list--item a,
+.selectable-list--item label {
   font-size: 1rem;
   box-sizing: padding-box;
   display: block;
   font-weight: bold;
   padding: 1em;
 }
+.selectable-list--item label input[type="file"] {
+  display: none;
+}
 .A5 .selectable-list--item a {
   font-size: .85rem;
 }
-.selectable-list--item a.selected {
+.selectable-list--item a.selected,
+.selectable-list--item label.selected {
   background: white;
   color: var(--black);
   cursor: normal;

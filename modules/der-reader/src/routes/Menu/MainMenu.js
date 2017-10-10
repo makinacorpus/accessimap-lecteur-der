@@ -10,38 +10,38 @@ class MainMenu extends Component {
     }
   }
 
-  handleAction() {
+  handleAction = () => {
     if (this.props.route.childRoutes[this.state.activeMenu]) {
       let path = this.props.route.childRoutes[this.state.activeMenu].path
 
       if (path === 'quit') {
         this.props.config.exit.fn()
-      }
-
-      else {
+      } else if (path === 'file') {
+        // open dialog
+        console.log('file')
+      } else {
         this.context.router.push('menu/' + path)
       }
     }
   }
 
-  changeActiveMenu(index) {
+  changeActiveMenu = (index) => {
     this.setState({activeMenu: index})
   }
 
-  read(text) {
+  read = (text) => {
     this.props.config.tts.speak(text)
   }
 
   render() {
     return (
       <Navigation
-        action={() => this.handleAction()}
+        action={this.handleAction}
         index={this.state.activeMenu}
         items={this.props.route.childRoutes || []}
-        changeIndex={index => this.changeActiveMenu(index)}
-        read={text => this.read(text)}
-        >
-      </Navigation>
+        changeIndex={this.changeActiveMenu}
+        read={this.read}
+      />
     )
   }
 }

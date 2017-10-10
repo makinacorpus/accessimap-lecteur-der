@@ -72,7 +72,12 @@ var DerReader = {
           component: Menu,
           name: 'Menu principal',
           childRoutes: [
-            { path: 'menu', component: SelectFile, name: 'Charger un nouveau document en relief' },
+            { 
+              path: 'file', 
+              component: SelectFile, 
+              name: 'Charger un nouveau document en relief',
+              type: 'file'
+            },
             { 
               path: 'calibrate', 
               component: CalibrateMenu,
