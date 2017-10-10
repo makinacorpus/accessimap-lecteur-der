@@ -22,4 +22,4 @@ function move_handler(ev) {
 }
 
 const el = document.getElementById('der-reader');
-el.ontouchmove = move_handler;
+el.addEventListener("touchmove", move_handler, { passive: false });
