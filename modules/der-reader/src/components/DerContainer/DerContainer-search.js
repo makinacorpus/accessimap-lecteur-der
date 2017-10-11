@@ -191,7 +191,6 @@ var DerSearch = {
       if (DerSearch.isInAxis(pointer, 'x')) {
         pressTimer = setTimeout(function() {
           if (mouseDown && !DerSearch.isXfound) {
-            console.log('Axe X trouvé');
             DerSearch.message('Axe X trouvé');
             DerSearch.isXfound = true;
             DerSearch.initYaxis(pointer);
@@ -216,7 +215,6 @@ var DerSearch = {
     if (DerSearch.isInAxis(pointer, 'y')) {
       pressTimer =  setTimeout(function() {
         if (mouseDown && !DerSearch.isYfound) {
-          console.log('Axe Y trouvé');
           DerSearch.message('Axe Y trouvé');
           DerSearch.isYfound = true;
           DerSounds.playTarget();

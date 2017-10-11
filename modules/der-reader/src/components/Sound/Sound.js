@@ -4,7 +4,6 @@ var ctx = new AudioContext(), currentOsc;
 var Sound = {
 
   play: function(index, type) {
-    // console.log(index);
     this.stop();
     var o = ctx.createOscillator();
     // var gainNode = ctx.createGain();
