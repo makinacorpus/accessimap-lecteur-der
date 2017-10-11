@@ -32,7 +32,7 @@ class CalibrateCanvas extends Component {
   }
 
   componentDidMount () {
-    this.props.tts.speak(`Redimmentionnez la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${this.props.format})`)
+    this.props.tts.speak(`Redimensionner la zone principale pour l'ajuster au document, puis cliquer sur le bouton fermer. (Format ${this.props.format})`)
     var canvas = document.getElementById('canvas')
     var c = canvas.getContext('2d')
   
