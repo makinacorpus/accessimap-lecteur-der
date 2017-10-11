@@ -48,7 +48,10 @@ class CalibrateCanvas extends Component {
   }
 
   componentWillUnmount() {
-    this.state.canvas.removeEventListener('mousedown', this.onMouseDown.bind(this), false)
+    this.state.canvas.removeEventListener('mousedown', 
+      this.onMouseDown.bind(this), 
+      false
+    );
   }
 
   onMouseDown(e) {
@@ -62,6 +65,9 @@ class CalibrateCanvas extends Component {
       if (this.state.flipped) {
         projection = -projection
       }
+      // we don't want the user to resize under 300px
+      if (projection < 300) projection = 300;
+
       var newDpi = projection / this.props.totemMarker.w
       newDpi = clampDpi(newDpi)
       this.props.setOptionDpi(newDpi)
