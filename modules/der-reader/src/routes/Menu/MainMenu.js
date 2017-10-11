@@ -16,10 +16,7 @@ class MainMenu extends Component {
 
       if (path === 'quit') {
         this.props.config.exit.fn()
-      } else if (path === 'file') {
-        // open dialog
-        console.log('file')
-      } else {
+      } else if (path !== 'file') {
         this.context.router.push('menu/' + path)
       }
     }
