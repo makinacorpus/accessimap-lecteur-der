@@ -2,10 +2,7 @@ require('!style!css!./Navigation.css')
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  Touch,
-  Swipe
-} from '../../services/touchevents'
+import { Touch, Swipe } from '../../services/touchevents'
 
 function debounce(fn, delay) {
   var timer = null;
@@ -21,10 +18,11 @@ function debounce(fn, delay) {
 class Navigation extends Component {
   handleAction = () => {
     if (this.props.index === this.props.items.length-1) {
-      if (this.context.router.routes[this.context.router.routes.length -1].path === 'menu') {
-        this.context.router.push('/');
+      const router = this.context.router;
+      if (router.routes[router.routes.length -1].path === 'menu') {
+        router.push('/');
       } else {
-        this.context.router.goBack();
+        router.goBack();
       }
     }
     this.props.action();  
@@ -85,6 +83,18 @@ class Navigation extends Component {
     this.swiper.destroy();
   }
 
+  onChange() {
+    if (this.refs.inputfile) {
+      let file = this.refs.inputfile.files[0]
+      if (file !== undefined) {
+        this.props.actions.changeDerFile(file);
+        this.props.actions.changeFilter(null);
+      } else {
+        this.props.options.message('Aucun fichier seléctionné', 'error')
+      }
+    }
+  }
+
   render() {
     const {items, index} = this.props;
     const content = this.props.content || '';
@@ -103,8 +113,14 @@ class Navigation extends Component {
                       {
                         item.type === 'file' &&
                         <label className={isSelected} ref="labelfile">
-                          <input ref="inputfile" id="file" type="file" />
-                          {item.name}
+                        <input
+                          ref="inputfile"
+                          id="file"
+                          type="file"
+                          className="inputfile"
+                          onChange={e => this.onChange(e)}
+                        />
+                        {item.name}
                         </label>
                       }
                       {

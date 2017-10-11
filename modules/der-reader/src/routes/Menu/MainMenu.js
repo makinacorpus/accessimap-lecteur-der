@@ -37,6 +37,7 @@ class MainMenu extends Component {
     return (
       <Navigation
         action={this.handleAction}
+        actions={this.props.actions}
         index={this.state.activeMenu}
         items={this.props.route.childRoutes || []}
         changeIndex={this.changeActiveMenu}

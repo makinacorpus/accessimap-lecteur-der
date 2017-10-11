@@ -41,7 +41,6 @@ class App extends Component {
       hashHistory.push(id)
       this.read('Ouverture du menu')
     }
-
   }
 
   showMessage(text, type) {
