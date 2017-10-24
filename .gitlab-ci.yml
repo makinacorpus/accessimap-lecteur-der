@@ -22,17 +22,8 @@ build_web:
    - npm run build
 
 build_electron:
+  image: electronuserland/builder:wine
   stage: build
-  before_script:
-   - dpkg --add-architecture i386
-   - apt-get install software-properties-common
-   - add-apt-repository ppa:ubuntu-wine/ppa -y
-   - apt-get update
-   - apt-get install --no-install-recommends -y wine1.8
-   - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-   - echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list
-   - apt-get update
-   - apt-get install --no-install-recommends -y mono-devel ca-certificates-mono
   script:
    - cd modules/der-reader
    - npm install
