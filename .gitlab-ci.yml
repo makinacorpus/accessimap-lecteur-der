@@ -1,0 +1,60 @@
+# This file is a template, and might need editing before it works on your project.
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: node:8
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+  - modules/der-reader/node_modules/
+  - electron/node_modules/
+
+stages:
+  - build
+  - deploy
+
+build_web:
+  stage: build
+  script:
+   - cd modules/der-reader
+   - npm install
+   - npm run build
+
+build_electron:
+  stage: build
+  script:
+   - cd electron
+   - npm install
+   - npm run build
+  artifacts:
+    expire_in: 1 week
+    paths:
+    - electron/dist/
+
+deploy_testing:
+  stage: deploy
+  script:
+    - npm install
+    - npm run build
+    - npm run deploy-testing
+  environment:
+    name: testing
+    url: http://accessimap-lecteur-der-testing.surge.sh
+
+deploy_staging:
+  stage: deploy
+  script:
+    - npm install
+    - npm run build
+    - npm run deploy-staging
+  environment:
+    name: staging
+    url: http://accessimap-lecteur-der-staging.surge.sh
+  artifacts:
+    expire_in: 1 week
+    paths:
+    - dist/
+  when: manual
+  only:
+  - master
