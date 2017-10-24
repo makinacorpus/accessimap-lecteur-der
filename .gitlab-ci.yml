@@ -25,6 +25,7 @@ build_electron:
   stage: build
   before_script:
    - dpkg --add-architecture i386
+   - apt-get install software-properties-common
    - add-apt-repository ppa:ubuntu-wine/ppa -y
    - apt-get update
    - apt-get install --no-install-recommends -y wine1.8
