@@ -24,7 +24,10 @@ build_web:
 build_electron:
   stage: build
   script:
-   - cd electron
+   - cd modules/der-reader
+   - npm install
+   - npm run build
+   - cd ../../electron
    - npm install
    - npm run build
   artifacts:
