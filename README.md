@@ -98,7 +98,9 @@ var DerReader = require('./../der-reader/der-reader.js');
 ```
 
 
-Builder l'application (pour Windows x64, cf. script npm pour d'autres paramètres/os). Nécéssice wine, cf. .travis.yml pour installer les dépendances.
+Builder l'application (pour Windows x64, cf. script npm pour d'autres paramètres/os). 
+
+Nécessite wine, cf. .travis.yml pour installer les dépendances.
 
 ```
 npm install der-reader # mettre à jour le module
