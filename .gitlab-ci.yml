@@ -30,7 +30,7 @@ build_electron:
    - npm run build
    - cd ../../electron
    - npm install
-   - npm run build
+   - npm run build-test
   artifacts:
     expire_in: 1 week
     paths:
