@@ -31,7 +31,6 @@ build_electron:
     - cd ../../electron
     - npm install
     - npm run build
-  when: manual
   artifacts:
     expire_in: 1 week
     paths:
