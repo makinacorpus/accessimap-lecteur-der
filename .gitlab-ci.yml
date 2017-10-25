@@ -17,20 +17,20 @@ stages:
 build_web:
   stage: build
   script:
-   - cd modules/der-reader
-   - npm install
-   - npm run build
+    - cd modules/der-reader
+    - npm install
+    - npm run build
 
 build_electron:
   image: electronuserland/builder:wine
   stage: build
   script:
-   - cd modules/der-reader
-   - npm install
-   - npm run build
-   - cd ../../electron
-   - npm install
-   - npm run build
+    - cd modules/der-reader
+    - npm install
+    - npm run build
+    - cd ../../electron
+    - npm install
+    - npm run build
   artifacts:
     expire_in: 1 week
     paths:
@@ -39,6 +39,7 @@ build_electron:
 deploy_testing:
   stage: deploy
   script:
+    - cd modules/der-reader
     - npm install
     - npm run build
     - npm run deploy-testing
@@ -49,6 +50,7 @@ deploy_testing:
 deploy_staging:
   stage: deploy
   script:
+    - cd modules/der-reader
     - npm install
     - npm run build
     - npm run deploy-staging

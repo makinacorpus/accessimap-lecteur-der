@@ -37,13 +37,16 @@
     "redux-devtools": "^3.3.2",
     "sass-loader": "^3.2.1",
     "style-loader": "^0.13.1",
+    "surge": "^0.19.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.16.3"
   },
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.config.js --progress --colors --watch",
     "build": "webpack --config config/webpack.config.build.js && cp -r public/static dist",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist",
+    "deploy-testing": "surge dist accessimap-lecteur-der-testing.surge.sh",
+    "deploy-staging": "surge dist accessimap-lecteur-der-staging.surge.sh"
   },
   "dependencies": {
     "prop-types": "^15.5.8",
