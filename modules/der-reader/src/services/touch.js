@@ -2,7 +2,7 @@
  * Delta in milliseconds between two tap|click events
  * indicating we are in a double tap|click event
  */
-const DELTA_DOUBLE_TAP = 300;
+const DELTA_DOUBLE_TAP = 500;
 
 const TOUCH_EVENT_DOUBLE_TAP = 'doubletap';
 const TOUCH_EVENT_SIMPLE_TAP = 'simpletap';
@@ -24,7 +24,7 @@ export default class Touch {
     let eventType;
     var now = new Date().getTime();
     var timesince = now - this.mylatesttap;
-    // console.log(`getTouchEvent. now=${now}, mylatesttap=${this.mylatesttap}, timesince=${timesince}, target=${e.target}`);
+    // console.log(`getTouchEvent. now=${now}, mylatesttap=${this.mylatesttap}, timesince=${timesince}, target=${e.target}`, e.type);
     if ( !isNaN(timesince) 
         && timesince < DELTA_DOUBLE_TAP
         && (timesince > 0)
@@ -65,12 +65,13 @@ export default class Touch {
   }
   
   run() {
-    this.element.addEventListener('touchstart', this.handleTap);
+    // we don't attach touchstart
+    // because on devices we have tested, 
+    // touchstart event is followed by a click event
     this.element.addEventListener('click', this.handleTap);
   }
 
   destroy() {
-    this.element.removeEventListener('touchstart', this.handleTap);
     this.element.removeEventListener('click', this.handleTap);
   }
 }
