@@ -15,7 +15,8 @@ class DerContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentSound: null
+      currentSound: null,
+      filesByExt: {}
     }
   }
 
@@ -83,24 +84,25 @@ class DerContainer extends Component {
   * @param name: {string} required
   */
   readAudioFile(name) {
+    // console.log('readAudioFile', name)
     return new Promise((resolve, reject) => {
       if (this.state.currentSound) {
         this.state.currentSound.pause()
       }
       this.state.filesByExt.audioFiles[name].async('base64')
-      .then(base64string => {
-        let sound = new Audio('data:audio/mpeg;base64,' + base64string)
-        this.setState({
-          currentSound: sound
-        })
-        this.state.currentSound.play()
-        this.state.currentSound.onended = () => {
-          resolve(this.state.currentSound)
-        }
+        .then(base64string => {
+          let sound = new Audio('data:audio/mpeg;base64,' + base64string)
+          this.setState({
+            currentSound: sound
+          })
+          this.state.currentSound.play()
+          this.state.currentSound.onended = () => {
+            resolve(this.state.currentSound)
+          }
 
-      }, function() {
-        reject()
-      })
+        }, function() {
+          reject()
+        })
     })
   }
 
@@ -111,7 +113,9 @@ class DerContainer extends Component {
   * @param callback: {Function}
   */
   _extractFiles(files) {
-    this.setState({filesByExt: orderFilesByExt(files)})
+    this.setState({
+      filesByExt: orderFilesByExt(files)
+    })
 
     if (this.state.filesByExt.svg.length > 1) {
       this.props.setFilesList(this.state.filesByExt.svg)
@@ -181,7 +185,6 @@ class DerContainer extends Component {
   * @param tts: {Function}
   */
   loadDer(der) {
-    // Explore.destroyActions()
     this.playBeep()
     if (der.svg && der.svg.length) {
       this.refs.container.innerHTML = der.svg
@@ -204,22 +207,21 @@ class DerContainer extends Component {
   setDerActions() {
     const {mode, der, tts, searchableElement, message} = this.props
     if (der && der.pois && der.pois.poi) {
-      let exploreParams = {
-        pois: der.pois.poi,
-        readFunction: name => this.readAudioFile(name),
-        tts: tts,
-        filter: this.props.filter
-      }
       switch(mode) {
       case 0:
         // Explore
-        Explore.setExploreEvents(exploreParams)
+        Explore.attachExploreEvents({
+          pois: der.pois.poi,
+          readFunction: name => this.readAudioFile(name),
+          tts,
+          filter: this.props.filter
+        })
         Search.removeEventsListener(this.refs.container)
         break
       case 1:
         // Search
         Search.setSearchEvents(searchableElement, this.refs.container, der.pois, message)
-        Explore.removeExploreEvents()
+        Explore.destroyExploreEvents()
       }
     }
   }

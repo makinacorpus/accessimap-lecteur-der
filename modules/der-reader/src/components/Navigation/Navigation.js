@@ -2,18 +2,9 @@ require('!style!css!./Navigation.css')
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Touch, Swipe } from '../../services/touchevents'
-
-function debounce(fn, delay) {
-  var timer = null;
-  return function () {
-    var context = this, args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      fn.apply(context, args);
-    }, delay);
-  };
-}
+import Touch from '../../services/touch'
+import Swipe from '../../services/swipe'
+import debounce from '../../services/debounce';
 
 class Navigation extends Component {
   handleAction = () => {
@@ -28,10 +19,15 @@ class Navigation extends Component {
     this.props.action();  
   }
 
-  read(e) {
-    if (e && e.type === 'click' && this.props.items[this.props.index]) {
+  /**
+   * Read the current item (defined by index)
+   */
+  read() {
+    if (this.props.items[this.props.index]) {
       let text = this.props.items[this.props.index].name;
       this.props.read(text);
+    } else {
+      console.warn(`Item n°${this.props.index} doesn't exist`);
     }
   }
 
@@ -47,10 +43,13 @@ class Navigation extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      if (this.props.items[this.props.index] && this.context.router.location.pathname !== '/') {
+      if (this.props.items[this.props.index] 
+          && this.context.router.location.pathname !== '/') {
         this.props.read(this.props.items[this.props.index].name);
       }
-    }, 1800)
+    }, 1800);
+
+    // configure the swipe object
     this.swiper = new Swipe(document.body);
     this.swiper.onUp(debounce(() => {
       this.read(false);
@@ -59,7 +58,7 @@ class Navigation extends Component {
         newIndex = this.props.items.length-1;
       }
       this.props.changeIndex(newIndex);
-    }, 250));
+    }, 200));
     this.swiper.onDown(debounce(() => {
       this.read(false);
       let newIndex = this.props.index+1;
@@ -67,9 +66,10 @@ class Navigation extends Component {
         newIndex = 0;
       }
       this.props.changeIndex(newIndex);
-    }, 250));
+    }, 200));
     this.swiper.run();
 
+    // configure the touch object
     this.touchEvent = new Touch(document.body)
     this.touchEvent.onTap(this.read.bind(this))
     this.touchEvent.onDoubleTap(this.handleAction)
@@ -83,7 +83,7 @@ class Navigation extends Component {
     this.swiper.destroy();
   }
 
-  onChange() {
+  onChange = (e) => {
     if (this.refs.inputfile) {
       let file = this.refs.inputfile.files[0]
       if (file !== undefined) {
@@ -118,7 +118,7 @@ class Navigation extends Component {
                           id="file"
                           type="file"
                           className="inputfile"
-                          onChange={e => this.onChange(e)}
+                          onChange={this.onChange}
                         />
                         {item.name}
                         </label>

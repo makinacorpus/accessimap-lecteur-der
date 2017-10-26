@@ -1,10 +1,7 @@
 require('!style!css!./Button.css')
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  Touch
-} from '../../services/touchevents.js'
-
+import Touch from '../../services/touch.js'
 
 class Button extends Component{
   constructor(props) {
@@ -33,17 +30,13 @@ class Button extends Component{
     })
   }
 
-  handleClick = e => {
-    e.stopPropagation();
-    
+  handleClick = (target) => {
     const {config} = this.props
-    let text = this.props.open ? this.props.labelOpened : e.target.innerText
+    let text = this.props.open ? this.props.labelOpened : target.innerText
     config.tts.speak(text);
   }
 
-  handleDoubleClick = (e) => {
-    e.stopPropagation();
-
+  handleDoubleClick = (target) => {
     const {config} = this.props
     config.tts.cancel()
     this.props.toggleMenu(this.props.id)

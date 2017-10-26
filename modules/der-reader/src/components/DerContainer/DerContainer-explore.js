@@ -1,46 +1,47 @@
-import {
-  Touch
-} from '../../services/touchevents.js'
+import Touch from '../../services/touch.js'
 
-const GESTURES = {
-  'click': 'tap',
-  'dblclick': 'double_tap'
-}
+const GESTURE_SIMPLE_TAP = 'tap';
+const GESTURE_DOUBLE_TAP = 'double_tap';
 
 class exploreDer {
-  constructor () {
-    this.currentLinksElement = [];
 
-    this.readFunction;
-    this.tts;
-    this.filter;
-    this.pois = [];
-    this.actions = {};
-  }
+  readFunction = null;
+  tts = null;
+  filter = null;
+  pois = [];
+  actions = {};
+  currentLinksElement = [];
+  touchEvents = [];
 
-    _getAction(actions, type) {
-    if (!Array.isArray(actions) && this.filter !== null) {
+  /**
+   * Return actions filtered by this.filter.id
+   * @param {Array | Object} actions actions to filter
+   * @returns actions
+   */
+  _getActionFiltered(actions) {
+    if (!Array.isArray(actions) && this.filter) {
       if (actions.filter === this.filter.id) {
         return actions;
       }
-    } else {
-      for (var i = 0; i < actions.length; i++) {
-        let a = actions[i];
-        if (this.filter) {
-          if (a.filter === this.filter.id) {
-            return a;
-          }
-        }
-      }
+    } else if (this.filter) {
+      return actions.find(currentAction => currentAction.filter === this.filter.id);
     }
-    return;
+    return null;
   }
 
+  /**
+   * Change fill color of an element in red
+   * Useful when this item is in TTS / MP3 playing
+   */
   _onEventStarted = element => {
     element.initialColor = element.style.fill;
     element.style.fill = 'red';
   }
-
+  
+  /**
+   * Reset fill color of an element
+   * Useful when TTS / MP3 end
+   */
   _onEventEnded = element => {
     element.style.fill = element.initialColor;
   }
@@ -52,68 +53,72 @@ class exploreDer {
   * @param {readAudioFile} tts
   * @param {Function} tts
   */
-  setExploreEvents(params) {
-    this.readFunction = params.readFunction;
-    this.tts = params.tts;
-    this.filter = params.filter;
+  attachExploreEvents({ readFunction, tts, filter, pois }) {
+    this.readFunction = readFunction;
+    this.tts = tts;
+    this.filter = filter;
     this.pois = [];
     this.actions = {};
+    this.touchEvents = [];
 
-    params.pois.map((poi) => {
+    pois.map((poi) => {
       var id = poi.id.split('-').pop();
       var elements = document.querySelectorAll('[data-link="' + id + '"]');
 
       Object.keys(elements).map((index) => {
         if (elements[index] !== undefined) {
-          this.pois.push(elements[index]);
+          let currentElement = elements[index];
+          currentElement.style.cursor = 'pointer';
+          
+          this.pois.push(currentElement);
+
           this.actions[id] = poi.actions.action;
-          Object.keys(GESTURES).map((gesture) => {
-            elements[index].addEventListener(gesture, this.initAction); // For click (mouse)
-            this.touchEvent = new Touch(elements[index])
-            this.touchEvent.onTap(this.initAction)
-            this.touchEvent.onDoubleTap(this.initAction)
-            this.touchEvent.run()
-          });
+
+          let touchEvent = new Touch(currentElement)
+          touchEvent.onTap((element) => {
+            this.initAction(element, GESTURE_SIMPLE_TAP);
+          })
+          touchEvent.onDoubleTap((element) => {
+            this.initAction(element, GESTURE_DOUBLE_TAP);
+          })
+          touchEvent.run()
+          this.touchEvents.push(touchEvent);
         }
       });
     });
   }
-
-  removeExploreEvents() {
-    this.pois.map((poiEl) => {
-      Object.keys(GESTURES).map((gesture) => {
-        poiEl.removeEventListener(gesture, this.initAction);
-      });
-    });
+  
+  /**
+   * Destroy every Touch Events for the current DER
+   */
+  destroyExploreEvents() {
+    this.touchEvents.forEach(currentTouchEvent => {
+      currentTouchEvent.destroy();
+    })
   }
 
-  initAction = e => {
-    let element = e.target;
-    let actions = this.actions[element.getAttribute('data-link')]; 
-    let eventType = e.type;
+  initAction = (target, gesture) => {
+    // console.log('DerContainer-explore > initAction');
+    let id = target.getAttribute('data-link');
+    let action = this._getActionFiltered(this.actions[id]);
 
-    if (e.type === 'touchstart') {
-      eventType = this.touchEvent.getType(e)
-    }
-
-    let action = this._getAction(actions, eventType);
-
-    if (action !== undefined && GESTURES[eventType] === action.gesture) {
+    // console.log(action, gesture)
+    if (action && gesture === action.gesture) {
       if (this.currentLinksElement) {
-        this.currentLinksElement.map(element => {
+        this.currentLinksElement.forEach(element => {
           this._onEventEnded(element);
         });
       }
 
-      this.currentLinksElement = [].slice.call(document.querySelectorAll('[data-link="' + element.getAttribute('data-link') + '"]'));
+      this.currentLinksElement = [].slice.call(document.querySelectorAll(`[data-link="${id}"]`));
 
-      this.currentLinksElement.map(element => {
+      this.currentLinksElement.forEach(element => {
         this._onEventStarted(element);
       });
             
       if (action.protocol === 'mp3') {
         this.readFunction(action.value).then(() => {
-          this.currentLinksElement.map(element => {
+          this.currentLinksElement.forEach(element => {
             this._onEventEnded(element);
           });
         });
@@ -121,17 +126,11 @@ class exploreDer {
 
       if (action.protocol === 'tts') {
         this.tts.speak(action.value).then(() => {
-          this.currentLinksElement.map(element => {
+          this.currentLinksElement.forEach(element => {
             this._onEventEnded(element);
           });
         });
       }
-    }
-  }
-
-  destroyActions() {
-    if (this.touchEvent) {
-      this.touchEvent.destroy();
     }
   }
 }
