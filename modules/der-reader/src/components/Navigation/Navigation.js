@@ -42,31 +42,27 @@ class Navigation extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      if (this.props.items[this.props.index] 
-          && this.context.router.location.pathname !== '/') {
-        this.props.read(this.props.items[this.props.index].name);
-      }
-    }, 1800);
+    if (this.props.items[this.props.index] 
+        && this.context.router.location.pathname !== '/') {
+      this.props.read(this.props.items[this.props.index].name);
+    }
 
     // configure the swipe object
     this.swiper = new Swipe(document.body);
-    this.swiper.onUp(debounce(() => {
-      this.read(false);
+    this.swiper.onUp(() => {
       let newIndex = this.props.index-1;
       if (this.props.index === 0) {
         newIndex = this.props.items.length-1;
       }
       this.props.changeIndex(newIndex);
-    }, 200));
-    this.swiper.onDown(debounce(() => {
-      this.read(false);
+    });
+    this.swiper.onDown(() => {
       let newIndex = this.props.index+1;
       if (this.props.index === this.props.items.length-1) {
         newIndex = 0;
       }
       this.props.changeIndex(newIndex);
-    }, 200));
+    });
     this.swiper.run();
 
     // configure the touch object

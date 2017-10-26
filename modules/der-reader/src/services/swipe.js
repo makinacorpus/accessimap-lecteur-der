@@ -49,6 +49,7 @@ export default class Swipe {
    * Set callback triggered when swipe up is detected
    */
   onUp = callback => {
+    // console.log('Swipe  > onUp')
     this.onUp = callback;
     return this;
   }
@@ -57,11 +58,14 @@ export default class Swipe {
    * Set callback triggered when swipe down is detected
    */
   onDown = callback => {
+    // console.log('Swipe  > onDown')
     this.onDown = callback;
     return this;
   }
   
   handleTouchMove = evt => {
+    // console.log('handleTouchMove', evt);
+    evt.stopImmediatePropagation();
     // setTimeout(() => {
     if (!this.initialClientY) {
       return;

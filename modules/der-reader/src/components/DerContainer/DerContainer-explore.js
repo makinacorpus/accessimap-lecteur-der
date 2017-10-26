@@ -125,7 +125,7 @@ class exploreDer {
       }
 
       if (action.protocol === 'tts') {
-        this.tts.speak(action.value).then(() => {
+        this.tts.speak(action.value, () => {
           this.currentLinksElement.forEach(element => {
             this._onEventEnded(element);
           });

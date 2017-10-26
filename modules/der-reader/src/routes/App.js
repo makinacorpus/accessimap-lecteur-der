@@ -53,7 +53,7 @@ class App extends Component {
       this.props.isLoading(true)
       this.context.router.push('/')
       this.props.setDerFile(file)
-      this.read('Chargement du document').then(() => {
+      this.read('Chargement du document', () => {
         this.props.isLoading(false)
         this.context.router.push('/')
       })

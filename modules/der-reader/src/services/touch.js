@@ -48,7 +48,7 @@ export default class Touch {
   }
   
   handleTap = evt => {
-    // console.log('Touch, handleTap');
+    // console.log('Touch, handleTap', this.getTouchEvent(evt));
     evt.stopImmediatePropagation();
     switch(this.getTouchEvent(evt)) {
       case TOUCH_EVENT_DOUBLE_TAP:
