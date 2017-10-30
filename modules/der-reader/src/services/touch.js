@@ -70,9 +70,6 @@ export default class Touch {
   }
   
   run() {
-    // we don't attach touchstart
-    // because on devices we have tested, 
-    // touchstart event is followed by a click event
     this.element.addEventListener('touchstart', this.handleTap);
     this.element.addEventListener('click', this.handleTap);
   }
