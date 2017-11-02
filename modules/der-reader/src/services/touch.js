@@ -9,6 +9,7 @@ const TOUCH_EVENT_SIMPLE_TAP = 'simpletap';
 
 export default class Touch {
   
+  mylatesttaptype = null;
   mylatesttap = null;
   
   /**
@@ -28,6 +29,7 @@ export default class Touch {
     if ( !isNaN(timesince) 
         && timesince < DELTA_DOUBLE_TAP
         && (timesince > 0)
+        && this.mylatesttaptype === e.type
     ) {
       eventType = TOUCH_EVENT_DOUBLE_TAP;
     }
@@ -48,30 +50,32 @@ export default class Touch {
   }
   
   handleTap = evt => {
-    // console.log('Touch, handleTap', this.getTouchEvent(evt));
-    evt.stopImmediatePropagation();
-    switch(this.getTouchEvent(evt)) {
-      case TOUCH_EVENT_DOUBLE_TAP:
-        // console.log('Touch, handleTap => onDoubleTap');
-        this.onDoubleTap(evt.target);
-        break;
-      case TOUCH_EVENT_SIMPLE_TAP:
-      default:
-        // console.log('Touch, handleTap => onTap');
-        this.onTap(evt.target);
-        break;
+    if (this.mylatesttaptype === null || this.mylatesttaptype === evt.type) {
+      // console.log('Touch, handleTap', evt, this.getTouchEvent(evt));
+      evt.stopImmediatePropagation();
+      switch(this.getTouchEvent(evt)) {
+        case TOUCH_EVENT_DOUBLE_TAP:
+          // console.log('Touch, handleTap => onDoubleTap');
+          this.onDoubleTap(evt.target);
+          break;
+        case TOUCH_EVENT_SIMPLE_TAP:
+        default:
+          // console.log('Touch, handleTap => onTap');
+          this.onTap(evt.target);
+          break;
+      }
+      this.mylatesttap = new Date().getTime();
+      this.mylatesttaptype = evt.type;
     }
-    this.mylatesttap = new Date().getTime();
   }
   
   run() {
-    // we don't attach touchstart
-    // because on devices we have tested, 
-    // touchstart event is followed by a click event
+    this.element.addEventListener('touchstart', this.handleTap);
     this.element.addEventListener('click', this.handleTap);
   }
-
+  
   destroy() {
+    this.element.removeEventListener('touchstart', this.handleTap);
     this.element.removeEventListener('click', this.handleTap);
   }
 }
