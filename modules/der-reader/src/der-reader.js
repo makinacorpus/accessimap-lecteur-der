@@ -16,6 +16,7 @@ import { Router, hashHistory } from 'react-router'
 import appReducer from './store/reducers'
 import { screenCalibrate } from './middlewares/screen'
 import localstorage from './middlewares/localstorage'
+import reader from './middlewares/reader'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 // import version from 'version'
@@ -36,7 +37,8 @@ const store = createStore(
   }),
   composeEnhancers(applyMiddleware(
     localstorage, 
-    screenCalibrate
+    screenCalibrate,
+    reader
   ))
 )
 
