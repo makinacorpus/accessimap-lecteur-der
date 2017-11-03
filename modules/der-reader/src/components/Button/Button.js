@@ -24,9 +24,9 @@ class Button extends Component{
     this.touchEvent.destroy();
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     this.setState({
-      label: this.props.open ? 'Fermer' : this.props.labelClosed
+      label: nextProps.open ? 'Fermer' : nextProps.labelClosed
     })
   }
 
