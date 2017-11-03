@@ -20,7 +20,7 @@ class DerContainer extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setDerFile()
   }
 
@@ -37,13 +37,18 @@ class DerContainer extends Component {
   }
 
   setDerFile() {
-    const {derFile} = this.props
-    if (typeof derFile === 'string') {
-      getFileObject(derFile, file => {
-        this.openDerFile(file)
-      })
+    const {derFile, der} = this.props
+
+    if (der !== null) {
+      this.loadDer(der)
     } else {
-      this.openDerFile(derFile)
+      if (typeof derFile === 'string') {
+        getFileObject(derFile, file => {
+          this.openDerFile(file)
+        })
+      } else {
+        this.openDerFile(derFile)
+      }
     }
   }
 
@@ -64,6 +69,7 @@ class DerContainer extends Component {
         this._extractFiles(zip.files).then((der) => {
           this.props.message('')
           this.props.setDer(der)
+          this.playBeep()
           this.loadDer(der)
         }, (error) => {
           this.props.message(error, 'error')
@@ -185,7 +191,6 @@ class DerContainer extends Component {
   * @param tts: {Function}
   */
   loadDer(der) {
-    this.playBeep()
     if (der.svg && der.svg.length) {
       this.refs.container.innerHTML = der.svg
     } else {
