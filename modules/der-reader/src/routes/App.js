@@ -36,10 +36,8 @@ class App extends Component {
     const route = this.props.routes[this.props.routes.length-1].path
     if (route === id) {
       hashHistory.push('/')
-      // this.read('Fermeture du menu')
     } else {
       hashHistory.push(id)
-      // this.read('Ouverture du menu')
     }
   }
 
@@ -51,12 +49,12 @@ class App extends Component {
   changeDerFile(file) {
     if (file !== null) {
       this.props.isLoading(true)
-      this.context.router.push('/')
       this.props.setDerFile(file)
-      this.read('Chargement du document', () => {
-        this.props.isLoading(false)
+      
+      setTimeout(() => {
         this.context.router.push('/')
-      })
+          this.props.isLoading(false)
+      }, 300)
     } else {
       this.context.router.push('/menu')
     }

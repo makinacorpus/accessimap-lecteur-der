@@ -1,28 +1,37 @@
-// import {
-//   SET_OPTION,
-//   INIT_CONFIG
-// } from '../store/actions';
-// import {
-//   defaultState
-// } from '../store/reducers';
-
 /**
  * Middleware for resize application container to fit with DER.
  */
-const reader = state => next => action => {
+const reader = store => next => action => {
   if (action.type === '@@router/LOCATION_CHANGE') {
+    const state = store.getState()
+    
     switch (action.payload.pathname) {
-    case '/menu':
+    case '/':
       if (state.appReducer && state.appReducer.config.tts) {
-        state.appReducer.config.tts.speak('une voie qui annonce le menu')
+        const currentRoute = state.routing.locationBeforeTransitions.pathname.slice(1)
+        let closeVoice = ''
+
+        if (currentRoute === 'menu') {
+          closeVoice = 'fermeture du menu'
+        } 
+        if (currentRoute === 'filters') {
+          closeVoice = 'fermeture des filtres'
+        }
+
+        state.appReducer.config.tts.speak(closeVoice, () => {
+          next(action);  
+        });
+      } else {
+        next(action);
       }
       break;
     default:
+      next(action);
       break;
     }
-
+  } else {
+    next(action);
   }
-  next(action);
 };
 
 export default reader;
