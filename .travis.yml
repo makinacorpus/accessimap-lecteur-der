@@ -34,7 +34,7 @@ script:
   - git config --global user.email "build@travis-ci.org"
   - git config --global user.name "Travis gh pages"
   - cd modules/der-reader
-  - npm install
+  - yarn install
   - npm run build
   - cd dist
   - ls
@@ -45,7 +45,7 @@ script:
   - git status
   - git push --force --quiet "https://${GITHUB_API_TOKEN}@github.com/makinacorpus/accessimap-lecteur-der.git" master:gh-pages > /dev/null 2>&1
   - cd ../../../electron
-  - npm install
+  - yarn install
   - npm run build
   - ls $TRAVIS_BUILD_DIR/electron/dist/accessimap*
 
