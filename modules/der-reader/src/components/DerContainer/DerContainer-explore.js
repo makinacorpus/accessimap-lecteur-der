@@ -18,13 +18,13 @@ class exploreDer {
    * @param {Array | Object} actions actions to filter
    * @returns actions
    */
-  _getActionFiltered(actions) {
+  _getAction(actions, gesture) {
     if (!Array.isArray(actions) && this.filter) {
       if (actions.filter === this.filter.id) {
         return actions;
       }
     } else if (this.filter) {
-      return actions.find(currentAction => currentAction.filter === this.filter.id);
+      return actions.find(currentAction => currentAction.filter === this.filter.id && currentAction.gesture === gesture);
     }
     return null;
   }
@@ -100,10 +100,9 @@ class exploreDer {
   initAction = (target, gesture) => {
     // console.log('DerContainer-explore > initAction');
     let id = target.getAttribute('data-link');
-    let action = this._getActionFiltered(this.actions[id]);
+    let action = this._getAction(this.actions[id], gesture);
 
-    // console.log(action, gesture)
-    if (action && gesture === action.gesture) {
+    if (action) {
       if (this.currentLinksElement) {
         this.currentLinksElement.forEach(element => {
           this._onEventEnded(element);
