@@ -50,9 +50,10 @@ script:
   - ls $TRAVIS_BUILD_DIR/electron/dist/accessimap*
 
 cache:
+  yarn: true
   directories:
     - node_modules
-
+    
 deploy:
   provider: releases
   api_key: "$GITHUB_API_TOKEN"
