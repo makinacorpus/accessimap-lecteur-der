@@ -31,6 +31,23 @@ before_install:
   - sudo apt-get install --no-install-recommends -y mono-devel ca-certificates-mono
 
 script:
+  - git config --global user.email "build@travis-ci.org"
+  - git config --global user.name "Travis gh pages"
+  - cd modules/der-reader
+  - yarn install
+  - npm run build
+  - cd dist
+  - ls
+  - git status
+  - git init
+  - git add .
+  - git commit -m "Deploy to Github Pages"
+  - git status
+  - git push --force --quiet "https://${GITHUB_API_TOKEN}@github.com/makinacorpus/accessimap-lecteur-der.git" master:gh-pages > /dev/null 2>&1
+  - cd ../../../electron
+  - yarn install
+  - npm run build
+  - ls $TRAVIS_BUILD_DIR/electron/dist/accessimap*
   - 'chmod 700 deploy.sh'
   - ./deploy.sh
 

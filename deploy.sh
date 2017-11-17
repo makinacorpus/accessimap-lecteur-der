@@ -18,27 +18,27 @@ git config --global user.email "$COMMITTER_EMAIL"
 git config --global user.name "Travis CI"
 git config -l
 
-# Build the der reader
-cd modules/der-reader
-yarn install
-npm run build
+# # Build the der reader
+# cd modules/der-reader
+# yarn install
+# npm run build
 
-# Deploy to github page
-cd dist
-ls
-git status
-git init
-git add -A .
-git status
-git commit -a -m "Travis #$TRAVIS_BUILD_NUMBER / ${SHA}"
-git status
-git push --force --quiet "https://${GITHUB_API_TOKEN}@github.com/makinacorpus/accessimap-lecteur-der.git" master:gh-pages > /dev/null 2>&1
+# # Deploy to github page
+# cd dist
+# ls
+# git status
+# git init
+# git add -A .
+# git status
+# git commit -a -m "Travis #$TRAVIS_BUILD_NUMBER / ${SHA}"
+# git status
+# git push --force --quiet "https://${GITHUB_API_TOKEN}@github.com/makinacorpus/accessimap-lecteur-der.git" master:gh-pages > /dev/null 2>&1
 
-# Build electron
-cd ../../../electron
-yarn install
-npm run build
-ls $TRAVIS_BUILD_DIR/electron/dist/accessimap*
+# # Build electron
+# cd ../../../electron
+# yarn install
+# npm run build
+# ls $TRAVIS_BUILD_DIR/electron/dist/accessimap*
 
 # Say to opbeat there is a new release
 curl https://intake.opbeat.com/api/v1/organizations/48eaafd23a8a462184cf7903765ea4a3/apps/b73624b852/releases/ \
