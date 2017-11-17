@@ -95,7 +95,7 @@ class DerContainer extends Component {
       if (this.state.currentSound) {
         this.state.currentSound.pause()
       }
-      this.state.filesByExt.audioFiles[name].async('base64')
+      this.props.der.audioFiles[name].async('base64')
         .then(base64string => {
           let sound = new Audio('data:audio/mpeg;base64,' + base64string)
           this.setState({
@@ -127,7 +127,11 @@ class DerContainer extends Component {
       this.props.setFilesList(this.state.filesByExt.svg)
     }
     return new Promise((resolve, reject) => {
-      this.readFiles(this.state.filesByExt.xml[0], this.state.filesByExt.svg[this.props.selectedDocument]).then(der => {
+      this.readFiles(
+        this.state.filesByExt.xml[0], 
+        this.state.filesByExt.svg[this.props.selectedDocument], 
+        this.state.filesByExt.audioFiles
+      ).then(der => {
         resolve(der)
       }, (err) => {
         reject(err)
@@ -135,8 +139,10 @@ class DerContainer extends Component {
     })
   }
 
-  readFiles(xml, svg) {
-    let der = {}
+  readFiles(xml, svg, audioFiles) {
+    let der = {
+      audioFiles: audioFiles
+    }
 
     var getJson = new Promise(function(resolve, reject) {
       xml.async('string')
