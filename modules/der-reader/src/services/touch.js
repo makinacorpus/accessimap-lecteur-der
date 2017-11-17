@@ -32,8 +32,7 @@ export default class Touch {
         && this.mylatesttaptype === e.type
     ) {
       eventType = TOUCH_EVENT_DOUBLE_TAP;
-    }
-    else {
+    } else {
       eventType = TOUCH_EVENT_SIMPLE_TAP;
     }
     return eventType;
@@ -50,23 +49,21 @@ export default class Touch {
   }
   
   handleTap = evt => {
-    if (this.mylatesttaptype === null || this.mylatesttaptype === evt.type) {
-      // console.log('Touch, handleTap', evt, this.getTouchEvent(evt));
-      evt.stopImmediatePropagation();
-      switch(this.getTouchEvent(evt)) {
-        case TOUCH_EVENT_DOUBLE_TAP:
-          // console.log('Touch, handleTap => onDoubleTap');
-          this.onDoubleTap(evt.target);
-          break;
-        case TOUCH_EVENT_SIMPLE_TAP:
-        default:
-          // console.log('Touch, handleTap => onTap');
-          this.onTap(evt.target);
-          break;
-      }
-      this.mylatesttap = new Date().getTime();
-      this.mylatesttaptype = evt.type;
+    // console.log('Touch, handleTap', evt, this.getTouchEvent(evt));
+    evt.stopImmediatePropagation();
+    switch(this.getTouchEvent(evt)) {
+      case TOUCH_EVENT_DOUBLE_TAP:
+        // console.log('Touch, handleTap => onDoubleTap');
+        this.onDoubleTap(evt.target);
+        break;
+      case TOUCH_EVENT_SIMPLE_TAP:
+      default:
+        // console.log('Touch, handleTap => onTap');
+        this.onTap(evt.target);
+        break;
     }
+    this.mylatesttap = new Date().getTime();
+    this.mylatesttaptype = evt.type;
   }
   
   run() {
