@@ -48,6 +48,7 @@ const appReducer = (state = defaultState, action) => {
         ...state,
         loading: false,
         derFile: action.derFile,
+        der: null,
         selectedDocument: 0
       }
     case SET_FILTER:
