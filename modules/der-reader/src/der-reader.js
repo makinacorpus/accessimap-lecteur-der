@@ -1,23 +1,33 @@
 require('!style!css!./der-reader.css')
 
+import initOpbeat from 'opbeat-react';
+import React from 'react';
+
+initOpbeat({
+  orgId: '48eaafd23a8a462184cf7903765ea4a3',
+  appId: 'b73624b852'
+});
+
 import Menu from './routes/Menu/Menu.js'
 import Filters from './routes/Filters/Filters.js'
 import SelectFile from './routes/Menu/SelectFile/SelectFile'
 import CalibrateMenu from './routes/Menu/Calibrate/CalibrateMenu'
 import FastClick from 'fastclick'
-import React from 'react'
+// import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { combineReducers } from 'redux'
 import App from './routes/App.container'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
+import { wrapRouter } from 'opbeat-react';
 import { Router, hashHistory } from 'react-router'
 import appReducer from './store/reducers'
 import { screenCalibrate } from './middlewares/screen'
 import localstorage from './middlewares/localstorage'
 import reader from './middlewares/reader'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { createOpbeatMiddleware } from 'opbeat-react/redux'
 
 // import version from 'version'
 window.version = version
@@ -38,10 +48,12 @@ const store = createStore(
   composeEnhancers(applyMiddleware(
     localstorage, 
     screenCalibrate,
-    reader
+    reader,
+    createOpbeatMiddleware()
   ))
 )
 
+const OpbeatRouter = wrapRouter(Router);
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store)
 
@@ -109,7 +121,7 @@ var DerReader = {
 
     ReactDOM.render(
       <Provider store={store}>    
-        <Router routes={routes} history={history} />
+        <OpbeatRouter routes={routes} history={history} />
       </Provider>,
       document.getElementById(config.container)
     )
