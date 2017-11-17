@@ -48,6 +48,7 @@ script:
   - yarn install
   - npm run build
   - ls $TRAVIS_BUILD_DIR/electron/dist/accessimap*
+  - cd ../
   - 'chmod 700 deploy.sh'
   - ./deploy.sh
 
