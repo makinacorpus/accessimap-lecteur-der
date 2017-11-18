@@ -55,8 +55,7 @@ script:
 cache:
   yarn: true
   directories:
-    - modules/der-reader/node_modules
-    - electron/node_modules
+    - node_modules
     
 deploy:
   provider: releases
