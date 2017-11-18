@@ -21,21 +21,31 @@ export default class Touch {
     this.element = typeof (element) === 'string' ? document.querySelector(element) : element;
   }
 
-  getTouchEvent(e) {
-    let eventType;
+  weAreInDoubleTapInterval() {
     var now = new Date().getTime();
     var timesince = now - this.mylatesttap;
-    // console.log(`getTouchEvent. now=${now}, mylatesttap=${this.mylatesttap}, timesince=${timesince}, target=${e.target}`, e.type);
-    if ( !isNaN(timesince) 
-        && timesince < DELTA_DOUBLE_TAP
-        && (timesince > 0)
-        && this.mylatesttaptype === e.type
-    ) {
-      eventType = TOUCH_EVENT_DOUBLE_TAP;
-    } else {
-      eventType = TOUCH_EVENT_SIMPLE_TAP;
+    return ( 
+      !isNaN(timesince) &&
+      timesince < DELTA_DOUBLE_TAP &&
+      timesince > 0
+    );
+  }
+
+  /**
+   * Set the latest tap type for a specific event,
+   * ONLY IF WE NEED IT.
+   * We need the latest tap type for analyzing double tap.
+   * The double tap will be recognized under the DELTA_DOUBLE_TAP
+   * If we are out of this interval, 
+   * we can set mylatesttype of the current e.type.
+   * 
+   * @param {Touch|MouseEvent} e event triggered by touch/click
+   */
+  setLatestTap(e) {
+    if (! this.weAreInDoubleTapInterval()) {
+      this.mylatesttaptype = e.type;
     }
-    return eventType;
+    this.mylatesttap = new Date().getTime();
   }
   
   onTap = (callback) => {
@@ -49,21 +59,39 @@ export default class Touch {
   }
   
   handleTap = evt => {
-    // console.log('Touch, handleTap', evt, this.getTouchEvent(evt));
-    evt.stopImmediatePropagation();
-    switch(this.getTouchEvent(evt)) {
-      case TOUCH_EVENT_DOUBLE_TAP:
-        // console.log('Touch, handleTap => onDoubleTap');
-        this.onDoubleTap(evt.target);
-        break;
-      case TOUCH_EVENT_SIMPLE_TAP:
-      default:
-        // console.log('Touch, handleTap => onTap');
-        this.onTap(evt.target);
-        break;
+    evt.stopImmediatePropagation(); // stop other listeners to be called
+    // BE CAREFUL
+    // Touch Screen used for Accessimap project = IIYAMA ProLite T2735MSC
+    // This device is touch/click based
+    // It fires first a Touch event, then a MouseEvent
+    // We have to take care of the first event
+    // Scenario is, for example
+    // User make a double tap on the screen
+    // Device trigger Touch + MouseEvent + Touch + MouseEvent
+    // We have to detect only both Touch events
+    // Nevertheless, if user use only mouse, we have to memorize MouseEvent
+    // And so, with this specific device, the handleTap is called twice
+    // because it's the same listener, so stopImmediatePropagation won't have effects on this listener
+    // cf https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation
+    // if there wasn't any latesttaptype, 
+    // or we'are out of double tap interval
+    // it's a simple tap
+    if (
+      !this.mylatesttaptype ||
+      !this.weAreInDoubleTapInterval()
+    ) {
+      this.onTap(evt.target);
+    } else 
+    // if we are in double tap interval, 
+    // and we have same latesttaptype
+    // it's a double tap
+    if (
+      this.weAreInDoubleTapInterval() &&
+      evt.type === this.mylatesttaptype
+    ) {
+      this.onDoubleTap(evt.target);
     }
-    this.mylatesttap = new Date().getTime();
-    this.mylatesttaptype = evt.type;
+    this.setLatestTap(evt);
   }
   
   run() {
