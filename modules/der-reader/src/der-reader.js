@@ -1,19 +1,11 @@
 require('!style!css!./der-reader.css')
 
-import initOpbeat from 'opbeat-react';
-import React from 'react';
-
-initOpbeat({
-  orgId: '48eaafd23a8a462184cf7903765ea4a3',
-  appId: 'b73624b852'
-});
-
 import Menu from './routes/Menu/Menu.js'
 import Filters from './routes/Filters/Filters.js'
 import SelectFile from './routes/Menu/SelectFile/SelectFile'
 import CalibrateMenu from './routes/Menu/Calibrate/CalibrateMenu'
 import FastClick from 'fastclick'
-// import React from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { combineReducers } from 'redux'
