@@ -1,6 +1,12 @@
+### Ce projet a déménagé !
+
+### Merci d'aller sur https://gitlab.com/makinacorpus/accessimap/accessimap-lecteur-der
+
 # Accessimap - Lecteur de documents en relief
 
 [![Build Status](https://travis-ci.org/makinacorpus/accessimap-lecteur-der.svg?branch=master)](https://travis-ci.org/makinacorpus/accessimap-lecteur-der)
+
+
 
 Ce projet fait parti du projet de recherche Accessimap.
 
